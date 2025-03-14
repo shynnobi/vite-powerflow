@@ -1,12 +1,12 @@
 /// <reference types="vite/client" />
 
-// Déclaration de types pour les modules qui n'ont pas de types
+// Type declarations for modules without types
 declare module 'rollup-plugin-visualizer';
 
-// Étendre les types de Vitest
+// Extend Vitest types
 interface ImportMetaEnv {
 	readonly VITE_APP_TITLE: string;
-	// plus de variables d'environnement...
+	// more environment variables...
 }
 
 interface ImportMeta {

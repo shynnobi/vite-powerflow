@@ -1,5 +1,5 @@
-# Exécuter la vérification des types
+# Run type checking
 yarn type-check || exit 1
 
-# Exécuter lint-staged
+# Run lint-staged
 npx lint-staged
