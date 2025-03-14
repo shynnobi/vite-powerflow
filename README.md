@@ -1,54 +1,101 @@
-# React + TypeScript + Vite
+# Vite React TypeScript Starter Kit
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern and robust starter kit for React web application development, configured with current best practices and tools.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ⚡️ **[Vite](https://vitejs.dev/)** - Lightning fast build tool
+- ⚛️ **[React 18](https://react.dev/)** - Latest React version with Hooks
+- 📝 **[TypeScript](https://www.typescriptlang.org/)** - Static typing for robust code
+- 🧪 **Complete Testing Setup** :
+  - 🃏 [Vitest](https://vitest.dev/) for unit and integration tests
+  - 🎭 [Playwright](https://playwright.dev/) for E2E testing
+  - 🧪 [@testing-library/react](https://testing-library.com/react) for component testing
+- 📏 **Code Quality** :
+  - [ESLint](https://eslint.org/) with latest flat config (v9)
+  - [Prettier](https://prettier.io/) for code formatting
+  - [TypeScript ESLint](https://typescript-eslint.io/) for TypeScript-specific rules
+- 🔍 **Pre-commit hooks** :
+  - [Husky](https://typicode.github.io/husky/) for git hooks
+  - [lint-staged](https://github.com/okonet/lint-staged) for staged files linting
+  - [commitlint](https://commitlint.js.org/) for standardized commit messages
 
-## Expanding the ESLint configuration
+## 📦 Project Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+\`\`\`
+├── src/ # Application source code
+├── tests/ # Tests organized by type
+│ ├── e2e/ # End-to-end tests with Playwright
+│ ├── integration/ # Integration tests
+│ └── unit/ # Unit tests
+├── public/ # Static files
+├── .husky/ # Git hooks configuration
+├── eslint.config.js # ESLint configuration (flat format)
+├── tsconfig.json # TypeScript configuration
+├── vite.config.ts # Vite configuration
+└── vitest.config.ts # Vitest configuration
+\`\`\`
 
-```js
-export default tseslint.config({
-	extends: [
-		// Remove ...tseslint.configs.recommended and replace with this
-		...tseslint.configs.recommendedTypeChecked,
-		// Alternatively, use this for stricter rules
-		...tseslint.configs.strictTypeChecked,
-		// Optionally, add this for stylistic rules
-		...tseslint.configs.stylisticTypeChecked,
-	],
-	languageOptions: {
-		// other options...
-		parserOptions: {
-			project: ['./tsconfig.node.json', './tsconfig.app.json'],
-			tsconfigRootDir: import.meta.dirname,
-		},
-	},
-});
-```
+## 🚀 Getting Started
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1. Clone the project:
+   \`\`\`bash
+   git clone [REPO_URL]
+   cd vite-blank-starter
+   \`\`\`
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+2. Install dependencies:
+   \`\`\`bash
+   pnpm install
+   \`\`\`
 
-export default tseslint.config({
-	plugins: {
-		// Add the react-x and react-dom plugins
-		'react-x': reactX,
-		'react-dom': reactDom,
-	},
-	rules: {
-		// other rules...
-		// Enable its recommended typescript rules
-		...reactX.configs['recommended-typescript'].rules,
-		...reactDom.configs.recommended.rules,
-	},
-});
-```
+3. Start development server:
+   \`\`\`bash
+   pnpm dev
+   \`\`\`
+
+## 🧪 Testing
+
+- Unit and Integration tests:
+  \`\`\`bash
+  pnpm test # Run all tests
+  pnpm test:watch # Watch mode
+  pnpm test:ui # Vitest UI interface
+  \`\`\`
+
+- E2E tests:
+  \`\`\`bash
+  pnpm test:e2e # Run E2E tests with Playwright
+  pnpm test:e2e:ui # Run E2E tests with Playwright UI
+  \`\`\`
+
+## 🛠️ Available Scripts
+
+- \`pnpm dev\` - Start development server
+- \`pnpm build\` - Build for production
+- \`pnpm preview\` - Preview production build
+- \`pnpm lint\` - Check code with ESLint
+- \`pnpm format\` - Format code with Prettier
+- \`pnpm type-check\` - Check TypeScript types
+
+## 📝 Code Conventions
+
+- **TypeScript**: Strict mode enabled
+- **ESLint**: Modern configuration with React and TypeScript support
+- **Commits**: Conventional Commits format
+  - \`feat:\` New features
+  - \`fix:\` Bug fixes
+  - \`chore:\` Maintenance tasks
+  - \`docs:\` Documentation changes
+  - \`test:\` Test modifications
+
+## 🤝 Contributing
+
+1. Create a feature branch
+2. Commit your changes
+3. Push to the branch
+4. Open a Pull Request
+
+## 📄 License
+
+MIT
