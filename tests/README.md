@@ -81,24 +81,25 @@ Ce dossier contient tous les tests du projet, organisés par type :
 ### Tests Unitaires et d'Intégration
 
 ```bash
-# Lancer tous les tests
-yarn test
+pnpm test
+```
 
-# Mode watch
-yarn test:watch
+```bash
+pnpm test:watch
+```
 
-# Coverage
-yarn test:coverage
+```bash
+pnpm test:coverage
 ```
 
 ### Tests E2E
 
 ```bash
-# Lancer les tests E2E
-yarn test:e2e
+pnpm test:e2e
+```
 
-# Mode UI
-yarn test:e2e:ui
+```bash
+pnpm test:e2e:ui
 ```
 
 ## Bonnes Pratiques
