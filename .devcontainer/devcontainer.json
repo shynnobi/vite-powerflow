@@ -1,0 +1,32 @@
+{
+	"name": "Docker Vite Blank Starter",
+	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye",
+	"features": {
+		"ghcr.io/devcontainers-contrib/features/pnpm:2": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"dbaeumer.vscode-eslint",
+				"esbenp.prettier-vscode",
+				"antfu.vite",
+				"ms-playwright.playwright",
+				"bradlc.vscode-tailwindcss",
+				"vitest.explorer"
+			],
+			"settings": {
+				"editor.formatOnSave": true,
+				"editor.defaultFormatter": "esbenp.prettier-vscode",
+				"editor.insertSpaces": false,
+				"editor.tabSize": 2,
+				"files.eol": "\n"
+			}
+		}
+	},
+	"forwardPorts": [
+		5173, // Vite dev server
+		4000 // Node.js process if needed
+	],
+	"postCreateCommand": "pnpm install",
+	"remoteUser": "node"
+}
