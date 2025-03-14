@@ -1,100 +1,122 @@
-# Guide de contribution
+# Contributing Guide
 
-Ce projet utilise un workflow de vérification avant commit pour assurer le respect des bonnes pratiques et des conventions de code.
+## 🌳 Branch Structure
 
-## Prérequis
+```
+main (production)
+  └── dev (development)
+       └── feature/* (features)
+```
 
-- Node.js (version 18 ou supérieure)
-- Yarn
+- `main`: Production code, stable
+- `dev`: Active development, feature integration
+- `feature/*`: Temporary branches for new features
 
-## Installation
+## 🔄 Development Workflow
+
+1. **Feature Creation**
+
+   ```bash
+   git checkout dev
+   git checkout -b feature/my-feature
+   ```
+
+2. **Development**
+
+   - Frequent commits with conventional messages
+   - Unit tests for new features
+   - Follow code standards
+
+3. **Local Validation**
+
+   ```bash
+   pnpm lint      # Code verification
+   pnpm test      # Unit tests
+   pnpm build     # Build verification
+   ```
+
+4. **Pull Request**
+   - Create PR to `dev`
+   - Fill PR template
+   - Wait for automatic checks
+
+## 📝 Commit Conventions
+
+Format: `type(scope): description`
+
+Types:
+
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation
+- `style`: Formatting
+- `refactor`: Code refactoring
+- `test`: Tests
+- `chore`: Maintenance
+
+Examples:
 
 ```bash
-yarn install
+feat(auth): add Google login
+fix(api): fix request timeout
+docs(readme): update installation guide
 ```
 
-## Workflow de développement
+## 🔍 Code Standards
 
-### Hooks Git
+- TypeScript strict mode
+- ESLint with standard configuration
+- Prettier for formatting
+- Unit tests with Vitest
+- E2E tests with Playwright
 
-Ce projet utilise [Husky](https://typicode.github.io/husky/) pour exécuter des hooks Git :
+## 🚀 Branch Protection
 
-- **pre-commit** : Vérifie le formatage, le linting et les types des fichiers modifiés avec lint-staged
-- **commit-msg** : Vérifie que les messages de commit respectent les conventions
+### Main (Production)
 
-### Conventions de commit
+- Tests required
+- Review required
+- No direct push
+- Linear history
 
-Nous utilisons les [Conventional Commits](https://www.conventionalcommits.org/) pour formater les messages de commit. Chaque message de commit doit avoir la structure suivante :
+### Dev (Development)
 
-```
-<type>(<scope>): <description>
+- Tests required
+- Review recommended
+- Merge via PR only
 
-[optional body]
-
-[optional footer(s)]
-```
-
-Types de commit autorisés :
-
-- **build** : Changements qui affectent le système de build ou les dépendances externes
-- **chore** : Autres changements qui ne modifient pas les fichiers src ou test
-- **ci** : Changements dans les fichiers et scripts de configuration CI
-- **docs** : Modifications de la documentation uniquement
-- **feat** : Ajout d'une nouvelle fonctionnalité
-- **fix** : Correction d'un bug
-- **perf** : Amélioration des performances
-- **refactor** : Modification du code qui ne corrige pas un bug et n'ajoute pas de fonctionnalité
-- **revert** : Annulation d'un commit précédent
-- **style** : Changements qui n'affectent pas le sens du code (espaces, formatage, etc.)
-- **test** : Ajout ou correction de tests
-
-Exemples :
-
-```
-feat(auth): ajouter la connexion avec Google
-fix(api): corriger le problème de timeout dans les requêtes
-docs: mettre à jour la documentation d'installation
-```
-
-### Formatage du code
-
-Nous utilisons [Prettier](https://prettier.io/) pour formater le code. Vous pouvez formater manuellement le code avec :
+## 📦 Available Scripts
 
 ```bash
-yarn format
+pnpm dev          # Local development
+pnpm build        # Production build
+pnpm test         # Unit tests
+pnpm test:e2e     # E2E tests
+pnpm lint         # Code verification
+pnpm format       # Code formatting
 ```
 
-### Linting
+## 🤝 Best Practices
 
-Nous utilisons [ESLint](https://eslint.org/) pour le linting. Vous pouvez exécuter le linting manuellement avec :
+1. **Commits**
 
-```bash
-yarn lint
-```
+   - Clear and descriptive messages
+   - One commit = one logical change
+   - No commits on `main`
 
-Pour corriger automatiquement les problèmes de linting :
+2. **Code**
 
-```bash
-yarn lint:fix
-```
+   - Relevant comments
+   - Explicit variable names
+   - Tests for new features
 
-### Vérification des types
+3. **Pull Requests**
 
-Nous utilisons TypeScript pour la vérification des types. Vous pouvez vérifier les types manuellement avec :
+   - Clear description
+   - Screenshots for UI changes
+   - List of changes
 
-```bash
-yarn type-check
-```
-
-Cette vérification est également exécutée automatiquement avant chaque commit sur les fichiers modifiés.
-
-## CI/CD
-
-Ce projet utilise GitHub Actions pour exécuter les vérifications sur les pull requests et les pushes sur la branche principale. Le workflow vérifie :
-
-1. Le linting et le formatage du code
-2. La vérification des types TypeScript
-3. Les messages de commit (pour les pull requests)
-4. La compilation du projet
-
-Toutes ces vérifications doivent passer pour que la pull request puisse être fusionnée.
+4. **Reviews**
+   - Check logic
+   - Test locally
+   - Constructive comments
