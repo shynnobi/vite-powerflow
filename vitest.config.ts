@@ -1,25 +1,21 @@
 /// <reference types="vitest" />
 import { defineConfig } from 'vitest/config';
-import { mergeConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 
-const viteConfig = {
+export default defineConfig({
 	plugins: [react()],
-};
-
-export default mergeConfig(
-	viteConfig,
-	defineConfig({
-		test: {
-			globals: true,
-			environment: 'jsdom',
-			setupFiles: ['./src/test/setup.ts'],
-			exclude: ['node_modules/**', 'e2e/**', '.git/**'],
-			coverage: {
-				provider: 'v8',
-				reporter: ['text', 'json', 'html'],
-				exclude: ['node_modules/', 'src/test/'],
-			},
+	test: {
+		globals: true,
+		environment: 'jsdom',
+		setupFiles: ['./tests/unit/setup.ts'],
+		include: ['./tests/{unit,integration}/**/*.{test,spec}.{ts,tsx}'],
+		exclude: ['./tests/e2e/**/*'],
+		reporters: ['default'],
+		coverage: {
+			provider: 'v8',
+			reporter: ['text', 'json', 'html'],
+			include: ['src/**/*.{ts,tsx}'],
+			exclude: ['**/*.d.ts', '**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
 		},
-	})
-);
+	},
+});
