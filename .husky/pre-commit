@@ -1,5 +1,5 @@
 # Run type checking
-yarn type-check || exit 1
+pnpm type-check || exit 1
 
 # Run lint-staged
 npx lint-staged
