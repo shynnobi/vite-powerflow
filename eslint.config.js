@@ -9,7 +9,7 @@ import globals from 'globals';
 export default [
 	js.configs.recommended,
 	{
-		files: ['**/*.{js,jsx,ts,tsx}'],
+		files: ['**/*.{ts,tsx}'],
 		ignores: ['dist/**', 'coverage/**'],
 		languageOptions: {
 			ecmaVersion: 'latest',
@@ -50,6 +50,17 @@ export default [
 		files: ['**/*.d.ts'],
 		rules: {
 			'@typescript-eslint/triple-slash-reference': 'off',
+		},
+	},
+	{
+		files: ['**/*.{js,cjs,mjs}'],
+		ignores: ['dist/**', 'coverage/**'],
+		languageOptions: {
+			ecmaVersion: 'latest',
+			sourceType: 'module',
+			globals: {
+				...globals.node,
+			},
 		},
 	},
 ];
