@@ -5,18 +5,17 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"build": "tsc -b && vite build",
-		"lint": "eslint .",
+		"build": "tsc && vite build",
 		"preview": "vite preview",
-		"prepare": "husky",
-		"format": "prettier --write .",
-		"lint:fix": "eslint --fix .",
-		"lint-staged": "lint-staged",
-		"type-check": "tsc --noEmit",
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"test:coverage": "vitest run --coverage",
-		"test:e2e": "playwright test"
+		"test:e2e": "playwright test",
+		"test:e2e:ui": "playwright test --ui",
+		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+		"format": "prettier --write .",
+		"type-check": "tsc --noEmit",
+		"prepare": "husky install"
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx}": [

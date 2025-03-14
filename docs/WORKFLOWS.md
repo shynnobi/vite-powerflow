@@ -1,5 +1,76 @@
 # Technical Workflow
 
+## Development Environment
+
+### Dev Container Benefits
+
+Our Dev Container setup provides several advantages:
+
+- Consistent development environment for all team members
+- Automatic installation of required extensions
+- Preconfigured linting and formatting
+- Isolated dependencies
+- Reproducible builds
+
+### Container Configuration
+
+The Dev Container is configured in `.devcontainer/devcontainer.json`:
+
+```json
+{
+	"name": "Docker Vite Blank Starter",
+	"dockerFile": "Dockerfile",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"dbaeumer.vscode-eslint",
+				"esbenp.prettier-vscode",
+				"github.vscode-pull-request-github"
+				// ... other extensions
+			]
+		}
+	}
+}
+```
+
+### Installed Extensions
+
+- ESLint: Code quality and style checking
+- Prettier: Code formatting
+- GitHub Pull Requests: PR management
+- TypeScript support
+- Testing tools
+
+### Local Development Flow
+
+1. **First Time Setup**:
+
+   ```bash
+   git clone <repository>
+   code <repository>
+   # VS Code will prompt to reopen in container
+   ```
+
+2. **Container Features**:
+
+   - Node.js and pnpm pre-installed
+   - Git configured with credential forwarding
+   - Pre-configured development tools
+   - Shared extensions across team
+
+3. **Best Practices**:
+
+   - Always work inside the container
+   - Use VS Code's integrated terminal
+   - Let extensions handle formatting
+   - Use container-specific settings
+
+4. **Troubleshooting**:
+   - Rebuild container if dependencies change
+   - Check Docker logs for issues
+   - Verify Docker Desktop is running
+   - Check port conflicts
+
 ## Branch Protection
 
 ### Why?

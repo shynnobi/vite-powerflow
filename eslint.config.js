@@ -1,29 +1,24 @@
 import js from '@eslint/js';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import reactRefreshPlugin from 'eslint-plugin-react-refresh';
-import globals from 'globals';
 
 export default [
+	{
+		ignores: ['dist/**', 'coverage/**', 'test-results/**'],
+	},
 	js.configs.recommended,
 	{
 		files: ['**/*.{ts,tsx}'],
-		ignores: ['dist/**', 'coverage/**'],
 		languageOptions: {
-			ecmaVersion: 'latest',
-			sourceType: 'module',
 			parser: tsParser,
 			parserOptions: {
-				ecmaFeatures: { jsx: true },
-				project: ['./tsconfig.eslint.json'],
-				tsconfigRootDir: '.',
+				project: './tsconfig.eslint.json',
 			},
 			globals: {
-				...globals.browser,
-				...globals.node,
-				React: true,
+				process: 'readonly',
 			},
 		},
 		plugins: {
@@ -32,34 +27,18 @@ export default [
 			'react-hooks': reactHooksPlugin,
 			'react-refresh': reactRefreshPlugin,
 		},
-		settings: {
-			react: {
-				version: 'detect',
-			},
-		},
 		rules: {
-			...tsPlugin.configs['eslint-recommended'].rules,
-			...tsPlugin.configs['recommended'].rules,
+			...tsPlugin.configs.recommended.rules,
 			...reactPlugin.configs.recommended.rules,
 			...reactHooksPlugin.configs.recommended.rules,
 			'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-			'react/react-in-jsx-scope': 'off',
-		},
-	},
-	{
-		files: ['**/*.d.ts'],
-		rules: {
 			'@typescript-eslint/triple-slash-reference': 'off',
+			'react-hooks/rules-of-hooks': 'error',
+			'react-hooks/exhaustive-deps': 'warn',
 		},
-	},
-	{
-		files: ['**/*.{js,cjs,mjs}'],
-		ignores: ['dist/**', 'coverage/**'],
-		languageOptions: {
-			ecmaVersion: 'latest',
-			sourceType: 'module',
-			globals: {
-				...globals.node,
+		settings: {
+			react: {
+				version: 'detect',
 			},
 		},
 	},
