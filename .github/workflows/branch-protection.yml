@@ -1,0 +1,25 @@
+name: Branch Protection Rules
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  protection:
+    name: Branch Protection
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify Branch Protection
+        uses: github/branch-protection-rules@v1
+        with:
+          config-file: .github/branch-protection.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
