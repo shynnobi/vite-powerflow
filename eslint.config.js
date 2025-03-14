@@ -7,7 +7,7 @@ import reactRefreshPlugin from 'eslint-plugin-react-refresh';
 
 export default [
 	{
-		ignores: ['dist/**', 'coverage/**', 'test-results/**'],
+		ignores: ['node_modules/**', 'dist/**', 'coverage/**', 'test-results/**'],
 	},
 	js.configs.recommended,
 	{
@@ -19,6 +19,7 @@ export default [
 			},
 			globals: {
 				process: 'readonly',
+				document: 'readonly',
 			},
 		},
 		plugins: {
@@ -35,6 +36,7 @@ export default [
 			'@typescript-eslint/triple-slash-reference': 'off',
 			'react-hooks/rules-of-hooks': 'error',
 			'react-hooks/exhaustive-deps': 'warn',
+			'react/react-in-jsx-scope': 'off',
 		},
 		settings: {
 			react: {
