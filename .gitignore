@@ -47,3 +47,9 @@ test-results
 .temp
 .tmp
 .tsbuildinfo
+
+# Build visualizer
+stats.html
+
+# Binary files
+bin/
