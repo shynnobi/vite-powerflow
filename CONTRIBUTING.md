@@ -1,20 +1,28 @@
 # Contributing Guide
 
-## 🌳 Branch Structure
+Welcome to the project! This guide will help you get started quickly.
 
-```
-main (production)
-  └── dev (development)
-       └── feature/* (features)
-```
+## 🐳 Development Environment
 
-- `main`: Production code, stable
-- `dev`: Active development, feature integration
-- `feature/*`: Temporary branches for new features
+This project uses Dev Containers to ensure a consistent development environment across the team.
 
-## 🔄 Development Workflow
+### Prerequisites
 
-1. **Feature Creation**
+- Docker Desktop
+- VS Code with Remote - Containers extension
+
+### Quick Setup
+
+1. Clone the repository
+2. Open in VS Code
+3. Click "Reopen in Container" when prompted
+4. Wait for the container to build
+
+> 💡 The container will automatically install all required extensions and dependencies
+
+## 🔄 Quick Start
+
+1. **Setup your branch**
 
    ```bash
    git checkout dev
@@ -23,11 +31,11 @@ main (production)
 
 2. **Development**
 
-   - Frequent commits with conventional messages
-   - Unit tests for new features
-   - Follow code standards
+   - Write your code
+   - Add tests
+   - Follow our standards
 
-3. **Local Validation**
+3. **Validation**
 
    ```bash
    pnpm lint      # Code verification
@@ -35,10 +43,12 @@ main (production)
    pnpm build     # Build verification
    ```
 
-4. **Pull Request**
+4. **Submit Changes**
    - Create PR to `dev`
-   - Fill PR template
-   - Wait for automatic checks
+   - Wait for checks
+   - Address reviews
+
+> 📚 For detailed workflow information, see [Technical Workflow](docs/workflow.md)
 
 ## 📝 Commit Conventions
 
@@ -62,29 +72,6 @@ fix(api): fix request timeout
 docs(readme): update installation guide
 ```
 
-## 🔍 Code Standards
-
-- TypeScript strict mode
-- ESLint with standard configuration
-- Prettier for formatting
-- Unit tests with Vitest
-- E2E tests with Playwright
-
-## 🚀 Branch Protection
-
-### Main (Production)
-
-- Tests required
-- Review required
-- No direct push
-- Linear history
-
-### Dev (Development)
-
-- Tests required
-- Review recommended
-- Merge via PR only
-
 ## 📦 Available Scripts
 
 ```bash
@@ -96,27 +83,17 @@ pnpm lint         # Code verification
 pnpm format       # Code formatting
 ```
 
-## 🤝 Best Practices
+## 🔍 Code Standards
 
-1. **Commits**
+- TypeScript strict mode
+- ESLint with standard configuration
+- Prettier for formatting
+- Tests required for new features
 
-   - Clear and descriptive messages
-   - One commit = one logical change
-   - No commits on `main`
+> 📚 For detailed standards and configurations, see [Technical Workflow](docs/workflow.md#quality-tools)
 
-2. **Code**
+## 🤝 Need Help?
 
-   - Relevant comments
-   - Explicit variable names
-   - Tests for new features
-
-3. **Pull Requests**
-
-   - Clear description
-   - Screenshots for UI changes
-   - List of changes
-
-4. **Reviews**
-   - Check logic
-   - Test locally
-   - Constructive comments
+1. Check the [Technical Workflow](docs/workflow.md) documentation
+2. Review our [Best Practices](docs/workflow.md#best-practices-for-solo-dev)
+3. Create an issue if you're stuck
