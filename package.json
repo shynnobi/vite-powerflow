@@ -15,10 +15,7 @@
 		"lint": "NODE_NO_WARNINGS=1 eslint . --ext ts,tsx",
 		"format": "prettier --write .",
 		"type-check": "tsc --noEmit",
-		"prepare": "husky install",
-		"test-ci": "./scripts/test-ci.sh",
-		"test-security": "./scripts/test-security.sh",
-		"test-workflows": "pnpm test-ci && pnpm test-security"
+		"prepare": "husky install"
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx}": [
