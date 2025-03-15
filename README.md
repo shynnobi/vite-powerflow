@@ -54,6 +54,21 @@ A modern and robust starter kit for React web application development, configure
    pnpm dev
    \`\`\`
 
+## 🔧 Development Container
+
+This project includes a development container configuration for VS Code, which provides a consistent development environment for all contributors.
+
+### Git Configuration
+
+The development container is configured to use your local Git configuration. Make sure your `.gitconfig` file is properly set up with your name and email:
+
+\`\`\`bash
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+\`\`\`
+
+If you're using the development container and your commits don't appear with your GitHub avatar, you may need to run these commands inside the container.
+
 ## 🧪 Testing
 
 - Unit and Integration tests:
