@@ -27,6 +27,7 @@
 		5173, // Vite dev server
 		4000 // Node.js process if needed
 	],
+	"mounts": ["source=${localEnv:HOME}/.gitconfig,target=/home/node/.gitconfig,type=bind,readonly"],
 	"postCreateCommand": "pnpm install",
 	"remoteUser": "node"
 }
