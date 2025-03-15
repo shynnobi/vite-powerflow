@@ -8,14 +8,14 @@ on:
 
 jobs:
   lint:
-    uses: ./.github/workflows/ci/lint.yml@main
+    uses: ./.github/workflows/ci/lint.yml
 
   type-check:
-    uses: ./.github/workflows/ci/type-check.yml@main
+    uses: ./.github/workflows/ci/type-check.yml
 
   commit-lint:
     if: github.event_name == 'pull_request'
-    uses: ./.github/workflows/ci/commit-lint.yml@main
+    uses: ./.github/workflows/ci/commit-lint.yml
 
   build:
     needs: [lint, type-check]
