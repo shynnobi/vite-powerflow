@@ -27,6 +27,7 @@ function App(): ReactElement {
 			<div className="card">
 				<div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
 					<button onClick={decrement}>Decrement</button>
+					<button onClick={increment}>Increment</button>
 					<button onClick={reset}>Reset</button>
 				</div>
 				<p>This counter is managed by Zustand</p>
