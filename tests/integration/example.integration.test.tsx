@@ -1,101 +1,102 @@
 import { useState } from 'react';
 import { render, screen, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
-import '@testing-library/jest-dom/vitest';
+import { describe, it, expect } from 'vitest';
 
-// Component to test
-const TodoList = () => {
-	const [todos, setTodos] = useState<string[]>([]);
-	const [newTodo, setNewTodo] = useState('');
+const SimpleCounter = () => {
+	const [count, setCount] = useState(0);
+	const [message, setMessage] = useState('');
 
-	const addTodo = () => {
-		if (newTodo.trim()) {
-			setTodos([...todos, newTodo.trim()]);
-			setNewTodo('');
+	const increment = () => {
+		setCount(prev => prev + 1);
+		if (count + 1 >= 5) {
+			setMessage('High count reached!');
 		}
+	};
+
+	const reset = () => {
+		setCount(0);
+		setMessage('');
 	};
 
 	return (
 		<div>
-			<input
-				type="text"
-				value={newTodo}
-				onChange={e => setNewTodo(e.target.value)}
-				placeholder="Add a new todo"
-				data-testid="todo-input"
-			/>
-			<button onClick={addTodo} data-testid="add-todo">
-				Add Todo
+			<h2>Example of Counter with local state (useState)</h2>
+			<p data-testid="count-display">Count: {count}</p>
+			{message && <p data-testid="message">{message}</p>}
+			<button data-testid="increment-btn" onClick={increment}>
+				Increment
 			</button>
-			<ul>
-				{todos.map((todo, index) => (
-					<li key={index} data-testid={`todo-item-${index}`}>
-						{todo}
-					</li>
-				))}
-			</ul>
+			<button data-testid="reset-btn" onClick={reset}>
+				Reset
+			</button>
 		</div>
 	);
 };
 
-describe('TodoList Integration', () => {
-	// Integration tests setup
-	beforeAll(() => {
-		// Here you would initialize MSW or other services
-	});
-
-	afterAll(() => {
-		// Cleanup after all tests
-	});
-
-	afterEach(() => {
-		// Cleanup after each test
-	});
-
-	it('should add and display multiple todos', async () => {
+describe('Example: Component with local state (useState)', () => {
+	it('should increment the counter when clicking the button', async () => {
 		const user = userEvent.setup();
-		render(<TodoList />);
+		render(<SimpleCounter />);
 
-		// First todo
-		const input = screen.getByTestId('todo-input');
-		const addButton = screen.getByTestId('add-todo');
+		const incrementButton = screen.getByTestId('increment-btn');
+		const countDisplay = screen.getByTestId('count-display');
 
+		// Initial state
+		expect(countDisplay).toHaveTextContent('Count: 0');
+
+		// Click increment button
 		await act(async () => {
-			await user.type(input, 'First todo');
-			await user.click(addButton);
+			await user.click(incrementButton);
 		});
 
+		// Check if count was updated
+		expect(countDisplay).toHaveTextContent('Count: 1');
+	});
+
+	it('should show a message when count reaches 5', async () => {
+		const user = userEvent.setup();
+		render(<SimpleCounter />);
+
+		const incrementButton = screen.getByTestId('increment-btn');
+
+		// Click increment button 5 times
+		for (let i = 0; i < 5; i++) {
+			await act(async () => {
+				await user.click(incrementButton);
+			});
+		}
+
+		// Check if message appears
 		await waitFor(() => {
-			expect(screen.getByTestId('todo-item-0')).toHaveTextContent('First todo');
-			expect(input).toHaveValue('');
-		});
-
-		// Second todo
-		await act(async () => {
-			await user.type(input, 'Second todo');
-			await user.click(addButton);
-		});
-
-		await waitFor(() => {
-			expect(screen.getByTestId('todo-item-0')).toHaveTextContent('First todo');
-			expect(screen.getByTestId('todo-item-1')).toHaveTextContent('Second todo');
-			expect(input).toHaveValue('');
+			expect(screen.getByTestId('message')).toHaveTextContent('High count reached!');
 		});
 	});
 
-	it('should not add empty todos', async () => {
+	it('should reset the counter and message', async () => {
 		const user = userEvent.setup();
-		render(<TodoList />);
+		render(<SimpleCounter />);
 
-		const addButton = screen.getByTestId('add-todo');
+		const incrementButton = screen.getByTestId('increment-btn');
+		const resetButton = screen.getByTestId('reset-btn');
 
+		// Increment to show message
+		for (let i = 0; i < 5; i++) {
+			await act(async () => {
+				await user.click(incrementButton);
+			});
+		}
+
+		// Verify message is shown
+		expect(screen.getByTestId('message')).toBeInTheDocument();
+
+		// Reset
 		await act(async () => {
-			await user.click(addButton);
+			await user.click(resetButton);
 		});
 
-		await waitFor(() => {
-			expect(screen.queryByTestId('todo-item-0')).not.toBeInTheDocument();
-		});
+		// Verify count is reset and message is gone
+		expect(screen.getByTestId('count-display')).toHaveTextContent('Count: 0');
+		expect(screen.queryByTestId('message')).not.toBeInTheDocument();
 	});
 });
