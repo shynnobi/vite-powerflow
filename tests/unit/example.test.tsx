@@ -1,10 +1,10 @@
-import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import App from '../../src/App';
 
-describe('Example Test', () => {
-	it('should render hello text', () => {
-		render(<div>Hello</div>);
-		const element = screen.getByText(/hello/i);
-		expect(element).toBeInTheDocument();
+describe('App Component', () => {
+	it('should render the main heading', () => {
+		render(<App />);
+		expect(screen.getByText('Vite + React')).toBeInTheDocument();
 	});
 });
