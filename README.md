@@ -23,17 +23,21 @@ A modern and robust starter kit for React web application development, configure
 ## 📦 Project Structure
 
 ```
-├── src/ # Application source code
-├── tests/ # Tests organized by type
-│ ├── e2e/ # End-to-end tests with Playwright
-│ ├── integration/ # Integration tests
-│ └── unit/ # Unit tests
-├── public/ # Static files
-├── .husky/ # Git hooks configuration
-├── eslint.config.js # ESLint configuration (flat format)
-├── tsconfig.json # TypeScript configuration
-├── vite.config.ts # Vite configuration
-└── vitest.config.ts # Vitest configuration
+├── src/                  # Application source code
+│ ├── components/         # Reusable components
+│ ├── store/              # Zustand state management
+│ └── assets/             # Static assets
+├── tests/                # Tests organized by type
+│ ├── e2e/                # End-to-end tests with Playwright
+│ ├── integration/        # Integration tests
+│ └── unit/               # Unit tests
+├── public/               # Static files
+├── .husky/               # Git hooks configuration
+├── eslint.config.js      # ESLint configuration
+├── tsconfig.json         # TypeScript configuration
+├── vite.config.ts        # Vite configuration
+├── tailwind.config.js    # Tailwind CSS configuration
+└── vitest.config.ts      # Vitest configuration
 ```
 
 ## 🚀 Getting Started
@@ -41,7 +45,7 @@ A modern and robust starter kit for React web application development, configure
 1. Clone the project:
 
    ```bash
-   git clone [REPO_URL]
+   git clone [https://github.com/shynnobi/vite-blank-starter]
    cd vite-blank-starter
    ```
 
@@ -116,4 +120,6 @@ If you're using the development container and your commits don't appear with you
 
 ## 📄 License
 
-MIT
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+The MIT License is a permissive license that allows you to use, modify, distribute, and sublicense the code for both private and commercial purposes, provided that the original copyright notice and the license text are included.
