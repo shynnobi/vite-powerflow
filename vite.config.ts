@@ -15,6 +15,7 @@ export default defineConfig({
 			{ find: '@store', replacement: '/workspaces/vite-blank-starter/src/store' },
 			{ find: '@assets', replacement: '/workspaces/vite-blank-starter/src/assets' },
 			{ find: '@tests', replacement: '/workspaces/vite-blank-starter/tests' },
+			{ find: '@components', replacement: '/workspaces/vite-blank-starter/src/components' },
 		],
 	},
 	test: {

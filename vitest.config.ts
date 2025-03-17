@@ -7,8 +7,9 @@ export default defineConfig({
 	resolve: {
 		alias: [
 			{ find: '@', replacement: '/workspaces/vite-blank-starter/src' },
-			{ find: '@store', replacement: '/workspaces/vite-blank-starter/src/store' },
 			{ find: '@assets', replacement: '/workspaces/vite-blank-starter/src/assets' },
+			{ find: '@components', replacement: '/workspaces/vite-blank-starter/src/components' },
+			{ find: '@store', replacement: '/workspaces/vite-blank-starter/src/store' },
 			{ find: '@tests', replacement: '/workspaces/vite-blank-starter/tests' },
 		],
 	},
