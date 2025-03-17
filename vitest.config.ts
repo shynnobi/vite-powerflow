@@ -4,6 +4,14 @@ import react from '@vitejs/plugin-react-swc';
 
 export default defineConfig({
 	plugins: [react()],
+	resolve: {
+		alias: [
+			{ find: '@', replacement: '/workspaces/vite-blank-starter/src' },
+			{ find: '@store', replacement: '/workspaces/vite-blank-starter/src/store' },
+			{ find: '@assets', replacement: '/workspaces/vite-blank-starter/src/assets' },
+			{ find: '@tests', replacement: '/workspaces/vite-blank-starter/tests' },
+		],
+	},
 	test: {
 		globals: true,
 		environment: 'jsdom',
