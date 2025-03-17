@@ -19,16 +19,27 @@ function App(): ReactElement {
 			</div>
 			<h1>Vite + React</h1>
 			<div className="card">
-				<button onClick={increment}>count is {count}</button>
+				<div>
+					<span data-testid="counter-value">Count is: {count}</span>
+					<button data-testid="increment-button" onClick={increment}>
+						Increment
+					</button>
+				</div>
 				<p>
 					Edit <code>src/App.tsx</code> and save to test HMR
 				</p>
 			</div>
 			<div className="card">
 				<div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-					<button onClick={decrement}>Decrement</button>
-					<button onClick={increment}>Increment</button>
-					<button onClick={reset}>Reset</button>
+					<button data-testid="decrement-button" onClick={decrement}>
+						Decrement
+					</button>
+					<button data-testid="increment-button-alt" onClick={increment}>
+						Increment
+					</button>
+					<button data-testid="reset-button" onClick={reset}>
+						Reset
+					</button>
 				</div>
 				<p>This counter is managed by Zustand</p>
 			</div>
