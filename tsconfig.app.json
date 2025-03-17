@@ -38,7 +38,8 @@
 			"@/*": ["src/*"],
 			"@store/*": ["src/store/*"],
 			"@assets/*": ["src/assets/*"],
-			"@tests/*": ["tests/*"]
+			"@tests/*": ["tests/*"],
+			"@components/*": ["src/components/*"]
 		},
 
 		/* Testing */

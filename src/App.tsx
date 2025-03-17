@@ -2,6 +2,7 @@ import { type ReactElement } from 'react';
 import { useCounterStore } from '@store/counterStore';
 import reactLogo from '@assets/react.svg';
 import viteLogo from '/vite.svg';
+import { Greeting } from '@components/Greeting';
 import './App.css';
 
 function App(): ReactElement {
@@ -18,6 +19,9 @@ function App(): ReactElement {
 				</a>
 			</div>
 			<h1>Vite + React</h1>
+
+			<Greeting name="Developer" />
+
 			<div className="card">
 				<div>
 					<span data-testid="counter-value">Count is: {count}</span>
