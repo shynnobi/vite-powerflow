@@ -1,8 +1,8 @@
 import { type ReactElement } from 'react';
 import { useCounterStore } from '@store/counterStore';
 import reactLogo from '@assets/react.svg';
-import viteLogo from '/vite.svg';
 import { Greeting } from '@components/Greeting';
+import viteLogo from '/vite.svg';
 import './App.css';
 
 function App(): ReactElement {
@@ -25,20 +25,14 @@ function App(): ReactElement {
 			<div className="card">
 				<div>
 					<span data-testid="counter-value">Count is: {count}</span>
-					<button data-testid="increment-button" onClick={increment}>
-						Increment
-					</button>
 				</div>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
 			</div>
 			<div className="card">
 				<div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
 					<button data-testid="decrement-button" onClick={decrement}>
 						Decrement
 					</button>
-					<button data-testid="increment-button-alt" onClick={increment}>
+					<button data-testid="increment-button" onClick={increment}>
 						Increment
 					</button>
 					<button data-testid="reset-button" onClick={reset}>
