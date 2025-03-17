@@ -9,7 +9,6 @@
 		"preview": "vite preview",
 		"test": "vitest run",
 		"test:verbose": "vitest run --reporter verbose",
-		"test:detailed": "vitest run --reporter verbose --reporter=dot",
 		"test:watch": "vitest",
 		"test:watch:verbose": "vitest --reporter verbose",
 		"test:coverage": "vitest run --coverage",

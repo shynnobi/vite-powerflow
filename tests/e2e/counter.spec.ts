@@ -8,51 +8,56 @@ test.describe('Counter functionality', () => {
 
 	test('should display initial counter value', async ({ page }) => {
 		// Check if the counter is displayed with initial value
-		await expect(page.getByText('count is 0')).toBeVisible();
+		const counterValue = await page.getByTestId('counter-value');
+		await expect(counterValue).toHaveText('Count is: 0');
 	});
 
 	test('should increment counter when clicking the increment button', async ({ page }) => {
 		// Click the increment button
-		await page.getByText('count is 0').click();
+		await page.getByTestId('increment-button').click();
 
 		// Check if the counter was incremented
-		await expect(page.getByText('count is 1')).toBeVisible();
+		const counterValue = await page.getByTestId('counter-value');
+		await expect(counterValue).toHaveText('Count is: 1');
 	});
 
 	test('should decrement counter when clicking the decrement button', async ({ page }) => {
 		// First increment to 1
-		await page.getByText('count is 0').click();
+		await page.getByTestId('increment-button').click();
 
 		// Click the decrement button
-		await page.getByText('Decrement').click();
+		await page.getByTestId('decrement-button').click();
 
 		// Check if the counter was decremented back to 0
-		await expect(page.getByText('count is 0')).toBeVisible();
+		const counterValue = await page.getByTestId('counter-value');
+		await expect(counterValue).toHaveText('Count is: 0');
 	});
 
 	test('should reset counter when clicking the reset button', async ({ page }) => {
 		// Increment multiple times
-		await page.getByText('count is 0').click();
-		await page.getByText('count is 1').click();
+		await page.getByTestId('increment-button').click();
+		await page.getByTestId('increment-button').click();
 
 		// Verify count is 2
-		await expect(page.getByText('count is 2')).toBeVisible();
+		const counterValue = await page.getByTestId('counter-value');
+		await expect(counterValue).toHaveText('Count is: 2');
 
 		// Click the reset button
-		await page.getByText('Reset').click();
+		await page.getByTestId('reset-button').click();
 
 		// Check if the counter was reset to 0
-		await expect(page.getByText('count is 0')).toBeVisible();
+		await expect(counterValue).toHaveText('Count is: 0');
 	});
 
 	test('should handle a sequence of operations correctly', async ({ page }) => {
 		// Perform a sequence of operations
-		await page.getByText('count is 0').click(); // 1
-		await page.getByText('count is 1').click(); // 2
-		await page.getByText('Decrement').click(); // 1
-		await page.getByText('Increment').click(); // 2
+		await page.getByTestId('increment-button').click(); // 1
+		await page.getByTestId('increment-button').click(); // 2
+		await page.getByTestId('decrement-button').click(); // 1
+		await page.getByTestId('increment-button-alt').click(); // 2
 
 		// Verify final count
-		await expect(page.getByText('count is 2')).toBeVisible();
+		const counterValue = await page.getByTestId('counter-value');
+		await expect(counterValue).toHaveText('Count is: 2');
 	});
 });
