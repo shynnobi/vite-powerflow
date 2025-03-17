@@ -14,7 +14,7 @@
 		"test:watch:verbose": "vitest --reporter verbose",
 		"test:coverage": "vitest run --coverage",
 		"test:e2e": "playwright test",
-		"test:e2e:verbose": "playwright test --debug",
+		"test:e2e:verbose": "playwright test --trace on",
 		"test:e2e:ui": "playwright test --ui",
 		"lint": "NODE_NO_WARNINGS=1 eslint . --ext ts,tsx",
 		"format": "prettier --write .",
