@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useCounterStore } from '../../src/store/counterStore';
+import { useCounterStore } from '@store/counterStore';
 
 describe('Counter store with Zustand', () => {
 	beforeEach(() => {

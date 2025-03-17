@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
-import { useCounterStore } from './store/counterStore';
-import reactLogo from './assets/react.svg';
+import { useCounterStore } from '@store/counterStore';
+import reactLogo from '@assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
 
