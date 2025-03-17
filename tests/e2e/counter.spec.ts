@@ -54,7 +54,7 @@ test.describe('Counter functionality', () => {
 		await page.getByTestId('increment-button').click(); // 1
 		await page.getByTestId('increment-button').click(); // 2
 		await page.getByTestId('decrement-button').click(); // 1
-		await page.getByTestId('increment-button-alt').click(); // 2
+		await page.getByTestId('increment-button').click(); // 2
 
 		// Verify final count
 		const counterValue = await page.getByTestId('counter-value');
