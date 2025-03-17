@@ -26,7 +26,11 @@ A modern and robust starter kit for React web application development, configure
 ├── src/                  # Application source code
 │ ├── components/         # Reusable components
 │ ├── store/              # Zustand state management
-│ └── assets/             # Static assets
+│ ├── assets/             # Static assets
+│ ├── context/            # React context providers
+│ ├── pages/              # Page components
+│ ├── lib/                # Utility libraries
+│ └── shared/             # Shared code and types
 ├── tests/                # Tests organized by type
 │ ├── e2e/                # End-to-end tests with Playwright
 │ ├── integration/        # Integration tests
@@ -59,6 +63,69 @@ A modern and robust starter kit for React web application development, configure
    ```bash
    pnpm dev
    ```
+
+## 🔄 Path Aliases
+
+This project uses path aliases to avoid relative import paths like `../../../components`. The following aliases are pre-configured:
+
+- `@/*` → `src/*`
+- `@assets/*` → `src/assets/*`
+- `@components/*` → `src/components/*`
+- `@context/*` → `src/context/*`
+- `@lib/*` → `src/lib/*`
+- `@pages/*` → `src/pages/*`
+- `@shared/*` → `src/shared/*`
+- `@store/*` → `src/store/*`
+- `@tests/*` → `tests/*`
+
+### Adding a New Path Alias
+
+To add a new path alias (e.g., `@utils/*`), you need to update the following files:
+
+1. **vite.config.ts**:
+
+   ```typescript
+   resolve: {
+     alias: [
+       // ... existing aliases
+       { find: '@utils', replacement: resolve(__dirname, 'src/utils') },
+     ],
+   },
+   ```
+
+2. **vitest.config.ts**:
+
+   ```typescript
+   resolve: {
+     alias: [
+       // ... existing aliases
+       { find: '@utils', replacement: resolve(__dirname, 'src/utils') },
+     ],
+   },
+   ```
+
+3. **tsconfig.json**:
+
+   ```json
+   "paths": {
+     // ... existing paths
+     "@utils/*": ["src/utils/*"]
+   }
+   ```
+
+4. **tsconfig.app.json**:
+   ```json
+   "paths": {
+     // ... existing paths
+     "@utils/*": ["src/utils/*"]
+   }
+   ```
+
+After adding the alias, you can use it in your imports:
+
+```typescript
+import { formatDate } from '@utils/date';
+```
 
 ## 🔧 Development Container
 

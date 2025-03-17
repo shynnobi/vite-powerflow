@@ -36,10 +36,14 @@
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["src/*"],
-			"@store/*": ["src/store/*"],
 			"@assets/*": ["src/assets/*"],
-			"@tests/*": ["tests/*"],
-			"@components/*": ["src/components/*"]
+			"@components/*": ["src/components/*"],
+			"@context/*": ["src/context/*"],
+			"@lib/*": ["src/lib/*"],
+			"@pages/*": ["src/pages/*"],
+			"@shared/*": ["src/shared/*"],
+			"@store/*": ["src/store/*"],
+			"@tests/*": ["tests/*"]
 		},
 
 		/* Testing */
