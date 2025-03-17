@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import App from '../../src/App';
-import { useCounterStore } from '../../src/store/counterStore';
+import App from '@/App';
+import { useCounterStore } from '@store/counterStore';
 
 describe('App integration with Zustand', () => {
 	beforeEach(() => {

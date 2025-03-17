@@ -9,6 +9,14 @@ export default defineConfig({
 		host: '0.0.0.0',
 		port: 5173,
 	},
+	resolve: {
+		alias: [
+			{ find: '@', replacement: '/workspaces/vite-blank-starter/src' },
+			{ find: '@store', replacement: '/workspaces/vite-blank-starter/src/store' },
+			{ find: '@assets', replacement: '/workspaces/vite-blank-starter/src/assets' },
+			{ find: '@tests', replacement: '/workspaces/vite-blank-starter/tests' },
+		],
+	},
 	test: {
 		globals: true,
 		environment: 'jsdom',
