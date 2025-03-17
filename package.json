@@ -10,12 +10,10 @@
 		"test": "vitest run",
 		"test:verbose": "vitest run --reporter verbose",
 		"test:watch": "vitest",
-		"test:watch:verbose": "vitest --reporter verbose",
 		"test:coverage": "vitest run --coverage",
 		"test:e2e": "playwright test",
 		"test:e2e:verbose": "playwright test --trace on",
-		"test:e2e:ui": "playwright test --ui",
-		"lint": "NODE_NO_WARNINGS=1 eslint . --ext ts,tsx",
+		"lint": "NODE_NO_WARNINGS=1 eslint . --ext ts,tsx,js,jsx",
 		"format": "prettier --write .",
 		"type-check": "tsc --noEmit",
 		"prepare": "husky"
