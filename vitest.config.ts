@@ -5,7 +5,6 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
 // Determine the current directory
-// @ts-expect-error - import.meta is available in ESM but TypeScript doesn't recognize it correctly
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
