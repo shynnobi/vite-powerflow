@@ -5,8 +5,8 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import tailwindcss from '@tailwindcss/vite';
 
-// Determine the current directory
-// @ts-expect-error - import.meta is available in ESM but TypeScript doesn't recognize it correctly
+// Determine the current directory so the project
+// can be use wether from a Docker container or from the local machine
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
