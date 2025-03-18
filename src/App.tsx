@@ -9,7 +9,7 @@ function App(): ReactElement {
 	const { count, increment, decrement, reset } = useCounterStore();
 
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center p-4">
+		<div className="min-h-screen flex flex-col items-center justify-center p-4 bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
 			<div className="flex gap-8 mb-4">
 				<a href="https://vite.dev" target="_blank" rel="noreferrer">
 					<img
@@ -30,14 +30,14 @@ function App(): ReactElement {
 
 			<Greeting name="Developer" />
 
-			<div className="p-6 border rounded-lg shadow-sm bg-white/5 mb-4 w-full max-w-md">
+			<div className="p-6 border rounded-lg shadow-sm bg-gray-50 dark:bg-gray-800 mb-4 w-full max-w-md">
 				<div>
 					<span data-testid="counter-value" className="text-xl font-medium">
 						Count is: {count}
 					</span>
 				</div>
 			</div>
-			<div className="p-6 border rounded-lg shadow-sm bg-white/5 mb-8 w-full max-w-md">
+			<div className="p-6 border rounded-lg shadow-sm bg-gray-50 dark:bg-gray-800 mb-8 w-full max-w-md">
 				<div className="flex gap-3 justify-center mb-4">
 					<button
 						data-testid="decrement-button"
@@ -61,9 +61,11 @@ function App(): ReactElement {
 						Reset
 					</button>
 				</div>
-				<p className="text-center text-gray-400">This counter is managed by Zustand</p>
+				<p className="text-center text-gray-500 dark:text-gray-400">
+					This counter is managed by Zustand
+				</p>
 			</div>
-			<p className="text-sm text-gray-500 hover:text-gray-300 transition-colors">
+			<p className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
 				Click on the Vite and React logos to learn more
 			</p>
 		</div>
