@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react-swc';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
+import tailwindcss from '@tailwindcss/vite';
 
 // Determine the current directory
 // @ts-expect-error - import.meta is available in ESM but TypeScript doesn't recognize it correctly
@@ -11,7 +12,7 @@ const __dirname = dirname(__filename);
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [react(), visualizer()],
+	plugins: [react(), visualizer(), tailwindcss()],
 	server: {
 		host: '0.0.0.0',
 		port: 5173,
