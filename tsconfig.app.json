@@ -32,6 +32,20 @@
 		"alwaysStrict": true,
 		"exactOptionalPropertyTypes": true,
 
+		/* Path aliases */
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["src/*"],
+			"@assets/*": ["src/assets/*"],
+			"@components/*": ["src/components/*"],
+			"@context/*": ["src/context/*"],
+			"@lib/*": ["src/lib/*"],
+			"@pages/*": ["src/pages/*"],
+			"@shared/*": ["src/shared/*"],
+			"@store/*": ["src/store/*"],
+			"@tests/*": ["tests/*"]
+		},
+
 		/* Testing */
 		"types": ["vitest/globals", "@testing-library/jest-dom"]
 	},

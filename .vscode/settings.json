@@ -1,5 +1,5 @@
 {
-	"typescript.tsserver.experimental.enableProjectDiagnostics": true,
+	"typescript.tsserver.experimental.enableProjectDiagnostics": false,
 	"editor.formatOnSave": true,
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": "explicit"
@@ -15,5 +15,24 @@
 	"eslint.format.enable": true,
 	"eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
 	"vite.autoStart": false,
-	"remote.autoForwardPorts": false
+	"remote.autoForwardPorts": false,
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"typescript.validate.enable": true,
+	"typescript.disableAutomaticTypeAcquisition": false,
+	"typescript.reportStyleChecksAsWarnings": true,
+	"javascript.validate.enable": true,
+	"problems.excludePathsWatcher": ["**/node_modules/**"],
+	"typescript.preferences.importModuleSpecifier": "relative",
+	"typescript.tsserver.watchOptions": {
+		"watchDirectory": "useFsEvents",
+		"watchFile": "useFsEvents",
+		"excludeDirectories": ["**/node_modules"]
+	},
+	"files.exclude": {
+		"**/node_modules": true
+	},
+	"search.exclude": {
+		"**/node_modules": true
+	},
+	"problems.decorations.enabled": false
 }

@@ -1,84 +1,38 @@
 # Tests Structure
 
-This directory contains all test-related files for the project.
-
-## Directory Structure
-
-```
-tests/
-├── unit/           # Unit tests (Vitest)
-│   ├── setup.ts    # Unit tests setup
-│   └── *.test.tsx  # Unit test files
-├── e2e/            # End-to-end tests (Playwright)
-│   └── *.spec.ts   # E2E test files
-└── README.md       # This file
-```
+This folder contains all the tests for the project, organized by type:
 
 ## Test Types
 
-### Unit Tests
+### Unit Tests (`/unit`)
 
-- Located in `unit/`
-- Uses Vitest and Testing Library
-- Run with `pnpm test` or `pnpm test:watch`
-- Coverage reports in `coverage/unit/`
+- Individual tests for components and functions
+- Extension: `.test.tsx`
+- Uses: Vitest + Testing Library
+- Focus: Isolated component behavior
 
-### E2E Tests
+### Integration Tests (`/integration`)
 
-- Located in `e2e/`
-- Uses Playwright
-- Run with `pnpm test:e2e`
-- Results in `test-results/e2e/`
-- UI mode available with `pnpm test:e2e:ui`
+- Tests interactions between components
+- Extension: `.integration.test.tsx`
+- Uses: Vitest + Testing Library + MSW (for API mocking)
+- Focus: Complete flows and component interactions
+- Example cases:
+  - Complex forms
+  - Navigation flows
+  - Interactions with global state
+  - API integration (mocked)
 
-## Configuration Files
+### E2E Tests (`/e2e`)
 
-- Unit Tests: `vite.config.ts`
-- E2E Tests: `playwright.config.ts`
-
-## Best Practices
-
-1. Keep test files close to their implementation
-2. Use `.test.tsx` for unit tests
-3. Use `.spec.ts` for E2E tests
-4. Write meaningful test descriptions
-5. Follow AAA pattern (Arrange, Act, Assert)
-
-# Tests Structure
-
-Ce dossier contient tous les tests du projet, organisés par type :
-
-## Types de Tests
-
-### Tests Unitaires (`/unit`)
-
-- Tests individuels des composants et fonctions
-- Extension : `.test.tsx`
-- Utilise : Vitest + Testing Library
-- Focus : Comportement isolé des composants
-
-### Tests d'Intégration (`/integration`)
-
-- Tests des interactions entre composants
-- Extension : `.integration.test.tsx`
-- Utilise : Vitest + Testing Library + MSW (pour le mock des API)
-- Focus : Flux complets et interactions entre composants
-- Exemples de cas :
-  - Formulaires complexes
-  - Flux de navigation
-  - Interactions avec le state global
-  - Intégration avec les API (mockées)
-
-### Tests E2E (`/e2e`)
-
-- Tests de bout en bout
-- Extension : `.spec.ts`
-- Utilise : Playwright
-- Focus : Parcours utilisateur complets
+- End-to-end tests
+- Extension: `.spec.ts`
+- Uses: Playwright
+- Focus: Full user journeys
 
 ## Configuration
 
-### Tests Unitaires et d'Intégration
+### Unit & Integration Tests
 
 ```bash
 pnpm test
@@ -92,7 +46,7 @@ pnpm test:watch
 pnpm test:coverage
 ```
 
-### Tests E2E
+### E2E Tests
 
 ```bash
 pnpm test:e2e
@@ -102,47 +56,47 @@ pnpm test:e2e
 pnpm test:e2e:ui
 ```
 
-## Bonnes Pratiques
+## Best Practices
 
-### Tests Unitaires
+### Unit Tests
 
-- Un test par comportement
-- Isolation maximale
-- Mocks pour les dépendances
+- One test per behavior
+- Maximum isolation
+- Use mocks for dependencies
 
-### Tests d'Intégration
+### Integration Tests
 
-- Tests des flux complets
-- Utilisation de MSW pour mocker les API
-- Focus sur les interactions utilisateur
-- Vérification des états intermédiaires
+- Test complete flows
+- Use MSW to mock API calls
+- Focus on user interactions
+- Verify intermediate states
 
-### Tests E2E
+### E2E Tests
 
-- Scénarios utilisateur complets
-- Tests sur plusieurs pages
-- Vérification des redirections
-- Tests des flux critiques
+- Complete user scenarios
+- Multi-page tests
+- Verify redirections
+- Test critical flows
 
-## Structure des Fichiers de Test
+## Test File Structure
 
 ```
 tests/
-├── unit/               # Tests unitaires
-│   ├── components/    # Tests des composants
-│   ├── hooks/        # Tests des hooks
-│   └── utils/        # Tests des utilitaires
-├── integration/       # Tests d'intégration
-│   ├── flows/        # Tests des flux complets
-│   └── features/     # Tests des fonctionnalités
-└── e2e/              # Tests end-to-end
-    └── specs/        # Spécifications E2E
+├── unit/             # Unit tests
+│   ├── components/   # Component tests
+│   ├── hooks/        # Hook tests
+│   └── utils/        # Utility function tests
+├── integration/      # Integration tests
+│   ├── flows/        # Full flow tests
+│   └── features/     # Feature tests
+└── e2e/              # End-to-end tests
+    └── specs/        # E2E specifications
 ```
 
-## Outils et Dépendances
+## Tools & Dependencies
 
-- **Vitest** : Framework de test
-- **Testing Library** : Utilitaires de test React
-- **MSW** : Mock des appels API
-- **Playwright** : Tests E2E
-- **jest-dom** : Assertions DOM supplémentaires
+- **Vitest**: Test framework
+- **Testing Library**: React testing utilities
+- **MSW**: API request mocking
+- **Playwright**: E2E testing
+- **jest-dom**: Additional DOM assertions
