@@ -10,9 +10,10 @@ function App(): ReactElement {
 
 	return (
 		<div>
-			<ThemeToggle />
-
 			<div className="flex flex-col items-center justify-center w-full min-h-screen text-center bg-gray-100 dark:bg-gray-900">
+				<header className="fixed top-0 right-0 p-4">
+					<ThemeToggle />
+				</header>
 				<div className="flex flex-col items-center justify-center gap-12">
 					<div className="flex gap-5 justify-center">
 						<a href="https://vite.dev" target="_blank" rel="noreferrer">
