@@ -11,7 +11,7 @@ describe('App integration with Zustand', () => {
 
 	it('should display the initial count from the counter store', () => {
 		render(<App />);
-		expect(screen.getByTestId('counter-value')).toHaveTextContent('Count is: 0');
+		expect(screen.getByTestId('counter-value')).toHaveTextContent('Count is 0');
 	});
 
 	it('should increment the counter store when the increment button is clicked', () => {
@@ -24,7 +24,7 @@ describe('App integration with Zustand', () => {
 		fireEvent.click(incrementButton);
 
 		// Check if the count was updated in the Zustand store
-		expect(screen.getByTestId('counter-value')).toHaveTextContent('Count is: 1');
+		expect(screen.getByTestId('counter-value')).toHaveTextContent('Count is 1');
 	});
 
 	it('should decrement the counter store when the decrement button is clicked', () => {
@@ -41,7 +41,7 @@ describe('App integration with Zustand', () => {
 		fireEvent.click(decrementButton);
 
 		// Check if the count was updated back to 0 in the Zustand store
-		expect(screen.getByTestId('counter-value')).toHaveTextContent('Count is: 0');
+		expect(screen.getByTestId('counter-value')).toHaveTextContent('Count is 0');
 	});
 
 	it('should reset the counter store when the reset button is clicked', () => {
@@ -53,7 +53,7 @@ describe('App integration with Zustand', () => {
 		fireEvent.click(incrementButton);
 
 		// Verify count is 2
-		expect(screen.getByTestId('counter-value')).toHaveTextContent('Count is: 2');
+		expect(screen.getByTestId('counter-value')).toHaveTextContent('Count is 2');
 
 		// Find the reset button
 		const resetButton = screen.getByTestId('reset-button');
@@ -62,6 +62,6 @@ describe('App integration with Zustand', () => {
 		fireEvent.click(resetButton);
 
 		// Check if the count was reset to 0 in the Zustand store
-		expect(screen.getByTestId('counter-value')).toHaveTextContent('Count is: 0');
+		expect(screen.getByTestId('counter-value')).toHaveTextContent('Count is 0');
 	});
 });
