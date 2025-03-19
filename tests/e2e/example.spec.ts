@@ -1,11 +1,15 @@
 import { test, expect } from '@playwright/test';
 
-test('has title', async ({ page }) => {
-	await page.goto('/');
-	await expect(page).toHaveTitle(/Vite/);
-});
+test.describe('Basic Site Navigation', () => {
+	test('should load the homepage correctly', async ({ page }) => {
+		// Navigate to the homepage
+		await page.goto('/');
 
-test('homepage has expected content', async ({ page }) => {
-	await page.goto('/');
-	await expect(page.getByRole('heading', { name: /Vite \+ React/ })).toBeVisible();
+		// Check if the title is correct
+		await expect(page).toHaveTitle(/Vite \+ React/);
+
+		// Check if main heading is visible
+		const heading = page.getByRole('heading', { name: 'Vite + React' });
+		await expect(heading).toBeVisible();
+	});
 });
