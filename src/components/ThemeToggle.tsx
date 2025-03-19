@@ -8,7 +8,7 @@ export function ThemeToggle() {
 	const { theme, setTheme } = useTheme();
 	const [mounted, setMounted] = useState(false);
 
-	// Une fois monté, on peut rendre le bouton car useTheme est disponible côté client
+	// Once mounted, we can render the button as useTheme is available client-side
 	useEffect(() => {
 		setMounted(true);
 	}, []);
