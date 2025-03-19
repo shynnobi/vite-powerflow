@@ -1,4 +1,5 @@
 import { type ReactElement } from 'react';
+import { FiMinus, FiPlus, FiRefreshCw } from 'react-icons/fi';
 import { useCounterStore } from '@store/counterStore';
 
 import reactLogo from '@assets/react.svg';
@@ -51,25 +52,28 @@ function App(): ReactElement {
 								<button
 									data-testid="decrement-button"
 									onClick={decrement}
-									className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors"
+									className="bg-red-500 hover:bg-red-600 text-white p-3 rounded-md transition-all cursor-pointer active:translate-y-0.5"
+									title="Decrement"
 								>
-									Decrement
+									<FiMinus className="w-5 h-5" />
 								</button>
 
 								<button
 									data-testid="increment-button"
 									onClick={increment}
-									className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition-colors"
+									className="bg-green-500 hover:bg-green-600 text-white p-3 rounded-md transition-all cursor-pointer active:translate-y-0.5"
+									title="Increment"
 								>
-									Increment
+									<FiPlus className="w-5 h-5" />
 								</button>
 
 								<button
 									data-testid="reset-button"
 									onClick={reset}
-									className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors"
+									className="bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-md transition-all cursor-pointer active:translate-y-0.5"
+									title="Reset"
 								>
-									Reset
+									<FiRefreshCw className="w-5 h-5" />
 								</button>
 							</div>
 						</div>
