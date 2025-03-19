@@ -1,5 +1,25 @@
-#!/usr/bin/env sh
 
-pnpm type-check
-pnpm test
-pnpm lint-staged
+echo "🔍 Validating your commit..."
+
+# TypeScript type checking
+echo "⌛ Running type check..."
+pnpm type-check || {
+    echo "❌ Type check failed. Please fix the type errors above."
+    exit 1
+}
+
+# Unit tests
+echo "🧪 Running tests..."
+pnpm test || {
+    echo "❌ Tests failed. Please fix the failing tests above."
+    exit 1
+}
+
+# ESLint and Prettier checks
+echo "✨ Running lint-staged..."
+pnpm lint-staged || {
+    echo "❌ Lint-staged failed. Please fix the issues above."
+    exit 1
+}
+
+echo "✅ All checks passed! Committing..."

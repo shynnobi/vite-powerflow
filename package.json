@@ -21,11 +21,18 @@
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx}": [
+			"prettier --check",
 			"prettier --write",
 			"eslint --fix"
 		],
-		"*.{json,html,css,md}": [
+		"*.{json,yml,yaml,md}": [
+			"prettier --check",
 			"prettier --write"
+		],
+		"*.{css,scss}": [
+			"prettier --check",
+			"prettier --write",
+			"stylelint --fix"
 		]
 	},
 	"devDependencies": {
