@@ -7,6 +7,11 @@ A modern and robust starter kit for React web application development, configure
 - ⚡️ **[Vite](https://vitejs.dev/)** - Lightning fast build tool
 - ⚛️ **[React 18](https://react.dev/)** - Latest React version with Hooks
 - 📝 **[TypeScript](https://www.typescriptlang.org/)** - Static typing for robust code
+- 🎨 **Styling & UI** :
+  - 🌊 [Tailwind CSS](https://tailwindcss.com/) for utility-first styling
+  - 🎯 [shadcn/ui](https://ui.shadcn.com/) for beautiful, accessible components
+  - 🌓 Dark mode support with theme switching
+  - 🎭 [react-icons](https://react-icons.github.io/react-icons/) for beautiful icons
 - 🧪 **Complete Testing Setup** :
   - 🃏 [Vitest](https://vitest.dev/) for unit and integration tests
   - 🎭 [Playwright](https://playwright.dev/) for E2E testing
@@ -19,20 +24,23 @@ A modern and robust starter kit for React web application development, configure
   - [Husky](https://typicode.github.io/husky/) for git hooks
   - [lint-staged](https://github.com/okonet/lint-staged) for staged files linting
   - [commitlint](https://commitlint.js.org/) for standardized commit messages
+- 📦 **State Management** :
+  - [Zustand](https://zustand-demo.pmnd.rs/) for simple and scalable state management
 
 ## 📦 Project Structure
 
 ```
 ├── src/                  # Application source code
 │ ├── components/         # Reusable components
+│ │ └── ui/               # shadcn/ui components
 │ ├── store/              # Zustand state management
 │ ├── assets/             # Static assets
 │ ├── context/            # React context providers
 │ ├── pages/              # Page components
 │ ├── lib/                # Utility libraries
-│ └── shared/             # Shared code and types
-├── tests/                # Tests organized by type
-│ ├── e2e/                # End-to-end tests with Playwright
+│ └── shared/             # Shared types and interfaces
+├── tests/                # Tests
+│ ├── e2e/                # End-to-end tests
 │ ├── integration/        # Integration tests
 │ └── unit/               # Unit tests
 ├── public/               # Static files
@@ -43,6 +51,15 @@ A modern and robust starter kit for React web application development, configure
 ├── tailwind.config.js    # Tailwind CSS configuration
 └── vitest.config.ts      # Vitest configuration
 ```
+
+## 🎨 Theming
+
+The project includes a dark mode implementation using Tailwind CSS and React context:
+
+- Toggle between light and dark modes
+- System preference detection
+- Persistent theme selection
+- Smooth theme transitions
 
 ## 🚀 Getting Started
 
@@ -177,6 +194,8 @@ If you're using the development container and your commits don't appear with you
   - `chore:` Maintenance tasks
   - `docs:` Documentation changes
   - `test:` Test modifications
+- **Components**: Follow shadcn/ui conventions for consistency
+- **Styling**: Use Tailwind CSS utility classes
 
 ## 🤝 Contributing
 
