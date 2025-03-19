@@ -1,99 +1,84 @@
 # Contributing Guide
 
-Welcome to the project! This guide will help you get started quickly.
+Welcome to the project! This guide will help you get started with our development workflow.
 
 ## 🐳 Development Environment
 
-This project uses Dev Containers to ensure a consistent development environment across the team.
+We use Dev Containers to ensure everyone works in the same environment.
 
-### Prerequisites
+### Setup
 
-- Docker Desktop
-- VS Code with Remote - Containers extension
+1. Make sure you have [Docker Desktop](https://www.docker.com/products/docker-desktop/) and [VS Code](https://code.visualstudio.com/) with [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) installed
+2. Clone the repository and open it in VS Code
+3. When prompted, click "Reopen in Container"
+4. The container will build and set up everything you need
 
-### Quick Setup
+Our Dev Container provides:
 
-1. Clone the repository
-2. Open in VS Code
-3. Click "Reopen in Container" when prompted
-4. Wait for the container to build
+- Consistent environment across all team members
+- Pre-installed dependencies (Node.js, pnpm)
+- Configured extensions (ESLint, Prettier, GitHub, TypeScript tools)
+- Isolated development that won't conflict with your local setup
 
-> 💡 The container will automatically install all required extensions and dependencies
+The configuration is in `.devcontainer/devcontainer.json` if you need to check the details.
 
-## 🔄 Quick Start
+## 🔄 Development Workflow
 
-1. **Setup your branch**
-
-   ```bash
-   git checkout dev
-   git checkout -b feature/my-feature
-   ```
-
-2. **Development**
-
-   - Write your code
-   - Add tests
-   - Follow our standards
-
-3. **Validation**
-
-   ```bash
-   pnpm lint      # Code verification
-   pnpm test      # Unit tests
-   pnpm build     # Build verification
-   ```
-
-4. **Submit Changes**
-   - Create PR to `dev`
-   - Wait for checks
-   - Address reviews
-
-> 📚 For detailed workflow information, see [Technical Workflow](docs/workflow.md)
-
-## 📝 Commit Conventions
-
-Format: `type(scope): description`
-
-Types:
-
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation
-- `style`: Formatting
-- `refactor`: Code refactoring
-- `test`: Tests
-- `chore`: Maintenance
-
-Examples:
+### Starting a new feature
 
 ```bash
-feat(auth): add Google login
-fix(api): fix request timeout
-docs(readme): update installation guide
+# Get the latest dev branch
+git checkout dev
+git pull
+
+# Create your feature branch
+git checkout -b feature/your-feature-name
 ```
 
-## 📦 Available Scripts
+Work on your changes, then validate them:
 
 ```bash
-pnpm dev          # Local development
-pnpm build        # Production build
-pnpm test         # Unit tests
-pnpm test:e2e     # E2E tests
-pnpm lint         # Code verification
-pnpm format       # Code formatting
+pnpm lint    # Check code quality
+pnpm test    # Run tests
+pnpm build   # Verify build
 ```
 
-## 🔍 Code Standards
+### 📝 Commit Guidelines
 
-- TypeScript strict mode
-- ESLint with standard configuration
-- Prettier for formatting
-- Tests required for new features
+We follow conventional commits: `type(scope): description`
 
-> 📚 For detailed standards and configurations, see [Technical Workflow](docs/workflow.md#quality-tools)
+Common types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`
+
+Example: `feat(auth): add Google login support`
+
+### 🔀 Pull Request Process
+
+1. Push your branch and create a PR to the `dev` branch
+2. Fill in the PR template
+3. Address any review comments
+4. Once approved, your changes will be merged
+
+## 🛠️ Available Scripts
+
+- `pnpm dev` - Start development server
+- `pnpm build` - Create production build
+- `pnpm test` - Run tests
+- `pnpm lint` - Check code quality
+
+## 📏 Code Standards
+
+We use TypeScript in strict mode with ESLint and Prettier. Configuration files are in the repository root. Set up your editor to use these tools automatically when saving files.
+
+## 🚀 CI/CD Pipeline
+
+Our GitHub Actions workflow automatically runs tests and builds on PRs and deployments.
 
 ## 🤝 Need Help?
 
-1. Check the [Technical Workflow](docs/workflow.md) documentation
-2. Review our [Best Practices](docs/workflow.md#best-practices-for-solo-dev)
-3. Create an issue if you're stuck
+If you have questions:
+
+1. Check existing issues
+2. Create a new issue with details about what you're trying to do
+3. Reach out in our discussion channels
+
+Happy coding!

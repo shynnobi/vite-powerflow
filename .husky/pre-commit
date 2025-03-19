@@ -1,5 +1,8 @@
 # Run type checking
 pnpm type-check || exit 1
 
+# Run unit and integration tests
+pnpm test || exit 1
+
 # Run lint-staged
 pnpm lint-staged
