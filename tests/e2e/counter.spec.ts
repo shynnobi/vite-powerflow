@@ -9,7 +9,7 @@ test.describe('Counter functionality', () => {
 	test('should display initial counter value', async ({ page }) => {
 		// Check if the counter is displayed with initial value
 		const counterValue = await page.getByTestId('counter-value');
-		await expect(counterValue).toHaveText('Count is: 0');
+		await expect(counterValue).toHaveText('Count is 0');
 	});
 
 	test('should increment counter when clicking the increment button', async ({ page }) => {
@@ -18,7 +18,7 @@ test.describe('Counter functionality', () => {
 
 		// Check if the counter was incremented
 		const counterValue = await page.getByTestId('counter-value');
-		await expect(counterValue).toHaveText('Count is: 1');
+		await expect(counterValue).toHaveText('Count is 1');
 	});
 
 	test('should decrement counter when clicking the decrement button', async ({ page }) => {
@@ -30,7 +30,7 @@ test.describe('Counter functionality', () => {
 
 		// Check if the counter was decremented back to 0
 		const counterValue = await page.getByTestId('counter-value');
-		await expect(counterValue).toHaveText('Count is: 0');
+		await expect(counterValue).toHaveText('Count is 0');
 	});
 
 	test('should reset counter when clicking the reset button', async ({ page }) => {
@@ -40,13 +40,13 @@ test.describe('Counter functionality', () => {
 
 		// Verify count is 2
 		const counterValue = await page.getByTestId('counter-value');
-		await expect(counterValue).toHaveText('Count is: 2');
+		await expect(counterValue).toHaveText('Count is 2');
 
 		// Click the reset button
 		await page.getByTestId('reset-button').click();
 
 		// Check if the counter was reset to 0
-		await expect(counterValue).toHaveText('Count is: 0');
+		await expect(counterValue).toHaveText('Count is 0');
 	});
 
 	test('should handle a sequence of operations correctly', async ({ page }) => {
@@ -58,6 +58,6 @@ test.describe('Counter functionality', () => {
 
 		// Verify final count
 		const counterValue = await page.getByTestId('counter-value');
-		await expect(counterValue).toHaveText('Count is: 2');
+		await expect(counterValue).toHaveText('Count is 2');
 	});
 });
