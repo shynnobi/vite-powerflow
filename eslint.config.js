@@ -20,6 +20,7 @@ export default [
 			globals: {
 				process: 'readonly',
 				document: 'readonly',
+				window: 'readonly',
 			},
 		},
 		plugins: {
