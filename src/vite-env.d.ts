@@ -12,3 +12,9 @@ interface ImportMetaEnv {
 interface ImportMeta {
 	readonly env: ImportMetaEnv;
 }
+
+interface Window {
+	localStorage: Storage;
+	document: Document;
+	matchMedia: (query: string) => MediaQueryList;
+}
