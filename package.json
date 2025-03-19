@@ -15,15 +15,16 @@
 		"test:e2e:verbose": "playwright test --trace on",
 		"lint": "NODE_NO_WARNINGS=1 eslint . --ext ts,tsx,js,jsx",
 		"format": "prettier --write .",
+		"format:check": "prettier --check .",
 		"type-check": "tsc --noEmit",
 		"prepare": "husky"
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx}": [
-			"eslint --fix",
-			"prettier --write"
+			"prettier --write",
+			"eslint --fix"
 		],
-		"*.{js,jsx,json,html,css,md}": [
+		"*.{json,html,css,md}": [
 			"prettier --write"
 		]
 	},
