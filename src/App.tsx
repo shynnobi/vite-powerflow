@@ -4,8 +4,6 @@ import reactLogo from '@assets/react.svg';
 import { ThemeToggle } from '@components/ThemeToggle';
 import { useCounterStore } from '@store/counterStore';
 
-import './App.css';
-
 import viteLogo from '/vite.svg';
 
 function App(): ReactElement {
