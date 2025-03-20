@@ -1,5 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@context/theme/ThemeProvider';
 
 import App from './App';
@@ -14,8 +15,10 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
 	<StrictMode>
-		<ThemeProvider storageKey="vite-ui-theme">
-			<App />
-		</ThemeProvider>
+		<BrowserRouter>
+			<ThemeProvider storageKey="vite-ui-theme">
+				<App />
+			</ThemeProvider>
+		</BrowserRouter>
 	</StrictMode>
 );
