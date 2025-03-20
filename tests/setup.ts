@@ -7,7 +7,7 @@ declare global {
 	var localStorage: Storage;
 }
 
-// Nettoyage automatique après chaque test
+// Automatic cleanup after each test
 afterEach(() => {
 	cleanup();
 });

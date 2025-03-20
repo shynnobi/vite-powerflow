@@ -24,7 +24,7 @@ describe('Counter Store Persistence', () => {
 		}),
 	};
 
-	// Storage qui ne fait rien (pour simuler localStorage indisponible)
+	// Storage that does nothing (to simulate unavailable localStorage)
 	const noopStorage = {
 		getItem: () => null,
 		setItem: () => undefined,
