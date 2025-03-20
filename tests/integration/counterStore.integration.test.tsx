@@ -4,46 +4,46 @@ import { act, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 describe('Counter Store Integration', () => {
-	// Nettoyer le localStorage avant chaque test
+	// Clear localStorage before each test
 	beforeEach(() => {
 		window.localStorage.clear();
-		// Réinitialiser le store
+		// Reset store to initial state
 		useCounterStore.setState({ count: 0 });
 	});
 
-	// Nettoyer le localStorage après chaque test
+	// Clear localStorage after each test
 	afterEach(() => {
 		window.localStorage.clear();
 	});
 
 	it('should persist counter value between store instances', () => {
-		// Première instance du store
+		// First store instance
 		const { result: store1 } = renderHook(() => useCounterStore());
 
-		// Incrémenter le compteur
+		// Increment counter
 		act(() => {
 			store1.current.increment();
 		});
 
 		expect(store1.current.count).toBe(1);
 
-		// Vérifier que la valeur est dans localStorage
+		// Check if value is in localStorage
 		const stored = window.localStorage.getItem('counter-storage');
 		expect(stored).not.toBeNull();
 		const data = stored ? JSON.parse(stored) : null;
 		expect(data?.state.count).toBe(1);
 
-		// Créer une nouvelle instance du store
+		// Create new store instance
 		const { result: store2 } = renderHook(() => useCounterStore());
 
-		// La nouvelle instance devrait avoir la valeur persistée
+		// New instance should have the persisted value
 		expect(store2.current.count).toBe(1);
 	});
 
 	it('should persist multiple updates', () => {
 		const { result } = renderHook(() => useCounterStore());
 
-		// Séquence d'opérations
+		// Sequence of operations
 		act(() => {
 			result.current.increment(); // 1
 			result.current.increment(); // 2
@@ -51,32 +51,32 @@ describe('Counter Store Integration', () => {
 			result.current.increment(); // 2
 		});
 
-		// Vérifier l'état final dans le store
+		// Check final state in store
 		expect(result.current.count).toBe(2);
 
-		// Vérifier l'état final dans localStorage
+		// Check final state in localStorage
 		const stored = window.localStorage.getItem('counter-storage');
 		expect(stored).not.toBeNull();
 		const data = stored ? JSON.parse(stored) : null;
 		expect(data?.state.count).toBe(2);
 
-		// Créer une nouvelle instance pour vérifier la persistance
+		// Create new instance to verify persistence
 		const { result: newStore } = renderHook(() => useCounterStore());
 		expect(newStore.current.count).toBe(2);
 	});
 
 	it('should verify localStorage format', () => {
-		// Incrémenter d'abord pour générer des données dans localStorage
+		// First increment to generate data in localStorage
 		const { result } = renderHook(() => useCounterStore());
 		act(() => {
 			result.current.increment();
 		});
 
-		// Vérifier le format des données dans localStorage
+		// Check data format in localStorage
 		const stored = window.localStorage.getItem('counter-storage');
 		expect(stored).not.toBeNull();
 
-		// Vérifier que c'est un JSON valide avec la structure attendue
+		// Verify JSON structure is valid and matches expected format
 		const data = stored ? JSON.parse(stored) : null;
 		expect(data).toHaveProperty('state');
 		expect(data?.state).toHaveProperty('count');
@@ -86,7 +86,7 @@ describe('Counter Store Integration', () => {
 	it('should handle reset correctly', () => {
 		const { result } = renderHook(() => useCounterStore());
 
-		// Modifier l'état
+		// Modify state
 		act(() => {
 			result.current.increment();
 			result.current.increment();
@@ -98,16 +98,16 @@ describe('Counter Store Integration', () => {
 			result.current.reset();
 		});
 
-		// Vérifier que le reset est persisté
+		// Verify reset is persisted
 		expect(result.current.count).toBe(0);
 
-		// Vérifier dans localStorage
+		// Check in localStorage
 		const stored = window.localStorage.getItem('counter-storage');
 		expect(stored).not.toBeNull();
 		const data = stored ? JSON.parse(stored) : null;
 		expect(data?.state.count).toBe(0);
 
-		// Nouvelle instance devrait avoir la valeur reset
+		// New instance should have reset value
 		const { result: newStore } = renderHook(() => useCounterStore());
 		expect(newStore.current.count).toBe(0);
 	});
