@@ -1,10 +1,12 @@
 import { type ReactElement } from 'react';
 import { FiMinus, FiPlus, FiRefreshCw } from 'react-icons/fi';
+import reactLogo from '@assets/react.svg';
+import { ThemeToggle } from '@components/ThemeToggle';
 import { useCounterStore } from '@store/counterStore';
 
-import reactLogo from '@assets/react.svg';
+import './App.css';
+
 import viteLogo from '/vite.svg';
-import { ThemeToggle } from '@components/ThemeToggle';
 
 function App(): ReactElement {
 	const { count, increment, decrement, reset } = useCounterStore();

@@ -1,9 +1,9 @@
-import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react-swc';
-import { visualizer } from 'rollup-plugin-visualizer';
-import { fileURLToPath } from 'node:url';
-import { dirname, resolve } from 'node:path';
 import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react-swc';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { visualizer } from 'rollup-plugin-visualizer';
+import { defineConfig } from 'vitest/config';
 
 // Determine the current directory so the project
 // can be use wether from a Docker container or from the local machine
