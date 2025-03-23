@@ -135,4 +135,111 @@ describe('Counter Store Persistence', () => {
 		// Count should still work in memory
 		expect(store.getState().count).toBe(1);
 	});
+
+	it('should handle corrupted JSON data in localStorage', () => {
+		// Setup corrupt data in localStorage
+		mockStorage['counter-storage'] = 'not-valid-json';
+
+		// Create a storage that returns invalid JSON
+		const errorStorage = {
+			getItem: () => {
+				return 'not-valid-json';
+			},
+			setItem: mockLocalStorage.setItem,
+			removeItem: mockLocalStorage.removeItem,
+		};
+
+		// Initialize store - should fallback to default values
+		const store = create<CounterState>()(
+			persist(
+				set => ({
+					count: 0,
+					increment: () => set(state => ({ count: state.count + 1 })),
+					decrement: () => set(state => ({ count: state.count - 1 })),
+					reset: () => set({ count: 0 }),
+				}),
+				{
+					name: 'counter-storage',
+					storage: createJSONStorage(() => errorStorage),
+				}
+			)
+		);
+
+		// Store should use default values when data is corrupted
+		expect(store.getState().count).toBe(0);
+
+		// Operations should still work
+		act(() => {
+			store.getState().increment();
+		});
+		expect(store.getState().count).toBe(1);
+	});
+
+	it('should handle missing state property in localStorage', () => {
+		// Setup invalid data structure (missing state property)
+		const invalidData = {
+			version: 0,
+			// state property is missing
+		};
+		mockStorage['counter-storage'] = JSON.stringify(invalidData);
+
+		// Initialize store - should use default values for missing state
+		const store = create<CounterState>()(
+			persist(
+				set => ({
+					count: 0,
+					increment: () => set(state => ({ count: state.count + 1 })),
+					decrement: () => set(state => ({ count: state.count - 1 })),
+					reset: () => set({ count: 0 }),
+				}),
+				{
+					name: 'counter-storage',
+					storage: createJSONStorage(() => mockLocalStorage),
+				}
+			)
+		);
+
+		// Should use default count value (0) when state is missing
+		expect(store.getState().count).toBe(0);
+	});
+
+	it('should handle invalid value types in localStorage', () => {
+		// Setup data with invalid type for count (string instead of number)
+		const invalidTypeData = {
+			state: { count: 'not-a-number' },
+			version: 0,
+		};
+		mockStorage['counter-storage'] = JSON.stringify(invalidTypeData);
+
+		// Initialize store
+		const store = create<CounterState>()(
+			persist(
+				set => ({
+					count: 0,
+					increment: () => set(state => ({ count: state.count + 1 })),
+					decrement: () => set(state => ({ count: state.count - 1 })),
+					reset: () => set({ count: 0 }),
+				}),
+				{
+					name: 'counter-storage',
+					storage: createJSONStorage(() => mockLocalStorage),
+				}
+			)
+		);
+
+		// Verify that the count is a string (as loaded from localStorage)
+		expect(typeof store.getState().count).toBe('string');
+
+		// Operations should still work correctly after we set a numeric value
+		act(() => {
+			// Reset to set a proper numeric value
+			store.getState().reset();
+			// Then increment
+			store.getState().increment();
+		});
+
+		// Now it should be a number
+		expect(typeof store.getState().count).toBe('number');
+		expect(store.getState().count).toBe(1);
+	});
 });
