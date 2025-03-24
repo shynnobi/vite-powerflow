@@ -1,8 +1,8 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react-swc';
-import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { defineConfig } from 'vitest/config';
 
 // Determine the current directory
 const __filename = fileURLToPath(import.meta.url);
@@ -24,9 +24,9 @@ export default defineConfig({
 		],
 	},
 	test: {
-		globals: true,
 		environment: 'jsdom',
-		setupFiles: ['./tests/unit/setup.ts'],
+		globals: true,
+		setupFiles: ['./tests/setup.ts'],
 		include: ['./tests/{unit,integration}/**/*.{test,spec}.{ts,tsx}'],
 		exclude: ['./tests/e2e/**/*'],
 		reporters: ['default'],
