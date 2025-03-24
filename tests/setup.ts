@@ -1,9 +1,13 @@
 import { cleanup } from '@testing-library/react';
 import { afterEach } from 'vitest';
 
-import '@testing-library/jest-dom/vitest';
+import '@testing-library/jest-dom';
 
-// Clean up after each test
+declare global {
+	var localStorage: Storage;
+}
+
+// Automatic cleanup after each test
 afterEach(() => {
 	cleanup();
 });

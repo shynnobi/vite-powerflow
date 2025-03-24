@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach } from 'vitest';
 import { useCounterStore } from '@store/counterStore';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-describe('Counter store with Zustand', () => {
+describe('Counter Store', () => {
 	beforeEach(() => {
 		// Reset the store before each test
 		useCounterStore.getState().reset();
