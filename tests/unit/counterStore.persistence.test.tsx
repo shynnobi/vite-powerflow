@@ -140,15 +140,6 @@ describe('Counter Store Persistence', () => {
 		// Setup corrupt data in localStorage
 		mockStorage['counter-storage'] = 'not-valid-json';
 
-		// Create a storage that returns invalid JSON
-		const errorStorage = {
-			getItem: () => {
-				return 'not-valid-json';
-			},
-			setItem: mockLocalStorage.setItem,
-			removeItem: mockLocalStorage.removeItem,
-		};
-
 		// Initialize store - should fallback to default values
 		const store = create<CounterState>()(
 			persist(
@@ -160,7 +151,7 @@ describe('Counter Store Persistence', () => {
 				}),
 				{
 					name: 'counter-storage',
-					storage: createJSONStorage(() => errorStorage),
+					storage: createJSONStorage(() => mockLocalStorage),
 				}
 			)
 		);
