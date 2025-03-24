@@ -15,7 +15,6 @@ updates:
       prefix: 'chore'
       prefix-development: 'chore(dev)'
       include: 'scope'
-      style: 'minimal'
     labels:
       - 'dependencies'
       - 'automerge'
@@ -28,7 +27,6 @@ updates:
     commit-message:
       prefix: 'ci'
       include: 'scope'
-      style: 'minimal'
     labels:
       - 'dependencies'
       - 'github_actions'
