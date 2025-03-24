@@ -29,4 +29,6 @@ export default {
 			],
 		],
 	},
+	// Ignore Dependabot commits
+	ignores: [commit => commit.includes('dependabot[bot]') || commit.includes('Dependabot')],
 };
