@@ -38,6 +38,7 @@ A modern and robust starter kit for React web application development, configure
 │ ├── context/            # React context providers
 │ ├── pages/              # Page components
 │ ├── lib/                # Utility libraries
+│ ├── utils/              # Utility functions (logging, etc.)
 │ └── shared/             # Shared types and interfaces
 ├── tests/                # Tests
 │ ├── e2e/                # End-to-end tests
@@ -94,6 +95,7 @@ This project uses path aliases to avoid relative import paths like `../../../com
 - `@shared/*` → `src/shared/*`
 - `@store/*` → `src/store/*`
 - `@tests/*` → `tests/*`
+- `@utils/*` → `src/utils/*`
 
 ### Adding a New Path Alias
 
