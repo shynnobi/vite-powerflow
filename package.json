@@ -14,25 +14,23 @@
 		"test:e2e": "playwright test",
 		"test:e2e:verbose": "playwright test --trace on",
 		"lint": "NODE_NO_WARNINGS=1 eslint . --ext ts,tsx,js,jsx",
+		"lint:fix": "NODE_NO_WARNINGS=1 eslint . --ext ts,tsx,js,jsx --fix",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
+		"fix": "prettier --write . && NODE_NO_WARNINGS=1 eslint . --ext ts,tsx,js,jsx --fix",
 		"type-check": "tsc --noEmit",
 		"prepare": "husky"
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx}": [
-			"prettier --check",
 			"prettier --write",
-			"eslint --fix"
+			"eslint --fix --max-warnings=0"
 		],
 		"*.{json,yml,yaml,md}": [
-			"prettier --check",
 			"prettier --write"
 		],
 		"*.{css,scss}": [
-			"prettier --check",
-			"prettier --write",
-			"stylelint --fix"
+			"prettier --write"
 		]
 	},
 	"devDependencies": {
@@ -54,6 +52,7 @@
 		"eslint-plugin-react": "^7.37.4",
 		"eslint-plugin-react-hooks": "^5.2.0",
 		"eslint-plugin-react-refresh": "^0.4.19",
+		"eslint-plugin-simple-import-sort": "^12.1.1",
 		"globals": "^16.0.0",
 		"husky": "^9.0.11",
 		"jsdom": "^26.0.0",
@@ -80,6 +79,7 @@
 		"clsx": "^2.1.1",
 		"lucide-react": "^0.483.0",
 		"react-icons": "^5.5.0",
+		"react-router-dom": "^7.4.0",
 		"tailwind-merge": "^3.0.2",
 		"tailwindcss": "^4.0.14",
 		"tw-animate-css": "^1.2.4",
