@@ -27,7 +27,12 @@
 		5173, // Vite dev server
 		4000 // Node.js process if needed
 	],
-	"mounts": ["source=${localEnv:HOME}/.gitconfig,target=/home/node/.gitconfig,type=bind,readonly"],
-	"postCreateCommand": "pnpm install && (git rev-parse --is-inside-work-tree || git init) && git config core.hooksPath .husky && chmod +x .husky/*",
+	"mounts": [
+		"source=${localEnv:HOME}/.gitconfig,target=/home/node/.gitconfig,type=bind,readonly",
+		"source=vite-blank-starter-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+	],
+	"initializeCommand": "mkdir -p .devcontainer/init",
+	"onCreateCommand": "if [ ! -f .devcontainer/init/.initialized ]; then npm install -g pnpm@latest && pnpm install && touch .devcontainer/init/.initialized; fi",
+	"postCreateCommand": "(git rev-parse --is-inside-work-tree || git init) && git config core.hooksPath .husky && chmod +x .husky/*",
 	"remoteUser": "node"
 }
