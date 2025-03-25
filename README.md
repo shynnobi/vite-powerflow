@@ -2,10 +2,36 @@
 
 A modern and robust starter kit for React web application development, configured with current best practices and tools.
 
+[![React](https://img.shields.io/badge/React-19.0.0-blue.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3.3-blue.svg)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-6.2.2-646CFF.svg)](https://vitejs.dev/)
+[![Tailwind](https://img.shields.io/badge/Tailwind-4.0.14-38B2AC.svg)](https://tailwindcss.com/)
+[![ESLint](https://img.shields.io/badge/ESLint-9.21.0-4B32C3.svg)](https://eslint.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
+
+## 📑 Table of Contents
+
+- [🚀 Features](#-features)
+- [📦 Project Structure](#-project-structure)
+- [🎨 Theming](#-theming)
+- [🚀 Getting Started](#-getting-started)
+- [🔄 Path Aliases](#-path-aliases)
+- [🐳 Development Container](#-development-container)
+  - [Docker Configuration](#docker-configuration)
+  - [Getting Started with the Dev Container](#getting-started-with-the-dev-container)
+  - [Benefits of Using the Dev Container](#benefits-of-using-the-dev-container)
+  - [Git Configuration](#git-configuration)
+- [🧪 Testing](#-testing)
+- [🛠️ Available Scripts](#️-available-scripts)
+- [📝 Code Conventions](#-code-conventions)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+
 ## 🚀 Features
 
 - ⚡️ **[Vite](https://vitejs.dev/)** - Lightning fast build tool
-- ⚛️ **[React 18](https://react.dev/)** - Latest React version with Hooks
+- ⚛️ **[React 19](https://react.dev/)** - Latest React version with Hooks
 - 📝 **[TypeScript](https://www.typescriptlang.org/)** - Static typing for robust code
 - 🎨 **Styling & UI** :
   - 🌊 [Tailwind CSS](https://tailwindcss.com/) for utility-first styling
@@ -50,7 +76,10 @@ A modern and robust starter kit for React web application development, configure
 ├── tsconfig.json         # TypeScript configuration
 ├── vite.config.ts        # Vite configuration
 ├── tailwind.config.js    # Tailwind CSS configuration
-└── vitest.config.ts      # Vitest configuration
+├── vitest.config.ts      # Vitest configuration
+├── playwright.config.ts  # Playwright E2E testing configuration
+├── commitlint.config.js  # Commit message linting rules
+└── components.json       # shadcn/ui components configuration
 ```
 
 ## 🎨 Theming
@@ -146,9 +175,40 @@ After adding the alias, you can use it in your imports:
 import { formatDate } from '@utils/date';
 ```
 
-## 🔧 Development Container
+## 🐳 Development Container
 
 This project includes a development container configuration for VS Code, which provides a consistent development environment for all contributors.
+
+### Docker Configuration
+
+The development container uses Docker and is pre-configured with:
+
+- Node.js 20 (TypeScript-enabled image)
+- PNPM package manager
+- VS Code extensions for React, TypeScript, ESLint, Prettier, Vite, Playwright, Tailwind CSS, and Vitest
+- Pre-configured editor settings (formatting, tab size, etc.)
+- Automatic port forwarding for Vite (5173) and other services
+
+### Getting Started with the Dev Container
+
+To use the development container:
+
+1. Install [Docker](https://www.docker.com/get-started/) on your machine
+2. Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) for VS Code
+3. Clone this repository
+4. Open the project in VS Code
+5. When prompted "Reopen in Container", click "Reopen in Container"
+   - Alternatively, use the command palette (F1) and select "Dev Containers: Reopen in Container"
+
+The container will build automatically, install all dependencies, and provide a consistent environment with all the necessary tools.
+
+### Benefits of Using the Dev Container
+
+- Consistent development environment for all contributors
+- All dependencies and tools are pre-installed
+- No need to install Node.js, PNPM, or other tools locally
+- Isolation from your local system
+- Works identically on Windows, macOS, and Linux
 
 ### Git Configuration
 
@@ -182,9 +242,19 @@ If you're using the development container and your commits don't appear with you
 - `pnpm dev` - Start development server
 - `pnpm build` - Build for production
 - `pnpm preview` - Preview production build
+- `pnpm test` - Run all tests
+- `pnpm test:verbose` - Run tests with detailed output
+- `pnpm test:watch` - Run tests in watch mode
+- `pnpm test:coverage` - Run tests with coverage report
+- `pnpm test:e2e` - Run E2E tests with Playwright
+- `pnpm test:e2e:verbose` - Run E2E tests with detailed tracing
 - `pnpm lint` - Check code with ESLint
+- `pnpm lint:fix` - Fix ESLint issues automatically
 - `pnpm format` - Format code with Prettier
+- `pnpm format:check` - Check code formatting
+- `pnpm fix` - Format and fix all code (Prettier + ESLint)
 - `pnpm type-check` - Check TypeScript types
+- `pnpm prepare` - Prepare Husky git hooks
 
 ## 📝 Code Conventions
 
