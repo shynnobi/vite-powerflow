@@ -76,7 +76,7 @@ We use Husky to run Git hooks that enforce code quality:
 - **pre-commit**: Runs linting and formatting checks on staged files
 - **commit-msg**: Validates commit messages follow our conventions
 
-The project is configured to automatically initialize a Git repository if needed and set up hooks when you install dependencies. If hooks don't run correctly, you may need to:
+If hooks don't run correctly, you may need to:
 
 ```bash
 # Configure Git to use the hooks in the .husky directory

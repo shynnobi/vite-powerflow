@@ -28,6 +28,6 @@
 		4000 // Node.js process if needed
 	],
 	"mounts": ["source=${localEnv:HOME}/.gitconfig,target=/home/node/.gitconfig,type=bind,readonly"],
-	"postCreateCommand": "pnpm install && (git rev-parse --is-inside-work-tree || git init) && git config core.hooksPath .husky && chmod +x .husky/*",
+	"postCreateCommand": "pnpm install && git config core.hooksPath .husky && chmod +x .husky/*",
 	"remoteUser": "node"
 }
