@@ -24,15 +24,28 @@ The configuration is in `.devcontainer/devcontainer.json` if you need to check t
 
 ## 🔄 Development Workflow
 
+### Branch Organization
+
+We follow a structured branching strategy:
+
+- `main` - Production-ready code, protected branch
+- `dev` - Main development branch, all feature work branches from here
+- `feature/*` - New features (e.g., `feature/auth-system`)
+- `fix/*` - Bug fixes (e.g., `fix/login-validation`)
+
+The `dev` branch is automatically created during project initialization, providing a stable base for development.
+
 ### Starting a new feature
 
 ```bash
-# Get the latest dev branch
+# Ensure you're on dev and it's up to date
 git checkout dev
-git pull
+git pull origin dev
 
 # Create your feature branch
 git checkout -b feature/your-feature-name
+# OR for bug fixes
+git checkout -b fix/your-fix-name
 ```
 
 Work on your changes, then validate them:
@@ -43,6 +56,21 @@ pnpm test    # Run tests
 pnpm build   # Verify build
 ```
 
+### Pull Request Flow
+
+1. Push your branch:
+
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+
+2. Create a Pull Request targeting the `dev` branch (not `main`)
+3. Fill in the PR template
+4. Address any review comments
+5. Once approved, your changes will be merged into `dev`
+
+Periodically, `dev` will be merged into `main` for releases.
+
 ### 📝 Commit Guidelines
 
 We follow conventional commits: `type(scope): description`
@@ -50,13 +78,6 @@ We follow conventional commits: `type(scope): description`
 Common types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`
 
 Example: `feat(auth): add Google login support`
-
-### 🔀 Pull Request Process
-
-1. Push your branch and create a PR to the `dev` branch
-2. Fill in the PR template
-3. Address any review comments
-4. Once approved, your changes will be merged
 
 ## 🛠️ Available Scripts
 
