@@ -14,14 +14,13 @@ A modern and robust starter kit for React web application development, configure
 
 - [🚀 Features](#-features)
 - [📦 Project Structure](#-project-structure)
-- [🎨 Theming](#-theming)
 - [🚀 Getting Started](#-getting-started)
+  - [Option 1: Standard Setup](#option-1-standard-setup)
+  - [Option 2: Using Dev Container](#option-2-using-dev-container-recommended)
+  - [Dev Container Benefits](#dev-container-benefits)
+  - [Git Configuration with Dev Container](#git-configuration-with-dev-container)
+- [🎨 Theming](#-theming)
 - [🔄 Path Aliases](#-path-aliases)
-- [🐳 Development Container](#-development-container)
-  - [Docker Configuration](#docker-configuration)
-  - [Getting Started with the Dev Container](#getting-started-with-the-dev-container)
-  - [Benefits of Using the Dev Container](#benefits-of-using-the-dev-container)
-  - [Git Configuration](#git-configuration)
 - [🧪 Testing](#-testing)
 - [🛠️ Available Scripts](#️-available-scripts)
 - [📝 Code Conventions](#-code-conventions)
@@ -82,6 +81,97 @@ A modern and robust starter kit for React web application development, configure
 └── components.json       # shadcn/ui components configuration
 ```
 
+## 🚀 Getting Started
+
+This starter kit can be used in two ways: directly or with development containers.
+
+### Option 1: Standard Setup
+
+1. Create a new project using this template:
+
+   ```bash
+   # Using degit (recommended)
+   npx degit shynnobi/vite-blank-starter my-project
+   # OR clone the repository
+   git clone https://github.com/shynnobi/vite-blank-starter my-project
+   ```
+
+2. Navigate to your project:
+
+   ```bash
+   cd my-project
+   ```
+
+3. Install dependencies:
+
+   ```bash
+   pnpm install
+   # OR using npm
+   npm install
+   # OR using yarn
+   yarn install
+   ```
+
+4. Start the development server:
+   ```bash
+   pnpm dev
+   # OR using npm
+   npm run dev
+   # OR using yarn
+   yarn dev
+   ```
+
+### Option 2: Using Dev Container (Recommended)
+
+For a consistent development experience across all environments, we recommend using the included Dev Container configuration:
+
+1. Prerequisites:
+
+   - Install [Docker](https://www.docker.com/get-started/) on your machine
+   - Install [VS Code](https://code.visualstudio.com/)
+   - Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) for VS Code
+
+2. Create a new project using this template:
+
+   ```bash
+   # Using degit (recommended)
+   npx degit shynnobi/vite-blank-starter my-project
+   # OR clone the repository
+   git clone https://github.com/shynnobi/vite-blank-starter my-project
+   ```
+
+3. Open the project in VS Code:
+
+   ```bash
+   cd my-project
+   code .
+   ```
+
+4. When prompted "Reopen in Container", click "Reopen in Container"
+
+   - Alternatively, use the command palette (F1) and select "Dev Containers: Reopen in Container"
+
+5. The container will build automatically, install all dependencies, and you can start developing immediately. The development server will be accessible at http://localhost:5173.
+
+### Dev Container Benefits
+
+- Consistent development environment for all contributors
+- All dependencies and tools are pre-installed
+- No need to install Node.js, PNPM, or other tools locally
+- Isolation from your local system
+- Works identically on Windows, macOS, and Linux
+
+### Git Configuration with Dev Container
+
+The development container is configured to use your local Git configuration. Make sure your `.gitconfig` file is properly set up with your name and email:
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+```
+
+If you're using the development container and your commits don't appear with your GitHub avatar, you may need to run these commands inside the container.
+
 ## 🎨 Theming
 
 The project includes a dark mode implementation using Tailwind CSS and React context:
@@ -90,26 +180,6 @@ The project includes a dark mode implementation using Tailwind CSS and React con
 - System preference detection
 - Persistent theme selection
 - Smooth theme transitions
-
-## 🚀 Getting Started
-
-1. Clone the project:
-
-   ```bash
-   git clone [https://github.com/shynnobi/vite-blank-starter]
-   cd vite-blank-starter
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   pnpm install
-   ```
-
-3. Start development server:
-   ```bash
-   pnpm dev
-   ```
 
 ## 🔄 Path Aliases
 
@@ -174,52 +244,6 @@ After adding the alias, you can use it in your imports:
 ```typescript
 import { formatDate } from '@utils/date';
 ```
-
-## 🐳 Development Container
-
-This project includes a development container configuration for VS Code, which provides a consistent development environment for all contributors.
-
-### Docker Configuration
-
-The development container uses Docker and is pre-configured with:
-
-- Node.js 20 (TypeScript-enabled image)
-- PNPM package manager
-- VS Code extensions for React, TypeScript, ESLint, Prettier, Vite, Playwright, Tailwind CSS, and Vitest
-- Pre-configured editor settings (formatting, tab size, etc.)
-- Automatic port forwarding for Vite (5173) and other services
-
-### Getting Started with the Dev Container
-
-To use the development container:
-
-1. Install [Docker](https://www.docker.com/get-started/) on your machine
-2. Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) for VS Code
-3. Clone this repository
-4. Open the project in VS Code
-5. When prompted "Reopen in Container", click "Reopen in Container"
-   - Alternatively, use the command palette (F1) and select "Dev Containers: Reopen in Container"
-
-The container will build automatically, install all dependencies, and provide a consistent environment with all the necessary tools.
-
-### Benefits of Using the Dev Container
-
-- Consistent development environment for all contributors
-- All dependencies and tools are pre-installed
-- No need to install Node.js, PNPM, or other tools locally
-- Isolation from your local system
-- Works identically on Windows, macOS, and Linux
-
-### Git Configuration
-
-The development container is configured to use your local Git configuration. Make sure your `.gitconfig` file is properly set up with your name and email:
-
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "your.email@example.com"
-```
-
-If you're using the development container and your commits don't appear with your GitHub avatar, you may need to run these commands inside the container.
 
 ## 🧪 Testing
 
