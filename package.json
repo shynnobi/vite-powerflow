@@ -19,7 +19,8 @@
 		"format:check": "prettier --check .",
 		"fix": "prettier --write . && NODE_NO_WARNINGS=1 eslint . --ext ts,tsx,js,jsx --fix",
 		"type-check": "tsc --noEmit",
-		"prepare": "husky"
+		"prepare": "husky",
+		"postinstall": "git config core.hooksPath .husky && chmod +x .husky/*"
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx}": [
