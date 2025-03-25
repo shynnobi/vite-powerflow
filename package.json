@@ -20,7 +20,7 @@
 		"fix": "prettier --write . && NODE_NO_WARNINGS=1 eslint . --ext ts,tsx,js,jsx --fix",
 		"type-check": "tsc --noEmit",
 		"prepare": "husky",
-		"postinstall": "git config core.hooksPath .husky && chmod +x .husky/*"
+		"postinstall": "node -e \"try { require('child_process').execSync('git rev-parse --is-inside-work-tree', {stdio: 'ignore'}); } catch (e) { require('child_process').execSync('git init', {stdio: 'inherit'}); } process.exit(0);\" && git config core.hooksPath .husky && chmod +x .husky/*"
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx}": [
