@@ -247,7 +247,9 @@ import { formatDate } from '@utils/date';
 
 ## 🔗 Git Hooks
 
-This project uses Husky for Git hooks to ensure code quality before commits. If you encounter issues with Git hooks not running:
+This project uses Husky for Git hooks to ensure code quality before commits. The hooks are configured automatically when you install dependencies, and if needed, a Git repository will be initialized.
+
+If you encounter issues with Git hooks not running:
 
 ```bash
 # Configure Git to use the hooks in the .husky directory
