@@ -245,6 +245,26 @@ After adding the alias, you can use it in your imports:
 import { formatDate } from '@utils/date';
 ```
 
+## 🔗 Git Hooks
+
+This project uses Husky for Git hooks to ensure code quality before commits. If you encounter issues with Git hooks not running:
+
+```bash
+# Configure Git to use the hooks in the .husky directory
+git config core.hooksPath .husky
+
+# Make sure hooks have execute permissions
+chmod +x .husky/*
+```
+
+The hooks run automatically on commit to ensure:
+
+- Code is properly formatted (Prettier)
+- Linting rules are followed (ESLint)
+- Commit messages follow conventions (commitlint)
+
+These checks are configured to run automatically after install via the `postinstall` script.
+
 ## 🧪 Testing
 
 - Unit and Integration tests:
