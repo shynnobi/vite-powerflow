@@ -69,6 +69,25 @@ Example: `feat(auth): add Google login support`
 
 We use TypeScript in strict mode with ESLint and Prettier. Configuration files are in the repository root. Set up your editor to use these tools automatically when saving files.
 
+## 🪝 Git Hooks
+
+We use Husky to run Git hooks that enforce code quality:
+
+- **pre-commit**: Runs linting and formatting checks on staged files
+- **commit-msg**: Validates commit messages follow our conventions
+
+If hooks don't run correctly, you may need to:
+
+```bash
+# Configure Git to use the hooks in the .husky directory
+git config core.hooksPath .husky
+
+# Make sure hooks have execute permissions
+chmod +x .husky/*
+```
+
+These commands run automatically on `npm/pnpm install` through the postinstall script.
+
 ## 🚀 CI/CD Pipeline
 
 Our GitHub Actions workflow automatically runs tests and builds on PRs and deployments.
