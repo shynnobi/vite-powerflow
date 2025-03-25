@@ -29,14 +29,11 @@
 			}
 		}
 	},
-	"forwardPorts": [
-		5173, // Vite dev server
-		4000 // Node.js process if needed
-	],
+	"forwardPorts": [5173, 4000],
 	"mounts": ["source=${localEnv:HOME}/.gitconfig,target=/home/node/.gitconfig,type=bind,readonly"],
-	"onCreateCommand": "sudo apt-get update && sudo apt-get install -y build-essential python3 && pnpm install",
-	"postCreateCommand": "if [ ! -d .git ]; then git init && git checkout -b dev && git add . && git commit -m 'chore: initial commit'; fi && git config core.hooksPath .husky && chmod +x .husky/*",
-	"updateContentCommand": "pnpm install",
+	"onCreateCommand": "sudo apt-get update && sudo apt-get install -y build-essential python3 && rm -rf node_modules && pnpm install",
+	"postCreateCommand": "if [ -z \"$(git log -1 2>/dev/null)\" ] || [ \"$(git branch --show-current 2>/dev/null)\" != \"dev\" ]; then git init && git checkout -b dev && git add . && git commit -m 'chore: initial commit'; fi && if [ -d .husky ]; then git config core.hooksPath .husky && chmod +x .husky/* 2>/dev/null || true; fi",
+	"updateContentCommand": "if [ ! -d node_modules ] || [ ! -f pnpm-lock.yaml ]; then pnpm install; else pnpm update; fi",
 	"remoteEnv": {
 		"SWC_PLATFORM_ARCH": "linux-x64-gnu",
 		"npm_config_arch": "x64"
