@@ -12,7 +12,7 @@ A modern and robust starter kit for React web application development, configure
 
 ## 📑 Table of Contents
 
-- [🚀 Features](#-features)
+- [✨ Features](#-features)
 - [📦 Project Structure](#-project-structure)
 - [🚀 Getting Started](#-getting-started)
   - [Option 1: Standard Setup](#option-1-standard-setup)
@@ -27,7 +27,7 @@ A modern and robust starter kit for React web application development, configure
 - [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
 
-## 🚀 Features
+## ✨ Features
 
 - ⚡️ **[Vite](https://vitejs.dev/)** - Lightning fast build tool
 - ⚛️ **[React 19](https://react.dev/)** - Latest React version with Hooks
