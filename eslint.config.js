@@ -76,7 +76,7 @@ export default [
 			},
 		},
 	},
-	// Specific rule for UI components
+	// Specific rule for shadcn UI components
 	{
 		files: ['**/src/components/ui/**/*.{ts,tsx}'],
 		rules: {
