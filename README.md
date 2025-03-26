@@ -1,6 +1,6 @@
 # Vite PowerFlow
 
-A modern and robust development workflow for React applications, featuring a powerful setup with comprehensive tooling and best practices.
+A modern React starter kit with a robust development workflow, featuring comprehensive tooling and industry best practices for professional applications.
 
 [![React](https://img.shields.io/badge/React-19.0.0-blue.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3.3-blue.svg)](https://www.typescriptlang.org/)
