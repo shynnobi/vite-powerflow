@@ -1,7 +1,32 @@
 {
-	"name": "vite-blank-starter",
+	"name": "vite-powerflow",
 	"private": true,
 	"version": "0.0.0",
+	"description": "A modern React starter kit with a robust development workflow, powered by Vite, TypeScript, TailwindCSS and shadcn/ui. Includes comprehensive testing, linting, and CI/CD configurations following industry best practices.",
+	"author": {
+		"name": "Shynn",
+		"url": "http://github.com/shynnobi"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+http://github.com/shynnobi/vite-powerflow.git"
+	},
+	"homepage": "http://github.com/shynnobi/vite-powerflow#readme",
+	"bugs": {
+		"url": "http://github.com/shynnobi/vite-powerflow/issues"
+	},
+	"license": "MIT",
+	"keywords": [
+		"vite",
+		"react",
+		"typescript",
+		"tailwindcss",
+		"starter-kit",
+		"development-workflow",
+		"shadcn-ui",
+		"testing",
+		"ci-cd"
+	],
 	"type": "module",
 	"packageManager": "pnpm@10.6.5",
 	"scripts": {
