@@ -1,5 +1,5 @@
 {
-	"name": "Docker Vite Blank Starter",
+	"name": "Node-TS",
 	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye",
 	"features": {
 		"ghcr.io/devcontainers/features/common-utils:2": {
@@ -32,9 +32,9 @@
 	},
 	"forwardPorts": [5173, 4000],
 	"mounts": ["source=${localEnv:HOME}/.gitconfig,target=/home/node/.gitconfig,type=bind,readonly"],
-	"onCreateCommand": "sudo apt-get update && sudo apt-get install -y build-essential python3 && if [ ! -d node_modules ]; then pnpm install; fi",
+	"onCreateCommand": "ARCH=$(uname -m) && if [ \"$ARCH\" = \"aarch64\" ]; then export SWC_PLATFORM_ARCH=linux-arm64-gnu && export npm_config_arch=arm64; else export SWC_PLATFORM_ARCH=linux-x64-gnu && export npm_config_arch=x64; fi && echo \"Detected architecture: $ARCH, SWC_PLATFORM_ARCH=$SWC_PLATFORM_ARCH\" && sudo apt-get update && sudo apt-get install -y build-essential python3 && if [ ! -d node_modules ]; then SWC_PLATFORM_ARCH=$SWC_PLATFORM_ARCH npm_config_arch=$npm_config_arch pnpm install; fi",
 	"postCreateCommand": "if [ -d .husky ]; then git config core.hooksPath .husky && chmod +x .husky/* 2>/dev/null || true; fi",
-	"updateContentCommand": "if [ ! -d node_modules ] || [ ! -f pnpm-lock.yaml ]; then pnpm install; fi",
+	"updateContentCommand": "ARCH=$(uname -m) && if [ \"$ARCH\" = \"aarch64\" ]; then export SWC_PLATFORM_ARCH=linux-arm64-gnu && export npm_config_arch=arm64; else export SWC_PLATFORM_ARCH=linux-x64-gnu && export npm_config_arch=x64; fi && if [ ! -d node_modules ] || [ ! -f pnpm-lock.yaml ]; then SWC_PLATFORM_ARCH=$SWC_PLATFORM_ARCH npm_config_arch=$npm_config_arch pnpm install; fi",
 	"remoteEnv": {
 		"SWC_PLATFORM_ARCH": "linux-x64-gnu",
 		"npm_config_arch": "x64"
