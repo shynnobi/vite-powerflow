@@ -1,6 +1,6 @@
-# Vite React TypeScript Starter Kit
+# Vite PowerFlow
 
-A modern and robust starter kit for React web application development, configured with current best practices and tools.
+A modern and robust development workflow for React applications, featuring a powerful setup with comprehensive tooling and best practices.
 
 [![React](https://img.shields.io/badge/React-19.0.0-blue.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3.3-blue.svg)](https://www.typescriptlang.org/)
@@ -12,7 +12,7 @@ A modern and robust starter kit for React web application development, configure
 
 ## 📑 Table of Contents
 
-- [Vite React TypeScript Starter Kit](#vite-react-typescript-starter-kit)
+- [Vite PowerFlow](#vite-powerflow)
   - [📑 Table of Contents](#-table-of-contents)
   - [✨ Features](#-features)
   - [📦 Project Structure](#-project-structure)
@@ -96,9 +96,9 @@ This starter kit can be used in two ways: directly or with development container
 
    ```bash
    # Using degit (recommended)
-   npx degit shynnobi/vite-blank-starter my-project
+   npx degit shynnobi/vite-powerflow my-project
    # OR clone the repository
-   git clone https://github.com/shynnobi/vite-blank-starter my-project
+   git clone https://github.com/shynnobi/vite-powerflow my-project
    ```
 
 2. Navigate to your project:
@@ -140,9 +140,9 @@ For a consistent development experience across all environments, we recommend us
 
    ```bash
    # Using degit (recommended)
-   npx degit shynnobi/vite-blank-starter my-project
+   npx degit shynnobi/vite-powerflow my-project
    # OR clone the repository
-   git clone https://github.com/shynnobi/vite-blank-starter my-project
+   git clone https://github.com/shynnobi/vite-powerflow my-project
    ```
 
 3. Open the project in VS Code:
