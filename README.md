@@ -12,20 +12,25 @@ A modern and robust starter kit for React web application development, configure
 
 ## 📑 Table of Contents
 
-- [✨ Features](#-features)
-- [📦 Project Structure](#-project-structure)
-- [🚀 Getting Started](#-getting-started)
-  - [Option 1: Standard Setup](#option-1-standard-setup)
-  - [Option 2: Using Dev Container](#option-2-using-dev-container-recommended)
-  - [Dev Container Benefits](#dev-container-benefits)
-  - [Git Configuration with Dev Container](#git-configuration-with-dev-container)
-- [🎨 Theming](#-theming)
-- [🔄 Path Aliases](#-path-aliases)
-- [🧪 Testing](#-testing)
-- [🛠️ Available Scripts](#️-available-scripts)
-- [📝 Code Conventions](#-code-conventions)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
+- [Vite React TypeScript Starter Kit](#vite-react-typescript-starter-kit)
+  - [📑 Table of Contents](#-table-of-contents)
+  - [✨ Features](#-features)
+  - [📦 Project Structure](#-project-structure)
+  - [🚀 Getting Started](#-getting-started)
+    - [Option 1: Standard Setup](#option-1-standard-setup)
+    - [Option 2: Using Dev Container (Recommended)](#option-2-using-dev-container-recommended)
+    - [Dev Container Benefits](#dev-container-benefits)
+    - [Git Configuration with Dev Container](#git-configuration-with-dev-container)
+  - [🌳 Git Branching Strategy](#-git-branching-strategy)
+  - [🎨 Theming](#-theming)
+  - [🔄 Path Aliases](#-path-aliases)
+    - [Adding a New Path Alias](#adding-a-new-path-alias)
+  - [🔗 Git Hooks](#-git-hooks)
+  - [🧪 Testing](#-testing)
+  - [🛠️ Available Scripts](#️-available-scripts)
+  - [📝 Code Conventions](#-code-conventions)
+  - [🤝 Contributing](#-contributing)
+  - [📄 License](#-license)
 
 ## ✨ Features
 
@@ -171,6 +176,28 @@ git config --global user.email "your.email@example.com"
 ```
 
 If you're using the development container and your commits don't appear with your GitHub avatar, you may need to run these commands inside the container.
+
+## 🌳 Git Branching Strategy
+
+This starter follows a structured branching strategy out of the box:
+
+- `main` - Production-ready code
+- `dev` - Main development branch (automatically created on project initialization)
+- `feature/*` - New features (branch from `dev`)
+- `fix/*` - Bug fixes (branch from `dev`)
+
+When you create a new project from this template, it automatically:
+
+1. Initializes a Git repository
+2. Creates and switches to a `dev` branch
+3. Makes an initial commit with the base code
+
+This structure encourages:
+
+- Clean separation between production and development code
+- Feature-based development through branches
+- Proper code review process through pull requests
+- Safe deployment pipeline from `dev` to `main`
 
 ## 🎨 Theming
 
