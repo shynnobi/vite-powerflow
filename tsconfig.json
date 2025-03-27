@@ -32,7 +32,8 @@
 			"@pages/*": ["src/pages/*"],
 			"@shared/*": ["src/shared/*"],
 			"@store/*": ["src/store/*"],
-			"@tests/*": ["tests/*"]
+			"@tests/*": ["tests/*"],
+			"@utils/*": ["src/utils/*"]
 		}
 	},
 	"include": ["src", "tests"],
