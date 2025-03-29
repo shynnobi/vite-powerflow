@@ -25,4 +25,13 @@ export default defineConfig({
 			'@utils': resolve(__dirname, '../src/utils'),
 		},
 	},
+	build: {
+		sourcemap: true,
+	},
+	server: {
+		fs: {
+			// Permet de servir des fichiers depuis des répertoires parents
+			allow: ['..'],
+		},
+	},
 });
