@@ -1,46 +1,52 @@
-import js from '@eslint/js';
-import tsParser from '@typescript-eslint/parser';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
-import reactPlugin from 'eslint-plugin-react';
-import reactHooksPlugin from 'eslint-plugin-react-hooks';
-import reactRefreshPlugin from 'eslint-plugin-react-refresh';
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import storybookPlugin from 'eslint-plugin-storybook';
+import globals from 'globals';
 
 export default [
 	{
 		ignores: ['node_modules/**', 'dist/**', 'coverage/**', 'test-results/**'],
 	},
-	js.configs.recommended,
+	eslint.configs.recommended,
+	...tseslint.configs.recommended,
+	// Storybook config
 	{
-		files: ['**/*.{ts,tsx}'],
-		languageOptions: {
-			parser: tsParser,
-			parserOptions: {
-				project: './tsconfig.eslint.json',
-			},
-			globals: {
-				process: 'readonly',
-				document: 'readonly',
-				window: 'readonly',
-				console: 'readonly',
-			},
-		},
+		files: ['**/*.stories.@(ts|tsx|js|jsx|mdx)', '.storybook/**/*'],
 		plugins: {
-			'@typescript-eslint': tsPlugin,
-			react: reactPlugin,
-			'react-hooks': reactHooksPlugin,
-			'react-refresh': reactRefreshPlugin,
-			'simple-import-sort': simpleImportSort,
+			storybook: storybookPlugin,
 		},
 		rules: {
-			...tsPlugin.configs.recommended.rules,
-			...reactPlugin.configs.recommended.rules,
-			...reactHooksPlugin.configs.recommended.rules,
-			'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-			'@typescript-eslint/triple-slash-reference': 'off',
-			'react-hooks/rules-of-hooks': 'error',
-			'react-hooks/exhaustive-deps': 'warn',
-			'react/react-in-jsx-scope': 'off',
+			...storybookPlugin.configs.recommended.rules,
+		},
+	},
+	{
+		languageOptions: {
+			globals: {
+				...globals.browser,
+				...globals.node,
+			},
+			parserOptions: {
+				ecmaVersion: 'latest',
+				sourceType: 'module',
+			},
+		},
+		linterOptions: {
+			reportUnusedDisableDirectives: true,
+		},
+		settings: {
+			react: {
+				version: 'detect',
+			},
+		},
+		rules: {
+			'no-console': ['warn', { allow: ['warn', 'error'] }],
+			'no-debugger': 'warn',
+			'no-var': 'error',
+			'prefer-const': 'error',
+			'@typescript-eslint/no-non-null-assertion': 'warn',
 			'simple-import-sort/imports': [
 				'error',
 				{
@@ -62,18 +68,23 @@ export default [
 				{ blankLine: 'always', prev: 'import', next: '*' },
 				{ blankLine: 'any', prev: 'import', next: 'import' },
 			],
-			'react/jsx-uses-react': 'off',
-			'react/prop-types': 'off',
+		},
+	},
+	{
+		files: ['**/*.{ts,tsx}'],
+		plugins: {
+			'react-hooks': reactHooks,
+			'react-refresh': reactRefresh,
+			'simple-import-sort': simpleImportSort,
+		},
+		rules: {
+			'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+			'react-hooks/rules-of-hooks': 'error',
+			'react-hooks/exhaustive-deps': 'warn',
 			'@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
 			'@typescript-eslint/no-explicit-any': 'warn',
 			'@typescript-eslint/explicit-function-return-type': 'off',
 			'@typescript-eslint/explicit-module-boundary-types': 'off',
-			'@typescript-eslint/no-non-null-assertion': 'warn',
-		},
-		settings: {
-			react: {
-				version: 'detect',
-			},
 		},
 	},
 	// Specific rule for shadcn UI components
@@ -81,6 +92,18 @@ export default [
 		files: ['**/src/components/ui/**/*.{ts,tsx}'],
 		rules: {
 			'react-refresh/only-export-components': 'off',
+		},
+	},
+	// Override for Storybook files with relaxed rules
+	{
+		files: ['**/*.stories.@(ts|tsx|js|jsx|mdx)', '.storybook/**/*'],
+		rules: {
+			// Typical relaxed rules for stories
+			'@typescript-eslint/no-explicit-any': 'off',
+			'@typescript-eslint/no-unused-vars': 'warn',
+			'import/no-default-export': 'off',
+			'react/jsx-props-no-spreading': 'off',
+			'react/function-component-definition': 'off',
 		},
 	},
 ];
