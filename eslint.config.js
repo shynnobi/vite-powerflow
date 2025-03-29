@@ -2,7 +2,6 @@ import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
-import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import storybookPlugin from 'eslint-plugin-storybook';
 import globals from 'globals';
 
@@ -47,27 +46,6 @@ export default [
 			'no-var': 'error',
 			'prefer-const': 'error',
 			'@typescript-eslint/no-non-null-assertion': 'warn',
-			'simple-import-sort/imports': [
-				'error',
-				{
-					groups: [
-						// React and external packages
-						['^react', '^@?\\w'],
-						// Internal imports with alias (@)
-						['^@\\w'],
-						// Relative imports
-						['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
-						// Style imports
-						['^.+\\.css$'],
-					],
-				},
-			],
-			'simple-import-sort/exports': 'error',
-			'padding-line-between-statements': [
-				'error',
-				{ blankLine: 'always', prev: 'import', next: '*' },
-				{ blankLine: 'any', prev: 'import', next: 'import' },
-			],
 		},
 	},
 	{
@@ -75,7 +53,6 @@ export default [
 		plugins: {
 			'react-hooks': reactHooks,
 			'react-refresh': reactRefresh,
-			'simple-import-sort': simpleImportSort,
 		},
 		rules: {
 			'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
