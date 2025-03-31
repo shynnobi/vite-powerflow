@@ -86,11 +86,11 @@
 		"jsdom": "^26.0.0",
 		"lint-staged": "^15.2.2",
 		"prettier": "^3.2.5",
-		"react": "^19.0.0",
-		"react-dom": "^19.0.0",
+		"react": "^19.1.0",
+		"react-dom": "^19.1.0",
 		"rollup-plugin-visualizer": "^5.14.0",
 		"typescript": "^5.3.3",
-		"vite": "^6.2.3",
+		"vite": "^6.2.4",
 		"vitest": "^3.0.9"
 	},
 	"pnpm": {
