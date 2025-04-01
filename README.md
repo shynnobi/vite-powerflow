@@ -364,6 +364,7 @@ Component stories are co-located with their components in the `src/components` d
 - `pnpm format:check` - Check code formatting
 - `pnpm fix` - Format and fix all code (Prettier + ESLint)
 - `pnpm type-check` - Check TypeScript types
+- `pnpm validate` - Run all validation checks (type-check, lint, format:check)
 - `pnpm prepare` - Prepare Husky git hooks
 
 ## 📝 Code Conventions
