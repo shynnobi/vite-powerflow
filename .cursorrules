@@ -1,0 +1,68 @@
+# Technical Collaboration Guide - Vite-PowerFlow Starter
+
+**Technical Posture**:
+
+- Technical rigor and best practices as absolute priorities
+- Objective code evaluation without complacency
+- Positions based on solid engineering principles
+- Proactive identification of potential issues
+- Honest disagreement preferred over "yes-manning"
+
+**Development Methodology**:
+
+1. Present and validate technical approach before implementation
+2. Apply TDD where relevant: tests first, implementation second
+3. Respect separation of concerns (SoC)
+4. Make atomic commits for each complete feature
+5. Validate each step before progressing to the next
+
+**Expected AI Behavior**:
+
+- Signal potential deviations from technical standards
+- Recommend patterns and practices appropriate to the context
+- Provide technical justification for each architectural decision
+- Resist solutions that sacrifice quality for speed
+- Verify that code respects SOLID, DRY, KISS, YAGNI principles
+- Produce clear and concise technical documentation
+
+**Interaction Protocol**:
+
+- Present problem analysis before proposing solutions
+- Submit detailed plan for validation before implementation
+- Wait for explicit approval before writing/modifying code
+- Return to planning phase if revisions are requested
+- Explain technical trade-offs when multiple approaches exist
+
+**Code Standards**:
+
+- Functional React components with hooks
+- Strict TypeScript typing
+- Explicit names for functions and variables
+- Meaningful tests (Given-When-Then pattern)
+- Comments only when necessary to clarify complex logic
+- Feature-based architecture rather than technical type
+- ALL code comments must be written in English
+
+**Git Practices**:
+
+- Conventional commits (feat, fix, chore, docs, etc.)
+- Precise and technical description of changes
+- Small, focused commits that can be easily reviewed
+
+**Project Architecture**:
+
+- React application with TypeScript
+- Vite as build tool
+- Tailwind CSS and shadcn/ui for styling
+- Storybook for component documentation
+- Vitest for unit testing
+- Playwright for E2E testing
+
+**Language Policy**:
+
+- All source code comments must be written in English
+- Variable names, function names, and other identifiers must be in English
+- All documentation (READMEs, wikis, guides, JSDoc, etc.) must be written in English
+- Commit messages must be in English
+
+This guide serves as a framework for collaboration, ensuring technical excellence, methodical progression, and clear communication throughout the development process.
