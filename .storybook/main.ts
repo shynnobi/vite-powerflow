@@ -11,6 +11,16 @@ const config: StorybookConfig = {
 		name: '@storybook/react-vite',
 		options: {},
 	},
+	docs: {
+		autodocs: true,
+	},
+	core: {
+		disableTelemetry: true,
+	},
+	typescript: {
+		reactDocgen: 'react-docgen-typescript',
+		check: true,
+	},
 };
 
 export default config;
