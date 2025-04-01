@@ -1,29 +1,4 @@
 {
-	"compilerOptions": {
-		"target": "ES2020",
-		"module": "ESNext",
-		"lib": ["ES2020", "DOM", "DOM.Iterable"],
-		"moduleResolution": "bundler",
-		"allowJs": true,
-		"checkJs": true,
-		"noEmit": true,
-		"skipLibCheck": true,
-		"esModuleInterop": true,
-		"strict": true,
-		"jsx": "react-jsx"
-	},
-	"include": [
-		// Main source and test files
-		"src/**/*.ts",
-		"src/**/*.tsx",
-		"tests/**/*.ts",
-		"tests/**/*.tsx",
-		// Config files
-		"*.config.ts",
-		"vitest.workspace.ts",
-		"*.d.ts",
-		// Storybook files
-		".storybook/**/*.ts",
-		".storybook/**/*.tsx"
-	]
+	"extends": "./tsconfig.json",
+	"include": ["src", "tests", "*.ts", "*.js", ".storybook/**/*", "**/*.stories.tsx"]
 }
