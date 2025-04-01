@@ -6,6 +6,7 @@ A modern React starter kit with a robust development workflow, featuring compreh
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3.3-blue.svg)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-6.2.2-646CFF.svg)](https://vitejs.dev/)
 [![Tailwind](https://img.shields.io/badge/Tailwind-4.0.14-38B2AC.svg)](https://tailwindcss.com/)
+[![Storybook](https://img.shields.io/badge/Storybook-7.6.17-FF4785.svg)](https://storybook.js.org/)
 [![ESLint](https://img.shields.io/badge/ESLint-9.21.0-4B32C3.svg)](https://eslint.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
@@ -27,6 +28,7 @@ A modern React starter kit with a robust development workflow, featuring compreh
     - [Adding a New Path Alias](#adding-a-new-path-alias)
   - [🔗 Git Hooks](#-git-hooks)
   - [🧪 Testing](#-testing)
+  - [📚 Component Development with Storybook](#-component-development-with-storybook)
   - [🛠️ Available Scripts](#️-available-scripts)
   - [📝 Code Conventions](#-code-conventions)
   - [🤝 Contributing](#-contributing)
@@ -40,6 +42,7 @@ A modern React starter kit with a robust development workflow, featuring compreh
 - 🎨 **Styling & UI** :
   - 🌊 [Tailwind CSS](https://tailwindcss.com/) for utility-first styling
   - 🎯 [shadcn/ui](https://ui.shadcn.com/) for beautiful, accessible components
+  - 📚 [Storybook](https://storybook.js.org/) for component documentation and testing
   - 🌓 Dark mode support with theme switching
   - 🎭 [react-icons](https://react-icons.github.io/react-icons/) for beautiful icons
 - 🧪 **Complete Testing Setup** :
@@ -62,7 +65,7 @@ A modern React starter kit with a robust development workflow, featuring compreh
 ```
 ├── src/                  # Application source code
 │ ├── components/         # Reusable components
-│ │ └── ui/               # shadcn/ui components
+│ │ └── ui/               # shadcn/ui components with Storybook stories
 │ ├── store/              # Zustand state management
 │ ├── assets/             # Static assets
 │ ├── context/            # React context providers
@@ -83,6 +86,7 @@ A modern React starter kit with a robust development workflow, featuring compreh
 ├── vitest.config.ts      # Vitest configuration
 ├── playwright.config.ts  # Playwright E2E testing configuration
 ├── commitlint.config.js  # Commit message linting rules
+├── .storybook/          # Storybook configuration
 └── components.json       # shadcn/ui components configuration
 ```
 
@@ -310,11 +314,44 @@ These checks are configured to run automatically after install via the `postinst
   pnpm test:e2e:ui # Run E2E tests with Playwright UI
   ```
 
+## 📚 Component Development with Storybook
+
+Storybook is integrated for component development, documentation and testing:
+
+- Start Storybook development server:
+
+  ```bash
+  pnpm storybook
+  ```
+
+- Build Storybook for production:
+  ```bash
+  pnpm build-storybook
+  ```
+
+Key features:
+
+- Interactive component development environment
+- Component documentation with MDX
+- Component testing with actions and events
+- Dark mode support
+- Responsive viewport testing
+- Accessibility testing with a11y addon
+
+Component stories are co-located with their components in the `src/components` directory, making it easy to:
+
+- Keep documentation close to the implementation
+- Maintain documentation along with code changes
+- Share component usage examples
+- Test component variations
+
 ## 🛠️ Available Scripts
 
 - `pnpm dev` - Start development server
 - `pnpm build` - Build for production
 - `pnpm preview` - Preview production build
+- `pnpm storybook` - Start Storybook development server
+- `pnpm build-storybook` - Build Storybook for production
 - `pnpm test` - Run all tests
 - `pnpm test:verbose` - Run tests with detailed output
 - `pnpm test:watch` - Run tests in watch mode
