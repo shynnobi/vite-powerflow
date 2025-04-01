@@ -23,8 +23,29 @@ export default [
 	...compat.config({
 		extends: ['plugin:storybook/recommended'],
 	}),
+	// Configuration pour les fichiers de configuration TypeScript
+	{
+		files: ['*.config.ts'],
+		languageOptions: {
+			parser: tsParser,
+			parserOptions: {
+				project: './tsconfig.node.json',
+			},
+			globals: {
+				process: 'readonly',
+			},
+		},
+		plugins: {
+			'@typescript-eslint': tsPlugin,
+		},
+		rules: {
+			...tsPlugin.configs.recommended.rules,
+		},
+	},
+	// Configuration principale pour les fichiers TypeScript/React
 	{
 		files: ['**/*.{ts,tsx}'],
+		ignores: ['*.config.ts'],
 		languageOptions: {
 			parser: tsParser,
 			parserOptions: {
