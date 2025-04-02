@@ -32,9 +32,12 @@
 			"@pages/*": ["src/pages/*"],
 			"@shared/*": ["src/shared/*"],
 			"@store/*": ["src/store/*"],
-			"@tests/*": ["tests/*"]
-		}
+			"@tests/*": ["tests/*"],
+			"@utils/*": ["src/utils/*"]
+		},
+		"types": ["vitest/globals", "@testing-library/jest-dom"]
 	},
-	"include": ["src", "tests"],
-	"exclude": ["node_modules"]
+	"include": ["src", ".storybook", "tests"],
+	"exclude": ["node_modules", "vite.config.ts", "vitest.config.ts", "playwright.config.ts"],
+	"references": [{ "path": "./tsconfig.node.json" }]
 }
