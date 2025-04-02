@@ -9,7 +9,6 @@ const config: StorybookConfig = {
 		'@storybook/addon-a11y',
 		'@storybook/addon-measure',
 		'@storybook/addon-viewport',
-		'storybook-addon-performance',
 	],
 	framework: {
 		name: '@storybook/react-vite',
