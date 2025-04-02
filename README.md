@@ -3,12 +3,12 @@
 A modern React starter kit with a robust development workflow, featuring comprehensive tooling and industry best practices for professional applications.
 
 [![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](./CHANGELOG.md)
-[![React](https://img.shields.io/badge/React-19.0.0-blue.svg)](https://reactjs.org/)
+[![React](https://img.shields.io/badge/React-19.1.0-blue.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3.3-blue.svg)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-6.2.2-646CFF.svg)](https://vitejs.dev/)
-[![Tailwind](https://img.shields.io/badge/Tailwind-4.0.14-38B2AC.svg)](https://tailwindcss.com/)
-[![Storybook](https://img.shields.io/badge/Storybook-7.6.17-FF4785.svg)](https://storybook.js.org/)
-[![ESLint](https://img.shields.io/badge/ESLint-9.21.0-4B32C3.svg)](https://eslint.org/)
+[![Vite](https://img.shields.io/badge/Vite-6.2.4-646CFF.svg)](https://vitejs.dev/)
+[![Tailwind](https://img.shields.io/badge/Tailwind-4.0.17-38B2AC.svg)](https://tailwindcss.com/)
+[![Storybook](https://img.shields.io/badge/Storybook-8.6.11-FF4785.svg)](https://storybook.js.org/)
+[![ESLint](https://img.shields.io/badge/ESLint-9.23.0-4B32C3.svg)](https://eslint.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
@@ -39,7 +39,7 @@ A modern React starter kit with a robust development workflow, featuring compreh
 ## ✨ Features
 
 - ⚡️ **[Vite](https://vitejs.dev/)** - Lightning fast build tool
-- ⚛️ **[React 19](https://react.dev/)** - Latest React version with Hooks
+- ⚛️ **[React 19.1](https://react.dev/)** - Latest React version with Hooks
 - 📝 **[TypeScript](https://www.typescriptlang.org/)** - Static typing for robust code
 - 🎨 **Styling & UI** :
   - 🌊 [Tailwind CSS](https://tailwindcss.com/) for utility-first styling
@@ -352,8 +352,6 @@ Component stories are co-located with their components in the `src/components` d
 - `pnpm dev` - Start development server
 - `pnpm build` - Build for production
 - `pnpm preview` - Preview production build
-- `pnpm storybook` - Start Storybook development server
-- `pnpm build-storybook` - Build Storybook for production
 - `pnpm test` - Run all tests
 - `pnpm test:verbose` - Run tests with detailed output
 - `pnpm test:watch` - Run tests in watch mode
@@ -366,8 +364,10 @@ Component stories are co-located with their components in the `src/components` d
 - `pnpm format:check` - Check code formatting
 - `pnpm fix` - Format and fix all code (Prettier + ESLint)
 - `pnpm type-check` - Check TypeScript types
-- `pnpm validate` - Run all validation checks (type-check, lint, format:check)
+- `pnpm validate` - Run all validation checks (format:check, lint, type-check, test)
 - `pnpm prepare` - Prepare Husky git hooks
+- `pnpm storybook` - Start Storybook development server
+- `pnpm build-storybook` - Build Storybook for production
 
 ## 📝 Code Conventions
 
