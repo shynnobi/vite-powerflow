@@ -6,6 +6,10 @@ const config: StorybookConfig = {
 		'@storybook/addon-essentials',
 		'@chromatic-com/storybook',
 		'@storybook/experimental-addon-test',
+		'@storybook/addon-a11y',
+		'@storybook/addon-measure',
+		'@storybook/addon-viewport',
+		'storybook-addon-performance',
 	],
 	framework: {
 		name: '@storybook/react-vite',
