@@ -7,5 +7,5 @@
 		"allowSyntheticDefaultImports": true,
 		"target": "ESNext"
 	},
-	"include": ["vite.config.ts", "vitest.config.ts", "playwright.config.ts"]
+	"include": ["*.config.ts", "*.d.ts"]
 }
