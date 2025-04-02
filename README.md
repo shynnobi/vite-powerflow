@@ -2,6 +2,7 @@
 
 A modern React starter kit with a robust development workflow, featuring comprehensive tooling and industry best practices for professional applications.
 
+[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](./CHANGELOG.md)
 [![React](https://img.shields.io/badge/React-19.0.0-blue.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3.3-blue.svg)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-6.2.2-646CFF.svg)](https://vitejs.dev/)
@@ -33,6 +34,7 @@ A modern React starter kit with a robust development workflow, featuring compreh
   - [📝 Code Conventions](#-code-conventions)
   - [🤝 Contributing](#-contributing)
   - [📄 License](#-license)
+  - [📝 Changelog](#-changelog)
 
 ## ✨ Features
 
@@ -392,3 +394,7 @@ Component stories are co-located with their components in the `src/components` d
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
 
 The MIT License is a permissive license that allows you to use, modify, distribute, and sublicense the code for both private and commercial purposes, provided that the original copyright notice and the license text are included.
+
+## 📝 Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md) for a detailed list of changes between versions.
