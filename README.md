@@ -1,4 +1,4 @@
-# Vite PowerFlow
+# Vite PowerFlow v1.0.0
 
 A modern React starter kit with a robust development workflow, featuring comprehensive tooling and industry best practices for professional applications.
 
