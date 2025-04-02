@@ -5,14 +5,47 @@ import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import reactRefreshPlugin from 'eslint-plugin-react-refresh';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import { FlatCompat } from '@eslint/eslintrc';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const compat = new FlatCompat({
+	baseDirectory: __dirname,
+});
 
 export default [
 	{
 		ignores: ['node_modules/**', 'dist/**', 'coverage/**', 'test-results/**'],
 	},
 	js.configs.recommended,
+	...compat.config({
+		extends: ['plugin:storybook/recommended'],
+	}),
+	// Configuration pour les fichiers de configuration TypeScript
+	{
+		files: ['*.config.ts'],
+		languageOptions: {
+			parser: tsParser,
+			parserOptions: {
+				project: './tsconfig.node.json',
+			},
+			globals: {
+				process: 'readonly',
+			},
+		},
+		plugins: {
+			'@typescript-eslint': tsPlugin,
+		},
+		rules: {
+			...tsPlugin.configs.recommended.rules,
+		},
+	},
+	// Configuration principale pour les fichiers TypeScript/React
 	{
 		files: ['**/*.{ts,tsx}'],
+		ignores: ['*.config.ts'],
 		languageOptions: {
 			parser: tsParser,
 			parserOptions: {
@@ -41,6 +74,7 @@ export default [
 			'react-hooks/rules-of-hooks': 'error',
 			'react-hooks/exhaustive-deps': 'warn',
 			'react/react-in-jsx-scope': 'off',
+			'react/no-unescaped-entities': 'off',
 			'simple-import-sort/imports': [
 				'error',
 				{
