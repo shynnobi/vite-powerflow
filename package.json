@@ -74,6 +74,7 @@
 		"@storybook/addon-actions": "^8.6.11",
 		"@storybook/addon-essentials": "^8.6.11",
 		"@storybook/addon-measure": "^8.6.11",
+		"@storybook/addon-themes": "^8.6.11",
 		"@storybook/addon-viewport": "^8.6.11",
 		"@storybook/blocks": "^8.6.11",
 		"@storybook/experimental-addon-test": "^8.6.11",
