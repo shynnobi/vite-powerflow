@@ -1,69 +1,58 @@
-import React from 'react';
+import { withThemeByClassName } from '@storybook/addon-themes';
 import { INITIAL_VIEWPORTS, MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
-import type { Decorator, Preview } from '@storybook/react';
+import type { Preview } from '@storybook/react';
 
-import '../src/index.css'; // Import global styles including Tailwind
+import '../src/styles/globals.css';
 
-// Nos viewports personnalisés
+// Custom viewports
 const CUSTOM_VIEWPORTS = {
 	xs: {
-		name: 'XS Mobile',
+		name: 'xs (320px)',
 		styles: {
 			width: '320px',
 			height: '568px',
 		},
-		type: 'mobile',
 	},
 	sm: {
-		name: 'SM Mobile',
+		name: 'sm (640px)',
 		styles: {
-			width: '375px',
-			height: '667px',
+			width: '640px',
+			height: '768px',
 		},
-		type: 'mobile',
 	},
 	md: {
-		name: 'MD Tablet',
+		name: 'md (768px)',
 		styles: {
 			width: '768px',
 			height: '1024px',
 		},
-		type: 'tablet',
 	},
 	lg: {
-		name: 'LG Desktop',
+		name: 'lg (1024px)',
 		styles: {
 			width: '1024px',
 			height: '768px',
 		},
-		type: 'desktop',
 	},
 	xl: {
-		name: 'XL Desktop',
+		name: 'xl (1280px)',
 		styles: {
 			width: '1280px',
 			height: '800px',
 		},
-		type: 'desktop',
 	},
 	'2xl': {
-		name: '2XL Desktop',
+		name: '2xl (1536px)',
 		styles: {
 			width: '1536px',
-			height: '960px',
+			height: '864px',
 		},
-		type: 'desktop',
 	},
 };
 
-const withThemeDecorator: Decorator = Story => (
-	<div className="p-4 font-sans antialiased">
-		<Story />
-	</div>
-);
-
 const preview: Preview = {
 	parameters: {
+		actions: { argTypesRegex: '^on[A-Z].*' },
 		controls: {
 			matchers: {
 				color: /(background|color)$/i,
@@ -71,36 +60,24 @@ const preview: Preview = {
 			},
 		},
 		viewport: {
-			// Configuration des viewports
 			viewports: {
-				...CUSTOM_VIEWPORTS, // Nos breakpoints Tailwind personnalisés
-				...MINIMAL_VIEWPORTS, // Viewports minimaux (mobile, tablet, desktop)
-				...INITIAL_VIEWPORTS, // Tous les appareils prédéfinis
-			},
-			// Configuration par défaut
-			defaultViewport: 'responsive',
-			// Groupes de viewports
-			defaultOrientation: 'portrait',
-			styles: {
-				padding: '1rem',
+				...CUSTOM_VIEWPORTS, // Custom Tailwind breakpoints
+				...MINIMAL_VIEWPORTS, // Essential device sizes
+				...INITIAL_VIEWPORTS, // All predefined devices
 			},
 		},
-		backgrounds: {
-			default: 'light',
-			values: [
-				{
-					name: 'light',
-					value: '#ffffff',
-				},
-				{
-					name: 'dark',
-					value: '#0f172a', // Tailwind slate-900
-				},
-			],
-		},
+		// Default configuration
 		layout: 'centered',
 	},
-	decorators: [withThemeDecorator],
+	decorators: [
+		withThemeByClassName({
+			themes: {
+				light: 'light',
+				dark: 'dark',
+			},
+			defaultTheme: 'light',
+		}),
+	],
 };
 
 export default preview;
