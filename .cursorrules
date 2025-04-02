@@ -24,6 +24,9 @@
 - Resist solutions that sacrifice quality for speed
 - Verify that code respects SOLID, DRY, KISS, YAGNI principles
 - Produce clear and concise technical documentation
+- Process Management:
+  - Check for running processes before starting servers
+  - Handle port conflicts when detected
 
 **Interaction Protocol**:
 
