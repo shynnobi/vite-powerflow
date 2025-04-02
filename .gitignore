@@ -53,3 +53,5 @@ stats.html
 
 # Binary files
 bin/
+
+*storybook.log
