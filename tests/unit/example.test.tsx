@@ -11,6 +11,6 @@ describe('App Component', () => {
 				<App />
 			</BrowserRouter>
 		);
-		expect(screen.getByText(/Vite \+ React/i)).toBeInTheDocument();
+		expect(screen.getByText(/Vite PowerFlow/i)).toBeInTheDocument();
 	});
 });
