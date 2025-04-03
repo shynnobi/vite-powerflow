@@ -1,4 +1,4 @@
-# Vite PowerFlow v1.0.0
+# Vite PowerFlow ⚡ v1.0.0
 
 A modern React starter kit with a robust development workflow, featuring comprehensive tooling and industry best practices for professional applications.
 
@@ -11,6 +11,22 @@ A modern React starter kit with a robust development workflow, featuring compreh
 [![ESLint](https://img.shields.io/badge/ESLint-9.23.0-4B32C3.svg)](https://eslint.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
+
+<div align="center">
+
+## 👨‍💻 Author
+
+<a href="https://github.com/shynnobi">
+  <img src="https://github.com/shynnobi.png" width="100" alt="Shynn" style="border-radius: 100px"/>
+</a>
+
+**Shynn** · _Front-end Developer & 3D Artist_
+
+[![GitHub](https://img.shields.io/badge/GitHub-shynnobi-24292e.svg?style=for-the-badge&logo=github)](https://github.com/shynnobi)
+[![Bluesky](https://img.shields.io/badge/Bluesky-@shynnobi-0560ff.svg?style=for-the-badge&logo=bluesky)](https://bsky.app/profile/shynnobi.bsky.social)
+[![Instagram](https://img.shields.io/badge/Instagram-@shynnobi-E4405F.svg?style=for-the-badge&logo=instagram)](https://www.instagram.com/shynnobi_)
+
+</div>
 
 ## 📑 Table of Contents
 
