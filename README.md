@@ -10,7 +10,6 @@ A modern React starter kit with a robust development workflow, featuring compreh
 [![Storybook](https://img.shields.io/badge/Storybook-8.6.11-FF4785.svg)](https://storybook.js.org/)
 [![ESLint](https://img.shields.io/badge/ESLint-9.23.0-4B32C3.svg)](https://eslint.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
 <div align="center">
 
@@ -39,7 +38,6 @@ A modern React starter kit with a robust development workflow, featuring compreh
     - [Option 2: Using Dev Container (Recommended)](#option-2-using-dev-container-recommended)
     - [Dev Container Benefits](#dev-container-benefits)
     - [Git Configuration with Dev Container](#git-configuration-with-dev-container)
-  - [🌳 Git Branching Strategy](#-git-branching-strategy)
   - [🎨 Theming](#-theming)
   - [🔄 Path Aliases](#-path-aliases)
     - [Adding a New Path Alias](#adding-a-new-path-alias)
@@ -48,9 +46,8 @@ A modern React starter kit with a robust development workflow, featuring compreh
   - [📚 Component Development with Storybook](#-component-development-with-storybook)
   - [🛠️ Available Scripts](#️-available-scripts)
   - [📝 Code Conventions](#-code-conventions)
-  - [🤝 Contributing](#-contributing)
   - [📄 License](#-license)
-  - [📝 Changelog](#-changelog)
+  - [📋 Changelog](#-changelog)
 
 ## ✨ Features
 
@@ -199,28 +196,6 @@ git config --global user.email "your.email@example.com"
 
 If you're using the development container and your commits don't appear with your GitHub avatar, you may need to run these commands inside the container.
 
-## 🌳 Git Branching Strategy
-
-This starter follows a structured branching strategy out of the box:
-
-- `main` - Production-ready code
-- `dev` - Main development branch (automatically created on project initialization)
-- `feature/*` - New features (branch from `dev`)
-- `fix/*` - Bug fixes (branch from `dev`)
-
-When you create a new project from this template, it automatically:
-
-1. Initializes a Git repository
-2. Creates and switches to a `dev` branch
-3. Makes an initial commit with the base code
-
-This structure encourages:
-
-- Clean separation between production and development code
-- Feature-based development through branches
-- Proper code review process through pull requests
-- Safe deployment pipeline from `dev` to `main`
-
 ## 🎨 Theming
 
 The project includes a dark mode implementation using Tailwind CSS and React context:
@@ -296,25 +271,77 @@ import { formatDate } from '@utils/date';
 
 ## 🔗 Git Hooks
 
-This project uses Husky for Git hooks to ensure code quality before commits. The hooks are configured automatically when you install dependencies, and if needed, a Git repository will be initialized.
+This project includes pre-configured Git hooks using Husky and lint-staged to ensure code quality. These hooks run automatically when you commit code:
 
-If you encounter issues with Git hooks not running:
+### Pre-commit Workflow
+
+1. **Code Formatting** (via Prettier)
+
+   - Runs only on staged files via lint-staged
+   - Automatically fixes formatting issues
+   - Ensures consistent code style
+   - Handles indentation, spacing, and other formatting rules
+
+2. **Code Quality** (via ESLint)
+
+   - Runs on staged files
+   - Enforces coding standards
+   - Catches potential errors
+   - Ensures best practices are followed
+
+3. **Type Checking** (via TypeScript)
+
+   - Validates all TypeScript types
+   - Ensures type safety across the codebase
+   - Prevents type-related runtime errors
+
+4. **Testing** (via Vitest)
+   - Runs tests related to changed files
+   - Ensures no breaking changes
+   - Maintains code reliability
+
+### Commit Message Validation
+
+Uses commitlint to enforce [Conventional Commits](https://www.conventionalcommits.org/) format:
 
 ```bash
-# Configure Git to use the hooks in the .husky directory
-git config core.hooksPath .husky
+<type>[optional scope]: <description>
 
-# Make sure hooks have execute permissions
-chmod +x .husky/*
+[optional body]
+
+[optional footer(s)]
 ```
 
-The hooks run automatically on commit to ensure:
+**Types:**
 
-- Code is properly formatted (Prettier)
-- Linting rules are followed (ESLint)
-- Commit messages follow conventions (commitlint)
+- `feat` - New feature
+- `fix` - Bug fix
+- `docs` - Documentation changes
+- `style` - Code style changes (formatting, etc.)
+- `refactor` - Code refactoring
+- `test` - Adding or updating tests
+- `chore` - Maintenance tasks
+- `perf` - Performance improvements
+- `ci` - CI/CD changes
+- `revert` - Revert changes
 
-These checks are configured to run automatically after install via the `postinstall` script.
+**Examples:**
+
+```bash
+feat(ui): add new button component
+fix(api): handle null response from server
+docs: update installation instructions
+```
+
+### Configuration Files
+
+- `.husky/` - Hook scripts
+- `commitlint.config.js` - Commit message rules
+- `.lintstagedrc` - Staged files configuration
+
+The hooks are installed automatically when you run `pnpm install` through the `prepare` script.
+
+> **Note**: If you're using Windows, make sure you have Git Bash or a similar Unix-like environment installed for the hooks to work properly.
 
 ## 🧪 Testing
 
@@ -334,34 +361,25 @@ These checks are configured to run automatically after install via the `postinst
 
 ## 📚 Component Development with Storybook
 
-Storybook is integrated for component development, documentation and testing:
+This starter includes Storybook for component development and documentation:
 
-- Start Storybook development server:
+```bash
+# Start Storybook development server
+pnpm storybook
 
-  ```bash
-  pnpm storybook
-  ```
+# Build Storybook for production
+pnpm build-storybook
+```
 
-- Build Storybook for production:
-  ```bash
-  pnpm build-storybook
-  ```
+Features included in the setup:
 
-Key features:
-
-- Interactive component development environment
-- Component documentation with MDX
-- Component testing with actions and events
+- Interactive component playground
 - Dark mode support
 - Responsive viewport testing
-- Accessibility testing with a11y addon
+- Accessibility addon
+- Documentation with MDX support
 
-Component stories are co-located with their components in the `src/components` directory, making it easy to:
-
-- Keep documentation close to the implementation
-- Maintain documentation along with code changes
-- Share component usage examples
-- Test component variations
+> **Note**: Check out the [Storybook documentation](https://storybook.js.org/) for best practices and guidelines on how to structure and write your stories.
 
 ## 🛠️ Available Scripts
 
@@ -385,32 +403,12 @@ Component stories are co-located with their components in the `src/components` d
 - `pnpm storybook` - Start Storybook development server
 - `pnpm build-storybook` - Build Storybook for production
 
-## 📝 Code Conventions
-
-- **TypeScript**: Strict mode enabled
-- **ESLint**: Modern configuration with React and TypeScript support
-- **Commits**: Conventional Commits format
-  - `feat:` New features
-  - `fix:` Bug fixes
-  - `chore:` Maintenance tasks
-  - `docs:` Documentation changes
-  - `test:` Test modifications
-- **Components**: Follow shadcn/ui conventions for consistency
-- **Styling**: Use Tailwind CSS utility classes
-
-## 🤝 Contributing
-
-1. Create a feature branch
-2. Commit your changes
-3. Push to the branch
-4. Open a Pull Request
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
 
 The MIT License is a permissive license that allows you to use, modify, distribute, and sublicense the code for both private and commercial purposes, provided that the original copyright notice and the license text are included.
 
-## 📝 Changelog
+## 📋 Changelog
 
 See [CHANGELOG.md](./CHANGELOG.md) for a detailed list of changes between versions.
