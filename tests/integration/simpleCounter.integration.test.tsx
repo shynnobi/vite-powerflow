@@ -34,7 +34,7 @@ const SimpleCounter = () => {
 	);
 };
 
-describe('Example: Component with local state (useState)', () => {
+describe('SimpleCounter: Component with local state (useState)', () => {
 	it('should increment the counter when clicking the button', async () => {
 		const user = userEvent.setup();
 		render(<SimpleCounter />);
