@@ -19,6 +19,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated project documentation to reflect new data fetching capabilities
 - Enhanced README with TanStack Query version and documentation links
+- Improved test organization and conventions:
+  - Reorganized tests by domain (counter, posts, app)
+  - Aligned e2e test naming with Playwright conventions
+  - Improved test setup and mock management
+  - Enhanced test maintainability and readability
+
+### Improved
+
+- Enhanced development guidelines:
+  - Added ecosystem-specific conventions
+  - Strengthened safety measures for Git operations
+  - Improved code organization principles
 
 ## [1.0.0] - Initial Release
 
