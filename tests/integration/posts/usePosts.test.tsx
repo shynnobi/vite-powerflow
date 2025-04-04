@@ -1,9 +1,16 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { createWrapper } from '@tests/config/reactTestSetup';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import './setup';
 import { usePosts } from '@/lib/posts/usePosts';
+
+beforeEach(() => {
+	vi.resetAllMocks();
+});
+
+afterEach(() => {
+	vi.restoreAllMocks();
+});
 
 describe('usePosts', () => {
 	// Given a successful API response
