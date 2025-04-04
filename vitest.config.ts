@@ -26,7 +26,7 @@ export default defineConfig({
 	test: {
 		environment: 'jsdom',
 		globals: true,
-		setupFiles: ['./tests/setup.ts'],
+		setupFiles: ['./tests/config/reactTestSetup.tsx'],
 		include: ['./tests/{unit,integration}/**/*.{test,spec}.{ts,tsx}'],
 		exclude: ['./tests/e2e/**/*', '.storybook/**/*'],
 		reporters: ['default'],
