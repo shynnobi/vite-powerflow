@@ -1,6 +1,6 @@
 import { Spinner } from '../ui/spinner';
 
-import { usePosts } from '@/lib/react-query/hooks/useExample';
+import { usePosts } from '@/lib/posts/usePosts';
 
 export function PostsList() {
 	const { data: posts, isLoading, error } = usePosts();
