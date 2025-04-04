@@ -1,10 +1,17 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { createWrapper } from '@tests/config/reactTestSetup';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import './setup';
 import type { CreatePostInput, Post } from '@/lib/posts/post.types';
 import { useCreatePost } from '@/lib/posts/useCreatePost';
+
+beforeEach(() => {
+	vi.resetAllMocks();
+});
+
+afterEach(() => {
+	vi.restoreAllMocks();
+});
 
 const TEST_POST: CreatePostInput = {
 	title: 'Test Post',
