@@ -2,13 +2,13 @@
 
 A modern React starter kit with a robust development workflow, featuring comprehensive tooling and industry best practices for professional applications.
 
-[![Version](https://img.shields.io/badge/Version-1.1.0-blue.svg)](./CHANGELOG.md)
-[![React](https://img.shields.io/badge/React-19.1.0-blue.svg)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.3.3-blue.svg)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-6.2.4-646CFF.svg)](https://vitejs.dev/)
-[![Tailwind](https://img.shields.io/badge/Tailwind-4.0.17-38B2AC.svg)](https://tailwindcss.com/)
-[![Storybook](https://img.shields.io/badge/Storybook-8.6.11-FF4785.svg)](https://storybook.js.org/)
-[![ESLint](https://img.shields.io/badge/ESLint-9.23.0-4B32C3.svg)](https://eslint.org/)
+[![Version](https://img.shields.io/badge/Version-1.1-blue.svg)](./CHANGELOG.md)
+[![React](https://img.shields.io/badge/React-19.1-blue.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue.svg)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-6.2-646CFF.svg)](https://vitejs.dev/)
+[![Tailwind](https://img.shields.io/badge/Tailwind-4.0-38B2AC.svg)](https://tailwindcss.com/)
+[![Storybook](https://img.shields.io/badge/Storybook-8.6-FF4785.svg)](https://storybook.js.org/)
+[![ESLint](https://img.shields.io/badge/ESLint-9.23-4B32C3.svg)](https://eslint.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 
 <div align="center">
@@ -61,20 +61,20 @@ A modern React starter kit with a robust development workflow, featuring compreh
   - 🎭 [react-icons 5.5](https://react-icons.github.io/react-icons/) - Beautiful icons
   - 🌓 Dark mode support with theme switching
 - 🔄 **Data Management** :
-  - 🚀 [TanStack Query 5.71](https://tanstack.com/query/latest) - Powerful data fetching and caching
-  - 📦 [Zustand 5.0](https://zustand-demo.pmnd.rs/) - Simple and scalable state management
+  - 🚀 [TanStack Query 5.71.5](https://tanstack.com/query/latest) - Powerful data fetching and caching
+  - 📦 [Zustand 5.0.3](https://zustand-demo.pmnd.rs/) - Simple and scalable state management
 - 🧪 **Complete Testing Setup** :
-  - 🃏 [Vitest 3.0](https://vitest.dev/) - Unit and integration tests
-  - 🎭 [Playwright 1.51](https://playwright.dev/) - E2E testing
-  - 🧪 [@testing-library/react 16.2](https://testing-library.com/react) - Component testing
+  - 🃏 [Vitest 3.0.9](https://vitest.dev/) - Unit and integration tests
+  - 🎭 [Playwright 1.51.1](https://playwright.dev/) - E2E testing
+  - 🧪 [@testing-library/react 16.2.0](https://testing-library.com/react) - Component testing
 - 📏 **Code Quality** :
-  - [ESLint 9.0](https://eslint.org/) - Latest flat config
-  - [Prettier 3.2](https://prettier.io/) - Code formatting
-  - [TypeScript ESLint 8.27](https://typescript-eslint.io/) - TypeScript-specific rules
+  - [ESLint 9.23.0](https://eslint.org/) - Latest flat config
+  - [Prettier 3.2.5](https://prettier.io/) - Code formatting
+  - [TypeScript ESLint 8.27.0](https://typescript-eslint.io/) - TypeScript-specific rules
 - 🔍 **Pre-commit hooks** :
-  - [Husky 9.0](https://typicode.github.io/husky/) - Git hooks
-  - [lint-staged 15.2](https://github.com/okonet/lint-staged) - Staged files linting
-  - [commitlint 19.0](https://commitlint.js.org/) - Standardized commit messages
+  - [Husky 9.0.11](https://typicode.github.io/husky/) - Git hooks
+  - [lint-staged 15.2.2](https://github.com/okonet/lint-staged) - Staged files linting
+  - [commitlint 19.2.0](https://commitlint.js.org/) - Standardized commit messages
 
 ## 📦 Project Structure
 
@@ -194,3 +194,185 @@ The development container is configured to use your local Git configuration. Mak
 git config --global user.name "Your Name"
 git config --global user.email "your.email@example.com"
 ```
+
+## 🎨 Theming
+
+This project includes a complete dark/light theme system:
+
+- Automatic theme detection based on system preferences
+- Manual theme switching with persistent storage
+- Tailwind CSS theme variables
+- shadcn/ui theme integration
+
+### Usage
+
+```tsx
+// Access theme in components
+import { useTheme } from '@/context/theme/ThemeContext';
+
+function MyComponent() {
+	const { theme, setTheme } = useTheme();
+	// ...
+}
+```
+
+## 🔄 Path Aliases
+
+Path aliases are configured for better import organization:
+
+```typescript
+// Instead of
+import { Component } from '../../../components/Component';
+
+// Use
+import { Component } from '@components/Component';
+```
+
+### Available Aliases
+
+- `@/*` → `src/*`
+- `@components/*` → `src/components/*`
+- `@context/*` → `src/context/*`
+- `@lib/*` → `src/lib/*`
+- `@pages/*` → `src/pages/*`
+- `@shared/*` → `src/shared/*`
+- `@store/*` → `src/store/*`
+- `@tests/*` → `tests/*`
+- `@utils/*` → `src/utils/*`
+
+### Adding a New Path Alias
+
+1. Add the alias in `tsconfig.json`:
+
+   ```json
+   {
+   	"paths": {
+   		"@newAlias/*": ["src/newPath/*"]
+   	}
+   }
+   ```
+
+2. Add it in `vite.config.ts`:
+   ```typescript
+   resolve: {
+   	alias: [{ find: '@newAlias', replacement: resolve(__dirname, 'src/newPath') }];
+   }
+   ```
+
+## 🔗 Git Hooks
+
+This project uses Husky for Git hooks:
+
+### Pre-commit Hook
+
+Automatically runs before each commit:
+
+1. TypeScript type checking (`pnpm type-check`)
+2. Unit tests (`pnpm test`)
+3. Code formatting and linting (`pnpm lint-staged`)
+
+### Commit Message Hook
+
+Enforces conventional commit messages:
+
+- Format: `type(scope): description`
+- Types: build, chore, ci, docs, feat, fix, perf, refactor, style, test
+- Example: `feat(auth): add login form`
+
+## 🧪 Testing
+
+The project includes a comprehensive testing setup with three types of tests:
+
+### Unit Tests
+
+Located in `tests/unit/`, using Vitest and React Testing Library.
+
+```bash
+npm run test:unit        # Run unit tests
+npm run test:unit:watch  # Run unit tests in watch mode
+```
+
+### Integration Tests
+
+Located in `tests/integration/`, using Vitest and React Testing Library.
+
+```bash
+npm run test:integration        # Run integration tests
+npm run test:integration:watch  # Run integration tests in watch mode
+```
+
+### E2E Tests
+
+Located in `tests/e2e/`, using Playwright.
+
+```bash
+npm run test:e2e        # Run E2E tests
+npm run test:e2e:ui     # Run E2E tests with Playwright UI
+```
+
+### Examples
+
+The project includes example tests for reference:
+
+- Unit tests: Counter store tests in `tests/unit/counter/`
+- Integration tests: Posts feature tests in `tests/integration/posts/`
+- E2E tests: Basic app navigation in `tests/e2e/`
+
+### Test Setup
+
+Test configuration and setup is located in:
+
+- `tests/unit/setup.ts` - Global test setup for unit tests
+
+## 📚 Component Development with Storybook
+
+Storybook is integrated for component development and documentation:
+
+```bash
+pnpm storybook        # Start Storybook development server
+pnpm build-storybook  # Build static Storybook site
+```
+
+- Components are documented in `.stories.tsx` files
+- Located alongside component files
+- Includes component variants and states
+- Interactive documentation and testing
+- Accessible at http://localhost:6006 during development
+
+## 🛠️ Available Scripts
+
+```bash
+# Development
+pnpm dev              # Start development server
+pnpm build            # Build for production
+pnpm preview          # Preview production build
+
+# Testing
+pnpm test             # Run tests
+pnpm test:verbose     # Run tests with detailed output
+pnpm test:watch       # Run tests in watch mode
+pnpm test:coverage    # Generate test coverage report
+pnpm test:e2e         # Run E2E tests
+pnpm test:e2e:verbose # Run E2E tests with tracing enabled
+
+# Code Quality
+pnpm lint             # Run ESLint
+pnpm lint:fix         # Fix ESLint issues
+pnpm format           # Format code with Prettier
+pnpm format:check     # Check code formatting
+pnpm fix              # Fix all code quality issues
+pnpm type-check       # Run TypeScript type checking
+pnpm validate         # Run all code quality checks
+
+# Storybook
+pnpm storybook        # Start Storybook development server
+pnpm build-storybook  # Build static Storybook site
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📋 Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for a list of changes and version history.
