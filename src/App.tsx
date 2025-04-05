@@ -1,11 +1,10 @@
 import { type ReactElement } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { ThemeToggle } from '@components/ThemeToggle';
+import { ReactQueryProvider } from '@lib/react-query/provider';
 import About from '@pages/About';
 import Blog from '@pages/Blog';
 import Home from '@pages/Home';
-
-import { ReactQueryProvider } from './lib/react-query/provider';
 
 export default function App(): ReactElement {
 	return (
