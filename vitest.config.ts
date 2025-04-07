@@ -21,6 +21,7 @@ export default defineConfig({
 			{ find: '@shared', replacement: resolve(__dirname, 'src/shared') },
 			{ find: '@store', replacement: resolve(__dirname, 'src/store') },
 			{ find: '@tests', replacement: resolve(__dirname, 'tests') },
+			{ find: '@utils', replacement: resolve(__dirname, 'src/utils') },
 		],
 	},
 	test: {
