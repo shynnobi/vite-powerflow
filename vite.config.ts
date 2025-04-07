@@ -28,6 +28,7 @@ export default defineConfig({
 			{ find: '@pages', replacement: resolve(__dirname, 'src/pages') },
 			{ find: '@lib', replacement: resolve(__dirname, 'src/lib') },
 			{ find: '@shared', replacement: resolve(__dirname, 'src/shared') },
+			{ find: '@utils', replacement: resolve(__dirname, 'src/utils') },
 		],
 	},
 	test: {
