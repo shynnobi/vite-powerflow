@@ -1,14 +1,14 @@
-# Vite PowerFlow ⚡ v1.1.0
+# Vite PowerFlow ⚡
 
 A modern React starter kit with a robust development workflow, featuring comprehensive tooling and industry best practices for professional applications.
 
-[![Version](https://img.shields.io/badge/Version-1.1-blue.svg)](./CHANGELOG.md)
-[![React](https://img.shields.io/badge/React-19.1-blue.svg)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue.svg)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-6.2-646CFF.svg)](https://vitejs.dev/)
-[![Tailwind](https://img.shields.io/badge/Tailwind-4.0-38B2AC.svg)](https://tailwindcss.com/)
-[![Storybook](https://img.shields.io/badge/Storybook-8.6-FF4785.svg)](https://storybook.js.org/)
-[![ESLint](https://img.shields.io/badge/ESLint-9.23-4B32C3.svg)](https://eslint.org/)
+[![Version](https://img.shields.io/github/package-json/v/shynnobi/vite-powerflow)](./CHANGELOG.md)
+[![React](https://img.shields.io/npm/v/react?label=React&color=blue)](https://www.npmjs.com/package/react)
+[![TypeScript](https://img.shields.io/npm/v/typescript?label=TypeScript&color=blue)](https://www.npmjs.com/package/typescript)
+[![Vite](https://img.shields.io/npm/v/vite?label=Vite&color=646CFF)](https://www.npmjs.com/package/vite)
+[![Tailwind](https://img.shields.io/npm/v/tailwindcss?label=Tailwind&color=38B2AC)](https://www.npmjs.com/package/tailwindcss)
+[![Storybook](https://img.shields.io/npm/v/storybook?label=Storybook&color=FF4785)](https://www.npmjs.com/package/storybook)
+[![ESLint](https://img.shields.io/npm/v/eslint?label=ESLint&color=4B32C3)](https://www.npmjs.com/package/eslint)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 
 <div align="center">
@@ -51,30 +51,30 @@ A modern React starter kit with a robust development workflow, featuring compreh
 
 ## ✨ Features
 
-- ⚡️ **[Vite 6.2](https://vitejs.dev/)** - Lightning fast build tool
-- ⚛️ **[React 19.1](https://react.dev/)** - Latest version with Hooks
-- 📝 **[TypeScript 5.3](https://www.typescriptlang.org/)** - Static typing for robust code
+- ⚡️ **[Vite](https://vitejs.dev/)** - Lightning fast build tool (v6+)
+- ⚛️ **[React](https://react.dev/)** - Latest version with Hooks (v19+)
+- 📝 **[TypeScript](https://www.typescriptlang.org/)** - Static typing (v5+)
 - 🎨 **Styling & UI** :
-  - 🌊 [Tailwind CSS 4.0](https://tailwindcss.com/) - Utility-first styling
-  - 🎯 [shadcn/ui 0.8](https://ui.shadcn.com/) - Beautiful, accessible components
-  - 📚 [Storybook 8.6](https://storybook.js.org/) - Component documentation and testing
-  - 🎭 [react-icons 5.5](https://react-icons.github.io/react-icons/) - Beautiful icons
+  - 🌊 [Tailwind CSS](https://tailwindcss.com/) - Utility-first styling (v4+)
+  - 🎯 [shadcn/ui](https://ui.shadcn.com/) - Beautiful, accessible components
+  - 📚 [Storybook](https://storybook.js.org/) - Component documentation (v8+)
   - 🌓 Dark mode support with theme switching
+  - 🎭 [react-icons](https://react-icons.github.io/react-icons/) - Beautiful icons
 - 🔄 **Data Management** :
-  - 🚀 [TanStack Query 5.71.5](https://tanstack.com/query/latest) - Powerful data fetching and caching
-  - 📦 [Zustand 5.0.3](https://zustand-demo.pmnd.rs/) - Simple and scalable state management
+  - 🚀 [TanStack Query](https://tanstack.com/query/latest) - Powerful data fetching and caching
+  - 📦 [Zustand](https://zustand-demo.pmnd.rs/) - Simple and scalable state management
 - 🧪 **Complete Testing Setup** :
-  - 🃏 [Vitest 3.0.9](https://vitest.dev/) - Unit and integration tests
-  - 🎭 [Playwright 1.51.1](https://playwright.dev/) - E2E testing
-  - 🧪 [@testing-library/react 16.2.0](https://testing-library.com/react) - Component testing
+  - 🃏 [Vitest](https://vitest.dev/) - Unit and integration tests (v3+)
+  - 🎭 [Playwright](https://playwright.dev/) - E2E testing (v1.51+)
+  - 🧪 [@testing-library/react](https://testing-library.com/react) - Component testing
 - 📏 **Code Quality** :
-  - [ESLint 9.23.0](https://eslint.org/) - Latest flat config
-  - [Prettier 3.2.5](https://prettier.io/) - Code formatting
-  - [TypeScript ESLint 8.27.0](https://typescript-eslint.io/) - TypeScript-specific rules
+  - [ESLint](https://eslint.org/) - Latest with flat config (v9+)
+  - [Prettier](https://prettier.io/) - Code formatting
+  - [TypeScript ESLint](https://typescript-eslint.io/) - TypeScript rules
 - 🔍 **Pre-commit hooks** :
-  - [Husky 9.0.11](https://typicode.github.io/husky/) - Git hooks
-  - [lint-staged 15.2.2](https://github.com/okonet/lint-staged) - Staged files linting
-  - [commitlint 19.2.0](https://commitlint.js.org/) - Standardized commit messages
+  - [Husky](https://typicode.github.io/husky/) - Git hooks
+  - [lint-staged](https://github.com/okonet/lint-staged) - Staged files linting
+  - [commitlint](https://commitlint.js.org/) - Standardized commits
 
 ## 📦 Project Structure
 

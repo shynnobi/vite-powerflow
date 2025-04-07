@@ -16,12 +16,16 @@ const createPost = async (post: CreatePostInput): Promise<Post> => {
 	return response.json();
 };
 
+interface MutationContext {
+	previousPosts: Post[];
+}
+
 export function useCreatePost() {
 	const queryClient = useQueryClient();
 
 	return useMutation({
 		mutationFn: createPost,
-		onMutate: async newPost => {
+		onMutate: async (newPost: CreatePostInput) => {
 			await queryClient.cancelQueries({ queryKey: ['posts'] });
 			const previousPosts = queryClient.getQueryData<Post[]>(['posts']) ?? [];
 
@@ -32,7 +36,7 @@ export function useCreatePost() {
 
 			return { previousPosts };
 		},
-		onError: (_err, _newPost, context) => {
+		onError: (_err: Error, _newPost: CreatePostInput, context: MutationContext | undefined) => {
 			if (context?.previousPosts) {
 				queryClient.setQueryData(['posts'], context.previousPosts);
 			}
