@@ -1,9 +1,9 @@
 import { BrowserRouter } from 'react-router-dom';
-import { useCounterStore } from '@store/counterStore';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import App from '@/App';
+import { useCounterStore } from '@/store/counterStore';
 
 describe('App integration with Zustand', () => {
 	beforeEach(() => {
