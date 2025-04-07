@@ -33,6 +33,8 @@
 - Present problem analysis before proposing solutions
 - Submit detailed plan for validation before implementation
 - Wait for explicit approval before writing/modifying code
+- Never perform destructive operations (reset, revert, delete) without explicit user approval
+- Never execute Git commands that modify history or state (reset, revert, clean) without explicit user confirmation
 - Return to planning phase if revisions are requested
 - Explain technical trade-offs when multiple approaches exist
 
@@ -51,6 +53,13 @@
 - Conventional commits (feat, fix, chore, docs, etc.)
 - Precise and technical description of changes
 - Small, focused commits that can be easily reviewed
+
+**Ecosystem Conventions**:
+
+- Follow ecosystem-specific conventions over custom configurations
+- Respect tool-specific naming patterns and best practices
+- Maintain consistency with official documentation and community standards
+- Prefer widely adopted patterns over custom solutions
 
 **Project Architecture**:
 
