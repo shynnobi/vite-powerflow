@@ -1,146 +1,63 @@
 # Getting Started
 
-This guide will help you get started with Vite PowerFlow. Follow these steps to set up your development environment and start building your application.
+This guide will help you set up and run a new Vite PowerFlow project.
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed:
-
-- [Node.js](https://nodejs.org/) (v18 or higher)
-- [pnpm](https://pnpm.io/) (v8 or higher)
+- [Node.js](https://nodejs.org/) (v18+)
+- [pnpm](https://pnpm.io/) (v8+) - _recommended package manager_
 - [Git](https://git-scm.com/) (optional)
 
 ## Installation
 
-### Option 1: Using the Official CLI (Recommended)
+### Option 1: Using the CLI (Recommended)
 
-The easiest way to create a new Vite PowerFlow project is using our CLI:
+The fastest way to create a new project:
 
 ```bash
-# Using npx
+# Using npx (no installation required)
 npx create-powerflow-app my-app
 
-# Or using global installation
+# OR with global installation
 npm install -g create-powerflow-app
 create-powerflow-app my-app
 ```
 
-The CLI currently provides basic project setup capabilities:
+The CLI helps you:
 
-- Customize project name
-- Set project description
+- Set project name and description
 - Add author information
 - Initialize Git repository (optional)
 
 ### Option 2: Manual Installation
 
-1. Clone the repository:
-
 ```bash
-# Using degit
+# Using degit (no git history)
 pnpm degit shynnobi/vite-powerflow my-app
 
-# Or using git
+# OR using git clone (includes git history)
 git clone https://github.com/shynnobi/vite-powerflow.git my-app
-```
 
-2. Navigate to the project directory:
-
-```bash
+# Navigate to project and install dependencies
 cd my-app
-```
-
-3. Install dependencies:
-
-```bash
 pnpm install
 ```
 
-## Development
+## Available Scripts
 
-Start the development server:
+| Command              | Description                                            |
+| -------------------- | ------------------------------------------------------ |
+| `pnpm dev`           | Starts the development server at http://localhost:5173 |
+| `pnpm build`         | Builds the app for production in the `dist` folder     |
+| `pnpm preview`       | Previews the production build locally                  |
+| `pnpm test`          | Runs all tests with Vitest                             |
+| `pnpm test:unit`     | Runs unit tests only                                   |
+| `pnpm test:e2e`      | Runs E2E tests with Playwright                         |
+| `pnpm test:coverage` | Generates test coverage report                         |
+| `pnpm lint`          | Lints the codebase                                     |
+| `pnpm format`        | Formats code with Prettier                             |
+| `pnpm storybook`     | Starts Storybook for component development             |
 
-```bash
-pnpm dev
-```
+## Versioning
 
-This will start the development server at `http://localhost:5173`.
-
-## Building for Production
-
-Build your application for production:
-
-```bash
-pnpm build
-```
-
-The built files will be in the `dist` directory.
-
-## Testing
-
-Run the test suite:
-
-```bash
-# Unit tests
-pnpm test
-
-# E2E tests
-pnpm test:e2e
-
-# Test coverage
-pnpm test:coverage
-```
-
-## Documentation
-
-Generate documentation:
-
-```bash
-# Storybook
-pnpm storybook
-
-# API documentation
-pnpm docs
-```
-
-## Project Structure
-
-```
-my-app/
-├── src/
-│   ├── components/     # React components
-│   ├── pages/         # Page components
-│   ├── hooks/         # Custom React hooks
-│   ├── store/         # State management
-│   ├── types/         # TypeScript types
-│   ├── utils/         # Utility functions
-│   └── App.tsx        # Root component
-├── tests/
-│   ├── unit/          # Unit tests
-│   └── e2e/           # E2E tests
-├── docs/              # Documentation
-└── package.json       # Project configuration
-```
-
-## Versioning and Updates
-
-Vite PowerFlow follows [Semantic Versioning](https://semver.org/) and maintains a detailed changelog of all significant updates.
-
-### Changelog
-
-The [CHANGELOG.md](../CHANGELOG.md) file at the root of the project documents all notable changes for each version, including:
-
-- New features
-- Bug fixes
-- Breaking changes
-- Performance improvements
-- Documentation updates
-
-When updating Vite PowerFlow or working with the template, it's recommended to check the changelog to understand recent changes and potential impacts on your project.
-
-## Next Steps
-
-- Check out the [Feature Overview](./features.md)
-- Learn about the [Project Architecture](./architecture.md)
-- Explore the [Development Workflow](./development.md)
-- Read the [Configuration Options](./configuration.md)
+Vite PowerFlow follows [Semantic Versioning](https://semver.org/). Check the [CHANGELOG.md](../CHANGELOG.md) for updates.
