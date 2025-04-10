@@ -140,7 +140,7 @@ When updating Vite PowerFlow or working with the template, it's recommended to c
 
 ## Next Steps
 
-- Check out the [Features](./features.md) documentation
+- Check out the [Feature Overview](./features.md)
 - Learn about the [Project Architecture](./architecture.md)
-- Explore the [Development Guide](./development.md)
-- Read the [Configuration Guide](./configuration.md)
+- Explore the [Development Workflow](./development.md)
+- Read the [Configuration Options](./configuration.md)
