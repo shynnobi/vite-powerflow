@@ -34,6 +34,7 @@ pnpm dev
 - [Getting Started](docs/getting-started.md) - Detailed setup instructions
 - [Development Guide](docs/development.md) - Development workflow and tools
 - [Configuration](docs/configuration.md) - Customizing your project settings
+- [Changelog](CHANGELOG.md) - Version history and updates
 
 ## Credits
 
