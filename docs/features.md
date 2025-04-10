@@ -2,44 +2,40 @@
 
 Vite PowerFlow comes with a comprehensive set of features to help you build modern React applications:
 
-## Core Features
+## Core Technologies
 
-- ⚡️ [Vite](https://vitejs.dev/) - Lightning fast build tool
-- ⚛️ [React](https://reactjs.org/) - UI library
-- 📦 [TypeScript](https://www.typescriptlang.org/) - Type safety
-- 🎨 [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
-- 🎭 [shadcn/ui](https://ui.shadcn.com/) - Re-usable components
-- 📚 [Storybook](https://storybook.js.org/) - Component documentation
-- 🧪 [Vitest](https://vitest.dev/) - Unit testing
-- 🎭 [Playwright](https://playwright.dev/) - E2E testing
-- 📝 [ESLint](https://eslint.org/) - Code linting
-- 💅 [Prettier](https://prettier.io/) - Code formatting
+- ⚡️ [Vite](https://vitejs.dev/) (v6+) - Lightning fast build tool
+- ⚛️ [React](https://react.dev/) (v19+) - UI library
+- 📝 [TypeScript](https://www.typescriptlang.org/) (v5+) - Type safety
 
-## Development Features
+## UI & Styling
+
+- 🎨 [Tailwind CSS](https://tailwindcss.com/) (v4+) - Utility-first CSS framework
+- 🎭 [shadcn/ui](https://ui.shadcn.com/) - Reusable components
+- 🌓 Dark mode support with theme switching
+- 📚 [Storybook](https://storybook.js.org/) (v8+) - Component documentation
+
+## State & Data Management
+
+- 📦 [Zustand](https://zustand-demo.pmnd.rs/) (v5+) - State management
+- 🚀 [TanStack Query](https://tanstack.com/query/latest) - Data fetching and caching
+
+## Development Tools
 
 - 🔄 Hot Module Replacement (HMR)
-- 📱 Responsive design support
-- 🎯 Path aliases
-- 🔍 Type checking
-- 📦 Module bundling
-- 🚀 Production optimization
-- 📊 Bundle analysis
-- 🔒 Environment variables
-- 🎨 CSS modules support
-- 📱 PWA support
+- 🎯 Path aliases for clean imports
+- 🔒 Environment variables management
+- 📦 Optimized production builds
 
-## Testing Features
+## Quality Assurance
 
-- 🧪 Unit testing with Vitest
-- 🎭 Component testing with Storybook
-- 🌐 E2E testing with Playwright
-- 📊 Test coverage reporting
-- 🔄 Continuous Integration ready
+- 🧪 [Vitest](https://vitest.dev/) (v3+) - Unit and integration testing
+- 🎭 [Playwright](https://playwright.dev/) (v1.51+) - E2E testing
+- 📝 [ESLint](https://eslint.org/) (v9+) - Code linting with flat config
+- 💅 [Prettier](https://prettier.io/) - Code formatting
 
-## Documentation Features
+## Git Integration
 
-- 📚 Component documentation
-- 🎨 Design system
-- 📝 API documentation
-- 🔍 Usage examples
-- 📋 Best practices
+- 🔍 [Husky](https://typicode.github.io/husky/) - Git hooks
+- 📋 [lint-staged](https://github.com/okonet/lint-staged) - Staged files linting
+- 📊 [commitlint](https://commitlint.js.org/) - Standardized commits
