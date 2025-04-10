@@ -1,5 +1,9 @@
 # Project Architecture
 
+## Code Organization
+
+Vite PowerFlow follows a feature-based architecture pattern where code is organized by its domain functionality rather than technical type.
+
 ## Directory Structure
 
 ```
@@ -7,68 +11,74 @@
 │ ├── components/         # Reusable components
 │ │ └── ui/               # shadcn/ui components with Storybook stories
 │ ├── store/              # Zustand state management
-│ ├── assets/             # Static assets
+│ ├── assets/             # Static assets (images, fonts, etc.)
 │ ├── context/            # React context providers
-│ ├── pages/              # Page components
-│ ├── lib/                # Utility libraries
-│ ├── utils/              # Utility functions (logging, etc.)
+│ ├── pages/              # Page components and routing
+│ ├── lib/                # Third-party library configurations
+│ ├── utils/              # Utility functions and helpers
 │ └── shared/             # Shared types and interfaces
-├── tests/                # Tests
-│ ├── e2e/                # End-to-end tests
+├── tests/                # Test files
+│ ├── e2e/                # End-to-end tests (Playwright)
 │ ├── integration/        # Integration tests
 │ └── unit/               # Unit tests
-├── public/               # Static files
+├── public/               # Static files (served as-is)
 ├── .husky/               # Git hooks configuration
-├── eslint.config.js      # ESLint configuration
-├── tsconfig.json         # TypeScript configuration
-├── vite.config.ts        # Vite configuration
-├── tailwind.config.js    # Tailwind CSS configuration
-├── vitest.config.ts      # Vitest configuration
-├── playwright.config.ts  # Playwright E2E testing configuration
-├── commitlint.config.js  # Commit message linting rules
-├── .storybook/          # Storybook configuration
-└── components.json       # shadcn/ui components configuration
+├── docs/                 # Documentation files
+├── config files          # Configuration files (see configuration.md)
 ```
 
 ## Path Aliases
 
-Path aliases are configured for better import organization:
+Path aliases are configured for cleaner imports and better code organization:
 
 ```typescript
-// Instead of
-import { Component } from '../../../components/Component';
+// Instead of this:
+import { Button } from '../../../components/ui/Button';
 
-// Use
-import { Component } from '@components/Component';
+// Use this:
+import { Button } from '@components/ui/Button';
 ```
 
 ### Available Aliases
 
-- `@/*` → `src/*`
-- `@components/*` → `src/components/*`
-- `@context/*` → `src/context/*`
-- `@lib/*` → `src/lib/*`
-- `@pages/*` → `src/pages/*`
-- `@shared/*` → `src/shared/*`
-- `@store/*` → `src/store/*`
-- `@tests/*` → `tests/*`
-- `@utils/*` → `src/utils/*`
+| Alias           | Path               | Description             |
+| --------------- | ------------------ | ----------------------- |
+| `@/*`           | `src/*`            | All source files        |
+| `@components/*` | `src/components/*` | UI components           |
+| `@context/*`    | `src/context/*`    | Context providers       |
+| `@lib/*`        | `src/lib/*`        | Library configurations  |
+| `@pages/*`      | `src/pages/*`      | Page components         |
+| `@shared/*`     | `src/shared/*`     | Shared types/interfaces |
+| `@store/*`      | `src/store/*`      | State management        |
+| `@tests/*`      | `tests/*`          | Test files              |
+| `@utils/*`      | `src/utils/*`      | Utility functions       |
 
 ### Adding a New Path Alias
+
+To add a new path alias, you need to update both the TypeScript and Vite configurations:
 
 1. Add the alias in `tsconfig.json`:
 
    ```json
    {
-   	"paths": {
-   		"@newAlias/*": ["src/newPath/*"]
+   	"compilerOptions": {
+   		"paths": {
+   			"@newAlias/*": ["src/newPath/*"]
+   		}
    	}
    }
    ```
 
 2. Add it in `vite.config.ts`:
    ```typescript
-   resolve: {
-   	alias: [{ find: '@newAlias', replacement: resolve(__dirname, 'src/newPath') }];
-   }
+   export default defineConfig({
+   	resolve: {
+   		alias: [
+   			{
+   				find: '@newAlias',
+   				replacement: resolve(__dirname, 'src/newPath'),
+   			},
+   		],
+   	},
+   });
    ```
