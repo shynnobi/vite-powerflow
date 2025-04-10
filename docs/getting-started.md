@@ -122,6 +122,22 @@ my-app/
 └── package.json       # Project configuration
 ```
 
+## Versioning and Updates
+
+Vite PowerFlow follows [Semantic Versioning](https://semver.org/) and maintains a detailed changelog of all significant updates.
+
+### Changelog
+
+The [CHANGELOG.md](../CHANGELOG.md) file at the root of the project documents all notable changes for each version, including:
+
+- New features
+- Bug fixes
+- Breaking changes
+- Performance improvements
+- Documentation updates
+
+When updating Vite PowerFlow or working with the template, it's recommended to check the changelog to understand recent changes and potential impacts on your project.
+
 ## Next Steps
 
 - Check out the [Features](./features.md) documentation
