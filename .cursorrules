@@ -38,6 +38,16 @@
 - Return to planning phase if revisions are requested
 - Explain technical trade-offs when multiple approaches exist
 
+**GitHub CLI Integration**:
+
+- Always use `--json` flag with GitHub CLI commands to produce structured output
+- Pipe output through `jq` to filter and format results (e.g., `gh pr list --json x,y,z | jq '.[]'`)
+- Avoid interactive commands that require manual input or paging
+- For PR operations, prefer specific flags like `--title`, `--body` over interactive prompts
+- When showing PR details, use targeted queries instead of full views (e.g., commits only, files only)
+- Format complex outputs as single-line JSON objects to prevent terminal overflow
+- Test GitHub CLI commands with small result sets before running broader queries
+
 **Code Standards**:
 
 - Functional React components with hooks
