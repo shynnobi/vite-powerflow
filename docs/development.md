@@ -2,6 +2,24 @@
 
 This guide covers the essential development environment and workflow setup in Vite PowerFlow.
 
+## Table of Contents
+
+- [Available Scripts](#available-scripts)
+  - [Development](#development)
+  - [Testing](#testing)
+  - [Code Quality](#code-quality)
+  - [Component Documentation](#component-documentation)
+- [Development Tools](#development-tools)
+  - [VS Code Integration](#vs-code-integration)
+  - [Dev Container Support](#dev-container-support)
+- [Getting Started with Development](#getting-started-with-development)
+  - [Installation Options](#installation-options)
+- [Testing Environment](#testing-environment)
+- [Development Workflow](#development-workflow)
+  - [Branch Management](#branch-management)
+  - [Commit Messages](#commit-messages)
+- [Pre-commit Hooks](#pre-commit-hooks)
+
 ## Available Scripts
 
 The project includes a comprehensive set of npm scripts for various development tasks:
@@ -37,14 +55,12 @@ The project includes a comprehensive set of npm scripts for various development 
 | `pnpm type-check`   | Verify TypeScript types       |
 | `pnpm validate`     | Run all code quality checks   |
 
-### Documentation & Development
+### Component Documentation
 
 | Command                | Description                               |
 | ---------------------- | ----------------------------------------- |
 | `pnpm storybook`       | Start Storybook for component development |
 | `pnpm build-storybook` | Build Storybook for deployment            |
-
-> **Note**: For basic usage information, see the [Getting Started Guide](./getting-started.md#available-scripts).
 
 ## Development Tools
 
@@ -67,7 +83,48 @@ A complete development environment is configured in `.devcontainer/devcontainer.
 - Port forwarding for development server
 - Automatic dependency installation
 
-### Testing Environment
+**Benefits of using Dev Containers:**
+
+| Feature             | Local Development                       | With Dev Container                                |
+| ------------------- | --------------------------------------- | ------------------------------------------------- |
+| 🔄 Team consistency | ❌ May vary based on local setup and OS | ✅ Identical environment for all team members     |
+| 🛠️ Configuration    | ❌ Manual setup of tools and extensions | ✅ Automatic setup of the entire environment      |
+| 🌐 Cross-platform   | ⚠️ May encounter OS-specific issues     | ✅ Works identically on Windows, macOS, and Linux |
+
+When opening the project in VS Code, you'll be prompted to "Reopen in Container" if you have the Dev Containers extension. Simply click "Reopen in Container" when prompted to use this feature.
+
+## Getting Started with Development
+
+### Installation Options
+
+You can create a new project in three ways:
+
+```bash
+# Option 1: Using the official CLI (recommended)
+npx create-powerflow-app my-project
+
+# Option 2: Using degit (no Git history)
+npx degit shynnobi/vite-powerflow my-project
+
+# Option 3: Using Git clone (includes full history)
+git clone https://github.com/shynnobi/vite-powerflow my-project
+```
+
+> **Which method to choose?**
+>
+> - The **CLI** provides a guided setup experience with customization options
+> - **degit** downloads only the latest code without Git history, providing a clean start
+> - **git clone** includes the full history and Git references
+
+After installing, navigate to your project directory and start development:
+
+```bash
+cd my-project
+pnpm install
+pnpm dev
+```
+
+## Testing Environment
 
 The project includes a complete testing environment with:
 
