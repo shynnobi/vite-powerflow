@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Path aliases for cleaner imports throughout the codebase
+- GitHub CLI pre-installed in DevContainer for streamlined GitHub workflow
+- Structured GitHub CLI usage guidelines in `.cursorrules` for consistent developer experience
 
 ### Changed
 
@@ -20,10 +22,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reorganized test files by domain for better maintainability
 - Renamed e2e test files following Playwright conventions
 - Improved dependency management and documentation
+- Updated Vite from 6.2.5 to 6.2.6 to address security vulnerability
 
 ### Fixed
 
 - Added missing @utils path alias in configuration files
+- Patched server.fs.deny bypass vulnerability in Vite (CVE-pending)
 
 ### Documentation
 
