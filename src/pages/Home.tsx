@@ -23,7 +23,7 @@ export default function Home(): ReactElement {
 				Vite PowerFlow ⚡
 			</h1>
 			<p className="mt-4 max-w-2xl text-center text-muted-foreground">
-				A modern React starter kit with a robust development workflow, featuring comprehensive
+				A modern React starter template with a robust development workflow, featuring comprehensive
 				tooling and industry best practices for professional applications.
 			</p>
 
