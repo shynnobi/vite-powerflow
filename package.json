@@ -2,7 +2,7 @@
 	"name": "vite-powerflow",
 	"private": true,
 	"version": "1.1.0",
-	"description": "A modern React starter kit with a robust development workflow, powered by Vite, TypeScript, TailwindCSS and shadcn/ui. Includes comprehensive testing, linting, and CI/CD configurations following industry best practices.",
+	"description": "A modern React starter template with a robust development workflow, powered by Vite, TypeScript, TailwindCSS and shadcn/ui. Includes comprehensive testing, linting, and CI/CD configurations following industry best practices.",
 	"author": {
 		"name": "Shynn",
 		"url": "http://github.com/shynnobi"
@@ -21,7 +21,7 @@
 		"react",
 		"typescript",
 		"tailwindcss",
-		"starter-kit",
+		"starter-template",
 		"development-workflow",
 		"shadcn-ui",
 		"testing",
