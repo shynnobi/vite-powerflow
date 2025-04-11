@@ -5,6 +5,41 @@ All notable changes to the Vite PowerFlow project will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Path aliases for cleaner imports throughout the codebase
+
+### Changed
+
+- Updated terminology from "starter kit" to "starter template" throughout the project
+- Enhanced keywords in package.json to better reflect project features and technologies
+- Updated license copyright to correctly reference "Vite PowerFlow Starter Template"
+- Implemented modular documentation structure for improved organization
+- Reorganized test files by domain for better maintainability
+- Renamed e2e test files following Playwright conventions
+- Improved dependency management and documentation
+
+### Fixed
+
+- Added missing @utils path alias in configuration files
+
+### Documentation
+
+- Enhanced README with comprehensive structure and Credits section
+- Added navigation references in getting started documentation
+- Added changelog references to documentation
+- Enhanced .cursorrules with ecosystem conventions and safety measures
+- Improved development guidelines with detailed sections and table of contents
+- Removed CONTRIBUTING.md and updated README to reflect changes in project structure
+- Added social media badges to author section
+
+### Dependencies
+
+- Updated development dependencies with security patches and new features
+- Updated production dependencies for improved performance and compatibility
+
 ## [1.1.0] - 2025-04-03
 
 ### Added
