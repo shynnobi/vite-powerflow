@@ -4,7 +4,7 @@ Vite PowerFlow comes with a comprehensive set of features to help you build mode
 
 ## Core Technologies
 
-- ⚡️ [Vite](https://vitejs.dev/) (v6+) - Lightning fast build tool
+- ⚡️ [Vite](https://vitejs.dev/) (v6.2.6) - Lightning fast build tool
 - ⚛️ [React](https://react.dev/) (v19+) - UI library
 - 📝 [TypeScript](https://www.typescriptlang.org/) (v5+) - Type safety
 
