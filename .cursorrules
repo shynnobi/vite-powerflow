@@ -1,4 +1,4 @@
-# Technical Collaboration Guide - Vite-PowerFlow Starter
+# Technical Collaboration Guide for Cursor
 
 **Technical Posture**:
 
@@ -38,6 +38,16 @@
 - Return to planning phase if revisions are requested
 - Explain technical trade-offs when multiple approaches exist
 
+**GitHub CLI Integration**:
+
+- Always use `--json` flag with GitHub CLI commands to produce structured output
+- Pipe output through `jq` to filter and format results (e.g., `gh pr list --json x,y,z | jq '.[]'`)
+- Avoid interactive commands that require manual input or paging
+- For PR operations, prefer specific flags like `--title`, `--body` over interactive prompts
+- When showing PR details, use targeted queries instead of full views (e.g., commits only, files only)
+- Format complex outputs as single-line JSON objects to prevent terminal overflow
+- Test GitHub CLI commands with small result sets before running broader queries
+
 **Code Standards**:
 
 - Functional React components with hooks
@@ -61,14 +71,24 @@
 - Maintain consistency with official documentation and community standards
 - Prefer widely adopted patterns over custom solutions
 
-**Project Architecture**:
+**Documentation Versioning**:
 
-- React application with TypeScript
-- Vite as build tool
-- Tailwind CSS and shadcn/ui for styling
-- Storybook for component documentation
-- Vitest for unit testing
-- Playwright for E2E testing
+- Package.json/dependencies files: Use precise semver versions (^6.2.6)
+- CHANGELOG.md: Use precise versions (6.2.6) with detailed changelog entries
+- Technical documentation: Use major or minor versions only (Vite 6.x) for installation guides
+- UI/Marketing text: Use major versions only (Vite 6) to minimize maintenance
+- Maintain consistency across similar components in the documentation
+- When updating dependencies for security, only update relevant version references
+
+**Project Architecture Principles**:
+
+- Adapt architecture to project requirements rather than forcing specific technologies
+- Follow domain-driven design where appropriate
+- Maintain clear separation of concerns (UI, business logic, data access)
+- Prioritize modularity and reusability of components
+- Ensure consistent patterns within each architectural layer
+- Document architecture decisions and their rationales
+- Consider scalability, performance, and maintainability in all design choices
 
 **Language Policy**:
 
