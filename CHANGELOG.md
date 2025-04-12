@@ -5,6 +5,46 @@ All notable changes to the Vite PowerFlow project will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Path aliases for cleaner imports throughout the codebase
+- GitHub CLI pre-installed in DevContainer for streamlined GitHub workflow
+- Structured GitHub CLI usage guidelines in `.cursorrules` for consistent developer experience
+- Vite 6 build system
+
+### Changed
+
+- Updated terminology from "starter kit" to "starter template" throughout the project
+- Enhanced keywords in package.json to better reflect project features and technologies
+- Updated license copyright to correctly reference "Vite PowerFlow Starter Template"
+- Implemented modular documentation structure for improved organization
+- Reorganized test files by domain for better maintainability
+- Renamed e2e test files following Playwright conventions
+- Improved dependency management and documentation
+- Updated Vite from 6.2.5 to 6.2.6 to address security vulnerability
+
+### Fixed
+
+- Added missing @utils path alias in configuration files
+- Patched server.fs.deny bypass vulnerability in Vite (CVE-pending)
+
+### Documentation
+
+- Enhanced README with comprehensive structure and Credits section
+- Added navigation references in getting started documentation
+- Added changelog references to documentation
+- Enhanced .cursorrules with ecosystem conventions and safety measures
+- Improved development guidelines with detailed sections and table of contents
+- Removed CONTRIBUTING.md and updated README to reflect changes in project structure
+- Added social media badges to author section
+
+### Dependencies
+
+- Updated development dependencies with security patches and new features
+- Updated production dependencies for improved performance and compatibility
+
 ## [1.1.0] - 2025-04-03
 
 ### Added
@@ -37,18 +77,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Core Features
-  - Vite 6.2 build system
-  - React 19.1 with TypeScript 5.3
-  - Tailwind CSS 4.0 with shadcn/ui 0.8
-  - Zustand 5.0 state management
+  - Vite 6 build system
+  - React 19 with TypeScript 5
+  - Tailwind CSS 4 with shadcn/ui
+  - Zustand 5 state management
   - Comprehensive testing setup (Vitest, Playwright, Testing Library)
-  - ESLint 9.0 and Prettier 3.2
-  - Git hooks with Husky 9.0
+  - ESLint 9 and Prettier 3
+  - Git hooks with Husky 9
 - Development Environment
   - Dev Container support
   - Hot Module Replacement (HMR)
   - TypeScript path aliases
-  - Storybook 8.6 integration
+  - Storybook 8 integration
 - Documentation
   - Detailed README
   - Code conventions
