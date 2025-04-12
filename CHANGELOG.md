@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Path aliases for cleaner imports throughout the codebase
 - GitHub CLI pre-installed in DevContainer for streamlined GitHub workflow
 - Structured GitHub CLI usage guidelines in `.cursorrules` for consistent developer experience
-- Vite 6 build system
+- Vite 6.2.6 build system
 
 ### Changed
 
@@ -77,18 +77,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Core Features
-  - Vite 6 build system
-  - React 19 with TypeScript 5
-  - Tailwind CSS 4 with shadcn/ui
-  - Zustand 5 state management
-  - Comprehensive testing setup (Vitest, Playwright, Testing Library)
-  - ESLint 9 and Prettier 3
-  - Git hooks with Husky 9
+  - Vite 6.2.6 build system
+  - React 19.1.0 with TypeScript 5.8.3
+  - Tailwind CSS 4.0.0 with shadcn/ui 0.8.0
+  - Zustand 5.0.1 state management
+  - Comprehensive testing setup (Vitest 3.1.1, Playwright 1.51.1, Testing Library)
+  - ESLint 9.0.0 and Prettier 3.2.5
+  - Git hooks with Husky 9.0.1
 - Development Environment
   - Dev Container support
   - Hot Module Replacement (HMR)
   - TypeScript path aliases
-  - Storybook 8 integration
+  - Storybook 8.6.12 integration
 - Documentation
   - Detailed README
   - Code conventions
