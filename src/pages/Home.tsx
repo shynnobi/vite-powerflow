@@ -31,13 +31,13 @@ export default function Home(): ReactElement {
 				<div className="rounded-lg border bg-card p-4 text-card-foreground">
 					<h2 className="text-lg font-semibold">Key Features</h2>
 					<ul className="mt-2 space-y-1 text-sm text-muted-foreground">
-						<li>⚡️ Vite 6.2.6 - Lightning fast build tool</li>
-						<li>⚛️ React 19.1 - Latest version with Hooks</li>
-						<li>📝 TypeScript 5.3 - Static typing</li>
-						<li>🎨 Tailwind 4.0 & shadcn/ui 0.8 - Modern UI</li>
-						<li>🔄 TanStack Query 5.71 - Data synchronization</li>
-						<li>📦 Zustand 5.0 - State management</li>
-						<li>🧪 Vitest 3.0 & Playwright 1.51 - Testing</li>
+						<li>⚡️ Vite 6 - Lightning fast build tool</li>
+						<li>⚛️ React 19 - Latest version with Hooks</li>
+						<li>📝 TypeScript 5 - Static typing</li>
+						<li>🎨 Tailwind 4 & shadcn/ui - Modern UI</li>
+						<li>🔄 TanStack Query 5 - Data synchronization</li>
+						<li>📦 Zustand 5 - State management</li>
+						<li>🧪 Vitest 3 & Playwright 1 - Testing</li>
 					</ul>
 				</div>
 			</div>
