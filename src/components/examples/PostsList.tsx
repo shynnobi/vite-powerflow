@@ -1,5 +1,4 @@
-import { Spinner } from '@components/ui/spinner';
-
+import { Spinner } from '@/components/ui/spinner';
 import type { Post } from '@/lib/posts/post.types';
 import { usePosts } from '@/lib/posts/usePosts';
 

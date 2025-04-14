@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { ThemeProviderContext } from '@context/theme/ThemeContext';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { ThemeToggle } from './ThemeToggle';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { ThemeProviderContext } from '@/context/theme/ThemeContext';
 
 const ThemeProvider = ({
 	children,
