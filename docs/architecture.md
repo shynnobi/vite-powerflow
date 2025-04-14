@@ -36,34 +36,34 @@ Path aliases are configured for cleaner imports and better code organization:
 import { Button } from '../../../components/ui/Button';
 
 // Use this:
-import { Button } from '@components/ui/Button';
+import { Button } from '@/components/ui/Button';
 ```
 
 ### Available Aliases
 
-| Alias           | Path               | Description             |
-| --------------- | ------------------ | ----------------------- |
-| `@/*`           | `src/*`            | All source files        |
-| `@components/*` | `src/components/*` | UI components           |
-| `@context/*`    | `src/context/*`    | Context providers       |
-| `@lib/*`        | `src/lib/*`        | Library configurations  |
-| `@pages/*`      | `src/pages/*`      | Page components         |
-| `@shared/*`     | `src/shared/*`     | Shared types/interfaces |
-| `@store/*`      | `src/store/*`      | State management        |
-| `@tests/*`      | `tests/*`          | Test files              |
-| `@utils/*`      | `src/utils/*`      | Utility functions       |
+| Alias            | Path               | Description            |
+| ---------------- | ------------------ | ---------------------- |
+| `@/*`            | `src/*`            | All source files       |
+| `@/components/*` | `src/components/*` | UI components          |
+| `@/context/*`    | `src/context/*`    | Context providers      |
+| `@/lib/*`        | `src/lib/*`        | Library configurations |
+| `@/pages/*`      | `src/pages/*`      | Page components        |
+| `@/types/*`      | `src/types/*`      | Type definitions       |
+| `@/store/*`      | `src/store/*`      | State management       |
+| `@/tests/*`      | `tests/*`          | Test files             |
+| `@/utils/*`      | `src/utils/*`      | Utility functions      |
 
 ### Adding a New Path Alias
 
-To add a new path alias, you need to update both the TypeScript and Vite configurations:
+To add a new path alias, you need to update the TypeScript and Vite configurations:
 
-1. Add the alias in `tsconfig.json`:
+1. Add the alias in `tsconfig.json` and `tsconfig.app.json`:
 
    ```json
    {
    	"compilerOptions": {
    		"paths": {
-   			"@newAlias/*": ["src/newPath/*"]
+   			"@/newAlias/*": ["src/newPath/*"]
    		}
    	}
    }
@@ -75,7 +75,7 @@ To add a new path alias, you need to update both the TypeScript and Vite configu
    	resolve: {
    		alias: [
    			{
-   				find: '@newAlias',
+   				find: '@/newAlias',
    				replacement: resolve(__dirname, 'src/newPath'),
    			},
    		],
