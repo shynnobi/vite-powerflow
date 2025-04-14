@@ -1,10 +1,9 @@
 import { type ReactElement } from 'react';
 import { FiGithub, FiInstagram, FiMinus, FiPlus, FiRefreshCw } from 'react-icons/fi';
 import { SiBluesky } from 'react-icons/si';
-import reactLogo from '@assets/react.svg';
-import { useCounterStore } from '@store/counterStore';
 
-import viteLogo from '/vite.svg';
+import reactLogo from '@/assets/react.svg';
+import { useCounterStore } from '@/store/counterStore';
 
 export default function Home(): ReactElement {
 	const { count, increment, decrement, reset } = useCounterStore();
@@ -13,10 +12,7 @@ export default function Home(): ReactElement {
 		<div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
 			<div className="flex gap-4">
 				<a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-					<img src={viteLogo} className="h-24 p-6" alt="Vite logo" />
-				</a>
-				<a href="https://react.dev" target="_blank" rel="noreferrer">
-					<img src={reactLogo} className="h-24 animate-spin-slow p-6" alt="React logo" />
+					<img src={reactLogo} className="h-24 p-6" alt="React logo" />
 				</a>
 			</div>
 			<h1 className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-5xl font-black text-transparent">
