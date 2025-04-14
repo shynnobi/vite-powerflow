@@ -25,15 +25,15 @@
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["src/*"],
-			"@assets/*": ["src/assets/*"],
-			"@components/*": ["src/components/*"],
-			"@context/*": ["src/context/*"],
-			"@lib/*": ["src/lib/*"],
-			"@pages/*": ["src/pages/*"],
-			"@shared/*": ["src/shared/*"],
-			"@store/*": ["src/store/*"],
-			"@tests/*": ["tests/*"],
-			"@utils/*": ["src/utils/*"]
+			"@/assets/*": ["src/assets/*"],
+			"@/components/*": ["src/components/*"],
+			"@/context/*": ["src/context/*"],
+			"@/lib/*": ["src/lib/*"],
+			"@/pages/*": ["src/pages/*"],
+			"@/store/*": ["src/store/*"],
+			"@/tests/*": ["tests/*"],
+			"@/types/*": ["src/types/*"],
+			"@/utils/*": ["src/utils/*"]
 		},
 		"types": ["vitest/globals", "@testing-library/jest-dom"]
 	},
