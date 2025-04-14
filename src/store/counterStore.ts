@@ -1,6 +1,7 @@
-import { logger } from '@utils/logger';
 import { create } from 'zustand';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
+
+import { logger } from '@/utils/logger';
 
 /**
  * Counter state interface
