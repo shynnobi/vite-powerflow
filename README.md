@@ -158,7 +158,7 @@ Path aliases are configured for cleaner imports:
 import { Button } from '../../../components/ui/Button';
 
 // Use this:
-import { Button } from '@components/ui/Button';
+import { Button } from '@/components/ui/Button';
 ```
 
 Available aliases include `@/*`, `@components/*`, `@context/*`, `@lib/*`, `@pages/*`, `@store/*`, `@utils/*`, and more. See [Architecture Documentation](docs/architecture.md) for a complete list.

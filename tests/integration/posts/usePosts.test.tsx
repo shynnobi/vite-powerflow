@@ -1,6 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react';
-import { createWrapper } from '@tests/config/reactTestSetup';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { createWrapper } from '../../config/reactTestSetup';
 
 import { usePosts } from '@/lib/posts/usePosts';
 
