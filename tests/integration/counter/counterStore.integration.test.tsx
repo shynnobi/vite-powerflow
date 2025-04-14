@@ -1,7 +1,8 @@
 /// <reference lib="dom" />
-import { useCounterStore } from '@store/counterStore';
 import { act, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+
+import { useCounterStore } from '@/store/counterStore';
 
 describe('Counter Store Integration', () => {
 	// Clear localStorage before each test
