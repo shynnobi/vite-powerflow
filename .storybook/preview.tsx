@@ -2,7 +2,7 @@ import { withThemeByClassName } from '@storybook/addon-themes';
 import { INITIAL_VIEWPORTS, MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
 import type { Preview } from '@storybook/react';
 
-import '../src/styles/globals.css';
+import '../src/index.css';
 
 // Custom viewports
 const CUSTOM_VIEWPORTS = {
@@ -52,7 +52,10 @@ const CUSTOM_VIEWPORTS = {
 
 const preview: Preview = {
 	parameters: {
-		actions: { argTypesRegex: '^on[A-Z].*' },
+		actions: {
+			// Removed argTypesRegex which causes the warning
+			// Use fn() from '@storybook/test' explicitly in each Story instead
+		},
 		controls: {
 			matchers: {
 				color: /(background|color)$/i,
