@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added missing @utils path alias in configuration files
 - Patched server.fs.deny bypass vulnerability in Vite (CVE-pending)
+- Corrected Storybook CSS import path to fix startup issues
+- Removed deprecated argTypesRegex from Storybook actions config to resolve warnings
 
 ### Documentation
 
