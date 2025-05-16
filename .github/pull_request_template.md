@@ -1,34 +1,42 @@
-## Description
+## Changes implemented
 
-<!-- Description of the changes in this PR -->
+## <!-- List the main components or features implemented -->
 
-## Type of Change
+-
+-
 
-<!-- Please check the one that applies to this PR using "x". -->
+## Tasks completed
 
-- [ ] 📦 Package Updates
-  - [ ] Patch Update (Bug fixes, documentation updates)
-  - [ ] Minor Update (New features, non-breaking changes)
-  - [ ] Major Update (Breaking changes, requires careful review)
-- [ ] 📝 Documentation updates
-- [ ] 🐛 Bug fix
+<!-- List the tasks completed from the development plan with checkmarks -->
+
+- [ ] TASK-ID: Description
+- [ ] TASK-ID: Description
+- [ ] TASK-ID: Description
+
+## Type of change
+
+<!-- Mark the appropriate option(s) with an "x" -->
+
 - [ ] ✨ New feature
-- [ ] 🔨 Refactoring
+- [ ] 🐛 Bug fix
+- [ ] ♻️ Refactoring
+- [ ] 📝 Documentation
+- [ ] 🔧 Configuration
 
-## Validation
+## Quality assurance
 
-<!-- Please check all that apply. -->
+<!-- Mark all that apply with an "x" -->
 
-- [ ] The code changes have been tested
-- [ ] All tests pass
-- [ ] Lint checks pass
-- [ ] Type checks pass
-- [ ] Documentation has been updated (if needed)
-- [ ] No breaking changes introduced
+- [ ] 🧪 BDD/TDD approach followed
+- [ ] ✅ Unit tests added/updated
+- [ ] 🔄 Integration tests added/updated
+- [ ] 📚 Storybook stories updated
+- [ ] 🧠 Manual testing performed
+- [ ] 🔍 All existing tests pass
 
-## Additional Notes
+## Additional notes
 
-<!-- Any additional information that would be helpful for reviewers -->
+<!-- Any other information that would be useful for reviewers -->
 
 ---
 
