@@ -10,7 +10,7 @@
 - [x] **SP-CORE-4**: Set up and integrate Prettier for consistent code formatting, including pre-commit hook integration.
 - [x] **SP-CORE-5**: Implement pre-commit hooks using `husky` and `lint-staged` to automate linting, formatting, type checks, and commit message validation (`commitlint`).
 - [x] **SP-CORE-6**: Initialize a `CHANGELOG.md` file following the "Keep a Changelog" format.
-- [ ] **SP-CORE-7**: Add a standard `pull_request_template.md` to the `.github` folder.
+- [x] **SP-CORE-7**: Add a standard `pull_request_template.md` to the `.github` folder.
 - [ ] **SP-CORE-8**: Configure `dependabot.yml` in `.github` for automated dependency updates (referencing `vpf-todo-app`'s setup).
 - [ ] **SP-CORE-9**: Establish a basic CI workflow using GitHub Actions (`.github/workflows/`) for linting, testing, and building on pushes/PRs.
 
