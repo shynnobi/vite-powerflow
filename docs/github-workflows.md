@@ -185,3 +185,7 @@ Once your repository is set up with the correct permissions and workflows:
 - When a Dependabot PR is created, verify that:
   - The PR is automatically approved
   - Auto-merge is enabled (you'll see a note in the PR that "This pull request will be automatically merged")
+
+---
+
+**Note:** For information on setting up and using the GitHub CLI (`gh`) for manual or AI-assisted GitHub operations, which can complement these automated workflows, please see the [AI GitHub Integration Guide](./ai-github-integration.md).
