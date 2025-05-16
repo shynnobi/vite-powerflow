@@ -1,0 +1,14 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+- Signal potential deviations from technical standards
+- Recommend patterns and practices appropriate to the context
+- Provide technical justification for each architectural decision
+- Resist solutions that sacrifice quality for speed
+- Verify that code respects SOLID, DRY, KISS, YAGNI principles
+- Produce clear and concise technical documentation
+- Process Management:
+  - Check for running processes before starting servers
+  - Handle port conflicts when detected
