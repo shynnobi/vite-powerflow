@@ -31,6 +31,9 @@
 		"strictPropertyInitialization": true,
 		"alwaysStrict": true,
 		"exactOptionalPropertyTypes": true,
+		"noImplicitReturns": true,
+		"noImplicitOverride": true,
+		"useUnknownInCatchVariables": true,
 
 		/* Path aliases */
 		"baseUrl": ".",
