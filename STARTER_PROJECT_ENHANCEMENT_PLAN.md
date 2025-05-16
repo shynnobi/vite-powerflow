@@ -7,8 +7,8 @@
 - [x] **SP-CORE-1**: Integrate the `.cursor` folder containing AI pair programming rules and configurations.
 - [x] **SP-CORE-2**: Enhance `devcontainer.json` with essential VS Code extensions (e.g., for Markdown, Mermaid, linters, formatters) for a consistent development environment.
 - [x] **SP-CORE-3**: Review and enforce strict TypeScript settings in `tsconfig.json` for robust type checking.
-- [ ] **SP-CORE-4**: Set up and integrate Prettier for consistent code formatting, including pre-commit hook integration.
-- [ ] **SP-CORE-5**: Implement pre-commit hooks using `husky` and `lint-staged` to automate linting, formatting, type checks, and commit message validation (`commitlint`).
+- [x] **SP-CORE-4**: Set up and integrate Prettier for consistent code formatting, including pre-commit hook integration.
+- [x] **SP-CORE-5**: Implement pre-commit hooks using `husky` and `lint-staged` to automate linting, formatting, type checks, and commit message validation (`commitlint`).
 - [ ] **SP-CORE-6**: Initialize a `CHANGELOG.md` file following the "Keep a Changelog" format.
 - [ ] **SP-CORE-7**: Add a standard `pull_request_template.md` to the `.github` folder.
 - [ ] **SP-CORE-8**: Configure `dependabot.yml` in `.github` for automated dependency updates (referencing `vpf-todo-app`'s setup).
