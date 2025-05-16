@@ -21,7 +21,7 @@ The CI workflow runs on all pushes and pull requests to the `main` and `dev` bra
 4. **Commitlint** - Validates commit message format (only on PRs)
 5. **Build** - Builds the project if all previous checks pass
 
-### Configuration
+### CI Workflow Configuration
 
 ```yaml
 on:
@@ -43,7 +43,7 @@ This workflow automatically approves and merges dependency updates from Dependab
 - Auto-merges patch, minor, AND major version updates
 - Uses `pull_request_target` event for proper permissions handling
 
-### Configuration
+### Dependabot Workflow Configuration
 
 ```yaml
 permissions:
@@ -168,11 +168,23 @@ Ensure these workflow files exist in your repository:
 
 If you've used this starter template directly, they should already be in place. If you've copied files manually, make sure to include these workflow files.
 
-### 5. First Run
+### 5. Testing the Workflows
 
-After setting up your repository:
+Once your repository is set up with the correct permissions and workflows:
 
-1. Make a small change to a file
-2. Push to a branch and create a pull request
-3. Verify that the CI workflow runs successfully
-4. For testing Dependabot auto-merge, you may need to wait for actual Dependabot PRs to be created
+**For CI Workflow:**
+
+1. Make a small change to any file in your repository
+2. Create a branch and push the change
+3. Open a pull request targeting your `main` or `dev` branch
+4. Observe that the CI workflow automatically runs and performs all checks
+5. Once all checks pass, your PR can be merged
+
+**For Dependabot Auto-Merge:**
+
+- This can only be fully tested when Dependabot creates actual PRs
+- You may need to wait for dependency updates or manually trigger Dependabot
+- To manually trigger, you can modify your `dependabot.yml` file to run more frequently or use GitHub's interface to trigger dependency checks
+- When a Dependabot PR is created, verify that:
+  - The PR is automatically approved
+  - Auto-merge is enabled (you'll see a note in the PR that "This pull request will be automatically merged")
