@@ -1,73 +1,68 @@
 # AI GitHub Integration Guide
 
-This guide explains how to set up GitHub CLI authentication in development containers to enable AI assistants to perform GitHub operations like creating PRs, viewing issues, and more.
+This guide explains **the existing setup** for GitHub CLI authentication in your development container, enabling AI assistants to perform GitHub operations like creating PRs, viewing issues, and more. **This setup is pre-configured in this starter project.**
 
 ## Prerequisites
 
-- GitHub CLI installed in your development environment (usually pre-installed in GitHub Codespaces and our devcontainer)
-- A GitHub account with access to the repository
-- A Personal Access Token (PAT) with appropriate permissions
+- A GitHub Personal Access Token (PAT) with appropriate permissions (see below for generation steps if you need a new one or want to understand the required permissions).
+- The `GH_TOKEN` environment variable set on your **local machine** (the one running VS Code and Docker) with the value of your PAT. The dev container will automatically pick this up.
 
-## Setup Steps
+## Understanding the Setup
 
-### 1. Generate a GitHub Personal Access Token (PAT)
+### 1. GitHub Personal Access Token (PAT)
 
-1. Go to your GitHub account → Settings → Developer settings → Personal access tokens → Fine-grained tokens
-2. Click "Generate new token"
-3. Set an appropriate name and expiration date
-4. Set the repository access to the specific repository or all repositories
-5. Select these permissions:
+For the GitHub CLI to operate on your behalf (whether used by you directly or by an AI assistant), it needs a Personal Access Token (PAT).
+
+**If you need to create or verify your PAT:**
+
+1. Go to your GitHub account → Settings → Developer settings → Personal access tokens → Fine-grained tokens.
+2. Click "Generate new token".
+3. Set an appropriate name (e.g., "devcontainer-vite-powerflow") and expiration date.
+4. Set repository access to this specific repository or all repositories you intend to work on with this setup.
+5. Ensure the following permissions are selected:
    - Repository permissions:
      - Contents: Read and write
      - Pull requests: Read and write
      - Issues: Read and write
      - Workflows: Read and write
-6. Click "Generate token" and copy the token value
+6. Click "Generate token" and copy the token value. **This token is what you\'ll set as `GH_TOKEN` on your local machine.**
 
-### 2. Authenticate GitHub CLI in your Development Container
+### 2. GitHub CLI Authentication in the Development Container
 
-When you start your development container or codespace, you'll need to authenticate the GitHub CLI:
+The GitHub CLI (`gh`) is pre-installed in your development container. It\'s authenticated in one of two ways:
 
-```bash
-# Option 1: Interactive authentication
-gh auth login
+- **Automatic (Recommended & Pre-configured): Via `GH_TOKEN` Environment Variable:**
 
-# Option 2: Non-interactive authentication
-gh auth login --with-token < <(echo YOUR_PAT_TOKEN)
-```
+  - The dev container is configured (in `.devcontainer/devcontainer.json`) to set an internal `GH_TOKEN` environment variable using the value of `GH_TOKEN` from your **local machine\'s environment** (thanks to `"${localEnv:GH_TOKEN}"`).
+  - **Action required by you:** Ensure you have `GH_TOKEN` exported in your local shell environment _before_ launching the dev container. For example:
 
-For AI pair programming, Option 2 is recommended as it can be done programmatically.
+    ```bash
+    # On Linux/macOS (add to your .zshrc, .bashrc, etc. for persistence)
+    export GH_TOKEN=your_pat_token_here
 
-### 3. Persist Authentication Across Sessions (Optional)
+    # On Windows (PowerShell) (add to your PowerShell profile for persistence)
+    $env:GH_TOKEN = "your_pat_token_here"
+    ```
 
-To avoid reauthenticating in each new session, you can:
+  - The GitHub CLI automatically detects and uses this `GH_TOKEN` for authentication. This is the standard approach for this starter project.
 
-1. Add your GitHub token to your repository's secrets
-2. Configure your devcontainer to use this secret
+- **Manual (If `localEnv:GH_TOKEN` is not set up or fails):**
 
-Add this to your `.devcontainer/devcontainer.json`:
+  - If `GH_TOKEN` is not picked up from your local environment, you might need to authenticate `gh` manually inside the container for the session:
 
-```json
-"containerEnv": {
-  "GH_TOKEN": "${localEnv:GH_TOKEN}"
-},
-```
+    ```bash
+    # Option A: Interactive authentication (will prompt you)
+    gh auth login
 
-The GitHub CLI looks for the `GH_TOKEN` environment variable. In our project, we standardize on using `GH_TOKEN` for all GitHub operations, including GitHub Actions workflows (where traditionally `GITHUB_TOKEN` is used).
+    # Option B: Non-interactive authentication (useful for scripting or if prompted by AI)
+    gh auth login --with-token < <(echo YOUR_PAT_TOKEN_VALUE_HERE)
+    ```
 
-You can set the GH_TOKEN environment variable before starting your devcontainer:
+  - For AI pair programming, if manual login is needed, Option B is often preferred.
 
-```bash
-# On Linux/macOS
-export GH_TOKEN=your_token_here
+### 3. How AI Assistants Use This Setup
 
-# On Windows (PowerShell)
-$env:GH_TOKEN = "your_token_here"
-```
-
-## Using GitHub CLI with AI Assistants
-
-Once authenticated, AI assistants can use GitHub CLI commands like:
+Once the GitHub CLI is authenticated (ideally automatically via your local `GH_TOKEN`), AI assistants can leverage it by proposing `gh` commands to run in the integrated terminal. Examples:
 
 ```bash
 # Create a PR
@@ -84,19 +79,19 @@ gh pr view [PR_NUMBER] --json number,title,state,mergeable
 
 Common issues and their solutions:
 
-1. **Authentication errors**: Ensure your PAT has not expired and has the correct permissions
-2. **Permission denied**: Check that your token has access to the repository
-3. **Command not found**: Verify that GitHub CLI is installed (`gh --version`)
-4. **Rate limiting**: GitHub API has rate limits; ensure you're not exceeding them
-5. **Token environment variable issues**:
-   - Make sure `GH_TOKEN` is set correctly for both GitHub CLI and GitHub Actions
+1.  **Authentication errors with `gh` commands**:
+    - Verify that `GH_TOKEN` is correctly set on your **local machine** and exported _before_ you launched the dev container.
+    - Ensure your PAT has not expired and has the correct permissions (Contents, Pull requests, Issues, Workflows - all Read & Write).
+    - If you suspect the automatic `GH_TOKEN` passing isn\'t working, try a manual `gh auth login` inside the container as a test.
+2.  **Permission denied**: Double-check PAT scopes and repository access settings on GitHub.
+3.  **Command not found (`gh`):** This shouldn\'t happen as `gh` is installed via `onCreateCommand` in `devcontainer.json`. If it does, there might have been an issue during container creation.
+4.  **Rate limiting**: GitHub API has rate limits. This is rare for typical CLI usage.
 
 ## Security Considerations
 
-- Never commit your PAT to version control
-- Consider using repository secrets for storing sensitive tokens
-- Use tokens with the minimum required permissions
-- Set appropriate expiration dates for your tokens
+- Never commit your PAT directly into `devcontainer.json` or any other project files. The `${localEnv:GH_TOKEN}` mechanism is designed to avoid this.
+- Use tokens with the minimum required permissions.
+- Set appropriate expiration dates for your PATs.
 
 ## References
 
