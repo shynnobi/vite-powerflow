@@ -11,7 +11,7 @@
 - [x] **SP-CORE-5**: Implement pre-commit hooks using `husky` and `lint-staged` to automate linting, formatting, type checks, and commit message validation (`commitlint`).
 - [x] **SP-CORE-6**: Initialize a `CHANGELOG.md` file following the "Keep a Changelog" format.
 - [x] **SP-CORE-7**: Add a standard `pull_request_template.md` to the `.github` folder.
-- [ ] **SP-CORE-8**: Configure `dependabot.yml` in `.github` for automated dependency updates (referencing `vpf-todo-app`'s setup).
+- [x] **SP-CORE-8**: Configure `dependabot.yml` in `.github` for automated dependency updates (referencing `vpf-todo-app`'s setup).
 - [ ] **SP-CORE-9**: Establish a basic CI workflow using GitHub Actions (`.github/workflows/`) for linting, testing, and building on pushes/PRs.
 
 ## Phase 2: Testing Strategy & Implementation
