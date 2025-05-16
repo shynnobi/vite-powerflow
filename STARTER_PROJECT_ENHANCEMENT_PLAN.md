@@ -14,21 +14,24 @@
 - [x] **SP-CORE-8**: Configure `dependabot.yml` in `.github` for automated dependency updates (referencing `vpf-todo-app`'s setup).
 - [x] **SP-CORE-9**: Establish a basic CI workflow using GitHub Actions (`.github/workflows/`) for linting, testing, and building on pushes/PRs.
 
-## Phase 2: Testing Strategy & Implementation
+## Phase 2: Documentation & Developer Guidance
+
+- [ ] **SP-DOC-1**: Restructure documentation:
+  - Create/enhance a "Getting Started / Initial Configuration" section in `README.md` for essential user setup (local `GH_TOKEN`, repository `GH_TOKEN` secret, Action permissions).
+  - Refocus `docs/ai-github-integration.md` and `docs/github-workflows.md` to describe existing features, assuming initial setup is done, and link to the "Getting Started" section.
+- [ ] **SP-DOC-2**: Update the main `README.md` to include:
+  - Guidance on the BDD testing approach (once Phase 3 is done).
+  - Overview of the project structure and architectural principles.
+  - Instructions for development setup and common tasks (verify redundancy with new "Getting Started").
+- [ ] **SP-DOC-3**: Include a template or example `DEVELOPMENT_PLAN_MVP.md` file to guide project planning.
+- [ ] **SP-DOC-4**: Include the `development plan prompt` (if it's a specific file/template you use for generating development plans).
+- [ ] **SP-DOC-5**: Document clear architectural guidelines, including directory structure conventions (e.g., feature-based vs. type-based) and principles for separation of concerns.
+
+## Phase 3: Testing Strategy & Implementation
 
 - [ ] **SP-TEST-1**: Transition unit tests to a Behavior-Driven Development (BDD) approach, focusing on expected behaviors rather than implementation details.
 - [ ] **SP-TEST-2**: Refactor existing tests or create new ones using helper functions/abstractions to decouple tests from specific implementations (e.g., state management).
 - [ ] **SP-TEST-3**: Configure test coverage reporting in `vitest.config.ts` (or equivalent) to accurately reflect application code by excluding Storybook files, UI library components (e.g., Shadcn/ui), and other non-application logic.
-
-## Phase 3: Documentation & Developer Guidance
-
-- [ ] **SP-DOC-1**: Update the main `README.md` to include:
-  - Guidance on the BDD testing approach.
-  - Overview of the project structure and architectural principles.
-  - Instructions for development setup and common tasks.
-- [ ] **SP-DOC-2**: Include a template or example `DEVELOPMENT_PLAN_MVP.md` file to guide project planning.
-- [ ] **SP-DOC-3**: Include the `development plan prompt` (if it's a specific file/template you use for generating development plans).
-- [ ] **SP-DOC-4**: Document clear architectural guidelines, including directory structure conventions (e.g., feature-based vs. type-based) and principles for separation of concerns.
 
 ## Phase 4: UI & Frontend Enhancements
 
