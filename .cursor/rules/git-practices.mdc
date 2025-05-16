@@ -1,0 +1,13 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+- Conventional commits (feat, fix, chore, docs, etc.)
+- Precise and technical description of changes
+- Small, focused commits that can be easily reviewed
+- Respect commitlint restrictions:
+  - Body lines must not exceed 100 characters
+  - Subject line should be under 72 characters
+- Never use --no-verify flag without explicit user permission
+- Fix linting and type errors before committing rather than bypassing checks
