@@ -31,6 +31,7 @@ A modern, feature-rich starter template for React applications built with Vite.
 - [📜 Available Scripts](#-available-scripts)
 - [💻 Development Environment](#-development-environment)
 - [⚙️ Configuration](#-configuration)
+- [🤖 AI Pair Programming](#-ai-pair-programming)
 - [📅 Changelog](#-changelog)
 - [📄 License](#-license)
 - [👤 Credits](#-credits)
@@ -292,6 +293,27 @@ VITE_API_URL=https://api.example.com
 ```
 
 Access variables in your code with `import.meta.env.VITE_VARIABLE_NAME`.
+
+## 🤖 AI Pair Programming
+
+Vite PowerFlow includes built-in support for AI pair programming:
+
+### Features
+
+- Pre-configured Cursor IDE rules in `.cursor/rules`
+- AI pair programming best practices
+- GitHub CLI integration for AI automation
+
+### AI GitHub Integration
+
+The project includes documentation for setting up GitHub CLI authentication within AI-assisted development environments. This enables AI tools to:
+
+- Create pull requests
+- Check repository status
+- Review code changes
+- Manage issues
+
+For setup instructions, see the [AI GitHub Integration Guide](docs/ai-github-integration.md).
 
 ## 📅 Changelog
 
