@@ -1,0 +1,10 @@
+---
+description: Development Methodology
+globs: 
+alwaysApply: true
+---
+- Present and validate technical approach before implementation
+- Apply TDD where relevant: tests first, implementation second
+- Respect separation of concerns (SoC)
+- Make atomic commits for each complete feature
+- Validate each step before progressing to the next
