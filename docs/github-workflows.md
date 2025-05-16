@@ -97,3 +97,60 @@ When updating GitHub Actions workflows:
 2. **pnpm Version**: Ensure the pnpm version in the workflows matches the one in `package.json`
 3. **Test Changes**: Test workflow changes in a branch before merging to `main`
 4. **Monitor Runs**: After changes, monitor workflow runs to ensure they complete successfully
+
+## Setup for New Projects
+
+When using this starter template for a new project, follow these steps to ensure GitHub workflows function correctly:
+
+### 1. Repository Setup
+
+After creating your repository (either by using this template or cloning and pushing to a new repo):
+
+- Go to repository **Settings** → **Actions** → **General**
+- Under "Workflow permissions":
+  - Select **Read and write permissions**
+  - Check **Allow GitHub Actions to create and approve pull requests**
+  - Click **Save**
+
+![Workflow Permissions Settings](https://docs.github.com/assets/cb-44583/mw-1440/images/help/actions/workflow-permissions.webp)
+
+### 2. Branch Protection (Optional but Recommended)
+
+To ensure code quality:
+
+1. Go to **Settings** → **Branches** → **Branch protection rules** → **Add rule**
+2. For "Branch name pattern" enter `main` (and/or `dev`)
+3. Check:
+   - **Require a pull request before merging**
+   - **Require status checks to pass before merging**
+     - In the status checks search, select the CI checks like `ESLint`, `TypeScript`, etc.
+4. For Dependabot compatibility, consider:
+   - Adding `dependabot[bot]` to **Allow specified actors to bypass required pull requests**
+   - Checking **Allow specified actors to bypass required status checks**
+
+### 3. GitHub Token Setup
+
+The workflows are configured to use the standard `GITHUB_TOKEN` which is automatically provided by GitHub. No manual token creation is necessary for basic functionality.
+
+However, if you see permission errors in your Dependabot workflow:
+
+1. Go to **Settings** → **Actions** → **General**
+2. Verify the workflow permissions as described in step 1
+
+### 4. Verify Workflow Files
+
+Ensure these workflow files exist in your repository:
+
+- `.github/workflows/ci.yml`
+- `.github/workflows/dependabot-auto.yml`
+
+If you've used this starter template directly, they should already be in place. If you've copied files manually, make sure to include these workflow files.
+
+### 5. First Run
+
+After setting up your repository:
+
+1. Make a small change to a file
+2. Push to a branch and create a pull request
+3. Verify that the CI workflow runs successfully
+4. For testing Dependabot auto-merge, you may need to wait for actual Dependabot PRs to be created
