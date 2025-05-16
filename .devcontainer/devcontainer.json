@@ -43,7 +43,11 @@
 	"updateContentCommand": "ARCH=$(uname -m) && if [ \"$ARCH\" = \"aarch64\" ]; then export SWC_PLATFORM_ARCH=linux-arm64-gnu && export npm_config_arch=arm64; else export SWC_PLATFORM_ARCH=linux-x64-gnu && export npm_config_arch=x64; fi && if [ ! -d node_modules ] || [ ! -f pnpm-lock.yaml ]; then SWC_PLATFORM_ARCH=$SWC_PLATFORM_ARCH npm_config_arch=$npm_config_arch pnpm install; fi",
 	"remoteEnv": {
 		"SWC_PLATFORM_ARCH": "linux-x64-gnu",
-		"npm_config_arch": "x64"
+		"npm_config_arch": "x64",
+		"GH_TOKEN": "${localEnv:GH_TOKEN}"
+	},
+	"containerEnv": {
+		"GH_TOKEN": "${localEnv:GH_TOKEN}"
 	},
 	"remoteUser": "node"
 }
