@@ -4,8 +4,8 @@
 
 ## Phase 1: Core Developer Experience (DX) & Project Setup
 
-- [ ] **SP-CORE-1**: Integrate the `.cursor` folder containing AI pair programming rules and configurations.
-- [ ] **SP-CORE-2**: Enhance `devcontainer.json` with essential VS Code extensions (e.g., for Markdown, Mermaid, linters, formatters) for a consistent development environment.
+- [x] **SP-CORE-1**: Integrate the `.cursor` folder containing AI pair programming rules and configurations.
+- [x] **SP-CORE-2**: Enhance `devcontainer.json` with essential VS Code extensions (e.g., for Markdown, Mermaid, linters, formatters) for a consistent development environment.
 - [ ] **SP-CORE-3**: Review and enforce strict TypeScript settings in `tsconfig.json` for robust type checking.
 - [ ] **SP-CORE-4**: Set up and integrate Prettier for consistent code formatting, including pre-commit hook integration.
 - [ ] **SP-CORE-5**: Implement pre-commit hooks using `husky` and `lint-staged` to automate linting, formatting, type checks, and commit message validation (`commitlint`).
