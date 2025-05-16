@@ -40,3 +40,11 @@
   - Include basic a11y best practice guidelines in the documentation.
   - Provide an example of an automated accessibility test (e.g., using `axe-core`).
   - Ensure core components/examples follow a11y principles.
+
+## Phase 5: Infrastructure Improvements
+
+- [ ] **SP-INFRA-1**: Integrate improved Docker infrastructure from the todo app:
+  - Add Docker Compose setup for consistent development environments
+  - Configure appropriate container services and networking
+  - Ensure proper volume mounting for development workflow
+  - Document container-based development workflow
