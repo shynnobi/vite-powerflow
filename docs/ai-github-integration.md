@@ -98,3 +98,7 @@ Common issues and their solutions:
 - [GitHub CLI Documentation](https://cli.github.com/manual/)
 - [GitHub PAT Documentation](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
 - [GitHub Codespaces Environment Variables](https://docs.github.com/en/codespaces/developing-in-codespaces/using-github-codespaces-with-github-cli)
+
+---
+
+**Note:** For details on the automated GitHub Actions workflows used in this project (such as CI and Dependabot auto-merging), please refer to the [GitHub Workflows Guide](./github-workflows.md).
