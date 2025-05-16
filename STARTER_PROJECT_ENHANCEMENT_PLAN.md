@@ -12,7 +12,7 @@
 - [x] **SP-CORE-6**: Initialize a `CHANGELOG.md` file following the "Keep a Changelog" format.
 - [x] **SP-CORE-7**: Add a standard `pull_request_template.md` to the `.github` folder.
 - [x] **SP-CORE-8**: Configure `dependabot.yml` in `.github` for automated dependency updates (referencing `vpf-todo-app`'s setup).
-- [ ] **SP-CORE-9**: Establish a basic CI workflow using GitHub Actions (`.github/workflows/`) for linting, testing, and building on pushes/PRs.
+- [x] **SP-CORE-9**: Establish a basic CI workflow using GitHub Actions (`.github/workflows/`) for linting, testing, and building on pushes/PRs.
 
 ## Phase 2: Testing Strategy & Implementation
 
