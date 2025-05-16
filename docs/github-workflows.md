@@ -130,12 +130,34 @@ To ensure code quality:
 
 ### 3. GitHub Token Setup
 
-The workflows are configured to use the standard `GITHUB_TOKEN` which is automatically provided by GitHub. No manual token creation is necessary for basic functionality.
+The workflows are configured to use the standard `GITHUB_TOKEN` which is automatically provided by GitHub.
 
-However, if you see permission errors in your Dependabot workflow:
+**IMPORTANT**: For auto-merge/approval functionality to work, you **MUST** configure your repository settings:
 
-1. Go to **Settings** → **Actions** → **General**
-2. Verify the workflow permissions as described in step 1
+1. Go to repository **Settings** → **Actions** → **General**
+2. Under "Workflow permissions":
+   - Select **Read and write permissions**
+   - Check **Allow GitHub Actions to create and approve pull requests**
+   - Click **Save**
+
+If you cannot or prefer not to enable these settings, you'll need to modify the workflows to use a custom Personal Access Token (PAT):
+
+1. Create a new fine-grained PAT in your GitHub account:
+
+   - Go to **Settings** → **Developer settings** → **Personal access tokens** → **Fine-grained tokens** → **Generate new token**
+   - Set appropriate permissions (at minimum: Contents: write, Pull requests: write)
+   - Copy the generated token
+
+2. Add this token as a repository secret:
+
+   - Go to your repository → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
+   - Name it `DEPENDABOT_PAT` (or another name of your choice)
+   - Paste your token as the value and click **Add secret**
+
+3. Modify the workflow files to use this token:
+   - In `.github/workflows/dependabot-auto.yml`:
+     - Change `github-token: '${{ secrets.GITHUB_TOKEN }}'` to `github-token: '${{ secrets.DEPENDABOT_PAT }}'`
+     - Change `GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}` to `GH_TOKEN: ${{secrets.DEPENDABOT_PAT}}`
 
 ### 4. Verify Workflow Files
 
