@@ -19,7 +19,13 @@
 				"ms-playwright.playwright",
 				"bradlc.vscode-tailwindcss",
 				"vitest.explorer",
-				"github.vscode-github-actions"
+				"github.vscode-github-actions",
+				"bierner.markdown-mermaid",
+				"bierner.markdown-preview-github-styles",
+				"bierner.markdown-emoji",
+				"bierner.markdown-checkbox",
+				"yzhang.markdown-all-in-one",
+				"davidanson.vscode-markdownlint"
 			],
 			"settings": {
 				"editor.formatOnSave": true,
