@@ -53,7 +53,17 @@ Add this to your `.devcontainer/devcontainer.json`:
 },
 ```
 
-Then make sure to set the GH_TOKEN environment variable before starting your devcontainer.
+The GitHub CLI looks for the `GH_TOKEN` environment variable. In our project, we standardize on using `GH_TOKEN` for all GitHub operations, including GitHub Actions workflows (where traditionally `GITHUB_TOKEN` is used).
+
+You can set the GH_TOKEN environment variable before starting your devcontainer:
+
+```bash
+# On Linux/macOS
+export GH_TOKEN=your_token_here
+
+# On Windows (PowerShell)
+$env:GH_TOKEN = "your_token_here"
+```
 
 ## Using GitHub CLI with AI Assistants
 
@@ -78,6 +88,8 @@ Common issues and their solutions:
 2. **Permission denied**: Check that your token has access to the repository
 3. **Command not found**: Verify that GitHub CLI is installed (`gh --version`)
 4. **Rate limiting**: GitHub API has rate limits; ensure you're not exceeding them
+5. **Token environment variable issues**:
+   - Make sure `GH_TOKEN` is set correctly for both GitHub CLI and GitHub Actions
 
 ## Security Considerations
 
