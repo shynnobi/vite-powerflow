@@ -76,7 +76,7 @@ If auto-merge isn't working for Dependabot PRs, check:
 
 ### Token Permissions
 
-The workflow uses `GITHUB_TOKEN` with explicitly defined permissions:
+The workflow uses `GH_TOKEN` with explicitly defined permissions:
 
 ```yaml
 permissions:
@@ -130,7 +130,7 @@ To ensure code quality:
 
 ### 3. GitHub Token Setup
 
-The workflows are configured to use the standard `GITHUB_TOKEN` which is automatically provided by GitHub.
+The workflows are configured to use the `GH_TOKEN` which needs to be set up in your repository.
 
 **IMPORTANT**: For auto-merge/approval functionality to work, you **MUST** configure your repository settings:
 
@@ -151,13 +151,10 @@ If you cannot or prefer not to enable these settings, you'll need to modify the 
 2. Add this token as a repository secret:
 
    - Go to your repository → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
-   - Name it `DEPENDABOT_PAT` (or another name of your choice)
+   - Name it `GH_TOKEN`
    - Paste your token as the value and click **Add secret**
 
-3. Modify the workflow files to use this token:
-   - In `.github/workflows/dependabot-auto.yml`:
-     - Change `github-token: '${{ secrets.GITHUB_TOKEN }}'` to `github-token: '${{ secrets.DEPENDABOT_PAT }}'`
-     - Change `GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}` to `GH_TOKEN: ${{secrets.DEPENDABOT_PAT}}`
+3. The workflows are already configured to use this token name.
 
 ### 4. Verify Workflow Files
 
