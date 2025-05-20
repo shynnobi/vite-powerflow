@@ -29,7 +29,7 @@ A GitHub Personal Access Token (PAT) is often required for tools and services to
       - **Workflows:** Read and write.
     - **Metadata:** Read-only (standard, usually default for most tokens).
 7.  Click "Generate token".
-8.  **Important:** Copy the token immediately. You will not be ableable to see it again.
+8.  **Important:** Copy the token immediately. You will not be able to see it again.
 
 ### B. Configuring `GH_PAT` for the Development Environment (CLI & AI Tools)
 
