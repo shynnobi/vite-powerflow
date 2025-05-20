@@ -16,9 +16,12 @@
 
 ## Phase 2: Documentation & Developer Guidance
 
-- [ ] **SP-DOC-1**: Restructure documentation:
-  - Create/enhance a "Getting Started / Initial Configuration" section in `README.md` for essential user setup (local `GH_TOKEN`, repository `GH_TOKEN` secret, Action permissions).
-  - Refocus `docs/ai-github-integration.md` and `docs/github-workflows.md` to describe existing features, assuming initial setup is done, and link to the "Getting Started" section.
+- [x] **SP-DOC-1**: Restructure documentation:
+  - ✅ Create three focused GitHub documentation files: `docs/github-permissions-setup.md` (main reference), `docs/github-ci-workflows-setup.md`, and `docs/github-cli-ai-setup.md`
+  - ✅ Update README.md to reference these new documentation files
+  - ✅ Enhance documentation with clear guidance on GitHub token setup, permissions, CI workflows, and AI integration
+  - ✅ Ensure documentation files reference each other with proper links
+  - ✅ Update template README for generated projects
 - [ ] **SP-DOC-2**: Update the main `README.md` to include:
   - Guidance on the BDD testing approach (once Phase 3 is done).
   - Overview of the project structure and architectural principles.
