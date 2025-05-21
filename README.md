@@ -304,16 +304,15 @@ Vite PowerFlow includes built-in support for AI pair programming:
 - AI pair programming best practices
 - GitHub CLI integration for AI automation
 
-### AI GitHub Integration
+### GitHub Integration
 
-The project includes documentation for setting up GitHub CLI authentication within AI-assisted development environments. This enables AI tools to:
+The project includes comprehensive documentation for integrating with GitHub:
 
-- Create pull requests
-- Check repository status
-- Review code changes
-- Manage issues
+- **[GitHub Permissions Setup](docs/github-permissions-setup.md)** - Configure tokens and repository permissions
+- **[GitHub CI Workflows](docs/github-ci-workflows-setup.md)** - CI/CD and Dependabot automation
+- **[GitHub CLI & AI Integration](docs/github-cli-ai-setup.md)** - GitHub CLI setup for AI-assisted development
 
-For setup instructions, see the [AI GitHub Integration Guide](docs/ai-github-integration.md).
+These guides will help you set up GitHub authentication, workflows, and AI-assisted development tools.
 
 ## 📅 Changelog
 
