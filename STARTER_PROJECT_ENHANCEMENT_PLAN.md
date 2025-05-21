@@ -22,15 +22,15 @@
   - ✅ Enhance documentation with clear guidance on GitHub token setup, permissions, CI workflows, and AI integration
   - ✅ Ensure documentation files reference each other with proper links
   - ✅ Update template README for generated projects
-- [x] **SP-DOC-2**: Update the main `README.md` to include core project information:
-  - Overview of the project structure and architectural principles
-  - Instructions for development setup and common tasks
+- [x] **SP-DOC-2**: Review and verify the main `README.md` completeness:
+  - ✅ Confirm comprehensive coverage of project structure and architectural principles
+  - ✅ Verify thorough instructions for development setup and common tasks
 - [ ] **SP-DOC-2.5**: _(To be completed after Phase 3)_ Add BDD testing documentation to README:
   - Guidance on the BDD testing approach implemented in the project
   - Examples of writing and organizing tests following BDD principles
-- [x] **SP-DOC-3**: Include a template or example `DEVELOPMENT_PLAN_MVP.md` file to guide project planning.
-- [x] **SP-DOC-4**: Include the `development plan prompt` (if it's a specific file/template you use for generating development plans).
-- [ ] **SP-DOC-5**: Document clear architectural guidelines, including directory structure conventions (e.g., feature-based vs. type-based) and principles for separation of concerns.
+- [x] **SP-DOC-3/4**: Include development planning tools:
+  - ✅ Add `DEVELOPMENT_PLAN_PROMPT.md` template for generating structured development plans
+  - ✅ Include detailed instructions for MVP-focused project planning
 
 ## Phase 3: Testing Strategy & Implementation
 
