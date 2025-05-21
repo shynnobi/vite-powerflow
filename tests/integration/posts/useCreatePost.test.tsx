@@ -25,9 +25,8 @@ const TEST_RESPONSE: Post = {
 };
 
 describe('useCreatePost', () => {
-	// Given a successful API response
-	it('should handle post creation successfully', async () => {
-		// When mocking a successful API response
+	it('should successfully create a post when the API responds with success', async () => {
+		// Given: A successful API response is mocked
 		vi.spyOn(globalThis, 'fetch').mockResolvedValue(
 			new Response(JSON.stringify(TEST_RESPONSE), {
 				status: 200,
@@ -35,44 +34,42 @@ describe('useCreatePost', () => {
 			})
 		);
 
-		// And rendering the hook
+		// And: The hook is rendered
 		const { result } = renderHook(() => useCreatePost(), {
 			wrapper: createWrapper(),
 		});
 
-		// Then we can create a post
+		// When: A post creation is attempted
 		result.current.mutate(TEST_POST);
 
-		// And eventually it should succeed
+		// Then: The operation should succeed with the correct response data
 		await waitFor(() => {
 			expect(result.current.isSuccess).toBe(true);
 			expect(result.current.data).toEqual(TEST_RESPONSE);
 		});
 	});
 
-	// Given a failed API response
-	it('should handle errors during post creation', async () => {
-		// When mocking a failed API response
+	it('should handle API errors when post creation fails', async () => {
+		// Given: A failed API response is mocked
 		vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('API Error'));
 
-		// And rendering the hook
+		// And: The hook is rendered
 		const { result } = renderHook(() => useCreatePost(), {
 			wrapper: createWrapper(),
 		});
 
-		// Then when we try to create a post
+		// When: A post creation is attempted
 		result.current.mutate(TEST_POST);
 
-		// It should eventually show an error
+		// Then: The operation should fail with an error
 		await waitFor(() => {
 			expect(result.current.isError).toBe(true);
 			expect(result.current.error).toBeDefined();
 		});
 	});
 
-	// Given an optimistic update scenario
-	it('should handle optimistic updates', async () => {
-		// When mocking a successful API response
+	it('should handle optimistic updates during post creation', async () => {
+		// Given: A successful API response is mocked
 		vi.spyOn(globalThis, 'fetch').mockResolvedValue(
 			new Response(JSON.stringify(TEST_RESPONSE), {
 				status: 200,
@@ -80,15 +77,15 @@ describe('useCreatePost', () => {
 			})
 		);
 
-		// And rendering the hook
+		// And: The hook is rendered
 		const { result } = renderHook(() => useCreatePost(), {
 			wrapper: createWrapper(),
 		});
 
-		// Then when we create a post
+		// When: A post creation is attempted
 		result.current.mutate(TEST_POST);
 
-		// It should eventually succeed
+		// Then: The operation should succeed with the correct response data
 		await waitFor(() => {
 			expect(result.current.isSuccess).toBe(true);
 			expect(result.current.data).toEqual(TEST_RESPONSE);
