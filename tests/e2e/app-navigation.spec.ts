@@ -1,15 +1,18 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('Basic Site Navigation', () => {
-	test('should load the homepage correctly', async ({ page }) => {
-		// Navigate to the homepage
+	test('should display the correct title and heading when visiting the homepage', async ({
+		page,
+	}) => {
+		// Given: The user is not on the homepage
+		// When: The user navigates to the homepage
 		await page.goto('/');
 
-		// Check if the title is correct
-		await expect(page).toHaveTitle(/Vite \+ React/);
+		// Then: The page title should contain "Vite PowerFlow"
+		await expect(page).toHaveTitle(/Vite PowerFlow/);
 
-		// Check if main heading is visible
-		const heading = page.getByRole('heading', { name: 'Vite + React' });
+		// And: The main heading should be visible
+		const heading = page.getByRole('heading', { name: 'Vite PowerFlow ⚡' });
 		await expect(heading).toBeVisible();
 	});
 });
