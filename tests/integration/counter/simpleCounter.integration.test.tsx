@@ -35,67 +35,63 @@ const SimpleCounter = () => {
 };
 
 describe('SimpleCounter: Component with local state (useState)', () => {
-	it('should increment the counter when clicking the button', async () => {
+	it('should update the counter display when the increment button is clicked', async () => {
+		// Given: A rendered SimpleCounter component with initial count of 0
 		const user = userEvent.setup();
 		render(<SimpleCounter />);
-
 		const incrementButton = screen.getByTestId('increment-btn');
 		const countDisplay = screen.getByTestId('count-display');
-
-		// Initial state
 		expect(countDisplay).toHaveTextContent('Count: 0');
 
-		// Click increment button
+		// When: The user clicks the increment button
 		await act(async () => {
 			await user.click(incrementButton);
 		});
 
-		// Check if count was updated
+		// Then: The count display should show 1
 		expect(countDisplay).toHaveTextContent('Count: 1');
 	});
 
-	it('should show a message when count reaches 5', async () => {
+	it('should display a high count message when the counter reaches 5', async () => {
+		// Given: A rendered SimpleCounter component
 		const user = userEvent.setup();
 		render(<SimpleCounter />);
-
 		const incrementButton = screen.getByTestId('increment-btn');
 
-		// Click increment button 5 times
+		// When: The user clicks the increment button 5 times
 		for (let i = 0; i < 5; i++) {
 			await act(async () => {
 				await user.click(incrementButton);
 			});
 		}
 
-		// Check if message appears
+		// Then: A message indicating high count should be displayed
 		await waitFor(() => {
 			expect(screen.getByTestId('message')).toHaveTextContent('High count reached!');
 		});
 	});
 
-	it('should reset the counter and message', async () => {
+	it('should clear the counter and message when the reset button is clicked', async () => {
+		// Given: A SimpleCounter with count at 5 and message displayed
 		const user = userEvent.setup();
 		render(<SimpleCounter />);
-
 		const incrementButton = screen.getByTestId('increment-btn');
 		const resetButton = screen.getByTestId('reset-btn');
 
-		// Increment to show message
+		// Set up initial state
 		for (let i = 0; i < 5; i++) {
 			await act(async () => {
 				await user.click(incrementButton);
 			});
 		}
-
-		// Verify message is shown
 		expect(screen.getByTestId('message')).toBeInTheDocument();
 
-		// Reset
+		// When: The user clicks the reset button
 		await act(async () => {
 			await user.click(resetButton);
 		});
 
-		// Verify count is reset and message is gone
+		// Then: The counter should be reset to 0 and the message should be removed
 		expect(screen.getByTestId('count-display')).toHaveTextContent('Count: 0');
 		expect(screen.queryByTestId('message')).not.toBeInTheDocument();
 	});
