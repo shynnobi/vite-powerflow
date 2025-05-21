@@ -44,10 +44,10 @@
 	"remoteEnv": {
 		"SWC_PLATFORM_ARCH": "linux-x64-gnu",
 		"npm_config_arch": "x64",
-		"GH_TOKEN": "${localEnv:GH_TOKEN}"
+		"GH_PAT": "${localEnv:GH_PAT}"
 	},
 	"containerEnv": {
-		"GH_TOKEN": "${localEnv:GH_TOKEN}"
+		"GH_PAT": "${localEnv:GH_PAT}"
 	},
 	"remoteUser": "node"
 }
