@@ -8,24 +8,24 @@ This checklist outlines the steps to migrate the project's tests to a Behavior-D
 
 ### 1. Review Current Tests
 
-- [ ] Identify all test files in the project (e.g., counter, posts)
-- [ ] Document the current structure and naming conventions
-- [ ] Note any existing BDD-like patterns
+- [x] Identify all test files in the project (e.g., counter, posts)
+- [x] Document the current structure and naming conventions
+- [x] Note any existing BDD-like patterns
 
 ### 2. Refactor Test Structure
 
-- [ ] Adopt the Given-When-Then format for all tests
+- [x] Adopt the Given-When-Then format for all tests
   - Given: Set up the initial state
   - When: Perform the action
   - Then: Assert the expected outcome
-- [ ] Rename test descriptions to be more descriptive and user-focused
+- [x] Rename test descriptions to be more descriptive and user-focused
   - Example: "should increment the counter when the increment button is clicked"
 
 ### 3. Enhance Test Descriptions
 
-- [ ] Ensure each test has a clear, descriptive name
-- [ ] Use language that describes the behavior from a user's perspective
-- [ ] Avoid technical jargon in test names
+- [x] Ensure each test has a clear, descriptive name
+- [x] Use language that describes the behavior from a user's perspective
+- [x] Avoid technical jargon in test names
 
 ### 4. Implement Accessibility Tests
 
@@ -35,21 +35,21 @@ This checklist outlines the steps to migrate the project's tests to a Behavior-D
 
 ### 5. Improve Integration Tests
 
-- [ ] Structure integration tests to simulate complete user journeys
-- [ ] Test interactions between components
-- [ ] Ensure tests cover edge cases and error scenarios
+- [x] Structure integration tests to simulate complete user journeys
+- [x] Test interactions between components
+- [x] Ensure tests cover edge cases and error scenarios
 
 ### 6. Use Mocks and Spies
 
-- [ ] Use mocks to isolate components and services
-- [ ] Use spies to verify function calls and interactions
-- [ ] Ensure mocks and spies are used consistently across tests
+- [x] Use mocks to isolate components and services
+- [x] Use spies to verify function calls and interactions
+- [x] Ensure mocks and spies are used consistently across tests
 
 ### 7. Review and Refactor
 
-- [ ] Review all tests for consistency and clarity
-- [ ] Refactor any tests that do not follow the BDD approach
-- [ ] Ensure all tests pass and are maintainable
+- [x] Review all tests for consistency and clarity
+- [x] Refactor any tests that do not follow the BDD approach
+- [x] Ensure all tests pass and are maintainable
 
 ### 8. Documentation
 
