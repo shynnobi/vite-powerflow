@@ -45,15 +45,20 @@ The project includes a comprehensive set of npm scripts for various development 
 
 ### Code Quality
 
-| Command             | Description                   |
-| ------------------- | ----------------------------- |
-| `pnpm lint`         | Check code for linting errors |
-| `pnpm lint:fix`     | Fix automatic linting errors  |
-| `pnpm format`       | Format code with Prettier     |
-| `pnpm format:check` | Check code formatting         |
-| `pnpm fix`          | Run both formatter and linter |
-| `pnpm type-check`   | Verify TypeScript types       |
-| `pnpm validate`     | Run all code quality checks   |
+| Command                   | Description                                      |
+| ------------------------- | ------------------------------------------------ |
+| `pnpm lint`               | Check code for linting errors                    |
+| `pnpm lint:fix`           | Fix automatic linting errors                     |
+| `pnpm format`             | Format code with Prettier                        |
+| `pnpm format:check`       | Check code formatting                            |
+| `pnpm fix`                | Run both formatter and linter                    |
+| `pnpm type-check`         | Verify TypeScript types                          |
+| `pnpm validate:static`    | Run all static checks (lint, format, types)      |
+| `pnpm validate:unit`      | Run unit and integration tests                   |
+| `pnpm validate:e2e`       | Run end-to-end tests (if present)                |
+| `pnpm validate:quick`     | Run static checks and unit tests (no E2E)        |
+| `pnpm validate:full`      | Run all validations including E2E tests          |
+| `pnpm validate:precommit` | Run lint-staged and unit tests for quick commits |
 
 ### Component Documentation
 
@@ -217,9 +222,27 @@ Types:
 
 ## Pre-commit Hooks
 
-The following checks are configured to run automatically before each commit:
+The project uses a two-stage validation process to ensure code quality while maintaining development speed. For a complete list of validation commands, see the [Code Quality](#code-quality) section above.
 
-- TypeScript type checking
-- ESLint
-- Prettier formatting
-- Unit tests
+### Pre-commit Hook
+
+Runs automatically before each commit:
+
+- Lint-staged checks on modified files
+- Unit and integration tests
+- Fast validation to keep commits quick
+
+### Pre-push Hook
+
+Runs automatically before pushing to remote:
+
+- Full static validation (lint, format, type-check)
+- All tests including E2E (if present)
+- Complete project validation
+
+The validation system is designed to be:
+
+- Fast for daily development (pre-commit)
+- Thorough for code quality (pre-push)
+- Flexible for different project needs
+- Supportive of projects with or without E2E tests
