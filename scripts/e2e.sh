@@ -4,7 +4,7 @@ if [ -n "$(find tests/e2e -name '*.spec.ts' -o -name '*.test.ts' 2>/dev/null)" ]
   if [ ! -f /home/node/.cache/ms-playwright/chromium-*/chrome-linux/chrome ]; then
     pnpm exec playwright install --with-deps chromium
   fi
-  pnpm exec playwright test "$@"
+  pnpm exec playwright test --reporter=dot "$@"
 else
   echo 'No E2E test files found'
 fi
