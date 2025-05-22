@@ -55,3 +55,8 @@ stats.html
 bin/
 
 *storybook.log
+
+# Playwright
+playwright-report/
+test-results/
+playwright-report.json
