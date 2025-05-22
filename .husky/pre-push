@@ -1,21 +1,12 @@
-#!/usr/bin/env sh
+#!/bin/sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo "🧪 Running tests before push..."
+echo "🧪 Running full validation before push..."
 
-# Check if E2E test files exist
-if [ -n "$(find tests/e2e -name '*.spec.ts' -o -name '*.test.ts' 2>/dev/null)" ]; then
-  echo "📝 E2E tests found. Running all tests..."
-  pnpm test:all
-else
-  echo "📝 No E2E test files found. Running only unit and integration tests..."
-  pnpm test
-fi
-
-# Capture the exit code of the previous command
-if [ $? -ne 0 ]; then
-  echo "❌ Tests failed. Push aborted."
+# Run all validations including E2E tests
+pnpm validate:all || {
+  echo "❌ Validation failed."
   exit 1
-fi
+}
 
-echo "✅ All tests passed. Proceeding with push..."
+echo "✅ All checks passed. Proceeding with push..."

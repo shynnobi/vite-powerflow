@@ -7,6 +7,7 @@ import reactRefreshPlugin from 'eslint-plugin-react-refresh';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import { FlatCompat } from '@eslint/eslintrc';
 import path from 'path';
+import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -17,7 +18,15 @@ const compat = new FlatCompat({
 
 export default [
 	{
-		ignores: ['node_modules/**', 'dist/**', 'coverage/**', 'test-results/**'],
+		ignores: [
+			'node_modules/**',
+			'dist/**',
+			'coverage/**',
+			'test-results/**',
+			'playwright-report/**',
+			'.next/**',
+			'.turbo/**',
+		],
 	},
 	js.configs.recommended,
 	...compat.config({
@@ -65,11 +74,13 @@ export default [
 			'react-hooks': reactHooksPlugin,
 			'react-refresh': reactRefreshPlugin,
 			'simple-import-sort': simpleImportSort,
+			'jsx-a11y': jsxA11yPlugin,
 		},
 		rules: {
 			...tsPlugin.configs.recommended.rules,
 			...reactPlugin.configs.recommended.rules,
 			...reactHooksPlugin.configs.recommended.rules,
+			...jsxA11yPlugin.configs.recommended.rules,
 			'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
 			'@typescript-eslint/triple-slash-reference': 'off',
 			'react-hooks/rules-of-hooks': 'error',
