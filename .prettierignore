@@ -8,3 +8,8 @@ build
 yarn.lock
 package-lock.json
 pnpm-lock.yaml
+
+# Ignore Playwright reports and artifacts
+playwright-report.json
+playwright-report/
+test-results/
