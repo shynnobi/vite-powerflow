@@ -4,7 +4,7 @@ This guide helps you, as a user of the Vite PowerFlow starter, to set up your Gi
 
 ## 1. GitHub Personal Access Token (PAT)
 
-A GitHub Personal Access Token (PAT) is often required for tools and services to interact with your repositories on your behalf or with specific permissions.
+A GitHub Personal Access Token (PAT) is required for tools and services to interact with your repositories on your behalf or with specific permissions.
 
 ### A. Creating a GitHub PAT
 
@@ -33,33 +33,19 @@ A GitHub Personal Access Token (PAT) is often required for tools and services to
 
 ### B. Configuring `GH_PAT` for the Development Environment (CLI & AI Tools)
 
-This token, set as an environment variable `GH_PAT` in your development environment, allows tools like GitHub CLI (`gh`) and AI assistants (like Cursor) to interact with GitHub on your behalf.
+**Recommended method:**
 
-**For the Dev Container (Recommended for this Starter Project):**
+1. Copy `.env.example` to `.env` at the root of your project.
+2. Add your PAT as follows:
+   ```
+   GH_PAT=your_personal_access_token_here
+   ```
+3. The `init-gh-auth.sh` script (called automatically at each container creation/rebuild) will authenticate the GitHub CLI using this token if present.
+4. If `.env` or `GH_PAT` is missing, the script will display a help message.
 
-Our `devcontainer.json` is designed to help make `GH_PAT` available within the container. To leverage this:
+**Security:**
 
-1.  **Ensure your PAT is accessible for Dev Container injection.**
-
-    - **Option 1 (Host `gh` Authentication & Forwarding):** Authenticate GitHub CLI on your _host machine_ (outside the container) using your PAT.
-      1.  Install GitHub CLI on your host: [https://github.com/cli/cli#installation](https://github.com/cli/cli#installation)
-      2.  Run: `gh auth login` on your host, choose "Paste an authentication token," and use your PAT. This will typically store the token in a way that `gh` (even inside the container if host integration is good) can find it. Alternatively, ensure your PAT is exported as `GH_PAT` (or the variable name you use on your host, like `GITHUB_PAT` if that's what `localEnv` refers to) in the host environment from which the dev container is launched (e.g. in your `.zshrc` or `.bashrc`).
-          The dev container is often configured to pick this up.
-    - **Option 2 (Project Environment File - if configured):** Some setups might use a `.env` file (e.g., at project root, added to `.gitignore`) that `devcontainer.json` reads:
-      ```env
-      GH_PAT=YOUR_PAT_HERE
-      ```
-      _(Refer to this project's `devcontainer.json` or related setup notes for the specific mechanism used.)_
-
-2.  **Verify in Dev Container:** Once the dev container is running, check with `echo $GH_PAT`. For `gh` to use this, you will likely need to run `echo $GH_PAT | gh auth login --with-token -` or `gh auth login --with-token` and paste the token value.
-
-**General GitHub CLI Authentication:**
-
-1.  Install GitHub CLI: [https://github.com/cli/cli#installation](https://github.com/cli/cli#installation)
-2.  Set the `GH_PAT` environment variable: `export GH_PAT="YOUR_PAT_HERE"` (add this to your shell profile like `.zshrc` or `.bashrc`).
-3.  Authenticate the CLI: `echo $GH_PAT | gh auth login --with-token -` or `gh auth login --with-token` and paste your PAT.
-
-This configures `gh` for general use. For persistence in dev containers, the methods under "For the Dev Container" are preferred, along with the `gh auth login` step inside the container.
+- Never commit your PAT or the `.env` file. `.env` is in `.gitignore` by default. Only `.env.example` is versioned.
 
 ### C. Repository `GH_PAT` Secret
 
@@ -103,6 +89,17 @@ The `dependabot.yml` file in `.github/` is pre-configured in this starter to hel
   - In some complex scenarios or with very strict branch protections, ensuring Dependabot operates with sufficient privilege might involve the `GH_PAT` repository secret (Section 1.C) or specific branch protection rule adjustments for `dependabot[bot]`.
 
 Review `/.github/dependabot.yml` in your project and ensure its settings align with your branching strategy.
+
+---
+
+## Troubleshooting / Re-authentication
+
+- If your token expires or you need to change it, update the value in `.env` and run:
+  ```sh
+  sh ./init-gh-auth.sh
+  ```
+- You can also rebuild the container to trigger automatic authentication.
+- If you see authentication errors, check that `.env` exists and contains a valid `GH_PAT` value.
 
 ---
 

@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app: # The name of our service
+    build:
+      context: . # Build from the Dockerfile in the current directory (project root)
+      dockerfile: Dockerfile
+
+    volumes:
+      # Mount the project directory into the container at /workspaces/vite-powerflow
+      # The :cached flag improves performance on macOS/Windows
+      - .:/workspaces/vite-powerflow:cached
+      # Mount the named volume for Playwright cache persistence (for the 'node' user)
+      - playwright_cache:/home/node/.cache/ms-playwright
+
+    environment:
+      # Inject the GitHub token from the .env file located at the project root
+      # Use the same name inside the container as in the .env file for consistency
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      # Replicate environment variables previously in devcontainer.json's remoteEnv
+      # Provide sensible defaults if not set in .env (though usually set by features/scripts)
+      - SWC_PLATFORM_ARCH=${SWC_PLATFORM_ARCH:-linux-x64-gnu}
+      - npm_config_arch=${npm_config_arch:-x64}
+
+    # Keep the container alive indefinitely.
+    # Dev Containers will handle executing commands inside.
+    command: sleep infinity
+
+# Define the named volume for Playwright cache
+volumes:
+  playwright_cache: {}
