@@ -11,7 +11,7 @@ This guide covers the essential development environment and workflow setup in Vi
   - [Component Documentation](#component-documentation)
 - [Development Tools](#development-tools)
   - [VS Code Integration](#vs-code-integration)
-  - [Dev Container Support](#dev-container-support)
+  - [Dev Container, Docker & Playwright Browsers](#dev-container-docker--playwright-browsers)
 - [Getting Started with Development](#getting-started-with-development)
   - [Installation Options](#installation-options)
 - [Testing Environment](#testing-environment)
@@ -45,15 +45,20 @@ The project includes a comprehensive set of npm scripts for various development 
 
 ### Code Quality
 
-| Command             | Description                   |
-| ------------------- | ----------------------------- |
-| `pnpm lint`         | Check code for linting errors |
-| `pnpm lint:fix`     | Fix automatic linting errors  |
-| `pnpm format`       | Format code with Prettier     |
-| `pnpm format:check` | Check code formatting         |
-| `pnpm fix`          | Run both formatter and linter |
-| `pnpm type-check`   | Verify TypeScript types       |
-| `pnpm validate`     | Run all code quality checks   |
+| Command                   | Description                                      |
+| ------------------------- | ------------------------------------------------ |
+| `pnpm lint`               | Check code for linting errors                    |
+| `pnpm lint:fix`           | Fix automatic linting errors                     |
+| `pnpm format`             | Format code with Prettier                        |
+| `pnpm format:check`       | Check code formatting                            |
+| `pnpm fix`                | Run both formatter and linter                    |
+| `pnpm type-check`         | Verify TypeScript types                          |
+| `pnpm validate:static`    | Run all static checks (lint, format, types)      |
+| `pnpm validate:unit`      | Run unit and integration tests                   |
+| `pnpm validate:e2e`       | Run end-to-end tests (if present)                |
+| `pnpm validate:quick`     | Run static checks and unit tests (no E2E)        |
+| `pnpm validate:full`      | Run all validations including E2E tests          |
+| `pnpm validate:precommit` | Run lint-staged and unit tests for quick commits |
 
 ### Component Documentation
 
@@ -74,24 +79,69 @@ The project includes pre-configured VS Code settings in `.vscode/settings.json` 
 - Debugging configurations
 - Recommended extensions
 
-### Dev Container Support
+### Dev Container, Docker & Playwright Browsers
 
-A complete development environment is configured in `.devcontainer/devcontainer.json` providing:
+This project uses a modern containerized setup for maximum consistency and onboarding speed:
 
-- Node.js runtime environment
-- Essential VS Code extensions pre-installed
-- Port forwarding for development server
-- Automatic dependency installation
+- **Dockerfile**: Defines the base image, system dependencies, and Node.js environment.
+- **docker-compose.yml**: Orchestrates the container, mounts your code, and persists Playwright browser binaries in a Docker volume.
+- **.devcontainer/devcontainer.json**: VS Code integration for seamless Dev Container experience.
 
-**Benefits of using Dev Containers:**
+**Benefits:**
 
-| Feature             | Local Development                       | With Dev Container                                |
-| ------------------- | --------------------------------------- | ------------------------------------------------- |
-| 🔄 Team consistency | ❌ May vary based on local setup and OS | ✅ Identical environment for all team members     |
-| 🛠️ Configuration    | ❌ Manual setup of tools and extensions | ✅ Automatic setup of the entire environment      |
-| 🌐 Cross-platform   | ⚠️ May encounter OS-specific issues     | ✅ Works identically on Windows, macOS, and Linux |
+- Identical environment for all contributors
+- No "works on my machine" issues
+- Fast onboarding: just "Reopen in Container" in VS Code
 
-When opening the project in VS Code, you'll be prompted to "Reopen in Container" if you have the Dev Containers extension. Simply click "Reopen in Container" when prompted to use this feature.
+#### Playwright E2E Browsers: How They're Managed
+
+**Playwright E2E tests require:**
+
+- Node.js dependencies (`@playwright/test`)
+- Native browser binaries (Chromium, Firefox, WebKit)
+
+**How it works in this starter:**
+
+- Browsers are _not_ included in the Docker image by default (to keep it light).
+- On first E2E test run, Playwright downloads browsers to `/home/node/.cache/ms-playwright`.
+- This folder is mounted as a Docker volume (`playwright_cache`), so browsers persist between container rebuilds.
+
+**If you delete the volume or do a "clean" rebuild, browsers will be re-downloaded.**
+
+**You can force browser installation at any time with:**
+
+```sh
+pnpm exec playwright install
+```
+
+**Why not include browsers in the image?**
+
+- Would add 350–450 MB to the image
+- Not all users need E2E tests
+- Volume approach is more flexible and eco-friendly
+
+**If you want a "full" image (browsers always present), add this to your Dockerfile:**
+
+```dockerfile
+RUN npx playwright install --with-deps
+```
+
+_But this is not recommended for most users._
+
+#### Example: docker-compose.yml (excerpt)
+
+```yaml
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/workspaces/vite-powerflow:cached
+      - playwright_cache:/home/node/.cache/ms-playwright
+volumes:
+  playwright_cache: {}
+```
 
 ## Getting Started with Development
 
@@ -172,9 +222,27 @@ Types:
 
 ## Pre-commit Hooks
 
-The following checks are configured to run automatically before each commit:
+The project uses a two-stage validation process to ensure code quality while maintaining development speed. For a complete list of validation commands, see the [Code Quality](#code-quality) section above.
 
-- TypeScript type checking
-- ESLint
-- Prettier formatting
-- Unit tests
+### Pre-commit Hook
+
+Runs automatically before each commit:
+
+- Lint-staged checks on modified files
+- Unit and integration tests
+- Fast validation to keep commits quick
+
+### Pre-push Hook
+
+Runs automatically before pushing to remote:
+
+- Full static validation (lint, format, type-check)
+- All tests including E2E (if present)
+- Complete project validation
+
+The validation system is designed to be:
+
+- Fast for daily development (pre-commit)
+- Thorough for code quality (pre-push)
+- Flexible for different project needs
+- Supportive of projects with or without E2E tests

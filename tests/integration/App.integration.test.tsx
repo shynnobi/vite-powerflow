@@ -19,44 +19,49 @@ describe('App integration with Zustand', () => {
 		);
 	});
 
-	it('should display the initial count from the counter store', () => {
+	it('should show the initial counter value of 0 when the app is first rendered', () => {
+		// Given: The app is rendered with a fresh counter store
+		// When: The app is displayed
+		// Then: The counter should show 0
 		expect(screen.getByTestId('counter-value')).toHaveTextContent('count is 0');
 	});
 
-	it('should increment the counter store when the increment button is clicked', () => {
-		// Find the increment button using data-testid
-		const incrementButton = screen.getByTestId('increment-button');
+	it('should increase the counter value when the increment button is clicked', () => {
+		// Given: The app is rendered with counter at 0
+		expect(screen.getByTestId('counter-value')).toHaveTextContent('count is 0');
 
-		// Click the button
+		// When: The user clicks the increment button
+		const incrementButton = screen.getByTestId('increment-button');
 		fireEvent.click(incrementButton);
 
-		// Check if the count was updated in the Zustand store
+		// Then: The counter should show 1
 		expect(screen.getByTestId('counter-value')).toHaveTextContent('count is 1');
 	});
 
-	it('should decrement the counter store when the decrement button is clicked', () => {
-		// Find the decrement button
-		const decrementButton = screen.getByTestId('decrement-button');
+	it('should decrease the counter value when the decrement button is clicked', () => {
+		// Given: The app is rendered with counter at 0
+		expect(screen.getByTestId('counter-value')).toHaveTextContent('count is 0');
 
-		// Click the decrement button
+		// When: The user clicks the decrement button
+		const decrementButton = screen.getByTestId('decrement-button');
 		fireEvent.click(decrementButton);
 
-		// Check if the count was decremented to -1
+		// Then: The counter should show -1
 		expect(screen.getByTestId('counter-value')).toHaveTextContent('count is -1');
 	});
 
-	it('should reset the counter store when the reset button is clicked', () => {
+	it('should reset the counter to 0 when the reset button is clicked', () => {
+		// Given: The app is rendered with counter set to 5
 		act(() => {
 			useCounterStore.setState({ count: 5 });
 		});
+		expect(screen.getByTestId('counter-value')).toHaveTextContent('count is 5');
 
-		// Find the reset button
+		// When: The user clicks the reset button
 		const resetButton = screen.getByTestId('reset-button');
-
-		// Click the reset button
 		fireEvent.click(resetButton);
 
-		// Check if the count was reset to 0 in the Zustand store
+		// Then: The counter should be reset to 0
 		expect(screen.getByTestId('counter-value')).toHaveTextContent('count is 0');
 	});
 });

@@ -5,10 +5,7 @@ import { usePosts } from '@/lib/posts/usePosts';
 export function PostsList() {
 	const { data: posts, isLoading, error } = usePosts();
 
-	console.log('PostsList render:', { posts, isLoading, error });
-
 	if (isLoading) {
-		console.log('Loading state...');
 		return (
 			<div className="flex justify-center">
 				<Spinner size="lg" />
@@ -17,16 +14,13 @@ export function PostsList() {
 	}
 
 	if (error) {
-		console.error('Error:', error);
-		return <div className="text-red-500">Une erreur est survenue: {error.message}</div>;
+		return <div className="text-red-500">An error occurred: {error.message}</div>;
 	}
 
 	if (!posts) {
-		console.log('No posts found');
-		return <div>Aucun post trouvé</div>;
+		return <div>No posts found</div>;
 	}
 
-	console.log('Rendering posts:', posts.length);
 	return (
 		<div className="space-y-4">
 			{posts.map((post: Post) => (
