@@ -187,15 +187,20 @@ Available aliases include `@/*`, `@components/*`, `@context/*`, `@lib/*`, `@page
 
 ### Code Quality
 
-| Command             | Description                   |
-| ------------------- | ----------------------------- |
-| `pnpm lint`         | Check code for linting errors |
-| `pnpm lint:fix`     | Fix automatic linting errors  |
-| `pnpm format`       | Format code with Prettier     |
-| `pnpm format:check` | Check code formatting         |
-| `pnpm fix`          | Run both formatter and linter |
-| `pnpm type-check`   | Verify TypeScript types       |
-| `pnpm validate`     | Run all code quality checks   |
+| Command                   | Description                    |
+| ------------------------- | ------------------------------ |
+| `pnpm lint`               | Check code for linting errors  |
+| `pnpm lint:fix`           | Fix automatic linting errors   |
+| `pnpm format`             | Format code with Prettier      |
+| `pnpm format:check`       | Check code formatting          |
+| `pnpm fix`                | Run both formatter and linter  |
+| `pnpm type-check`         | Verify TypeScript types        |
+| `pnpm validate:static`    | Run all static checks          |
+| `pnpm validate:tests`     | Run unit and integration tests |
+| `pnpm validate:tests:all` | Run all tests including E2E    |
+| `pnpm validate`           | Run basic validation           |
+| `pnpm validate:all`       | Run complete validation        |
+| `pnpm validate:precommit` | Run pre-commit validations     |
 
 ### Documentation & Development
 
