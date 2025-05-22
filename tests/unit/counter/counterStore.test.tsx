@@ -1,6 +1,11 @@
+import { render } from '@testing-library/react';
+import { axe, toHaveNoViolations } from 'jest-axe';
 import { beforeEach, describe, expect, it } from 'vitest';
 
+import Home from '@/pages/Home';
 import { useCounterStore } from '@/store/counterStore';
+
+expect.extend(toHaveNoViolations);
 
 describe('counterStore', () => {
 	beforeEach(() => {
@@ -62,5 +67,11 @@ describe('counterStore', () => {
 
 		// Then: The count should be -3
 		expect(useCounterStore.getState().count).toBe(-3);
+	});
+
+	it('Home counter section should have no accessibility violations', async () => {
+		const { container } = render(<Home />);
+		const results = await axe(container);
+		expect(results).toHaveNoViolations();
 	});
 });
