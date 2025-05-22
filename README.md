@@ -187,20 +187,20 @@ Available aliases include `@/*`, `@components/*`, `@context/*`, `@lib/*`, `@page
 
 ### Code Quality
 
-| Command                   | Description                    |
-| ------------------------- | ------------------------------ |
-| `pnpm lint`               | Check code for linting errors  |
-| `pnpm lint:fix`           | Fix automatic linting errors   |
-| `pnpm format`             | Format code with Prettier      |
-| `pnpm format:check`       | Check code formatting          |
-| `pnpm fix`                | Run both formatter and linter  |
-| `pnpm type-check`         | Verify TypeScript types        |
-| `pnpm validate:static`    | Run all static checks          |
-| `pnpm validate:tests`     | Run unit and integration tests |
-| `pnpm validate:tests:all` | Run all tests including E2E    |
-| `pnpm validate`           | Run basic validation           |
-| `pnpm validate:all`       | Run complete validation        |
-| `pnpm validate:precommit` | Run pre-commit validations     |
+| Command                   | Description                                      |
+| ------------------------- | ------------------------------------------------ |
+| `pnpm lint`               | Check code for linting errors                    |
+| `pnpm lint:fix`           | Fix automatic linting errors                     |
+| `pnpm format`             | Format code with Prettier                        |
+| `pnpm format:check`       | Check code formatting                            |
+| `pnpm fix`                | Run both formatter and linter                    |
+| `pnpm type-check`         | Verify TypeScript types                          |
+| `pnpm validate:static`    | Run all static checks (lint, format, types)      |
+| `pnpm validate:unit`      | Run unit and integration tests                   |
+| `pnpm validate:e2e`       | Run end-to-end tests (if present)                |
+| `pnpm validate:quick`     | Run static checks and unit tests (no E2E)        |
+| `pnpm validate:full`      | Run all validations including E2E tests          |
+| `pnpm validate:precommit` | Run lint-staged and unit tests for quick commits |
 
 ### Documentation & Development
 
