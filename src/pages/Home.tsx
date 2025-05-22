@@ -44,8 +44,9 @@ export default function Home(): ReactElement {
 					className="rounded-lg bg-slate-900 p-2 text-white hover:bg-slate-700"
 					onClick={() => decrement()}
 					data-testid="decrement-button"
+					aria-label="Decrement counter"
 				>
-					<FiMinus className="h-5 w-5" />
+					<FiMinus className="h-5 w-5" aria-hidden="true" />
 				</button>
 				<code
 					className="rounded-lg bg-slate-800 px-4 py-2 font-mono text-xl text-white"
@@ -58,16 +59,18 @@ export default function Home(): ReactElement {
 					className="rounded-lg bg-slate-900 p-2 text-white hover:bg-slate-700"
 					onClick={() => increment()}
 					data-testid="increment-button"
+					aria-label="Increment counter"
 				>
-					<FiPlus className="h-5 w-5" />
+					<FiPlus className="h-5 w-5" aria-hidden="true" />
 				</button>
 				<button
 					type="button"
 					className="rounded-lg bg-slate-900 p-2 text-white hover:bg-slate-700"
 					onClick={() => reset()}
 					data-testid="reset-button"
+					aria-label="Reset counter"
 				>
-					<FiRefreshCw className="h-5 w-5" />
+					<FiRefreshCw className="h-5 w-5" aria-hidden="true" />
 				</button>
 			</div>
 			<div className="mt-12">
@@ -80,24 +83,30 @@ export default function Home(): ReactElement {
 							target="_blank"
 							rel="noreferrer"
 							className="text-foreground hover:text-foreground/80"
+							aria-label="GitHub profile"
 						>
-							<FiGithub className="h-6 w-6" />
+							<FiGithub className="h-6 w-6" aria-hidden="true" />
+							<span className="sr-only">GitHub</span>
 						</a>
 						<a
 							href="https://bsky.app/profile/shynnobi.bsky.social"
 							target="_blank"
 							rel="noreferrer"
 							className="text-foreground hover:text-foreground/80"
+							aria-label="Bluesky profile"
 						>
-							<SiBluesky className="h-6 w-6" />
+							<SiBluesky className="h-6 w-6" aria-hidden="true" />
+							<span className="sr-only">Bluesky</span>
 						</a>
 						<a
 							href="https://www.instagram.com/shynnobi_"
 							target="_blank"
 							rel="noreferrer"
 							className="text-foreground hover:text-foreground/80"
+							aria-label="Instagram profile"
 						>
-							<FiInstagram className="h-6 w-6" />
+							<FiInstagram className="h-6 w-6" aria-hidden="true" />
+							<span className="sr-only">Instagram</span>
 						</a>
 					</div>
 				</div>
