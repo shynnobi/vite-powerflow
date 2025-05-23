@@ -1,6 +1,6 @@
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: true
 ---
 - Always use the PR template when creating pull requests
@@ -10,3 +10,7 @@ alwaysApply: true
 - Always reference related tasks or issues in the "Tasks completed" section
 - Mark the appropriate checkboxes in the "Type of change" and "Quality assurance" sections
 - Never create PRs without using the template structure
+- When writing commit messages for PRs, ensure:
+  - The title (header) is at most 72 characters
+  - Each line of the body is at most 100 characters
+  - Follow the conventional commit format
