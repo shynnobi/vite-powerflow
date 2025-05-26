@@ -1,6 +1,6 @@
 # GitHub CI Workflows Setup Guide
 
-This document describes the GitHub Actions workflows pre-configured in this starter project and provides guidance on ensuring they function correctly in your repository.
+This guide describes the pre-configured GitHub Actions workflows included in Vite PowerFlow and how to ensure they function correctly in your repository.
 
 ## Overview
 

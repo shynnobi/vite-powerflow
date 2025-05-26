@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This starter is optimized for both traditional and AI-powered workflows, with a special focus on enhancing the developer experience when using AI pair programming tools like [Cursor](https://www.cursor.so/). The `.cursor/rules` directory contains a set of structured rules that guide the AI assistant to follow best practices, project conventions, and team standards, while maintaining compatibility with traditional development approaches.
+This guide explains how to leverage AI pair programming in Vite PowerFlow using Cursor rules for a collaborative and high-quality development workflow. The `.cursor/rules` directory provides explicit instructions for the AI assistant, ensuring it follows your team's standards and workflows—whether you use traditional or AI-powered tools like [Cursor](https://www.cursor.so/). This approach guarantees a seamless, high-quality experience for all contributors.
 
 ## Why AI Pair Programming?
 

@@ -1,5 +1,7 @@
 # Features
 
+This page lists all features included in Vite PowerFlow.
+
 Vite PowerFlow comes with a comprehensive set of features to help you build modern React applications:
 
 ## Core Technologies
