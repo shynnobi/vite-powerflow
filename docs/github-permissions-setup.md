@@ -1,6 +1,6 @@
 # GitHub Authentication and Permissions Setup Guide
 
-This guide helps you, as a user of the Vite PowerFlow starter, to set up your GitHub Personal Access Token (PAT) and configure your repository for optimal GitHub interaction. This includes enabling pre-configured automated workflows and effectively using tools like GitHub CLI and AI assistants.
+This guide explains how to set up GitHub authentication and permissions for Vite PowerFlow, including Personal Access Tokens (PAT) and repository configuration. This includes enabling pre-configured automated workflows and effectively using tools like GitHub CLI and AI assistants.
 
 ## 1. GitHub Personal Access Token (PAT)
 

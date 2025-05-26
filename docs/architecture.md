@@ -1,5 +1,7 @@
 # Project Architecture
 
+This guide describes the project architecture and code organization in Vite PowerFlow.
+
 ## Code Organization
 
 Vite PowerFlow follows a feature-based architecture pattern where code is organized by its domain functionality rather than technical type.
