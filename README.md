@@ -27,7 +27,7 @@ A React + Vite starter, fully containerized for reproducible and collaborative d
 
 Get started in minutes with a fully containerized, AI-optimized environment.
 
-### A. Create a new project (recommended)
+### A. Using the CLI (recommended)
 
 1. **Generate your app:**
    ```bash
