@@ -1,6 +1,6 @@
 # Project Configuration
 
-This guide provides an overview of the key configuration files in Vite PowerFlow.
+This guide explains the key configuration files and environment variables in Vite PowerFlow.
 
 ## Configuration Files Overview
 

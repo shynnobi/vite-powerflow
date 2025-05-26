@@ -1,6 +1,6 @@
 # Getting Started
 
-This guide will help you set up and run a new Vite PowerFlow project.
+This guide explains how to set up and run a new Vite PowerFlow project.
 
 ## Prerequisites
 

@@ -1,6 +1,6 @@
 # GitHub CLI AI Setup Guide
 
-This guide explains how AI assistants leverage the GitHub CLI within your development container to perform GitHub operations like creating PRs, viewing issues, and more. **This setup relies on prior configuration.**
+This guide explains how to use the GitHub CLI and AI assistants in your development container with Vite PowerFlow. **This setup relies on prior configuration.**
 
 ## Prerequisites
 
