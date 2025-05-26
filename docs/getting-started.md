@@ -7,57 +7,38 @@ This guide explains how to set up and run a new Vite PowerFlow project.
 - [Node.js](https://nodejs.org/) (v18+)
 - [pnpm](https://pnpm.io/) (v8+) - _recommended package manager_
 - [Git](https://git-scm.com/) (optional)
+- [Cursor](https://cursor.com) (recommended) or [VS Code](https://code.visualstudio.com)
 
-## Installation
+## Quick Start
 
 ### Option 1: Using the CLI (Recommended)
 
-The fastest way to create a new project:
+1. **Generate your app:**
 
-```bash
-# Using npx (no installation required)
-npx create-powerflow-app my-app
+   ```bash
+   npx create-powerflow-app my-app
+   # OR
+   npm install -g create-powerflow-app
+   create-powerflow-app my-app
+   ```
 
-# OR with global installation
-npm install -g create-powerflow-app
-create-powerflow-app my-app
-```
+2. **Open your new project in [Cursor](https://cursor.com) (recommended) or [VS Code](https://code.visualstudio.com)**
+3. **Reopen in Container** when prompted (DevContainer)
+4. **Start developing!**
 
-The CLI helps you:
+> For the full AI pair programming experience, use Cursor with the pre-configured rules. In VS Code, Cursor rules are not available, but you can use other AI tools.
 
-- Set project name and description
-- Add author information
-- Initialize Git repository (optional)
+### Option 2: Clone the starter template
 
-### Option 2: Manual Installation
+1. **Clone this repository:**
 
-```bash
-# Using degit (no git history)
-pnpm degit shynnobi/vite-powerflow my-app
+   ```bash
+   git clone https://github.com/shynnobi/vite-powerflow.git
+   cd vite-powerflow
+   ```
 
-# OR using git clone (includes git history)
-git clone https://github.com/shynnobi/vite-powerflow.git my-app
+2. **Open in [Cursor](https://cursor.com) or [VS Code](https://code.visualstudio.com)**
+3. **Reopen in Container** when prompted (DevContainer)
+4. **Start developing!**
 
-# Navigate to project and install dependencies
-cd my-app
-pnpm install
-```
-
-## Available Scripts
-
-| Command              | Description                                            |
-| -------------------- | ------------------------------------------------------ |
-| `pnpm dev`           | Starts the development server at http://localhost:5173 |
-| `pnpm build`         | Builds the app for production in the `dist` folder     |
-| `pnpm preview`       | Previews the production build locally                  |
-| `pnpm test`          | Runs all tests with Vitest                             |
-| `pnpm test:unit`     | Runs unit tests only                                   |
-| `pnpm test:e2e`      | Runs E2E tests with Playwright                         |
-| `pnpm test:coverage` | Generates test coverage report                         |
-| `pnpm lint`          | Lints the codebase                                     |
-| `pnpm format`        | Formats code with Prettier                             |
-| `pnpm storybook`     | Starts Storybook for component development             |
-
-## Versioning
-
-Vite PowerFlow follows [Semantic Versioning](https://semver.org/). Check the [CHANGELOG.md](../CHANGELOG.md) for updates.
+For advanced setup and available scripts, see [Development Environment](development.md).
