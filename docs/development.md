@@ -1,6 +1,6 @@
 # Development Environment
 
-This guide covers the essential development environment and workflow setup in Vite PowerFlow.
+This guide details the development environment and workflow setup for Vite PowerFlow.
 
 ## Table of Contents
 
