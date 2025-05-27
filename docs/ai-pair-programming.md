@@ -31,6 +31,24 @@ Each rule file describes a specific aspect of the workflow, coding standards, or
 - **ecosystem-convention.mdc**: How to align with ecosystem and tool-specific conventions.
 - **technical-AI-posture.mdc**: The expected technical rigor and posture of the AI assistant.
 
+## Development Plan Generation
+
+Before starting any new project, use the Development Plan Generator Prompt (`workflows/DEVELOPMENT_PLAN_PROMPT.md`) to create a structured development plan. This prompt helps you:
+
+- Define clear user stories and requirements
+- Create a feature-slice based MVP approach
+- Establish a TDD workflow with explicit test-writing steps
+- Set up Git workflow integration with proper conventions
+- Define milestones and versioning strategy
+
+The generated plan serves as a roadmap for both you and the AI assistant, ensuring:
+
+- Consistent understanding of project goals
+- Clear progression through development phases
+- Proper test coverage from the start
+- Incremental feature delivery
+- Better collaboration between human and AI pair programmers
+
 ## Customizing AI Behavior
 
 You can edit or add rules in `.cursor/rules/` to tailor the AI's behavior to your team's needs.
@@ -41,6 +59,8 @@ For example, you can enforce stricter code review, change commit message formats
 - Keep rules concise and focused on one topic per file.
 - Update rules as your project evolves or as your team's workflow changes.
 - Review the rules with your team to ensure alignment.
+- Always start new projects with the Development Plan Generator Prompt.
+- Use the generated plan to guide both human and AI development efforts.
 
 ## Further Reading
 

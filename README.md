@@ -1,6 +1,6 @@
 # Vite PowerFlow ⚡
 
-A React + Vite starter, fully containerized for reproducible and collaborative development, with strict code quality tooling and AI pair programming optimization (Cursor rules). Includes comprehensive testing, linting, and CI/CD configurations following industry best practices.
+A React + Vite starter, fully containerized for reproducible and collaborative development, with strict code quality tooling and AI pair programming workflow (Cursor rules). Includes comprehensive testing, linting, and CI/CD configurations following industry best practices.
 
 <div align="center">
   <img src="public/vite.svg" alt="Vite Logo" width="100" />
@@ -42,8 +42,6 @@ Get started in minutes with a fully containerized, AI-optimized environment.
 
 > For the full AI pair programming experience, use Cursor with the pre-configured rules. In VS Code, Cursor rules are not available, but you can use other AI tools.
 
----
-
 ### B. Clone the starter template
 
 1. **Clone this repository:**
@@ -56,6 +54,17 @@ Get started in minutes with a fully containerized, AI-optimized environment.
 4. **Start developing!**
 
 For advanced setup, see [Development Environment](docs/development.md).
+
+## 🤖 AI Pair Programming Workflow
+
+Vite PowerFlow enables seamless collaboration between human developers and AI assistants through:
+
+- **Project Planning**: Generate development prompts using our [Development Plan Generator](workflows/DEVELOPMENT_PLAN_GENERATOR.md), which provides:
+  - A clear contract between humans and AI agents
+  - Well-defined phases and milestones for tracking progress
+- **Cursor Integration**: Optimized workflow with pre-configured rules in the [Cursor directory](.cursor) for enhanced collaboration
+
+For detailed information about the AI pair programming workflow, see [AI Pair Programming](docs/ai-pair-programming.md).
 
 ## 📚 Documentation
 
