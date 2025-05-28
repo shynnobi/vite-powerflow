@@ -52,10 +52,6 @@ const CUSTOM_VIEWPORTS = {
 
 const preview: Preview = {
 	parameters: {
-		actions: {
-			// Removed argTypesRegex which causes the warning
-			// Use fn() from '@storybook/test' explicitly in each Story instead
-		},
 		controls: {
 			matchers: {
 				color: /(background|color)$/i,
