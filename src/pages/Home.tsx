@@ -1,15 +1,13 @@
 import { type ReactElement } from 'react';
-import { FiGithub, FiInstagram, FiMinus, FiPlus, FiRefreshCw } from 'react-icons/fi';
+import { FiGithub, FiInstagram } from 'react-icons/fi';
 import { SiBluesky } from 'react-icons/si';
 
 import reactLogo from '@/assets/react.svg';
-import { useCounterStore } from '@/store/counterStore';
+import { Counter } from '@/components/examples/Counter';
 
 export default function Home(): ReactElement {
-	const { count, increment, decrement, reset } = useCounterStore();
-
 	return (
-		<div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
+		<div className="flex pt-16 flex-col items-center justify-center bg-background p-4">
 			<div className="flex gap-4">
 				<a href="https://vitejs.dev" target="_blank" rel="noreferrer">
 					<img src={reactLogo} className="h-24 p-6" alt="React logo" />
@@ -24,7 +22,7 @@ export default function Home(): ReactElement {
 			</p>
 
 			<div className="mt-8 grid max-w-2xl gap-4 text-center">
-				<div className="rounded-lg border bg-card p-4 text-card-foreground">
+				<div className="rounded-md border bg-card p-4 text-card-foreground">
 					<h2 className="text-lg font-semibold">Key Features</h2>
 					<ul className="mt-2 space-y-1 text-sm text-muted-foreground">
 						<li>⚡️ Vite 6 - Lightning fast build tool</li>
@@ -39,40 +37,9 @@ export default function Home(): ReactElement {
 			</div>
 
 			<div className="mt-8 flex items-center gap-4">
-				<button
-					type="button"
-					className="rounded-lg bg-slate-900 p-2 text-white hover:bg-slate-700"
-					onClick={() => decrement()}
-					data-testid="decrement-button"
-					aria-label="Decrement counter"
-				>
-					<FiMinus className="h-5 w-5" aria-hidden="true" />
-				</button>
-				<code
-					className="rounded-lg bg-slate-800 px-4 py-2 font-mono text-xl text-white"
-					data-testid="counter-value"
-				>
-					count is {count}
-				</code>
-				<button
-					type="button"
-					className="rounded-lg bg-slate-900 p-2 text-white hover:bg-slate-700"
-					onClick={() => increment()}
-					data-testid="increment-button"
-					aria-label="Increment counter"
-				>
-					<FiPlus className="h-5 w-5" aria-hidden="true" />
-				</button>
-				<button
-					type="button"
-					className="rounded-lg bg-slate-900 p-2 text-white hover:bg-slate-700"
-					onClick={() => reset()}
-					data-testid="reset-button"
-					aria-label="Reset counter"
-				>
-					<FiRefreshCw className="h-5 w-5" aria-hidden="true" />
-				</button>
+				<Counter />
 			</div>
+
 			<div className="mt-12">
 				<div className="text-center">
 					<h2 className="text-lg font-semibold">Author</h2>
@@ -82,7 +49,7 @@ export default function Home(): ReactElement {
 							href="https://github.com/shynnobi"
 							target="_blank"
 							rel="noreferrer"
-							className="text-foreground hover:text-foreground/80"
+							className="text-foreground hover:underline"
 							aria-label="GitHub profile"
 						>
 							<FiGithub className="h-6 w-6" aria-hidden="true" />
@@ -92,7 +59,7 @@ export default function Home(): ReactElement {
 							href="https://bsky.app/profile/shynnobi.bsky.social"
 							target="_blank"
 							rel="noreferrer"
-							className="text-foreground hover:text-foreground/80"
+							className="text-foreground hover:underline"
 							aria-label="Bluesky profile"
 						>
 							<SiBluesky className="h-6 w-6" aria-hidden="true" />
@@ -102,7 +69,7 @@ export default function Home(): ReactElement {
 							href="https://www.instagram.com/shynnobi_"
 							target="_blank"
 							rel="noreferrer"
-							className="text-foreground hover:text-foreground/80"
+							className="text-foreground hover:underline"
 							aria-label="Instagram profile"
 						>
 							<FiInstagram className="h-6 w-6" aria-hidden="true" />
