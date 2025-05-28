@@ -40,3 +40,39 @@ Before creating any commit, the AI must:
   1. Use `git reset --soft HEAD~1`
   2. Review and restage correct files
   3. Create new commit with proper message
+
+## Commit Message Creation
+
+To avoid issues with terminal line length limitations and ensure proper formatting:
+
+1. Create a temporary file for the commit message:
+   ```bash
+   TEMP_COMMIT_MSG=$(mktemp)
+   ```
+
+2. Write the commit message to the file:
+   ```bash
+   cat > "$TEMP_COMMIT_MSG" << EOL
+   <type>(<scope>): <subject>
+
+   <body>
+
+   <footer>
+   EOL
+   ```
+
+3. Use the file for the commit:
+   ```bash
+   git commit -F "$TEMP_COMMIT_MSG"
+   ```
+
+4. Clean up:
+   ```bash
+   rm "$TEMP_COMMIT_MSG"
+   ```
+
+This approach ensures:
+- Proper line breaks are preserved
+- No terminal line length issues
+- Commit message format is maintained
+- Easy validation before committing
