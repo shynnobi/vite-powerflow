@@ -17,7 +17,7 @@ export function PostsList() {
 		return <div className="text-red-500">An error occurred: {error.message}</div>;
 	}
 
-	if (!posts) {
+	if (!posts || posts.length === 0) {
 		return <div>No posts found</div>;
 	}
 
