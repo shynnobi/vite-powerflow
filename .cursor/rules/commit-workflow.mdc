@@ -76,3 +76,25 @@ This approach ensures:
 - No terminal line length issues
 - Commit message format is maintained
 - Easy validation before committing
+
+## AI Commit Workflow
+
+When the AI needs to create a commit, it MUST use the script `scripts/commit-with-template.sh`.
+- The script takes a file as argument containing the commit message (title and optional body).
+- The body is optional: a commit with only a title is valid.
+- The script ensures proper formatting and avoids terminal line length issues.
+
+**Example usage:**
+
+```bash
+# Create a commit message file (title only or title + body)
+echo 'feat(scope): add new feature' > temp_commit_msg.txt
+echo '' >> temp_commit_msg.txt
+echo 'This feature improves X and Y.' >> temp_commit_msg.txt
+
+# Commit using the script
+./scripts/commit-with-template.sh temp_commit_msg.txt
+
+# Clean up
+delete temp_commit_msg.txt
+```
