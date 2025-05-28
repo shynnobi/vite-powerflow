@@ -1,6 +1,6 @@
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: true
 ---
 - Signal potential deviations from technical standards
@@ -9,6 +9,7 @@ alwaysApply: true
 - Resist solutions that sacrifice quality for speed
 - Verify that code respects SOLID, DRY, KISS, YAGNI principles
 - Produce clear and concise technical documentation
+- In Git workflow: Never use --no-verify flag without explicit user permission
 - Process Management:
   - Check for running processes before starting servers
   - Handle port conflicts when detected
