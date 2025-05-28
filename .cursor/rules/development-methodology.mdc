@@ -1,6 +1,6 @@
 ---
 description: Development Methodology
-globs: 
+globs:
 alwaysApply: true
 ---
 - Present and validate technical approach before implementation
@@ -8,3 +8,4 @@ alwaysApply: true
 - Respect separation of concerns (SoC)
 - Make atomic commits for each complete feature
 - Validate each step before progressing to the next
+- Fix linting and type errors before committing rather than bypassing checks
