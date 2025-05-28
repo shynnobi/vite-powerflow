@@ -64,17 +64,29 @@ alwaysApply: false
 ✅ Good (with bullet points for multiple changes):
 
 ```bash
-git commit -m "feat(ui): add cursor-pointer to interactive elements" -m "Changes include:" -m "- Add cursor-pointer to all buttons" -m "- Update hover states for better feedback" -m "- Ensure consistent behavior across themes"
+feat(ui): add cursor-pointer to interactive elements
+
+Changes include:
+- Add cursor-pointer to all buttons
+- Update hover states for better feedback
+- Ensure consistent behavior across themes
 ```
 
 ✅ Good (without bullet points for focused change):
 
 ```bash
-git commit -m "fix(auth): resolve login token expiration" -m "Update token refresh logic to prevent premature expiration" -m "Add proper error handling for expired tokens"
+fix(auth): resolve login token expiration
+
+Update token refresh logic to prevent premature expiration
+Add proper error handling for expired tokens
 ```
 
 ❌ Bad (exceeds character limits):
 
 ```bash
-git commit -m "feat(ui): add cursor-pointer to all interactive buttons" -m "Update Button component to ensure pointer feedback for better UX. No visual regression, only improved user experience."
+feat(ui): add cursor-pointer to all interactive buttons
+
+Update Button component to ensure pointer feedback for better UX. No visual regression, only improved user experience.
 ```
+
+> **Note:** For instructions on how to create commits using these messages, see the "Commit Message Creation" section in `commit-workflow.mdc`.
