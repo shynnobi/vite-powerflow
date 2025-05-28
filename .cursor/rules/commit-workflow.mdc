@@ -1,0 +1,42 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Commit Workflow
+
+## Pre-commit Checklist
+
+Before creating any commit, the AI must:
+
+1. Check git status to identify:
+   - Staged files
+   - Modified files
+   - Untracked files
+
+2. Verify that only relevant files are staged for the current commit:
+   - Files must be logically related to the commit message
+   - No unrelated changes should be included
+   - No documentation or configuration files unless explicitly part of the change
+
+3. If unrelated files are staged:
+   - Unstage all files using `git reset HEAD .`
+   - Review changes again
+   - Stage only the relevant files for the current commit
+
+4. Before committing:
+   - Double-check the staged files match the commit's purpose
+   - Ensure commit message follows conventions (see commit-message.mdc)
+   - Verify no linting errors in staged files
+
+## Error Prevention
+
+- See expected-AI-behavior.mdc for rules regarding the use of --no-verify.
+- If commit fails due to linting errors:
+  1. Fix the errors
+  2. Stage the fixed files
+  3. Try committing again
+- If wrong files were committed:
+  1. Use `git reset --soft HEAD~1`
+  2. Review and restage correct files
+  3. Create new commit with proper message
