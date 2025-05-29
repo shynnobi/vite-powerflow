@@ -8,11 +8,6 @@ alwaysApply: false
 ## Format
 
 ```
-# Commit Message Rules
-
-## Format
-
-```
 <type>(<scope>): <subject>
 
 <body>
@@ -23,28 +18,17 @@ alwaysApply: false
 ## Rules
 
 1. Header (first line):
-
    - Must be ≤ 72 characters
    - Format: `<type>(<scope>): <subject>`
    - No period at the end
    - Use imperative mood ("add" not "added")
 
 2. Body:
-
    - Must be ≤ 100 characters per line
    - Each line must be a complete thought
-   - Use `-m` flag for each line in git commit command
    - Be descriptive and provide context
    - Optional: Use bullet points for better readability when listing multiple changes
    - Make small, focused commits that can be easily reviewed
-   - Example with bullet points (for multiple related changes):
-     ```bash
-     git commit -m "feat(ui): add cursor-pointer to interactive elements" -m "Changes include:" -m "- Add cursor-pointer to all buttons" -m "- Update hover states for better feedback" -m "- Ensure consistent behavior across themes"
-     ```
-   - Example without bullet points (for single focused change):
-     ```bash
-     git commit -m "fix(auth): resolve login token expiration" -m "Update token refresh logic to prevent premature expiration" -m "Add proper error handling for expired tokens"
-     ```
 
 3. Types:
    - build: Changes to build system
@@ -63,7 +47,7 @@ alwaysApply: false
 
 ✅ Good (with bullet points for multiple changes):
 
-```bash
+```text
 feat(ui): add cursor-pointer to interactive elements
 
 Changes include:
@@ -74,7 +58,7 @@ Changes include:
 
 ✅ Good (without bullet points for focused change):
 
-```bash
+```text
 fix(auth): resolve login token expiration
 
 Update token refresh logic to prevent premature expiration
@@ -83,10 +67,10 @@ Add proper error handling for expired tokens
 
 ❌ Bad (exceeds character limits):
 
-```bash
+```text
 feat(ui): add cursor-pointer to all interactive buttons
 
 Update Button component to ensure pointer feedback for better UX. No visual regression, only improved user experience.
 ```
 
-> **Note:** When the AI generates a commit, it MUST use the `scripts/ai-workflow/ai-commit-with-template.sh` script with a file containing the commit message (title and optional body). The body is optional.
+> **Note:** When the AI generates a commit, it MUST follow the workflow defined in [ai-commit-workflow.mdc](mdc:.cursor/rules/ai-commit-workflow.mdc). The commit message body is optional.
