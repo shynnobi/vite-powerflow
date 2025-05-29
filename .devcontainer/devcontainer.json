@@ -41,6 +41,6 @@
 	},
 	"forwardPorts": [5173, 4000],
 	"mounts": ["source=${localEnv:HOME}/.gitconfig,target=/home/node/.gitconfig,type=bind,readonly"],
-	"postCreateCommand": "sh ./scripts/init-gh-auth.sh && if [ -d .husky ]; then git config core.hooksPath .husky && chmod +x .husky/* 2>/dev/null || true; fi && echo 'Fixing cache permissions...' && sudo mkdir -p /home/node/.cache && sudo chown -R node:node /home/node/.cache && echo 'Dev Container (Compose) ready. GH_PAT should be loaded from .env.'",
+	"postCreateCommand": "sh ./scripts/ai-workflow/ai-github-cli-authenticate.sh && if [ -d .husky ]; then git config core.hooksPath .husky && chmod +x .husky/* 2>/dev/null || true; fi && echo 'Fixing cache permissions...' && sudo mkdir -p /home/node/.cache && sudo chown -R node:node /home/node/.cache && echo 'Dev Container (Compose) ready. GH_PAT should be loaded from .env.'",
 	"remoteUser": "node"
 }
