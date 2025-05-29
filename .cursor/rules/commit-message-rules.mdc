@@ -89,4 +89,4 @@ feat(ui): add cursor-pointer to all interactive buttons
 Update Button component to ensure pointer feedback for better UX. No visual regression, only improved user experience.
 ```
 
-> **Note:** When the AI generates a commit, it MUST use the `scripts/commit-with-template.sh` script with a file containing the commit message (title and optional body). The body is optional.
+> **Note:** When the AI generates a commit, it MUST use the `scripts/ai-workflow/ai-commit-with-template.sh` script with a file containing the commit message (title and optional body). The body is optional.
