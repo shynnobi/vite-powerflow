@@ -4,6 +4,7 @@ updates:
     directory: '/'
     schedule:
       interval: 'weekly'
+    target-branch: 'dev'
     open-pull-requests-limit: 10
     versioning-strategy: increase
     groups:
@@ -23,6 +24,7 @@ updates:
     directory: '/'
     schedule:
       interval: 'weekly'
+    target-branch: 'dev'
     open-pull-requests-limit: 5
     commit-message:
       prefix: 'ci'
