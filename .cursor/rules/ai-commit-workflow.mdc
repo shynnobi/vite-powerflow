@@ -3,10 +3,6 @@ description:
 globs:
 alwaysApply: false
 ---
-# AI Commit Workflow
-
-**This file contains rules and instructions for AI-generated commits only.**
-
 ### 1. Staging and File Selection
 - The AI MUST check the git status before every commit.
 - The AI MUST stage only files relevant to the current commit message.
