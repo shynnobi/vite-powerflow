@@ -182,7 +182,7 @@ importers:
         specifier: ^16.1.0
         version: 16.1.0
       husky:
-        specifier: ^9.0.11
+        specifier: ^9.1.7
         version: 9.1.7
       jest-axe:
         specifier: ^10.0.0
@@ -2492,8 +2492,8 @@ packages:
     peerDependencies:
       esbuild: '>=0.12 <1'
 
-  esbuild-wasm@0.25.4:
-    resolution: {integrity: sha512-2HlCS6rNvKWaSKhWaG/YIyRsTsL3gUrMP2ToZMBIjw9LM7vVcIs+rz8kE2vExvTJgvM8OKPqNpcHawY/BQc/qQ==}
+  esbuild-wasm@0.25.5:
+    resolution: {integrity: sha512-V/rbdOws2gDcnCAECfPrajhuafI0WY4WumUgc8ZHwOLnvmM0doLQ+dqvVFI2qkVxQsvo6880aC9IjpyDqcwwTw==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -6274,8 +6274,8 @@ snapshots:
       '@storybook/theming': 8.6.14(storybook@8.6.14(prettier@3.5.3))
       better-opn: 3.0.2
       browser-assert: 1.2.1
-      esbuild: esbuild-wasm@0.25.4
-      esbuild-register: 3.6.0(esbuild-wasm@0.25.4)
+      esbuild: esbuild-wasm@0.25.5
+      esbuild-register: 3.6.0(esbuild-wasm@0.25.5)
       jsdoc-type-pratt-parser: 4.1.0
       process: 0.11.10
       recast: 0.23.11
@@ -7702,14 +7702,14 @@ snapshots:
 
   es6-error@4.1.1: {}
 
-  esbuild-register@3.6.0(esbuild-wasm@0.25.4):
+  esbuild-register@3.6.0(esbuild-wasm@0.25.5):
     dependencies:
       debug: 4.4.1
-      esbuild: esbuild-wasm@0.25.4
+      esbuild: esbuild-wasm@0.25.5
     transitivePeerDependencies:
       - supports-color
 
-  esbuild-wasm@0.25.4: {}
+  esbuild-wasm@0.25.5: {}
 
   escalade@3.2.0: {}
 
@@ -10325,7 +10325,7 @@ snapshots:
 
   vite@6.3.5(@types/node@22.13.13)(jiti@2.4.2)(lightningcss@1.29.2)(yaml@2.7.1):
     dependencies:
-      esbuild: esbuild-wasm@0.25.4
+      esbuild: esbuild-wasm@0.25.5
       fdir: 6.4.4(picomatch@4.0.2)
       picomatch: 4.0.2
       postcss: 8.5.3
