@@ -11,8 +11,9 @@
 			"upgradePackages": true,
 			"installAptPackages": ["pciutils"]
 		},
-		"ghcr.io/devcontainers-contrib/features/pnpm:2": {},
-		"ghcr.io/devcontainers/features/github-cli:1": {}
+		"ghcr.io/devcontainers/features/node:1": {
+			"version": "lts"
+		}
 	},
 	"customizations": {
 		"vscode": {
@@ -41,6 +42,12 @@
 	},
 	"forwardPorts": [5173, 4000],
 	"mounts": ["source=${localEnv:HOME}/.gitconfig,target=/home/node/.gitconfig,type=bind,readonly"],
-	"postCreateCommand": "sh ./scripts/ai-workflow/ai-github-cli-authenticate.sh && if [ -d .husky ]; then git config core.hooksPath .husky && chmod +x .husky/* 2>/dev/null || true; fi && echo 'Fixing cache permissions...' && sudo mkdir -p /home/node/.cache && sudo chown -R node:node /home/node/.cache && echo 'Dev Container (Compose) ready. GH_PAT should be loaded from .env.'",
+	"onCreateCommand": "./.devcontainer/scripts/on-create.sh",
+	"postCreateCommand": "./.devcontainer/scripts/post-create.sh",
+	"updateContentCommand": "./.devcontainer/scripts/update-content.sh",
+	"remoteEnv": {
+		"SWC_PLATFORM_ARCH": "linux-x64-gnu",
+		"npm_config_arch": "x64"
+	},
 	"remoteUser": "node"
 }
