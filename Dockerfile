@@ -12,8 +12,14 @@ RUN sudo apt-get update && sudo apt-get install -y \
     libwoff1 libopus0 flite \
     # Fourth set from runtime error
     libharfbuzz-icu0 libenchant-2-2 libsecret-1-0 libhyphen0 libmanette-0.2-0 libunwind8 libdw1 libegl1 libglx0 libgudev-1.0-0 libgles2 libx264-160 \
+    # Additional dependencies for Firefox
+    libpci3 libgl1-mesa-glx libgl1-mesa-dri \
     # Clean up apt lists to reduce image size
     && sudo rm -rf /var/lib/apt/lists/*
+
+# Create necessary directories with correct permissions
+RUN sudo mkdir -p /home/node/.cache/dconf && \
+    sudo chown -R node:node /home/node/.cache
 
 # We can add package installations (like gh CLI) here later if needed
 # For now, rely on features in devcontainer.json or manual installation
