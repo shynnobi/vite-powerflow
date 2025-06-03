@@ -5,6 +5,7 @@ alwaysApply: true
 ---
 - Always use the PR template when creating pull requests
 - When using GitHub CLI to create PRs, include the PR template with: `--body "$(cat .github/pull_request_template.md)"`
+- Always generate a temporary file from the PR template, pre-fill it, and then use the `--body-file` option when creating the PR with GitHub CLI.
 - PR titles should follow the conventional commit format (feat, fix, docs, etc.)
 - Fill out all relevant sections of the PR template with detailed information
 - Always reference related tasks or issues in the "Tasks completed" section
