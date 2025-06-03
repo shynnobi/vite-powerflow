@@ -14,9 +14,8 @@ services:
       - playwright_cache:/home/node/.cache/ms-playwright
 
     environment:
-      # Inject the GitHub token from the .env file located at the project root
-      # Use the same name inside the container as in the .env file for consistency
-      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      # Inject the GitHub Personal Access Token (PAT) from the .env file at the project root
+      - GH_PAT=${GH_PAT}
       # Replicate environment variables previously in devcontainer.json's remoteEnv
       # Provide sensible defaults if not set in .env (though usually set by features/scripts)
       - SWC_PLATFORM_ARCH=${SWC_PLATFORM_ARCH:-linux-x64-gnu}
