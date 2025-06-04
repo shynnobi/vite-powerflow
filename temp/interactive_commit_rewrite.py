@@ -50,10 +50,6 @@ def find_new_commit_hash(new_message):
     return None
 
 def rewrite_commit(commit_hash, new_message):
-    # Add [skip ci] to the message if not already present
-    if "[skip ci]" not in new_message and "[ci skip]" not in new_message:
-        new_message = f"{new_message} [skip ci]"
-
     print(f"\nNew commit message will be: {new_message}")
 
     # Use filter-branch to rewrite the commit, passing the message directly
