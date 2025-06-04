@@ -1,5 +1,7 @@
 # Features
 
+This page lists all features included in Vite PowerFlow.
+
 Vite PowerFlow comes with a comprehensive set of features to help you build modern React applications:
 
 ## Core Technologies
@@ -13,7 +15,7 @@ Vite PowerFlow comes with a comprehensive set of features to help you build mode
 - 🎨 [Tailwind CSS](https://tailwindcss.com/) (v4) - Utility-first CSS framework
 - 🎭 [shadcn/ui](https://ui.shadcn.com/) - Reusable components
 - 🌓 Dark mode support with theme switching
-- 📚 [Storybook](https://storybook.js.org/) (v8) - Component documentation
+- 📚 [Storybook](https://storybook.js.org/) (v9) - Component documentation
 
 ## State & Data Management
 

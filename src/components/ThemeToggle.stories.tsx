@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { ThemeProviderContext } from '@/context/theme/ThemeContext';
@@ -50,8 +50,20 @@ type Story = StoryObj<typeof meta>;
 
 export const LightModeDefault: Story = {
 	render: () => (
-		<div className="rounded-md bg-slate-100 p-4 dark:bg-slate-800">
-			<ThemeToggle />
+		<div
+			style={{
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'center',
+				padding: '2rem',
+				background: 'var(--card)',
+				width: '100%',
+				boxSizing: 'border-box',
+			}}
+		>
+			<div className="rounded-md bg-card p-4 text-card-foreground">
+				<ThemeToggle />
+			</div>
 		</div>
 	),
 };
@@ -65,8 +77,20 @@ export const DarkMode: Story = {
 		),
 	],
 	render: () => (
-		<div className="rounded-md bg-slate-100 p-4 dark:bg-slate-800">
-			<ThemeToggle />
+		<div
+			style={{
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'center',
+				padding: '2rem',
+				background: 'var(--card)',
+				width: '100%',
+				boxSizing: 'border-box',
+			}}
+		>
+			<div className="rounded-md bg-card p-4 text-card-foreground">
+				<ThemeToggle />
+			</div>
 		</div>
 	),
 };

@@ -14,17 +14,17 @@ afterEach(() => {
 });
 
 describe('usePosts', () => {
-	// Given a successful API response
-	it('should fetch posts successfully', async () => {
-		// When rendering the hook
+	it('should fetch and display posts when the API responds successfully', async () => {
+		// Given: The hook is rendered
 		const { result } = renderHook(() => usePosts(), {
 			wrapper: createWrapper(),
 		});
 
-		// Then initially it should be loading
+		// When: The initial data fetch is triggered
+		// Then: The hook should show a loading state
 		expect(result.current.isLoading).toBe(true);
 
-		// And eventually it should contain posts
+		// And: Eventually it should contain an array of posts
 		await waitFor(() => {
 			expect(result.current.isSuccess).toBe(true);
 			expect(result.current.data).toBeDefined();
@@ -32,17 +32,16 @@ describe('usePosts', () => {
 		});
 	});
 
-	// Given a failed API response
-	it('should handle errors', async () => {
-		// When the API call fails
+	it('should handle API errors when fetching posts fails', async () => {
+		// Given: The API call is mocked to fail
 		vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('API Error'));
 
-		// And we render the hook
+		// When: The hook is rendered
 		const { result } = renderHook(() => usePosts(), {
 			wrapper: createWrapper(),
 		});
 
-		// Then it should show an error state
+		// Then: The hook should show an error state
 		await waitFor(() => {
 			expect(result.current.isError).toBe(true);
 			expect(result.current.error).toBeDefined();

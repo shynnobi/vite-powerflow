@@ -6,8 +6,8 @@ export default function Blog(): ReactElement {
 	return (
 		<div className="container mx-auto p-4">
 			<div className="mb-8">
-				<h1 className="text-3xl font-bold">Blog</h1>
-				<div className="mt-4 rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
+				<h1 className="text-3xl font-bold text-foreground">Blog</h1>
+				<div className="mt-4 rounded-md border bg-card p-4 text-card-foreground shadow">
 					<h2 className="text-xl font-semibold">Exemple TanStack Query</h2>
 					<p className="mt-2 text-muted-foreground">
 						Cette page démontre l'utilisation de TanStack Query pour la gestion des données serveur.
