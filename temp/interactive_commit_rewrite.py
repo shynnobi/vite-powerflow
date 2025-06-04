@@ -56,20 +56,20 @@ def rewrite_commit(commit_hash, new_message):
 
     print(f"\nNew commit message will be: {new_message}")
 
-    # Create a temporary file with the new message
-    with open("temp_commit_msg.txt", "w") as f:
-        f.write(new_message)
+    # Use filter-branch to rewrite the commit, passing the message directly
+    filter_cmd = f'''
+    if [ "$GIT_COMMIT" = "{commit_hash}" ]; then
+        echo "{new_message}"
+    else
+        cat
+    fi
+    '''
 
-    # Use filter-branch to rewrite the commit
     subprocess.run(
-        ["git", "filter-branch", "-f", "--msg-filter",
-         f"if [ $GIT_COMMIT = {commit_hash} ]; then cat temp_commit_msg.txt; else cat; fi",
+        ["git", "filter-branch", "-f", "--msg-filter", filter_cmd,
          f"{commit_hash}^..HEAD"],
         check=True
     )
-
-    # Clean up
-    subprocess.run(["rm", "temp_commit_msg.txt"], check=True)
 
 def main():
     if len(sys.argv) != 3:
