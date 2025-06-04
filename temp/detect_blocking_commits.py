@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import subprocess
-import os
 
 def is_automated_commit(line: str) -> bool:
     lower = line.lower()
@@ -34,15 +33,6 @@ def main():
     print("\n=== Summary ===")
     print(f"Total commits (excluding merges and Dependabot): {len(filtered)}")
     print(f"Blocking commits: {len(blocking)}")
-
-    # Export to file
-    os.makedirs('temp', exist_ok=True)
-    with open('temp/blocking_commits.txt', 'w') as f:
-        for line in blocking:
-            f.write(line + '\n')
-        f.write(f"\n=== Summary ===\n")
-        f.write(f"Total commits (excluding merges and Dependabot): {len(filtered)}\n")
-        f.write(f"Blocking commits: {len(blocking)}\n")
 
 if __name__ == "__main__":
     main()
