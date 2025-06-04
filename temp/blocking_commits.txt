@@ -1,41 +1,40 @@
-6954605 chore(workflows): remove old plan files after migration to workflows directory
-b2a94f0 chore(deps): bump the production-dependencies group across 1 directory with 13 updates
-f72ac81 chore: update pull request template by removing outdated sections and adding a header
-d532bcf docs: refine GitHub workflows documentation with clearer configuration and testing instructions
-0fb8bc0 docs: enhance GitHub workflows documentation with setup instructions for new projects
-6bb642f chore(dev)(deps-dev): bump the dev-dependencies group across 1 directory with 17 updates
-70acf60 fix: resolve Storybook issues by updating CSS path and removing deprecated actions config
-7133197 chore: add GitHub CLI to DevContainer and update .cursorrules with CLI usage guidelines
-f70d757 chore: update keywords to better reflect project features and technologies
-af5006c chore: update license and description from "starter kit" to "starter template"
-298e9e8 docs: update CHANGELOG and README for improved test organization and development guidelines
-485255c docs: enhance .cursorrules with ecosystem conventions and safety measures
-5f84d69 docs: remove CONTRIBUTING.md and update README to reflect changes in project structure
-2704ac2 chore(i18n): translate comments to English and update Storybook configuration
-002f069 feat(storybook): add ThemeToggle stories with light and dark mode support
-ebaaec9 feat(docs): enhance README with Storybook integration details and usage instructions
-00c4f1e feat(storybook): add DropdownMenu component stories with interactive examples
-d0f057b feat(storybook): add Card component stories with actions and documentation
-93a8a96 feat: optimize devcontainer configuration for both local and Docker usage
-26b728a refactor: simplify devcontainer configuration while preserving essential features
-53f0497 fix: add package manager specification and rollup wasm override for ARM compatibility
-99e8524 docs: update README to include utils directory and path alias for utility functions
-d9de679 refactor: improve logging and code consistency with emoji logger and English comments
-dffcbf5 test(integration): improve counter store integration tests with reliable observable patterns
-524334f docs: update README to include new styling and UI features, state management, and theming details
-b642527 feat: add visual feedback on counter buttons (cursor pointer and push effect)
-a67e649 refactor(theme): reposition ThemeToggle component in header and update icon rendering
-37596ea fix(tests): update counter text assertions to remove redundant 'is:' for consistency
-5151fbf feat(theme): add simplified ThemeToggle component with light/dark toggle only
-8376271 refactor(theme): simplify theme system by removing system option and improving initial theme detection
-8df7375 fix: configure TypeScript moduleResolution to node16 for better module compatibility
-b3998e3 fix: configure Vite server to listen on all interfaces for Docker compatibility
-d4ef94b chore: update husky configuration and scripts for commit validation and pre-commit checks
-9f9df85 chore: remove CodeQL from security workflow (not available for personal accounts)
-34c1f44 fix(security): remove audit level constraint for development dependencies
-91f1a80 docs: rewrite README.md to enhance project description, features, and setup instructions
+482d098 chore(workflows): remove old plan files after migration to workflows directory
+f1c0602 chore(deps): bump the production-dependencies group across 1 directory with 13 updates
+1ed85fa chore: update pull request template by removing outdated sections and adding a header
+ebd1277 docs: refine GitHub workflows documentation with clearer configuration and testing instructions
+acc1f46 docs: enhance GitHub workflows documentation with setup instructions for new projects
+4062547 chore(dev)(deps-dev): bump the dev-dependencies group across 1 directory with 17 updates
+c63b861 fix: resolve Storybook issues by updating CSS path and removing deprecated actions config
+d9f6cf5 chore: add GitHub CLI to DevContainer and update .cursorrules with CLI usage guidelines
+bf01ae3 chore: update keywords to better reflect project features and technologies
+19afc36 chore: update license and description from "starter kit" to "starter template"
+5a71d99 docs: update CHANGELOG and README for improved test organization and development guidelines
+8efcecd docs: enhance .cursorrules with ecosystem conventions and safety measures
+2a9a151 docs: remove CONTRIBUTING.md and update README to reflect changes in project structure
+0312ff9 chore(i18n): translate comments to English and update Storybook configuration
+b686585 feat(storybook): add ThemeToggle stories with light and dark mode support
+c5d250e feat(docs): enhance README with Storybook integration details and usage instructions
+e723295 feat(storybook): add DropdownMenu component stories with interactive examples
+7fc26a9 feat(storybook): add Card component stories with actions and documentation
+d3c91e2 feat: optimize devcontainer configuration for both local and Docker usage
+f7bee70 refactor: simplify devcontainer configuration while preserving essential features
+38f04cf fix: add package manager specification and rollup wasm override for ARM compatibility
+6f65d5d docs: update README to include utils directory and path alias for utility functions
+6718362 refactor: improve logging and code consistency with emoji logger and English comments
+6f70221 test(integration): improve counter store integration tests with reliable observable patterns
+52892ca docs: update README to include new styling and UI features, state management, and theming details
+41f0c3b feat: add visual feedback on counter buttons (cursor pointer and push effect)
+c94517a refactor(theme): reposition ThemeToggle component in header and update icon rendering
+a8b7ae5 fix(tests): update counter text assertions to remove redundant 'is:' for consistency
+55d2765 feat(theme): add simplified ThemeToggle component with light/dark toggle only
+83a08d1 refactor(theme): simplify theme system by removing system option and improving initial theme detection
+3801ce0 fix: configure TypeScript moduleResolution to node16 for better module compatibility
+f9c8453 fix: configure Vite server to listen on all interfaces for Docker compatibility
+5b5dc2d chore: update husky configuration and scripts for commit validation and pre-commit checks
+849835e chore: remove CodeQL from security workflow (not available for personal accounts)
+65b4d3a fix(security): remove audit level constraint for development dependencies
 774ba5d chore(eslint): update config to handle globals and remove react-in-jsx-scope rule
 
 === Summary ===
-Total commits (excluding merges and Dependabot): 274
-Blocking commits: 37
+Total commits (excluding merges and Dependabot): 277
+Blocking commits: 36
