@@ -46,8 +46,8 @@ def find_new_commit_hash(new_message):
     return None
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: python3 interactive_commit_rewrite.py <commit-sha>")
+    if len(sys.argv) not in [2, 3]:
+        print("Usage: python3 interactive_commit_rewrite.py <commit-sha> [<new-message>]")
         sys.exit(1)
     short_sha = sys.argv[1]
     sha = get_full_sha(short_sha)
@@ -57,10 +57,16 @@ def main():
         print("This commit message does not exceed 72 characters. No change needed.")
         sys.exit(0)
     print(f"Current message length: {len(old_message)} (> 72)")
-    new_message = input("Enter a new commit message (<= 72 chars): ").strip()
-    while len(new_message) > 72 or not new_message:
-        print("Message must be 72 characters or less and not empty.")
+    if len(sys.argv) == 3:
+        new_message = sys.argv[2].strip()
+        if len(new_message) > 72 or not new_message:
+            print("Provided message must be 72 characters or less and not empty.")
+            sys.exit(1)
+    else:
         new_message = input("Enter a new commit message (<= 72 chars): ").strip()
+        while len(new_message) > 72 or not new_message:
+            print("Message must be 72 characters or less and not empty.")
+            new_message = input("Enter a new commit message (<= 72 chars): ").strip()
     print(f"\nApplying change with git filter-branch...")
     ret = update_commit_message(sha, new_message)
     if ret != 0:
@@ -72,8 +78,11 @@ def main():
         print(f"Success! Commit message updated.")
         print(f"New message: {new_message}")
         print(f"New commit hash: {new_hash}")
-        print("\nTo update the remote branch, run:")
-        print("  git push --force-with-lease")
+        print("\nFetching remote updates...")
+        subprocess.run(["git", "fetch"], check=True)
+        print("Pushing changes with --force-with-lease...")
+        subprocess.run(["git", "push", "--force-with-lease"], check=True)
+        print("\nRemote branch updated successfully.")
         print(f"\nUse this new hash for the next modification if needed.")
     else:
         print("Error: New commit message not found in history. Please check manually.")
