@@ -3,6 +3,11 @@ import subprocess
 import sys
 import os
 
+def get_full_sha(short_sha):
+    result = subprocess.run([
+        "git", "rev-parse", short_sha
+    ], capture_output=True, text=True, check=True)
+    return result.stdout.strip()
 
 def get_commit_message(sha):
     result = subprocess.run([
@@ -44,7 +49,8 @@ def main():
     if len(sys.argv) != 2:
         print("Usage: python3 interactive_commit_rewrite.py <commit-sha>")
         sys.exit(1)
-    sha = sys.argv[1]
+    short_sha = sys.argv[1]
+    sha = get_full_sha(short_sha)
     old_message = get_commit_message(sha)
     print(f"Commit {sha} message:\n{old_message}\n")
     if len(old_message) <= 72:
