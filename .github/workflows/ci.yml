@@ -37,6 +37,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
+      - name: Install Git
+        run: sudo apt-get install -y git
+
+      - name: Ensure .husky directory exists
+        run: mkdir -p .husky && chmod -R +x .husky || true
+
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
@@ -152,7 +158,7 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Check commit messages
-        run: pnpm dlx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
+        run: pnpm commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
 
   build:
     needs: [eslint, prettier, typescript]
