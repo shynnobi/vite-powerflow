@@ -1,0 +1,863 @@
+⧗   input: chore(ci): install Git, ensure .husky dir, update commitlint cmd
+✔   found 0 problems, 0 warnings
+⧗   input: test(commitlint): verify commitlint rules
+✔   found 0 problems, 0 warnings
+⧗   input: chore(storybook): migrate to Storybook v9 and update docs (#59)
+
+* chore(deps): upgrade Storybook from v8.6.12 to v9.1.0-alpha.2
+
+- Update @storybook/react-vite to v9.1.0-alpha.2
+- Update @storybook/builder-vite to v9.1.0-alpha.2
+- Update @storybook/addon-essentials to v9.1.0-alpha.2
+- Update @storybook/addon-interactions to v9.1.0-alpha.2
+- Update @storybook/blocks to v9.1.0-alpha.2
+- Update @storybook/react to v9.1.0-alpha.2
+- Update @storybook/testing-library to v9.1.0-alpha.2
+- Update eslint-plugin-storybook to v9.1.0-alpha.2
+
+This upgrade brings improved performance and new features
+while maintaining full compatibility with existing stories.
+
+* chore(storybook): update configuration for v9 compatibility
+
+- Update .storybook/main.ts with new v9 configuration
+- Update .storybook/preview.tsx with new v9 settings
+- Update stories components to match v9 requirements:
+  - ThemeToggle.stories.tsx
+  - Counter.stories.tsx
+  - PostsList.stories.tsx
+
+The new configuration takes advantage of v9 improved performance and features.
+Existing functionality is maintained.
+
+* docs: update Storybook version references to v9
+
+- Update Storybook version in docs/features.md
+- Add migration note to CHANGELOG.md
+- Update version references in documentation
+
+This ensures documentation accurately reflects the current Storybook version and migration process.
+✔   found 0 problems, 0 warnings
+⧗   input: chore(deps): bump tw-animate-css in the production-dependencies group (#52)
+
+Bumps the production-dependencies group with 1 update: [tw-animate-css](https://github.com/Wombosvideo/tw-animate-css).
+
+
+Updates `tw-animate-css` from 1.3.2 to 1.3.3
+- [Release notes](https://github.com/Wombosvideo/tw-animate-css/releases)
+- [Commits](https://github.com/Wombosvideo/tw-animate-css/compare/v1.3.2...v1.3.3)
+
+---
+updated-dependencies:
+- dependency-name: tw-animate-css
+  dependency-version: 1.3.3
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: production-dependencies
+...
+
+Signed-off-by: dependabot[bot] <support@github.com>
+Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
+✔   found 0 problems, 0 warnings
+⧗   input: docs(rules): clarify PR template tasks section (#57)
+
+* docs(rules): clarify optional nature of tasks section in PR template
+
+* docs(rules): update PR template tasks section to be optional
+✔   found 0 problems, 0 warnings
+⧗   input: chore(devcontainer): refactor scripts and enhance browser support (#56)
+
+* chore(devcontainer): move scripts to .devcontainer/scripts
+
+* chore(devcontainer): enhance browser support and cleanup
+
+- Add Firefox dependencies and permissions in Dockerfile
+- Configure headless mode and sandbox options in Playwright
+- Clean up obsolete documentation
+✔   found 0 problems, 0 warnings
+⧗   input: fix(ci): use GITHUB_TOKEN and enforce squash merge for dependabot PRs (#54)
+✖   header must not be longer than 72 characters, current length is 75 [header-max-length]
+
+✖   found 1 problems, 0 warnings
+ⓘ   Get help: https://github.com/conventional-changelog/commitlint/#what-is-commitlint
+
+⧗   input: chore(deps): update all dependencies to latest versions (#51)
+✔   found 0 problems, 0 warnings
+⧗   input: chore(deps): bump the production-dependencies group across 1 directory with 12 updates (#49)
+
+Updates the requirements on [@radix-ui/react-dropdown-menu](https://github.com/radix-ui/primitives), [@radix-ui/react-slot](https://github.com/radix-ui/primitives), [@rollup/rollup-darwin-arm64](https://github.com/rollup/rollup), [@tailwindcss/vite](https://github.com/tailwindlabs/tailwindcss/tree/HEAD/packages/@tailwindcss-vite), [@tanstack/react-query](https://github.com/TanStack/query/tree/HEAD/packages/react-query), [@tanstack/react-query-devtools](https://github.com/TanStack/query/tree/HEAD/packages/react-query-devtools), [lucide-react](https://github.com/lucide-icons/lucide/tree/HEAD/packages/lucide-react), [rollup](https://github.com/rollup/rollup), [tailwind-merge](https://github.com/dcastil/tailwind-merge), [tailwindcss](https://github.com/tailwindlabs/tailwindcss/tree/HEAD/packages/tailwindcss), [tw-animate-css](https://github.com/Wombosvideo/tw-animate-css) and [zustand](https://github.com/pmndrs/zustand) to permit the latest version.
+
+Updates `@radix-ui/react-dropdown-menu` from 2.1.7 to 2.1.15
+- [Changelog](https://github.com/radix-ui/primitives/blob/main/release-process.md)
+- [Commits](https://github.com/radix-ui/primitives/commits)
+
+Updates `@radix-ui/react-slot` from 1.2.0 to 1.2.3
+- [Changelog](https://github.com/radix-ui/primitives/blob/main/release-process.md)
+- [Commits](https://github.com/radix-ui/primitives/commits)
+
+Updates `@rollup/rollup-darwin-arm64` from 4.40.0 to 4.41.1
+- [Release notes](https://github.com/rollup/rollup/releases)
+- [Changelog](https://github.com/rollup/rollup/blob/master/CHANGELOG.md)
+- [Commits](https://github.com/rollup/rollup/compare/v4.40.0...v4.41.1)
+
+Updates `@tailwindcss/vite` from 4.1.3 to 4.1.8
+- [Release notes](https://github.com/tailwindlabs/tailwindcss/releases)
+- [Changelog](https://github.com/tailwindlabs/tailwindcss/blob/main/CHANGELOG.md)
+- [Commits](https://github.com/tailwindlabs/tailwindcss/commits/v4.1.8/packages/@tailwindcss-vite)
+
+Updates `@tanstack/react-query` from 5.74.0 to 5.79.0
+- [Release notes](https://github.com/TanStack/query/releases)
+- [Commits](https://github.com/TanStack/query/commits/v5.79.0/packages/react-query)
+
+Updates `@tanstack/react-query-devtools` from 5.74.0 to 5.79.0
+- [Release notes](https://github.com/TanStack/query/releases)
+- [Commits](https://github.com/TanStack/query/commits/v5.79.0/packages/react-query-devtools)
+
+Updates `lucide-react` from 0.488.0 to 0.511.0
+- [Release notes](https://github.com/lucide-icons/lucide/releases)
+- [Commits](https://github.com/lucide-icons/lucide/commits/0.511.0/packages/lucide-react)
+
+Updates `rollup` to 4.41.1
+- [Release notes](https://github.com/rollup/rollup/releases)
+- [Changelog](https://github.com/rollup/rollup/blob/master/CHANGELOG.md)
+- [Commits](https://github.com/rollup/rollup/compare/v4.40.0...v4.41.1)
+
+Updates `tailwind-merge` from 3.2.0 to 3.3.0
+- [Release notes](https://github.com/dcastil/tailwind-merge/releases)
+- [Commits](https://github.com/dcastil/tailwind-merge/compare/v3.2.0...v3.3.0)
+
+Updates `tailwindcss` from 4.1.3 to 4.1.8
+- [Release notes](https://github.com/tailwindlabs/tailwindcss/releases)
+- [Changelog](https://github.com/tailwindlabs/tailwindcss/blob/main/CHANGELOG.md)
+- [Commits](https://github.com/tailwindlabs/tailwindcss/commits/v4.1.8/packages/tailwindcss)
+
+Updates `tw-animate-css` from 1.2.5 to 1.3.2
+- [Release notes](https://github.com/Wombosvideo/tw-animate-css/releases)
+- [Commits](https://github.com/Wombosvideo/tw-animate-css/compare/v1.2.5...v1.3.2)
+
+Updates `zustand` from 5.0.3 to 5.0.5
+- [Release notes](https://github.com/pmndrs/zustand/releases)
+- [Commits](https://github.com/pmndrs/zustand/compare/v5.0.3...v5.0.5)
+
+---
+updated-dependencies:
+- dependency-name: "@radix-ui/react-dropdown-menu"
+  dependency-version: 2.1.15
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: production-dependencies
+- dependency-name: "@radix-ui/react-slot"
+  dependency-version: 1.2.3
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: production-dependencies
+- dependency-name: "@rollup/rollup-darwin-arm64"
+  dependency-version: 4.41.1
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+  dependency-group: production-dependencies
+- dependency-name: "@tailwindcss/vite"
+  dependency-version: 4.1.8
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: production-dependencies
+- dependency-name: "@tanstack/react-query"
+  dependency-version: 5.79.0
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+  dependency-group: production-dependencies
+- dependency-name: "@tanstack/react-query-devtools"
+  dependency-version: 5.79.0
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+  dependency-group: production-dependencies
+- dependency-name: lucide-react
+  dependency-version: 0.511.0
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+  dependency-group: production-dependencies
+- dependency-name: rollup
+  dependency-version: 4.41.1
+  dependency-type: direct:production
+  dependency-group: production-dependencies
+- dependency-name: tailwind-merge
+  dependency-version: 3.3.0
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+  dependency-group: production-dependencies
+- dependency-name: tailwindcss
+  dependency-version: 4.1.8
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: production-dependencies
+- dependency-name: tw-animate-css
+  dependency-version: 1.3.2
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+  dependency-group: production-dependencies
+- dependency-name: zustand
+  dependency-version: 5.0.5
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: production-dependencies
+...
+
+Signed-off-by: dependabot[bot] <support@github.com>
+Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
+✔   found 0 problems, 0 warnings
+⧗   input: fix(deps): update react-router-dom to 7.6.1
+✔   found 0 problems, 0 warnings
+⧗   input: chore: update pre-push hook for husky v10 compatibility
+✔   found 0 problems, 0 warnings
+⧗   input: chore: update pre-commit hook for husky v10 compatibility
+✔   found 0 problems, 0 warnings
+⧗   input: chore: remove unused workflow files
+✔   found 0 problems, 0 warnings
+⧗   input: chore(workflow): remove temporary enhancement plan
+✔   found 0 problems, 0 warnings
+⧗   input: refactor(rules): streamline cursor rules and commit workflow
+
+- Remove redundant rule files (commit-workflow.mdc, commit-message.mdc)
+- Consolidate commit workflow documentation
+- Improve commit message examples and formatting
+✔   found 0 problems, 0 warnings
+⧗   input: fix(devcontainer): correct GitHub auth script path in postCreateCommand
+
+- Update postCreateCommand in devcontainer.json to use the correct path
+- Ensures proper setup of GitHub CLI authentication in the devcontainer environment
+✔   found 0 problems, 0 warnings
+⧗   input: docs(rules): improve AI commit workflow and commit message rules
+
+- Refactor AI commit workflow rule for clarity and explicit step-by-step guidance
+- Update commit message rules to clarify format, add examples, and align with conventions
+- Ensure both rules follow Cursor MDC best practices
+✔   found 0 problems, 0 warnings
+⧗   input: docs(ai-commit-workflow): rename and clarify AI commit workflow rules
+
+- Rename commit-workflow.mdc to ai-commit-workflow.mdc
+- Remove redundant intro, clarify AI-only scope
+- Ensure structure is clear, non-redundant, and actionable
+✔   found 0 problems, 0 warnings
+⧗   input: fix(scripts): update test:e2e script path to ai-workflow location
+
+- Point test:e2e to scripts/ai-workflow/ai-run-e2e-tests.sh
+- Ensures E2E tests run after script migration
+✔   found 0 problems, 0 warnings
+⧗   input: chore(scripts): remove obsolete scripts after ai-workflow migration
+
+- Remove old validate.sh, e2e.sh, and init-gh-auth.sh from scripts/
+- All automation scripts are now in scripts/ai-workflow/
+✔   found 0 problems, 0 warnings
+⧗   input: refactor(scripts): move automation scripts to ai-workflow dir
+
+- Create dedicated ai-workflow directory for automation scripts
+- Rename scripts with more explicit names
+- Add comprehensive README for AI workflow scripts
+- Update paths in Cursor rules documentation
+✔   found 0 problems, 0 warnings
+⧗   input: docs(commit): improve commit message workflow
+
+- Add temporary file approach for commit messages
+- Remove redundant instructions from commit-message.mdc
+- Add clear examples of good and bad commit messages
+- Improve documentation structure and clarity
+✔   found 0 problems, 0 warnings
+⧗   input: docs(rules): migrate and restructure .cursor/rules docs to .mdc format
+
+- Convert commit-message.md to commit-message.mdc
+- Remove obsolete git-practices.mdc
+- Add workflow.mdc for documentation workflow
+- Update dev.mdc and AI.mdc for new structure
+- Apply standards to all updated docs
+✔   found 0 problems, 0 warnings
+⧗   input: refactor(storybook): consolidate button stories
+
+Remove standalone button stories file
+
+Update preview configuration for better theme handling
+✔   found 0 problems, 0 warnings
+⧗   input: docs(workflow): add commit message guidelines
+
+Add standardized rules for commit messages
+
+Ensure consistent and descriptive commit history
+✔   found 0 problems, 0 warnings
+⧗   input: feat(ui): add cursor-pointer to all interactive buttons
+
+Update Button component to ensure pointer feedback for better UX.
+
+No visual regression, only improved user experience.
+✔   found 0 problems, 0 warnings
+⧗   input: refactor(ui): standardize visual style of components and stories
+
+Refactor PostsList, ThemeToggle, Spinner, Counter, and their stories.
+
+Use only shadcn/ui theme tokens for all visual styles.
+
+Remove all custom or legacy Tailwind classes.
+
+Ensure all components and stories are visually neutral, themeable, and consistent.
+✔   found 0 problems, 0 warnings
+⧗   input: refactor(ui): standardize visual style of main pages
+
+Refactor Home, Blog, and About pages to use only shadcn/ui theme tokens.
+
+Remove custom Tailwind classes for backgrounds, borders, shadows, and typography.
+
+Ensure all page sections are visually neutral and consistent.
+✔   found 0 problems, 0 warnings
+⧗   input: chore(plan): mark SP-INFRA-1 as completed
+
+- Docker infrastructure is fully implemented and configured
+
+- All requirements from the enhancement plan are met
+✔   found 0 problems, 0 warnings
+⧗   input: refactor(tests): improve TypeScript typing in PostsList tests
+
+- Replace 'any' type with proper UseQueryResult typing
+
+- Use Partial type for better type safety
+
+- Maintain test functionality while improving type definitions
+✔   found 0 problems, 0 warnings
+⧗   input: feat(test): complete SP-TEST-3 - Configure test coverage reporting
+
+- Add exclusions for types files (*.types.ts)
+
+- Add exclusions for Storybook files
+
+- Add exclusions for UI library components
+
+- Add exclusions for configuration files
+
+- Update STARTER_PROJECT_ENHANCEMENT_PLAN.md to mark task as completed
+✔   found 0 problems, 0 warnings
+⧗   input: feat(workflow): add project generator with simplified structure
+
+- Add PROJECT_GENERATOR.md with simplified roadmap structure
+
+- Add explicit vision validation step
+
+- Remove nested tasks for better tracking
+✔   found 0 problems, 0 warnings
+⧗   input: chore: update project documentation and dependencies
+
+- Update README.md and ai-pair-programming docs
+
+- Update package.json dependencies
+
+- Remove obsolete BDD migration checklist
+✔   found 0 problems, 0 warnings
+⧗   input: docs: add CLI term in quick start sections
+✔   found 0 problems, 0 warnings
+⧗   input: chore: update package.json
+✔   found 0 problems, 0 warnings
+⧗   input: docs: harmonize introduction tone across all documentation files
+✔   found 0 problems, 0 warnings
+⧗   input: chore: remove obsolete test README documentation
+✔   found 0 problems, 0 warnings
+⧗   input: chore: update commitlint config for stricter enforcement
+✔   found 0 problems, 0 warnings
+⧗   input: chore(cursor): update GitHub PR conventions rule template
+✔   found 0 problems, 0 warnings
+⧗   input: chore(cursor): update git practices rule for PR and commit conventions
+✔   found 0 problems, 0 warnings
+⧗   input: docs: update development environment documentation
+✔   found 0 problems, 0 warnings
+⧗   input: docs: add AI pair programming documentation (Cursor rules and usage)
+✔   found 0 problems, 0 warnings
+⧗   input: Merge pull request #45 from shynnobi/chore/deps-update
+
+chore(deps): update dependencies
+
+✔   found 0 problems, 0 warnings
+⧗   input: chore(deps): update dependencies
+
+- Update dev and prod dependencies\n- All tests passing
+✔   found 0 problems, 0 warnings
+⧗   input: Merge pull request #44 from shynnobi/feat/phase2-testing-strategy
+
+refactor(validation): improve validation system and documentation
+
+✔   found 0 problems, 0 warnings
+⧗   input: docs: sync validation commands in README
+
+Update README to match new validation command names and descriptions.
+✔   found 0 problems, 0 warnings
+⧗   input: docs: update README with new validation commands
+
+Update command descriptions in README to match new validation system.
+✔   found 0 problems, 0 warnings
+⧗   input: refactor(validation): improve validation commands and documentation
+
+Rename validation commands and update docs for better clarity.
+✔   found 0 problems, 0 warnings
+⧗   input: chore(test): clean up test files
+
+- Add Playwright report files to .gitignore
+
+- Remove old E2E test files that were replaced by user-journeys.spec.ts
+✔   found 0 problems, 0 warnings
+⧗   input: docs(workflow): update BDD migration checklist
+
+- Update checklist with new testing strategy
+
+- Add notes about E2E test organization
+✔   found 0 problems, 0 warnings
+⧗   input: refactor(components): update components for new test structure
+
+- Update PostsList component
+
+- Modify Home page to match new test requirements
+✔   found 0 problems, 0 warnings
+⧗   input: refactor(test): reorganize test structure
+
+- Remove old E2E test files
+
+- Add new user journey E2E tests
+
+- Update unit tests for better coverage
+
+- Add new posts unit tests
+✔   found 0 problems, 0 warnings
+⧗   input: chore(deps): update dependencies and configuration
+
+- Reorganize test commands in package.json
+
+- Add new validation commands for better workflow
+
+- Update ESLint and Prettier configuration
+
+- Update dependencies to latest versions
+✔   found 0 problems, 0 warnings
+⧗   input: feat(test): improve test scripts organization
+
+- Add validate.sh script for comprehensive test execution
+
+- Enhance e2e.sh with better error handling
+
+- Add support for conditional E2E test execution
+✔   found 0 problems, 0 warnings
+⧗   input: feat(ci): enhance git hooks for better validation workflow
+
+- Optimize pre-commit hook to run only necessary checks
+
+- Update pre-push hook to run full validation including E2E tests
+
+- Improve error messages and feedback
+✔   found 0 problems, 0 warnings
+⧗   input: chore(workflows): remove old plan files after migration to workflows directory
+
+- Remove DEVELOPMENT_PLAN_PROMPT.md and STARTER_PROJECT_ENHANCEMENT_PLAN.md from root
+
+- Files have been moved to workflows/ directory for better organization
+✖   header must not be longer than 72 characters, current length is 78 [header-max-length]
+
+✖   found 1 problems, 0 warnings
+ⓘ   Get help: https://github.com/conventional-changelog/commitlint/#what-is-commitlint
+
+⧗   input: chore: add pre-push hook for CI and code quality enforcement
+
+Improve code quality and CI reliability by adding a Husky pre-push hook.
+
+- Add .husky/pre-push to enforce checks before pushing to remote
+✔   found 0 problems, 0 warnings
+⧗   input: test: update and fix unit, integration, and E2E tests
+
+Improve reliability and coverage of tests across the codebase.
+
+- Update and fix E2E tests (counter features, navigation, etc.)
+
+- Improve integration tests for App and counter features
+
+- Refactor and enhance unit tests for counter store and app logic
+✔   found 0 problems, 0 warnings
+⧗   input: docs: update and add documentation for development and migration
+
+Keep documentation up to date and provide clear migration/checklist resources.
+
+- Update development and GitHub CLI setup docs
+
+- Add BDD migration checklist (workflows/BDD_MIGRATION_CHECKLIST.md)
+
+- Move enhancement plans to workflows directory
+✔   found 0 problems, 0 warnings
+⧗   input: chore(devcontainer): improve dev container and Docker setup
+
+Enhance reproducibility and onboarding for all contributors with improved dev environment setup.
+
+- Add Dockerfile and docker-compose.yml for local development
+
+- Update devcontainer.json for better VS Code integration and environment consistency
+
+- Add GitHub auth init script (scripts/init-gh-auth.sh)
+
+- Add .env.example for environment variable documentation
+✔   found 0 problems, 0 warnings
+⧗   input: fix(e2e): ensure Playwright E2E tests run reliably and update page title
+
+Improve reliability of E2E tests and align app title with test expectations.
+
+- Fix page title in index.html to match E2E test expectations
+
+- Add shell script (scripts/e2e.sh) to support Playwright CLI arguments in E2E tests
+
+- Update package.json to use the new E2E script for better argument forwarding
+
+- Adjust E2E test for homepage navigation to align with the new title
+
+- Update documentation to clarify E2E test setup and troubleshooting steps
+✔   found 0 problems, 0 warnings
+⧗   input: chore(merge): resolve conflict with dev (remove docs/github-workflows.md)
+✖   header must not be longer than 72 characters, current length is 73 [header-max-length]
+
+✖   found 1 problems, 0 warnings
+ⓘ   Get help: https://github.com/conventional-changelog/commitlint/#what-is-commitlint
+
+⧗   input: Merge pull request #43 from shynnobi/docs/guide-update
+
+docs: complete Phase 2 documentation tasks
+
+✔   found 0 problems, 0 warnings
+⧗   input: Merge branch 'dev' into docs/guide-update
+
+
+✔   found 0 problems, 0 warnings
+⧗   input: Merge branch 'dev' of https://github.com/shynnobi/vite-powerflow into dev
+
+
+✔   found 0 problems, 0 warnings
+⧗   input: docs: refine enhancement plan tasks
+✔   found 0 problems, 0 warnings
+⧗   input: docs: add development plan prompt template
+
+- Add DEVELOPMENT_PLAN_PROMPT.md as a planning tool template
+
+- Update enhancement plan to reflect current project state
+
+- Combine related documentation tasks for clarity
+✔   found 0 problems, 0 warnings
+⧗   input: docs: restructure documentation plan for logical progression
+✔   found 0 problems, 0 warnings
+⧗   input: docs: mark documentation restructuring task as completed
+✔   found 0 problems, 0 warnings
+⧗   input: chore: remove imported generator reference files
+✔   found 0 problems, 0 warnings
+⧗   input: docs: fix typo in GitHub permissions setup guide
+✔   found 0 problems, 0 warnings
+⧗   input: docs: update README files with new GitHub documentation references
+
+- Update main README.md to reference new GitHub documentation files
+- Update template readme-lite.md to reflect the same documentation structure
+- Replace references to old docs with new structured GitHub documentation files
+✔   found 0 problems, 0 warnings
+⧗   input: docs: reorganize GitHub documentation to improve clarity
+
+- Consolidate GitHub documentation into three focused guides
+- Rename GH_TOKEN to GH_PAT in devcontainer.json
+- Create github-permissions-setup.md as the primary reference document
+- Create github-ci-workflows-setup.md for CI workflow documentation
+- Create github-cli-ai-setup.md for GitHub CLI integration
+- Remove obsolete documentation files
+✔   found 0 problems, 0 warnings
+⧗   input: chore(dev)(deps-dev): bump the dev-dependencies group with 18 updates
+
+Bumps the dev-dependencies group with 18 updates:
+
+| Package | From | To |
+| --- | --- | --- |
+| [@eslint/js](https://github.com/eslint/eslint/tree/HEAD/packages/js) | `9.26.0` | `9.27.0` |
+| [@storybook/addon-a11y](https://github.com/storybookjs/storybook/tree/HEAD/code/addons/a11y) | `8.6.12` | `8.6.14` |
+| [@storybook/addon-actions](https://github.com/storybookjs/storybook/tree/HEAD/code/addons/actions) | `8.6.12` | `8.6.14` |
+| [@storybook/addon-essentials](https://github.com/storybookjs/storybook/tree/HEAD/code/addons/essentials) | `8.6.12` | `8.6.14` |
+| [@storybook/addon-measure](https://github.com/storybookjs/storybook/tree/HEAD/code/addons/measure) | `8.6.12` | `8.6.14` |
+| [@storybook/addon-themes](https://github.com/storybookjs/storybook/tree/HEAD/code/addons/themes) | `8.6.12` | `8.6.14` |
+| [@storybook/addon-viewport](https://github.com/storybookjs/storybook/tree/HEAD/code/addons/viewport) | `8.6.12` | `8.6.14` |
+| [@storybook/blocks](https://github.com/storybookjs/storybook/tree/HEAD/code/lib/blocks) | `8.6.12` | `8.6.14` |
+| [@storybook/experimental-addon-test](https://github.com/storybookjs/storybook/tree/HEAD/code/addons/test) | `8.6.12` | `8.6.14` |
+| [@storybook/react](https://github.com/storybookjs/storybook/tree/HEAD/code/renderers/react) | `8.6.12` | `8.6.14` |
+| [@storybook/react-vite](https://github.com/storybookjs/storybook/tree/HEAD/code/frameworks/react-vite) | `8.6.12` | `8.6.14` |
+| [@storybook/test](https://github.com/storybookjs/storybook/tree/HEAD/code/lib/test) | `8.6.12` | `8.6.14` |
+| [@types/react](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/HEAD/types/react) | `19.1.3` | `19.1.4` |
+| [@types/react-dom](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/HEAD/types/react-dom) | `19.1.3` | `19.1.5` |
+| [@typescript-eslint/eslint-plugin](https://github.com/typescript-eslint/typescript-eslint/tree/HEAD/packages/eslint-plugin) | `8.32.0` | `8.32.1` |
+| [@typescript-eslint/parser](https://github.com/typescript-eslint/typescript-eslint/tree/HEAD/packages/parser) | `8.32.0` | `8.32.1` |
+| [eslint](https://github.com/eslint/eslint) | `9.26.0` | `9.27.0` |
+| [storybook](https://github.com/storybookjs/storybook/tree/HEAD/code/lib/cli) | `8.6.12` | `8.6.14` |
+
+
+Updates `@eslint/js` from 9.26.0 to 9.27.0
+- [Release notes](https://github.com/eslint/eslint/releases)
+- [Changelog](https://github.com/eslint/eslint/blob/main/CHANGELOG.md)
+- [Commits](https://github.com/eslint/eslint/commits/v9.27.0/packages/js)
+
+Updates `@storybook/addon-a11y` from 8.6.12 to 8.6.14
+- [Release notes](https://github.com/storybookjs/storybook/releases)
+- [Changelog](https://github.com/storybookjs/storybook/blob/next/CHANGELOG.md)
+- [Commits](https://github.com/storybookjs/storybook/commits/v8.6.14/code/addons/a11y)
+
+Updates `@storybook/addon-actions` from 8.6.12 to 8.6.14
+- [Release notes](https://github.com/storybookjs/storybook/releases)
+- [Changelog](https://github.com/storybookjs/storybook/blob/v8.6.14/CHANGELOG.md)
+- [Commits](https://github.com/storybookjs/storybook/commits/v8.6.14/code/addons/actions)
+
+Updates `@storybook/addon-essentials` from 8.6.12 to 8.6.14
+- [Release notes](https://github.com/storybookjs/storybook/releases)
+- [Changelog](https://github.com/storybookjs/storybook/blob/v8.6.14/CHANGELOG.md)
+- [Commits](https://github.com/storybookjs/storybook/commits/v8.6.14/code/addons/essentials)
+
+Updates `@storybook/addon-measure` from 8.6.12 to 8.6.14
+- [Release notes](https://github.com/storybookjs/storybook/releases)
+- [Changelog](https://github.com/storybookjs/storybook/blob/v8.6.14/CHANGELOG.md)
+- [Commits](https://github.com/storybookjs/storybook/commits/v8.6.14/code/addons/measure)
+
+Updates `@storybook/addon-themes` from 8.6.12 to 8.6.14
+- [Release notes](https://github.com/storybookjs/storybook/releases)
+- [Changelog](https://github.com/storybookjs/storybook/blob/next/CHANGELOG.md)
+- [Commits](https://github.com/storybookjs/storybook/commits/v8.6.14/code/addons/themes)
+
+Updates `@storybook/addon-viewport` from 8.6.12 to 8.6.14
+- [Release notes](https://github.com/storybookjs/storybook/releases)
+- [Changelog](https://github.com/storybookjs/storybook/blob/v8.6.14/CHANGELOG.md)
+- [Commits](https://github.com/storybookjs/storybook/commits/v8.6.14/code/addons/viewport)
+
+Updates `@storybook/blocks` from 8.6.12 to 8.6.14
+- [Release notes](https://github.com/storybookjs/storybook/releases)
+- [Changelog](https://github.com/storybookjs/storybook/blob/v8.6.14/CHANGELOG.md)
+- [Commits](https://github.com/storybookjs/storybook/commits/v8.6.14/code/lib/blocks)
+
+Updates `@storybook/experimental-addon-test` from 8.6.12 to 8.6.14
+- [Release notes](https://github.com/storybookjs/storybook/releases)
+- [Changelog](https://github.com/storybookjs/storybook/blob/v8.6.14/CHANGELOG.md)
+- [Commits](https://github.com/storybookjs/storybook/commits/v8.6.14/code/addons/test)
+
+Updates `@storybook/react` from 8.6.12 to 8.6.14
+- [Release notes](https://github.com/storybookjs/storybook/releases)
+- [Changelog](https://github.com/storybookjs/storybook/blob/next/CHANGELOG.md)
+- [Commits](https://github.com/storybookjs/storybook/commits/v8.6.14/code/renderers/react)
+
+Updates `@storybook/react-vite` from 8.6.12 to 8.6.14
+- [Release notes](https://github.com/storybookjs/storybook/releases)
+- [Changelog](https://github.com/storybookjs/storybook/blob/next/CHANGELOG.md)
+- [Commits](https://github.com/storybookjs/storybook/commits/v8.6.14/code/frameworks/react-vite)
+
+Updates `@storybook/test` from 8.6.12 to 8.6.14
+- [Release notes](https://github.com/storybookjs/storybook/releases)
+- [Changelog](https://github.com/storybookjs/storybook/blob/v8.6.14/CHANGELOG.md)
+- [Commits](https://github.com/storybookjs/storybook/commits/v8.6.14/code/lib/test)
+
+Updates `@types/react` from 19.1.3 to 19.1.4
+- [Release notes](https://github.com/DefinitelyTyped/DefinitelyTyped/releases)
+- [Commits](https://github.com/DefinitelyTyped/DefinitelyTyped/commits/HEAD/types/react)
+
+Updates `@types/react-dom` from 19.1.3 to 19.1.5
+- [Release notes](https://github.com/DefinitelyTyped/DefinitelyTyped/releases)
+- [Commits](https://github.com/DefinitelyTyped/DefinitelyTyped/commits/HEAD/types/react-dom)
+
+Updates `@typescript-eslint/eslint-plugin` from 8.32.0 to 8.32.1
+- [Release notes](https://github.com/typescript-eslint/typescript-eslint/releases)
+- [Changelog](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/CHANGELOG.md)
+- [Commits](https://github.com/typescript-eslint/typescript-eslint/commits/v8.32.1/packages/eslint-plugin)
+
+Updates `@typescript-eslint/parser` from 8.32.0 to 8.32.1
+- [Release notes](https://github.com/typescript-eslint/typescript-eslint/releases)
+- [Changelog](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/parser/CHANGELOG.md)
+- [Commits](https://github.com/typescript-eslint/typescript-eslint/commits/v8.32.1/packages/parser)
+
+Updates `eslint` from 9.26.0 to 9.27.0
+- [Release notes](https://github.com/eslint/eslint/releases)
+- [Changelog](https://github.com/eslint/eslint/blob/main/CHANGELOG.md)
+- [Commits](https://github.com/eslint/eslint/compare/v9.26.0...v9.27.0)
+
+Updates `storybook` from 8.6.12 to 8.6.14
+- [Release notes](https://github.com/storybookjs/storybook/releases)
+- [Changelog](https://github.com/storybookjs/storybook/blob/v8.6.14/CHANGELOG.md)
+- [Commits](https://github.com/storybookjs/storybook/commits/v8.6.14/code/lib/cli)
+
+---
+updated-dependencies:
+- dependency-name: "@eslint/js"
+  dependency-version: 9.27.0
+  dependency-type: direct:development
+  update-type: version-update:semver-minor
+  dependency-group: dev-dependencies
+- dependency-name: "@storybook/addon-a11y"
+  dependency-version: 8.6.14
+  dependency-type: direct:development
+  update-type: version-update:semver-patch
+  dependency-group: dev-dependencies
+- dependency-name: "@storybook/addon-actions"
+  dependency-version: 8.6.14
+  dependency-type: direct:development
+  update-type: version-update:semver-patch
+  dependency-group: dev-dependencies
+- dependency-name: "@storybook/addon-essentials"
+  dependency-version: 8.6.14
+  dependency-type: direct:development
+  update-type: version-update:semver-patch
+  dependency-group: dev-dependencies
+- dependency-name: "@storybook/addon-measure"
+  dependency-version: 8.6.14
+  dependency-type: direct:development
+  update-type: version-update:semver-patch
+  dependency-group: dev-dependencies
+- dependency-name: "@storybook/addon-themes"
+  dependency-version: 8.6.14
+  dependency-type: direct:development
+  update-type: version-update:semver-patch
+  dependency-group: dev-dependencies
+- dependency-name: "@storybook/addon-viewport"
+  dependency-version: 8.6.14
+  dependency-type: direct:development
+  update-type: version-update:semver-patch
+  dependency-group: dev-dependencies
+- dependency-name: "@storybook/blocks"
+  dependency-version: 8.6.14
+  dependency-type: direct:development
+  update-type: version-update:semver-patch
+  dependency-group: dev-dependencies
+- dependency-name: "@storybook/experimental-addon-test"
+  dependency-version: 8.6.14
+  dependency-type: direct:development
+  update-type: version-update:semver-patch
+  dependency-group: dev-dependencies
+- dependency-name: "@storybook/react"
+  dependency-version: 8.6.14
+  dependency-type: direct:development
+  update-type: version-update:semver-patch
+  dependency-group: dev-dependencies
+- dependency-name: "@storybook/react-vite"
+  dependency-version: 8.6.14
+  dependency-type: direct:development
+  update-type: version-update:semver-patch
+  dependency-group: dev-dependencies
+- dependency-name: "@storybook/test"
+  dependency-version: 8.6.14
+  dependency-type: direct:development
+  update-type: version-update:semver-patch
+  dependency-group: dev-dependencies
+- dependency-name: "@types/react"
+  dependency-version: 19.1.4
+  dependency-type: direct:development
+  update-type: version-update:semver-patch
+  dependency-group: dev-dependencies
+- dependency-name: "@types/react-dom"
+  dependency-version: 19.1.5
+  dependency-type: direct:development
+  update-type: version-update:semver-patch
+  dependency-group: dev-dependencies
+- dependency-name: "@typescript-eslint/eslint-plugin"
+  dependency-version: 8.32.1
+  dependency-type: direct:development
+  update-type: version-update:semver-patch
+  dependency-group: dev-dependencies
+- dependency-name: "@typescript-eslint/parser"
+  dependency-version: 8.32.1
+  dependency-type: direct:development
+  update-type: version-update:semver-patch
+  dependency-group: dev-dependencies
+- dependency-name: eslint
+  dependency-version: 9.27.0
+  dependency-type: direct:development
+  update-type: version-update:semver-minor
+  dependency-group: dev-dependencies
+- dependency-name: storybook
+  dependency-version: 8.6.14
+  dependency-type: direct:development
+  update-type: version-update:semver-patch
+  dependency-group: dev-dependencies
+...
+
+Signed-off-by: dependabot[bot] <support@github.com>
+
+✔   found 0 problems, 0 warnings
+⧗   input: docs: add initial setup and GitHub integration guide
+✔   found 0 problems, 0 warnings
+⧗   input: docs: revise ai integration and workflow guides
+✔   found 0 problems, 0 warnings
+⧗   input: docs(plan): prioritize documentation restructure as Phase 2
+✔   found 0 problems, 0 warnings
+⧗   input: docs: refocus GitHub workflows guide on existing setup and repo config
+✔   found 0 problems, 0 warnings
+⧗   input: docs: add cross-references between AI integration and workflow guides
+✔   found 0 problems, 0 warnings
+⧗   input: docs: clarify existing AI GitHub integration setup
+✔   found 0 problems, 0 warnings
+⧗   input: chore(dependabot): target dev branch for all updates
+✔   found 0 problems, 0 warnings
+⧗   input: Merge pull request #40 from shynnobi/feat/core-dx-initial-setup
+
+feat(core): Complete Phase 1 DX and Initial Project Setup
+
+✔   found 0 problems, 0 warnings
+⧗   input: chore: standardize on GH_TOKEN across all GitHub operations
+✔   found 0 problems, 0 warnings
+⧗   input: docs: add AI GitHub integration guide and configuration
+✔   found 0 problems, 0 warnings
+⧗   input: chore: update pull request template by removing outdated sections and adding a header
+✖   header must not be longer than 72 characters, current length is 85 [header-max-length]
+
+✖   found 1 problems, 0 warnings
+ⓘ   Get help: https://github.com/conventional-changelog/commitlint/#what-is-commitlint
+
+⧗   input: feat: add Phase 5 infrastructure improvements to enhancement plan
+✔   found 0 problems, 0 warnings
+⧗   input: chore: remove outdated technical collaboration guide for cursor
+✔   found 0 problems, 0 warnings
+⧗   input: docs: refine GitHub workflows documentation with clearer configuration and testing instructions
+✖   header must not be longer than 72 characters, current length is 95 [header-max-length]
+
+✖   found 1 problems, 0 warnings
+ⓘ   Get help: https://github.com/conventional-changelog/commitlint/#what-is-commitlint
+
+⧗   input: docs: add title h1 for the pull request template
+✔   found 0 problems, 0 warnings
+⧗   input: docs: clarify GitHub token setup requirements and alternatives
+✔   found 0 problems, 0 warnings
+⧗   input: docs: enhance GitHub workflows documentation with setup instructions for new projects
+✖   header must not be longer than 72 characters, current length is 85 [header-max-length]
+
+✖   found 1 problems, 0 warnings
+ⓘ   Get help: https://github.com/conventional-changelog/commitlint/#what-is-commitlint
+
+⧗   input: docs: add GitHub workflows documentation
+✔   found 0 problems, 0 warnings
+⧗   input: docs: update enhancement plan, mark SP-CORE-9 complete
+✔   found 0 problems, 0 warnings
+⧗   input: ci: enhance GitHub workflows to match ToDoApp configuration
+✔   found 0 problems, 0 warnings
+⧗   input: docs: update enhancement plan, mark SP-CORE-8 complete
+✔   found 0 problems, 0 warnings
+⧗   input: feat(github): update PR template and mark SP-CORE-7 complete
+✔   found 0 problems, 0 warnings
+⧗   input: docs: update enhancement plan, mark SP-CORE-6 complete
+✔   found 0 problems, 0 warnings
+⧗   input: docs: update enhancement plan, mark SP-CORE-4 and SP-CORE-5 complete
+✔   found 0 problems, 0 warnings
+⧗   input: docs: update enhancement plan, mark SP-CORE-3 complete
+✔   found 0 problems, 0 warnings
+⧗   input: feat(ts): enforce stricter compiler options for enhanced type safety
+✔   found 0 problems, 0 warnings
+⧗   input: docs: update enhancement plan, mark SP-CORE-1 and SP-CORE-2 complete
+✔   found 0 problems, 0 warnings
+⧗   input: feat(dx): enhance devcontainer with markdown and mermaid extensions
+✔   found 0 problems, 0 warnings
+⧗   input: feat(dx): integrate .cursor folder and AI rules
+✔   found 0 problems, 0 warnings
+⧗   input: docs: update CHANGELOG with Storybook fixes
+✔   found 0 problems, 0 warnings
+⧗   input: Merge remote-tracking branch 'origin/dev' into dev
+
+
+✔   found 0 problems, 0 warnings
+⧗   input: fix: resolve Storybook issues by updating CSS path and removing deprecated actions config
+✖   header must not be longer than 72 characters, current length is 89 [header-max-length]
+
+✖   found 1 problems, 0 warnings
+ⓘ   Get help: https://github.com/conventional-changelog/commitlint/#what-is-commitlint
+
+⧗   input: fix: remove argTypesRegex and unused fn import in Storybook preview
+✔   found 0 problems, 0 warnings
+Error: Process completed with exit code 1.
