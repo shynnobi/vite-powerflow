@@ -1,6 +1,6 @@
 import { withThemeByClassName } from '@storybook/addon-themes';
-import { INITIAL_VIEWPORTS, MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
-import type { Preview } from '@storybook/react';
+import type { Preview } from '@storybook/react-vite';
+import { INITIAL_VIEWPORTS, MINIMAL_VIEWPORTS } from 'storybook/viewport';
 
 import '../src/index.css';
 
@@ -68,6 +68,7 @@ const preview: Preview = {
 		// Default configuration
 		layout: 'centered',
 	},
+
 	decorators: [
 		withThemeByClassName({
 			themes: {
@@ -77,6 +78,8 @@ const preview: Preview = {
 			defaultTheme: 'light',
 		}),
 	],
+
+	tags: ['autodocs'],
 };
 
 export default preview;
