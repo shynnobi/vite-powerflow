@@ -29,6 +29,17 @@ def verify_commit_message(new_message):
     ], capture_output=True, text=True, check=True)
     return new_message in result.stdout
 
+def find_new_commit_hash(new_message):
+    # Find the new hash for the commit with the updated message
+    result = subprocess.run([
+        "git", "log", "--format=%h %s", "--all"
+    ], capture_output=True, text=True, check=True)
+    for line in result.stdout.splitlines():
+        parts = line.split(' ', 1)
+        if len(parts) == 2 and parts[1] == new_message:
+            return parts[0]
+    return None
+
 def main():
     if len(sys.argv) != 2:
         print("Usage: python3 interactive_commit_rewrite.py <commit-sha>")
@@ -50,11 +61,14 @@ def main():
         print("Error: git filter-branch failed.")
         sys.exit(1)
     print("\nVerifying new commit message in history...")
-    if verify_commit_message(new_message):
-        print(f"Success! Commit {sha} message updated.")
+    new_hash = find_new_commit_hash(new_message)
+    if new_hash:
+        print(f"Success! Commit message updated.")
         print(f"New message: {new_message}")
+        print(f"New commit hash: {new_hash}")
         print("\nTo update the remote branch, run:")
         print("  git push --force-with-lease")
+        print(f"\nUse this new hash for the next modification if needed.")
     else:
         print("Error: New commit message not found in history. Please check manually.")
 
