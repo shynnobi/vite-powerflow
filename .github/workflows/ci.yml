@@ -37,12 +37,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      - name: Install Git
-        run: sudo apt-get install -y git
-
-      - name: Ensure .husky directory exists
-        run: mkdir -p .husky && chmod -R +x .husky || true
-
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
