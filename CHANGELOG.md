@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed e2e test files following Playwright conventions
 - Improved dependency management and documentation
 - Updated Vite from 6.2.5 to 6.2.6 to address security vulnerability
+- Upgraded Storybook from v8.6.12 to v9.1.0-alpha.2 for improved performance and features
 
 ### Fixed
 
