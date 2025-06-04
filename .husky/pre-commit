@@ -1,11 +1,5 @@
 #!/bin/sh
 
-# Check if the commit message contains [skip ci]
-if git log -1 --format=%B | grep -q "\[skip ci\]"; then
-  echo "⏭️  Skipping validation due to [skip ci] in commit message"
-  exit 0
-fi
-
 echo "🔍 Validating your commit..."
 
 pnpm validate:precommit || {

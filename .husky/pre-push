@@ -1,11 +1,5 @@
 #!/bin/sh
 
-# Check if any commit in the push contains [skip ci]
-if git log --format=%B origin/main..HEAD | grep -q "\[skip ci\]"; then
-  echo "⏭️  Skipping validation due to [skip ci] in commit message"
-  exit 0
-fi
-
 echo "🧪 Running full validation before push..."
 
 # Run all validations including E2E tests
