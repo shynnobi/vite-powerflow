@@ -38,6 +38,18 @@ jobs:
                 restrictions: branch.protection.restrictions,
                 required_linear_history: branch.protection.required_linear_history,
                 allow_force_pushes: branch.protection.allow_force_pushes,
-                allow_deletions: branch.protection.allow_deletions
+                allow_deletions: branch.protection.allow_deletions,
+                required_conversation_resolution: branch.protection.required_conversation_resolution
+              });
+            }
+
+            const repoMergeSettings = config.branches[0]?.protection;
+            if (repoMergeSettings) {
+              await github.rest.repos.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                allow_squash_merge: repoMergeSettings.allow_squash_merge,
+                allow_rebase_merge: repoMergeSettings.allow_rebase_merge,
+                allow_merge_commit: repoMergeSettings.allow_merge_commit
               });
             }
