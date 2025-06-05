@@ -43,13 +43,11 @@ jobs:
               });
             }
 
-            const repoMergeSettings = config.branches[0]?.protection;
-            if (repoMergeSettings) {
-              await github.rest.repos.update({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                allow_squash_merge: repoMergeSettings.allow_squash_merge,
-                allow_rebase_merge: repoMergeSettings.allow_rebase_merge,
-                allow_merge_commit: repoMergeSettings.allow_merge_commit
-              });
-            }
+            // Repository-level merge settings
+            await github.rest.repos.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              allow_squash_merge: config.allow_squash_merge,
+              allow_rebase_merge: config.allow_rebase_merge,
+              allow_merge_commit: config.allow_merge_commit
+            });
