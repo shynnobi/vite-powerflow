@@ -11,6 +11,7 @@ export default defineConfig({
 	use: {
 		baseURL: 'http://localhost:5173',
 		trace: 'on-first-retry',
+		headless: true,
 	},
 	projects: [
 		{
@@ -19,7 +20,12 @@ export default defineConfig({
 		},
 		{
 			name: 'firefox',
-			use: { ...devices['Desktop Firefox'] },
+			use: {
+				...devices['Desktop Firefox'],
+				launchOptions: {
+					args: ['--no-sandbox', '--disable-setuid-sandbox'],
+				},
+			},
 		},
 		{
 			name: 'webkit',
