@@ -10,10 +10,10 @@ export default function Blog(): ReactElement {
 				<div className="mt-4 rounded-md border bg-card p-4 text-card-foreground shadow">
 					<h2 className="text-xl font-semibold">Exemple TanStack Query</h2>
 					<p className="mt-2 text-muted-foreground">
-						Cette page démontre l'utilisation de TanStack Query pour la gestion des données serveur.
-						Les posts sont récupérés depuis une API externe (JSONPlaceholder) et mis en cache
-						automatiquement. Vous pouvez observer le comportement du cache et des requêtes en
-						utilisant les DevTools de TanStack Query (icône en bas à droite de l'écran).
+						This page demonstrates the use of TanStack Query for server data management. Posts are
+						fetched from an external API (JSONPlaceholder) and automatically cached. You can observe
+						the cache and query behavior using TanStack Query DevTools (icon in the bottom right
+						corner of the screen).
 					</p>
 					<div className="mt-4 flex gap-2">
 						<a
@@ -22,7 +22,7 @@ export default function Blog(): ReactElement {
 							rel="noreferrer"
 							className="text-sm text-primary hover:underline"
 						>
-							Documentation TanStack Query →
+							TanStack Query Documentation →
 						</a>
 					</div>
 				</div>
