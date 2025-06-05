@@ -34,7 +34,7 @@ export const Loading: Story = {
 	parameters: {
 		msw: {
 			handlers: [
-				// Simuler un délai de chargement
+				// Simulate loading delay
 				async () => {
 					await new Promise(resolve => window.setTimeout(resolve, 2000));
 					return new Response(JSON.stringify([]), {
