@@ -27,31 +27,29 @@ A React + Vite starter, fully containerized for reproducible and collaborative d
 
 Get started in minutes with a fully containerized, AI-optimized environment.
 
-### A. Using the CLI (recommended)
-
 1. **Generate your app:**
+
    ```bash
    npx create-powerflow-app my-app
-   # OR
-   npm install -g create-powerflow-app
-   create-powerflow-app my-app
    ```
+
+   > Alternative package managers:
+   >
+   > ```bash
+   > # pnpm
+   > pnpm create powerflow-app my-app
+   >
+   > # yarn
+   > yarn create powerflow-app my-app
+   > ```
+
 2. **Open your new project in [Cursor](https://cursor.com) (recommended) or [VS Code](https://code.visualstudio.com)**
+
 3. **Reopen in Container** when prompted (DevContainer)
+
 4. **Start developing!**
 
 > For the full AI pair programming experience, use Cursor with the pre-configured rules. In VS Code, Cursor rules are not available, but you can use other AI tools.
-
-### B. Clone the starter template
-
-1. **Clone this repository:**
-   ```bash
-   git clone https://github.com/shynnobi/vite-powerflow.git
-   cd vite-powerflow
-   ```
-2. **Open in [Cursor](https://cursor.com) or [VS Code](https://code.visualstudio.com)**
-3. **Reopen in Container** when prompted (DevContainer)
-4. **Start developing!**
 
 For advanced setup, see [Development Environment](docs/development.md).
 

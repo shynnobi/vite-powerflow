@@ -5,7 +5,7 @@ This guide details the development environment and workflow setup for Vite Power
 ## Table of Contents
 
 - [Getting Started](#getting-started)
-  - [Installation Options](#installation-options)
+  - [Installation](#installation)
 - [Development Tools](#development-tools)
   - [VS Code Integration](#vs-code-integration)
   - [Dev Container, Docker & Playwright Browsers](#dev-container-docker--playwright-browsers)
@@ -21,26 +21,23 @@ This guide details the development environment and workflow setup for Vite Power
 
 ## Getting Started
 
-### Installation Options
+### Installation
 
-You can create a new project in three ways:
+Create your project using our official CLI:
 
 ```bash
-# Option 1: Using the official CLI (recommended)
-npx create-powerflow-app my-project
-
-# Option 2: Using degit (no Git history)
-npx degit shynnobi/vite-powerflow my-project
-
-# Option 3: Using Git clone (includes full history)
-git clone https://github.com/shynnobi/vite-powerflow my-project
+npx create-powerflow-app my-app
 ```
 
-> **Which method to choose?**
+> Alternative package managers:
 >
-> - The **CLI** provides a guided setup experience with customization options
-> - **degit** downloads only the latest code without Git history, providing a clean start
-> - **git clone** includes the full history and Git references
+> ```bash
+> # pnpm
+> pnpm create powerflow-app my-app
+>
+> # yarn
+> yarn create powerflow-app my-app
+> ```
 
 After installing, navigate to your project directory and start development:
 
@@ -78,23 +75,14 @@ This project uses a modern containerized setup for maximum consistency and onboa
 
 #### Playwright Browsers in Docker
 
-Playwright end-to-end (E2E) tests require browser binaries (Chromium, Firefox, WebKit) in addition to Node.js dependencies.
+This project uses the official Playwright Docker image which includes all necessary browser binaries (Chromium, Firefox, WebKit) and their dependencies. This ensures:
 
-In this starter, browsers are not included in the Docker image by default. Instead, they are downloaded automatically the first time you run E2E tests. The browser cache is persisted in a Docker volume (`playwright_cache`) to avoid repeated downloads between container rebuilds.
+- Always up-to-date browser versions
+- Consistent testing environment across all developers
+- No need for manual browser installation
+- Support for all major architectures (x64, ARM64)
 
-If you need to (re)install the browsers manually, you can run:
-
-```sh
-pnpm exec playwright install
-```
-
-If you prefer to always have browsers present in your image, you can add the following to your Dockerfile:
-
-```dockerfile
-RUN npx playwright install --with-deps
-```
-
-This approach is optional and may increase the image size. Choose the setup that best fits your workflow.
+The browsers are pre-installed in the Docker image, so you don't need to run any additional installation commands. This setup provides the most reliable and maintainable environment for running end-to-end tests.
 
 ## Available Scripts
 
