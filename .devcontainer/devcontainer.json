@@ -29,7 +29,8 @@
 				"bierner.markdown-preview-github-styles",
 				"bierner.markdown-emoji",
 				"bierner.markdown-checkbox",
-				"bierner.markdown-preview-mermaid-support"
+				"bierner.markdown-preview-mermaid-support",
+				"PKief.material-icon-theme"
 			],
 			"settings": {
 				"editor.formatOnSave": true,
