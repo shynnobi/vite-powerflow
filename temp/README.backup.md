@@ -51,8 +51,6 @@ Get started in minutes with a fully containerized, AI-optimized environment.
 
 > For the full AI pair programming experience, use Cursor with the pre-configured rules. In VS Code, Cursor rules are not available, but you can use other AI tools.
 
-For advanced setup, see [Development Environment](docs/development.md).
-
 ## 🤖 AI Pair Programming Workflow
 
 Vite PowerFlow enables seamless collaboration between human developers and AI assistants through:
@@ -60,7 +58,26 @@ Vite PowerFlow enables seamless collaboration between human developers and AI as
 - **Project Planning**: Generate development prompts using our [Development Plan Generator](workflows/DEVELOPMENT_PLAN_GENERATOR.md), which provides:
   - A clear contract between humans and AI agents
   - Well-defined phases and milestones for tracking progress
-- **Cursor Integration**: Optimized workflow with pre-configured rules in the [Cursor directory](.cursor) for enhanced collaboration
+
+### Cursor Integration (Premium)
+
+For the best AI pair programming experience, use [Cursor](https://cursor.com) with our pre-configured rules:
+
+- AI pair programming out-of-the-box with explicit, customizable rules
+- Automated enforcement of code standards and best practices
+- Seamless onboarding and knowledge sharing
+- Enhanced collaboration with AI assistants
+
+> **Note**: Cursor requires a paid subscription for AI features. However, you can still use Vite PowerFlow with any IDE (VS Code, WebStorm, etc.) - you'll just need to set up the development environment manually.
+
+### Alternative Setup
+
+If you prefer not to use Cursor, you can still benefit from all other features:
+
+- Use any IDE of your choice
+- Manual setup of development environment
+- All core features remain available
+- Same high-quality development experience
 
 For detailed information about the AI pair programming workflow, see [AI Pair Programming](docs/ai-pair-programming.md).
 
@@ -75,6 +92,10 @@ For detailed information about the AI pair programming workflow, see [AI Pair Pr
 - [GitHub Permissions Setup](docs/github-permissions-setup.md) – How to configure GitHub tokens and permissions
 - [GitHub CLI AI Setup](docs/github-cli-ai-setup.md) – Using the GitHub CLI and AI assistants in the container
 - [GitHub CI Workflows Setup](docs/github-ci-workflows-setup.md) – Pre-configured GitHub Actions and automation
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
 ## 📄 License
 
