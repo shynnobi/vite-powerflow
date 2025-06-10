@@ -1,64 +1,30 @@
 # Vite PowerFlow ⚡
 
-A React + Vite starter, fully containerized for reproducible and collaborative development, with strict code quality tooling and AI pair programming workflow (Cursor rules). Includes comprehensive testing, linting, and CI/CD configurations following industry best practices.
-
-<div align="center">
-  <img src="public/vite.svg" alt="Vite Logo" width="100" />
-  <br />
-  <p>
-    <strong>Vite PowerFlow</strong> - Your next React project, ready to go.
-  </p>
+<div style="display: flex; flex-wrap: wrap; gap: 4px;">
+  <img src="https://img.shields.io/badge/Vite-6.3.5-646CFF?logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/React-19.1.0-61DAFB?logo=react&logoColor=white" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-5.8.3-3178C6?logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Tailwind%20CSS-4.1.8-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Vitest-3.1.4-6E9F18?logo=vitest&logoColor=white" alt="Vitest" />
+  <img src="https://img.shields.io/badge/Playwright-1.52.0-2EAD33?logo=playwright&logoColor=white" alt="Playwright" />
+  <img src="https://img.shields.io/badge/ESLint-9.27.0-4B32C3?logo=eslint&logoColor=white" alt="ESLint" />
+  <img src="https://img.shields.io/github/license/shynnobi/vite-powerflow?color=yellow&label=License" alt="License" />
 </div>
+<br/>
 
-<div align="center">
-
-![Vite](https://img.shields.io/npm/v/vite?color=646CFF&label=Vite&logo=vite&logoColor=white)
-![React](https://img.shields.io/npm/v/react?color=61DAFB&label=React&logo=react&logoColor=white)
-![TypeScript](https://img.shields.io/npm/v/typescript?color=3178C6&label=TypeScript&logo=typescript&logoColor=white)
-![Tailwind CSS](https://img.shields.io/npm/v/tailwindcss?color=06B6D4&label=Tailwind%20CSS&logo=tailwindcss&logoColor=white)
-![Vitest](https://img.shields.io/npm/v/vitest?color=6E9F18&label=Vitest&logo=vitest&logoColor=white)
-![Playwright](https://img.shields.io/npm/v/playwright?color=2EAD33&label=Playwright&logo=playwright&logoColor=white)
-![ESLint](https://img.shields.io/npm/v/eslint?color=4B32C3&label=ESLint&logo=eslint&logoColor=white)
-![License](https://img.shields.io/github/license/shynnobi/vite-powerflow?color=yellow&label=License)
+A React + Vite starter, fully containerized for reproducible and collaborative development, with strict code quality tooling and AI pair programming workflow (Cursor rules). Includes comprehensive testing, linting, and CI/CD configurations following industry best practices.
 
 ## 📋 Table of Contents
 
-- [Quick Start](#-quick-start)
 - [Features](#-features)
-- [Development Environment](#-development-environment)
-- [Testing & Quality Assurance](#-testing--quality-assurance)
-- [Configuration](#-configuration)
-- [Scripts](#-scripts)
+- [Quick Start](#-quick-start)
+- [AI-Powered Development](#-ai-powered-development)
+- [Development Setup](#-development-setup)
+- [Testing](#-testing)
+- [Configuration](#️-project-configuration)
+- [Available Scripts](#-available-scripts)
 - [Contribution Guidelines](#-contribution-guidelines)
-- [Additional Resources](#-additional-resources)
 - [License](#-license)
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) (v18 or higher)
-- [pnpm](https://pnpm.io/) (v8 or higher)
-- [Docker](https://www.docker.com/) (required for containerized development)
-- [VS Code](https://code.visualstudio.com/) with [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension
-
-### Installation
-
-1. **Create a new project using the CLI**
-
-   ```bash
-   npx create-powerflow-app my-app
-   cd my-app
-   ```
-
-2. Open your new project in [Cursor](https://cursor.com) (recommended) or [VS Code](https://code.visualstudio.com)
-
-3. `Reopen in Container` when prompted (DevContainer)
-
-4. Start developing! 🚀
-
-> For the full AI pair programming experience, use the Cursor code editor.
-> In Visual Studio Code, Cursor rules are not usable.
 
 ## ✨ Features
 
@@ -80,7 +46,7 @@ A React + Vite starter, fully containerized for reproducible and collaborative d
 - **[Zustand](https://github.com/pmndrs/zustand)** for lightweight state management
 - **[TanStack Query](https://tanstack.com/query/latest)** for data fetching and caching
 
-### 🧪 Testing & Quality
+### 🧪 Testing & Code Quality
 
 - **[Vitest](https://vitest.dev/)** for unit and integration tests
 - **[Playwright](https://playwright.dev/)** for end-to-end testing
@@ -93,9 +59,37 @@ A React + Vite starter, fully containerized for reproducible and collaborative d
 - Standardized commits with **[commitlint](https://commitlint.js.org/)**
 - Automated CI/CD with **[GitHub Actions](https://github.com/features/actions)**
 
+## 🚀 Quick Start
+
+Get started quickly with Vite PowerFlow in just a few steps. This section guides you through the essential setup process.
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [Docker](https://www.docker.com/) (required for containerized development)
+- [VS Code](https://code.visualstudio.com/) with [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension
+
+### Installation
+
+1. **Create a new project using the CLI**
+
+   ```bash
+   npx create-powerflow-app my-app
+   cd my-app
+   ```
+
+2. Open your new project in [Cursor](https://cursor.com) (recommended) or [VS Code](https://code.visualstudio.com)
+
+3. `Reopen in Container` when prompted (DevContainer)
+
+4. Start developing! 🚀
+
+> For the full AI-powered development experience, use the Cursor code editor.
+> In Visual Studio Code, Cursor rules are not recognized.
+
 ## 🤖 AI-Powered Development
 
-Vite PowerFlow is optimized for **Cursor AI Code Editor** with pre-configured rules that enhance pair programming, AI code assistance and code generation. These rules are defined in the `.cursor/rules/` directory and help the AI understand your project's context and best practices.
+Vite PowerFlow is optimized for **[Cursor AI Code Editor](https://cursor.com)** with pre-configured rules that enhance AI code assistance and code generation. These rules are defined in the `.cursor/rules/` directory and help the AI understand your project's context and best practices.
 
 > **Note**: While the project works perfectly with any IDE, Cursor's AI features require a paid subscription to access the enhanced development experience.
 
@@ -120,22 +114,33 @@ The following rules are pre-configured to enhance your development experience:
 
 > **Note**: You can customize these rules by adding, removing, or modifying them in the `.cursor/rules/` directory to better match your project's requirements and development workflow.
 
-## 💻 Development Environment
+## 💻 Development Setup
 
-### Development Tools
+This section outlines the essential tools, configurations, and workflows that power the development environment. From code quality tools to CI/CD pipelines, everything is set up to ensure consistent, high-quality development practices across the team.
 
-#### Code Quality & Standards
+### Code Quality
 
-- **Linting & Formatting**
-  - ESLint (`eslint.config.js`) — TypeScript and React linting rules
-  - Prettier (`.prettierrc`) — Code formatting standards
-  - EditorConfig (`.editorconfig`) — Editor-agnostic coding styles
-- **Git Workflow**
-  - CommitLint (`commitlint.config.js`) — Conventional commit messages
-  - Husky — Git hooks for automated checks
-  - lint-staged — Staged files validation
+- Prettier (`.prettierrc`) — Code formatting standards
+- ESLint (`eslint.config.js`) — TypeScript and React linting rules
+- EditorConfig (`.editorconfig`) — Editor-agnostic coding styles
+- CommitLint (`commitlint.config.js`) — Conventional commit messages
+- lint-staged — Staged files validation
 
-#### UI Development
+### Development Environment
+
+- **VS Code Dev Container** (`.devcontainer/devcontainer.json`)
+  - Pre-configured settings in `.vscode/settings.json`
+  - Automatic installation of preconfigured extensions (`.vscode/extensions.json`)
+  - Custom lifecycle scripts (`.devcontainer/scripts/`)
+    - `on-create.sh`: Initial setup when container is created
+    - `post-create.sh`: Post-creation tasks and configurations
+    - `update-content.sh`: Updates applied when container is rebuilt
+- **Docker Setup**
+  - Identical environment for all contributors
+  - Fast onboarding with pre-installed dependencies
+  - Uses `Dockerfile`, `docker-compose.yml`, and `.devcontainer/devcontainer.json`
+
+### UI Development
 
 - **Component Library**
   - shadcn/ui (`components.json`) — UI component library configuration
@@ -144,18 +149,56 @@ The following rules are pre-configured to enhance your development experience:
   - Tailwind CSS — Utility-first CSS framework
   - PostCSS — CSS processing and optimization
 
-#### Development Environment
+### CI/CD Workflows
 
-- **VS Code Dev Container** (`.devcontainer/devcontainer.json`)
-  - Pre-configured settings in `.vscode/settings.json`
-  - Automatic installation of preconfigured extensions (`.vscode/extensions.json`)
-  - Custom lifecycle scripts (onCreate, postCreate, updateContent)
-- **Docker Setup**
-  - Identical environment for all contributors
-  - Fast onboarding with pre-installed dependencies
-  - Uses `Dockerfile`, `docker-compose.yml`, and `.devcontainer/devcontainer.json`
+#### Local Development
 
-## 🧪 Testing & Quality Assurance
+Local development workflows ensure code quality before changes are committed or pushed to the repository. These hooks run automatically to validate your changes.
+
+- **Pre-commit** (`.husky/pre-commit`)
+  - Fast validation: lint, unit/integration tests
+  - Command: `pnpm validate:precommit`
+- **Pre-push** (`.husky/pre-push`)
+  - Full validation: lint, format, type-check, all tests
+  - Command: `pnpm validate:full`
+
+#### Pipeline Configuration
+
+The main CI/CD pipeline configuration that runs on GitHub Actions. This pipeline ensures code quality and consistency across all environments.
+
+- **Continuous Integration** (`.github/workflows/ci.yml`)
+  - Code quality checks: ESLint, Prettier, TypeScript
+  - Commit message validation with CommitLint
+  - Build verification
+  - Runs on push to `main`/`dev` and pull requests
+  - Clean environment validation
+  - ⚠️ E2E tests skipped in CI (free tier) but required locally
+
+#### Branch Protection
+
+Branch protection rules are managed through Configuration as Code. The rules defined in `.github/branch-protection.yml` are automatically applied by a GitHub Actions workflow, ensuring consistent protection across all environments. When creating a new project from this template, branch protection rules are automatically set up - no manual configuration needed in GitHub's interface.
+
+- **Branch Protection** (`.github/branch-protection.yml`)
+  - Automated protection rules for `main` and `dev` branches
+  - Required status checks for all branches
+  - Linear history enforcement
+  - Pull request review requirements
+
+#### Dependency Management
+
+Automated dependency updates and security patches management through Dependabot. All updates are created as PRs targeting the `dev` branch for proper review and testing before reaching production.
+
+- **Dependency Management** (`.github/workflows/dependabot-auto.yml`)
+  - Automated dependency updates with Dependabot
+  - Auto-merge for compatible updates
+  - Support for semver updates (patch, minor, major)
+  - Automatic PR approval for security updates
+  - Weekly updates for npm and GitHub Actions
+  - Grouped updates by dependency type (dev/prod)
+
+## 🧪 Testing
+
+Our testing strategy ensures code quality and reliability through a comprehensive suite of automated tests. We employ a multi-layered approach combining unit, integration, and end-to-end testing to catch issues early and maintain high standards.
 
 ### Test Types & Tools
 
@@ -174,48 +217,15 @@ The following rules are pre-configured to enhance your development experience:
 - `tests/integration/` — User flows and interactions
 - `tests/e2e/` — End-to-end scenarios
 
-### Browser Management
+### Browser Management (Playwright)
 
 - Smart browser installation (on-demand)
 - Chromium by default, Firefox/WebKit when needed
 - Persistent browser cache for faster runs
 
-### Automated Workflows
+## ⚙️ Project Configuration
 
-#### Local Development
-
-- **Pre-commit** (`.husky/pre-commit`)
-  - Fast validation: lint, unit/integration tests
-  - Command: `pnpm validate:precommit`
-- **Pre-push** (`.husky/pre-push`)
-  - Full validation: lint, format, type-check, all tests
-  - Command: `pnpm validate:full`
-
-#### CI/CD Pipeline
-
-- **Continuous Integration** (`.github/workflows/ci.yml`)
-
-  - Code quality checks: ESLint, Prettier, TypeScript
-  - Commit message validation with CommitLint
-  - Build verification
-  - Runs on push to `main`/`dev` and pull requests
-  - Clean environment validation
-  - ⚠️ E2E tests skipped in CI (free tier) but required locally
-
-- **Branch Protection** (`.github/branch-protection.yml`)
-
-  - Automated protection rules for `main` and `dev` branches
-  - Required status checks for all branches
-  - Linear history enforcement
-  - Pull request review requirements
-
-- **Dependency Management** (`.github/workflows/dependabot-auto.yml`)
-  - Automated dependency updates with Dependabot
-  - Auto-merge for compatible updates
-  - Support for semver updates (patch, minor, major)
-  - Automatic PR approval for security updates
-
-## ⚙️ Configuration
+This section details the essential configuration aspects of the project, including environment variables, project structure, and architectural decisions. Understanding these configurations is crucial for development and maintenance.
 
 ### Environment Variables
 
@@ -226,11 +236,11 @@ The following rules are pre-configured to enhance your development experience:
   - `VITE_API_URL`: Production API endpoint
   - `VITE_APP_ENV`: Set to "production"
 
-### Project Structure
+### Architecture
 
 ```
 ├── src/
-│   ├── components/     # Reusable UI components
+│   ├── components/    # Reusable UI components
 │   ├── hooks/         # Custom React hooks
 │   ├── lib/           # Utility functions and configurations
 │   ├── pages/         # Page components
@@ -243,7 +253,9 @@ The following rules are pre-configured to enhance your development experience:
 └── public/            # Static assets
 ```
 
-## 🚀 Scripts
+## 🚀 Available Scripts
+
+This project includes a comprehensive set of scripts to streamline development, testing, and quality assurance workflows. These scripts are designed to maintain code quality and ensure consistent development practices.
 
 ### Development
 
@@ -256,7 +268,7 @@ The following rules are pre-configured to enhance your development experience:
 
 ### Testing
 
-- `pnpm test` — Run all tests
+- `pnpm test` — Run unit and integration tests
 - `pnpm test:unit` — Run unit tests
 - `pnpm test:integration` — Run integration tests
 - `pnpm test:e2e` — Run E2E tests
@@ -264,105 +276,98 @@ The following rules are pre-configured to enhance your development experience:
 
 ### Quality Assurance
 
-- `pnpm validate:precommit` — Fast validation (lint, unit tests)
-- `pnpm validate:full` — Full validation (lint, format, type-check, all tests)
-- `pnpm storybook` — Start Storybook
-- `pnpm build-storybook` — Build Storybook
+- `pnpm validate:precommit` — Fast validation (lint, format, type-check and unit tests)
+- `pnpm validate:full` — Full validation (lint, format, type-check and unit tests, integration tests, E2E tests)
+- `pnpm storybook` — Start Storybook local server
 
-### Docker
-
-- `pnpm docker:build` — Build Docker image
-- `pnpm docker:run` — Run Docker container
-- `pnpm docker:compose` — Start with docker-compose
+See `package.json` for the complete list of available scripts.
 
 ## 🤝 Contribution Guidelines
 
-### Commit Message Conventions
+These guidelines are designed to help your team collaborate effectively on any project built with this starter template. They provide a standardized approach to development that ensures code quality and maintainability across your team.
 
-This project uses [commitlint](https://commitlint.js.org/) to enforce [Conventional Commits](https://www.conventionalcommits.org/) for all commit messages.
+### 📝 Commit Conventions
 
-**Key rules:**
+We recommend using [commitlint](https://commitlint.js.org/) to enforce [Conventional Commits](https://www.conventionalcommits.org/) for all commit messages. This helps maintain a clear and consistent commit history.
 
-- The commit title (header) must not exceed 72 characters
-- Each line of the commit body must not exceed 100 characters
-- Use a conventional commit type (e.g., feat, fix, chore, docs, etc.)
-
-**Format:**
+**Simple format:**
 
 ```
-<type>(<scope>): <subject>
+type(scope): short description
 
-<body>
+detailed description (optional)
 
-<footer>
+footer (optional)
 ```
 
-**Types:**
+**Commit types:**
 
-- build: Changes to build system
-- chore: Maintenance tasks
-- ci: CI configuration changes
-- docs: Documentation changes
-- feat: New features
-- fix: Bug fixes
-- perf: Performance improvements
-- refactor: Code refactoring
-- revert: Revert changes
-- style: Code style changes
-- test: Test changes
+- ✨ `feat`: New feature
+- 🐛 `fix`: Bug fix
+- 📚 `docs`: Documentation
+- 💅 `style`: Formatting, missing semicolons, etc.
+- ♻️ `refactor`: Code refactoring
+- ⚡️ `perf`: Performance improvements
+- ✅ `test`: Tests
+- 🔧 `chore`: Maintenance
 
-**Examples:**
+**Example commits:**
 
-```
-feat(ui): add cursor-pointer to interactive elements
+```bash
+# Adding a feature
+feat(auth): add Google authentication
 
-Changes include:
-- Add cursor-pointer to all buttons
-- Update hover states for better feedback
-- Ensure consistent behavior across themes
-```
+# Fixing a bug
+fix(api): fix 404 error handling
 
-```
-fix(auth): resolve login token expiration
-
-Update token refresh logic to prevent premature expiration
-Add proper error handling for expired tokens
+# Documentation
+docs(readme): update installation instructions
 ```
 
-### Git Workflow
+### 🌳 Git Workflow
 
-Here's our suggested branching strategy:
+We recommend this branching strategy for your project:
 
-- `main`: For production-ready code
-- `dev`: For ongoing development
-- Feature branches: `feature/feature-name`
-- Bug fix branches: `fix/bug-name`
-- Release branches: `release/v1.x.x`
+```
+main (production)
+   ↑
+dev (development)
+   ↑
+feature/* (new features)
+```
 
-For pull requests, we recommend using the PR template and running the pre-commit hooks to ensure code quality.
+- `main`: Production-ready code
+- `dev`: Main development branch
+- `feature/*`: Feature branches for new development
 
-### PR Conventions
+### 🔄 Pull Requests
 
-To help maintain consistency and make the review process smoother, we recommend:
+We provide two approaches for creating Pull Requests, both based on our PR template (`.github/pull_request_template.md`):
 
-- Using conventional commit format for PR titles
-- Filling out the PR template sections (`.github/pull_request_template.md`) to provide context
-- Checking the relevant boxes in "Type of change" and "Quality assurance" sections
-- Following the PR template structure to ensure all necessary information is included
+#### 1. Using Cursor IDE (Recommended)
 
-These guidelines help us maintain a clear and organized workflow while making it easier for everyone to contribute.
+If you're using Cursor IDE, the AI will automatically:
 
-## 📚 Additional Resources
+- Analyze your code changes
+- Generate a comprehensive PR description based on the template
+- Suggest appropriate change types and quality checks
+- Help review the changes for consistency and standards
 
-### Documentation
+The AI uses the PR template structure while intelligently filling it based on your actual code modifications.
 
-- [React Documentation](https://reactjs.org/docs/getting-started.html)
-- [Vite Documentation](https://vitejs.dev/guide/)
-- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [shadcn/ui Documentation](https://ui.shadcn.com/)
-- [Playwright Documentation](https://playwright.dev/docs/intro)
-- [Storybook Documentation](https://storybook.js.org/docs/react/get-started/introduction)
+#### 2. Using PR Template Directly
+
+For those not using Cursor, you can directly use the PR template located at `.github/pull_request_template.md`. This template provides a structured format for:
+
+- Describing changes
+- Listing implemented features
+- Tracking completed tasks
+- Specifying change types
+- Ensuring quality assurance
+- Adding additional notes
+- Handling Dependabot updates
+
+Both approaches ensure consistent PR documentation by following the same template structure. Cursor IDE simply makes the process more efficient by automatically generating the content based on your changes.
 
 ## 📝 License
 
@@ -373,5 +378,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 This starter template was created and is maintained by [Shynn](https://github.com/shynnobi)
 
 [![GitHub](https://img.shields.io/badge/GitHub-shynnobi-24292e.svg?style=for-the-badge&logo=github)](https://github.com/shynnobi)
-[![Bluesky](https://img.shields.io/badge/Bluesky-@shynnobi-0560ff.svg?style=for-the-badge&logo=bluesky)](https://bsky.app/profile/shynnobi.bsky.social)
-[![Instagram](https://img.shields.io/badge/Instagram-@shynnobi-E4405F.svg?style=for-the-badge&logo=instagram)](https://www.instagram.com/shynnobi_)
