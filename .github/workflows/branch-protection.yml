@@ -1,0 +1,53 @@
+name: Branch Protection
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/branch-protection.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-branch-protection:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Apply branch protection rules
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const yaml = require('js-yaml');
+
+            const config = yaml.load(fs.readFileSync('.github/branch-protection.yml', 'utf8'));
+
+            for (const branch of config.branches) {
+              await github.rest.repos.updateBranchProtection({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                branch: branch.name,
+                required_status_checks: branch.protection.required_status_checks,
+                enforce_admins: branch.protection.enforce_admins,
+                required_pull_request_reviews: branch.protection.required_pull_request_reviews,
+                restrictions: branch.protection.restrictions,
+                required_linear_history: branch.protection.required_linear_history,
+                allow_force_pushes: branch.protection.allow_force_pushes,
+                allow_deletions: branch.protection.allow_deletions,
+                required_conversation_resolution: branch.protection.required_conversation_resolution
+              });
+            }
+
+            // Repository-level merge settings
+            await github.rest.repos.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              allow_squash_merge: config.allow_squash_merge,
+              allow_rebase_merge: config.allow_rebase_merge,
+              allow_merge_commit: config.allow_merge_commit
+            });
