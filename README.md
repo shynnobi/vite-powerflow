@@ -1,14 +1,18 @@
 # Vite PowerFlow ⚡
 
 <div style="display: flex; flex-wrap: wrap; gap: 4px;">
-  <img src="https://img.shields.io/badge/Vite-6.3.5-646CFF?logo=vite&logoColor=white" alt="Vite" />
-  <img src="https://img.shields.io/badge/React-19.1.0-61DAFB?logo=react&logoColor=white" alt="React" />
-  <img src="https://img.shields.io/badge/TypeScript-5.8.3-3178C6?logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Tailwind%20CSS-4.1.8-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
-  <img src="https://img.shields.io/badge/Vitest-3.1.4-6E9F18?logo=vitest&logoColor=white" alt="Vitest" />
-  <img src="https://img.shields.io/badge/Playwright-1.52.0-2EAD33?logo=playwright&logoColor=white" alt="Playwright" />
-  <img src="https://img.shields.io/badge/ESLint-9.27.0-4B32C3?logo=eslint&logoColor=white" alt="ESLint" />
+  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/dev/vite?label=Vite&logo=vite&logoColor=white&color=646CFF" alt="Vite" />
+  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/dev/react?label=React&logo=react&logoColor=white&color=61DAFB" alt="React" />
+  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/dev/typescript?label=TypeScript&logo=typescript&logoColor=white&color=3178C6" alt="TypeScript" />
+  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/tailwindcss?label=Tailwind%20CSS&logo=tailwindcss&logoColor=white&color=06B6D4" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/dev/vitest?label=Vitest&logo=vitest&logoColor=white&color=6E9F18" alt="Vitest" />
+  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/dev/@playwright/test?label=Playwright&logo=playwright&logoColor=white&color=2EAD33" alt="Playwright" />
+  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/dev/eslint?label=ESLint&logo=eslint&logoColor=white&color=4B32C3" alt="ESLint" />
+  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/dev/storybook?label=Storybook&logo=storybook&logoColor=white&color=FF4785" alt="Storybook" />
+  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/zustand?label=Zustand&logo=zustand&logoColor=white&color=F45825" alt="Zustand" />
+  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/@tanstack/react-query?label=TanStack%20Query&logo=react-query&logoColor=white&color=FF4154" alt="TanStack Query" />
   <img src="https://img.shields.io/github/license/shynnobi/vite-powerflow?color=yellow&label=License" alt="License" />
+
 </div>
 <br/>
 
@@ -25,6 +29,8 @@ A React + Vite starter, fully containerized for reproducible and collaborative d
 - [Available Scripts](#-available-scripts)
 - [Contribution Guidelines](#-contribution-guidelines)
 - [License](#-license)
+
+<hr>
 
 ## ✨ Features
 
@@ -59,15 +65,16 @@ A React + Vite starter, fully containerized for reproducible and collaborative d
 - Standardized commits with **[commitlint](https://commitlint.js.org/)**
 - Automated CI/CD with **[GitHub Actions](https://github.com/features/actions)**
 
-## 🚀 Quick Start
+<hr>
 
-Get started quickly with Vite PowerFlow in just a few steps. This section guides you through the essential setup process.
+## 🚀 Quick Start
 
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v18 or higher)
-- [Docker](https://www.docker.com/) (required for containerized development)
-- [VS Code](https://code.visualstudio.com/) with [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension
+<!-- - [Docker](https://www.docker.com/) (required for containerized development) -->
+- [Cursor AI Editor](https://www.cursor.com) or [Visual Studio Code](https://code.visualstudio.com/)
+- [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension
 
 ### Installation
 
@@ -87,11 +94,15 @@ Get started quickly with Vite PowerFlow in just a few steps. This section guides
 > For the full AI-powered development experience, use the Cursor code editor.
 > In Visual Studio Code, Cursor rules are not recognized.
 
+<hr>
+
 ## 🤖 AI-Powered Development
 
 Vite PowerFlow is optimized for **[Cursor AI Code Editor](https://cursor.com)** with pre-configured rules that enhance AI code assistance and code generation. These rules are defined in the `.cursor/rules/` directory and help the AI understand your project's context and best practices.
 
 > **Note**: While the project works perfectly with any IDE, Cursor's AI features require a paid subscription to access the enhanced development experience.
+
+For detailed GitHub CLI and AI integration setup, see [GitHub CLI AI Setup](docs/github-cli-ai-setup.md)
 
 ### Available Rules
 
@@ -113,6 +124,8 @@ The following rules are pre-configured to enhance your development experience:
 | `technical-AI-posture.mdc`            | The expected technical rigor and posture of the AI assistant             |
 
 > **Note**: You can customize these rules by adding, removing, or modifying them in the `.cursor/rules/` directory to better match your project's requirements and development workflow.
+
+<hr>
 
 ## 💻 Development Setup
 
@@ -174,6 +187,8 @@ The main CI/CD pipeline configuration that runs on GitHub Actions. This pipeline
   - Clean environment validation
   - ⚠️ E2E tests skipped in CI (free tier) but required locally
 
+> For detailed CI/CD setup instructions, see [GitHub CI/CD Workflows Setup](docs/github-ci-workflows-setup.md)
+
 #### Branch Protection
 
 Branch protection rules are managed through Configuration as Code. The rules defined in `.github/branch-protection.yml` are automatically applied by a GitHub Actions workflow, ensuring consistent protection across all environments. When creating a new project from this template, branch protection rules are automatically set up - no manual configuration needed in GitHub's interface.
@@ -183,6 +198,8 @@ Branch protection rules are managed through Configuration as Code. The rules def
   - Required status checks for all branches
   - Linear history enforcement
   - Pull request review requirements
+
+> For detailed GitHub permissions and branch protection setup, see [GitHub Permissions Setup](docs/github-permissions-setup.md)
 
 #### Dependency Management
 
@@ -195,6 +212,8 @@ Automated dependency updates and security patches management through Dependabot.
   - Automatic PR approval for security updates
   - Weekly updates for npm and GitHub Actions
   - Grouped updates by dependency type (dev/prod)
+
+<hr>
 
 ## 🧪 Testing
 
@@ -222,6 +241,8 @@ Our testing strategy ensures code quality and reliability through a comprehensiv
 - Smart browser installation (on-demand)
 - Chromium by default, Firefox/WebKit when needed
 - Persistent browser cache for faster runs
+
+<hr>
 
 ## ⚙️ Project Configuration
 
@@ -253,6 +274,8 @@ This section details the essential configuration aspects of the project, includi
 └── public/            # Static assets
 ```
 
+<hr>
+
 ## 🚀 Available Scripts
 
 This project includes a comprehensive set of scripts to streamline development, testing, and quality assurance workflows. These scripts are designed to maintain code quality and ensure consistent development practices.
@@ -282,11 +305,13 @@ This project includes a comprehensive set of scripts to streamline development, 
 
 See `package.json` for the complete list of available scripts.
 
+<hr>
+
 ## 🤝 Contribution Guidelines
 
 These guidelines are designed to help your team collaborate effectively on any project built with this starter template. They provide a standardized approach to development that ensures code quality and maintainability across your team.
 
-### 📝 Commit Conventions
+### Commit Conventions
 
 We recommend using [commitlint](https://commitlint.js.org/) to enforce [Conventional Commits](https://www.conventionalcommits.org/) for all commit messages. This helps maintain a clear and consistent commit history.
 
@@ -324,7 +349,7 @@ fix(api): fix 404 error handling
 docs(readme): update installation instructions
 ```
 
-### 🌳 Git Workflow
+### Git Workflow
 
 We recommend this branching strategy for your project:
 
@@ -340,7 +365,7 @@ feature/* (new features)
 - `dev`: Main development branch
 - `feature/*`: Feature branches for new development
 
-### 🔄 Pull Requests
+### Pull Requests
 
 We provide two approaches for creating Pull Requests, both based on our PR template (`.github/pull_request_template.md`):
 
@@ -369,9 +394,13 @@ For those not using Cursor, you can directly use the PR template located at `.gi
 
 Both approaches ensure consistent PR documentation by following the same template structure. Cursor IDE simply makes the process more efficient by automatically generating the content based on your changes.
 
+<hr>
+
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+<hr>
 
 ## 👤 Credits
 
