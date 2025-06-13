@@ -32,7 +32,7 @@ export default [
 	...compat.config({
 		extends: ['plugin:storybook/recommended'],
 	}),
-	// Configuration pour les fichiers de configuration TypeScript
+	// Configuration for TypeScript configuration files
 	{
 		files: ['*.config.ts'],
 		languageOptions: {
@@ -51,7 +51,7 @@ export default [
 			...tsPlugin.configs.recommended.rules,
 		},
 	},
-	// Configuration principale pour les fichiers TypeScript/React
+	// Main configuration for TypeScript/React files
 	{
 		files: ['**/*.{ts,tsx}'],
 		ignores: ['*.config.ts'],

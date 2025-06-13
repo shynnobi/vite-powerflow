@@ -18,18 +18,22 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"dbaeumer.vscode-eslint",
-				"esbenp.prettier-vscode",
 				"antfu.vite",
-				"ms-playwright.playwright",
-				"bradlc.vscode-tailwindcss",
-				"vitest.explorer",
-				"github.vscode-github-actions",
 				"bierner.markdown-mermaid",
 				"bierner.markdown-preview-github-styles",
-				"bierner.markdown-emoji",
-				"bierner.markdown-checkbox",
-				"bierner.markdown-preview-mermaid-support"
+				"bierner.markdown-preview-mermaid-support",
+				"bradlc.vscode-tailwindcss",
+				"dbaeumer.vscode-eslint",
+				"esbenp.prettier-vscode",
+				"formulahendry.auto-close-tag",
+				"github.vscode-github-actions",
+				"GitHub.vscode-pull-request-github",
+				"ms-playwright.playwright",
+				"naumovs.color-highlight",
+				"PKief.material-icon-theme",
+				"shd101wyy.markdown-preview-enhanced",
+				"Tyriar.sort-lines",
+				"vitest.explorer"
 			],
 			"settings": {
 				"editor.formatOnSave": true,
