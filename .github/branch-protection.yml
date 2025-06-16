@@ -9,6 +9,7 @@ branches:
           - Prettier
           - build
           - TypeScript
+          - Commitlint PR Title & Body
       required_pull_request_reviews:
         required_approving_review_count: 1
         dismiss_stale_reviews: true
@@ -29,6 +30,7 @@ branches:
           - Prettier
           - build
           - TypeScript
+          - Commitlint PR Title & Body
       required_pull_request_reviews:
         required_approving_review_count: 1
         dismiss_stale_reviews: true

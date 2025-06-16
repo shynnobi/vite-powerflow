@@ -1,0 +1,50 @@
+name: 'Commitlint PR Title & Body'
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited]
+
+jobs:
+  validate-pr-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.6.5
+
+      - name: Install commitlint and its config
+        run: pnpm install --no-frozen-lockfile commitlint @commitlint/config-conventional
+
+      - name: Construct PR message for validation
+        id: pr_message
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_BODY="${{ github.event.pull_request.body }}"
+
+          # Create the temporary file with the PR title
+          echo "${PR_TITLE}" > pr_message.txt
+
+          # Add a blank line and the PR body if the body is not empty
+          if [[ -n "${PR_BODY}" && "${PR_BODY}" =~ [^[:space:]] ]]; then
+            echo "" >> pr_message.txt
+            echo "${PR_BODY}" >> pr_message.txt
+          fi
+
+          # Make the temporary file path available for the next step
+          echo "PR_MESSAGE_FILE=pr_message.txt" >> $GITHUB_OUTPUT
+
+      - name: Validate PR title and body
+        run: pnpm dlx commitlint --edit ${{ steps.pr_message.outputs.PR_MESSAGE_FILE }}
+        # This command will use your repository's commitlint configuration file
+        # (e.g., commitlint.config.js or .commitlintrc.js).
+        # If your commitlint config uses 'ignore-body-lines' for the PR template,
+        # that will be automatically taken into account by your project's commitlint config.
