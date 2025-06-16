@@ -1,5 +1,7 @@
 # Vite PowerFlow ⚡
 
+This is a temporary line for PR title validation testing.
+
 <div style="display: flex; flex-wrap: wrap; gap: 4px;">
   <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/dev/vite?label=Vite&logo=vite&logoColor=white&color=646CFF" alt="Vite" />
   <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/dev/react?label=React&logo=react&logoColor=white&color=61DAFB" alt="React" />
