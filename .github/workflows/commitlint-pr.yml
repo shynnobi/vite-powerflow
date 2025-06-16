@@ -22,7 +22,7 @@ jobs:
           version: 10.6.5
 
       - name: Install commitlint and its config
-        run: pnpm install --no-frozen-lockfile commitlint @commitlint/config-conventional
+        run: pnpm install commitlint @commitlint/config-conventional
 
       - name: Construct PR message for validation
         id: pr_message
