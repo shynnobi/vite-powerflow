@@ -450,7 +450,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 This starter template was created and is maintained by [Shynn](https://github.com/shynnobi)
 
 [![GitHub](https://img.shields.io/badge/GitHub-shynnobi-24292e.svg?style=for-the-badge&logo=github)](https://github.com/shynnobi)
-
-## Test pour Commitlint
-
-Ceci est une ligne ajoutée pour tester la validation des messages de commit.
