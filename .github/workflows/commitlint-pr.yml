@@ -14,15 +14,15 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '20' # Use a Node.js version compatible with your project
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.6.5
+          version: 10.6.5 # Ensure this version matches your project's pnpm version
 
       - name: Install commitlint and its config
-        run: pnpm install commitlint @commitlint/config-conventional
+        run: pnpm install commitlint @commitlint/config-conventional # Installs commitlint and its base configuration. If you have a custom config, ensure it's installed or accessible.
 
       - name: Construct PR message for validation
         id: pr_message
