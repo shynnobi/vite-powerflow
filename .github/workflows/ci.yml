@@ -117,7 +117,6 @@ jobs:
 
   commitlint:
     name: Commitlint
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -151,8 +150,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Check commit messages
+      - name: Check commit messages for pull requests
+        if: github.event_name == 'pull_request'
         run: pnpm dlx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
+
+      - name: Check commit messages for pushes
+        if: github.event_name == 'push'
+        run: pnpm dlx commitlint --from ${{ github.event.before }} --to ${{ github.event.after }} --verbose
 
   build:
     needs: [eslint, prettier, typescript]
