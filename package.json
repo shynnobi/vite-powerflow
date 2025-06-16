@@ -68,18 +68,6 @@
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build"
 	},
-	"lint-staged": {
-		"*.{js,jsx,ts,tsx}": [
-			"prettier --write",
-			"eslint --fix --max-warnings=0"
-		],
-		"*.{json,yml,yaml,md}": [
-			"prettier --write"
-		],
-		"*.{css,scss}": [
-			"prettier --write"
-		]
-	},
 	"devDependencies": {
 		"@axe-core/playwright": "^4.10.1",
 		"@chromatic-com/storybook": "^4.0.0-next.16",
