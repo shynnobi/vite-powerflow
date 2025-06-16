@@ -31,6 +31,9 @@ jobs:
           PR_TITLE="${{ github.event.pull_request.title }}"
           PR_BODY="${{ github.event.pull_request.body }}"
 
+          echo "PR_TITLE: ${PR_TITLE}"
+          echo "PR_BODY: ${PR_BODY}"
+
           # Create the temporary file with the PR title
           echo "${PR_TITLE}" > pr_message.txt
 
