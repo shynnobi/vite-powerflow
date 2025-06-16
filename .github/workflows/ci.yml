@@ -190,3 +190,19 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+      - name: Check merge/squash commit message on Push to main/dev
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
+        run: |
+          echo "DEBUG: Checking commit message for:"
+          git log -1 --pretty=format:%B > .github/temp_commit_message_for_lint.txt
+          cat .github/temp_commit_message_for_lint.txt
+          echo "--- End of commit message for linting ---"
+          pnpm dlx commitlint --edit .github/temp_commit_message_for_lint.txt
+
+      # New step using wagoid/commitlint-github-action for pushes
+      - name: Validate Push Commit Message
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
+        uses: wagoid/commitlint-github-action@v6
+        with:
+          configFile: commitlint.config.js # Ensure this is the correct path to your config
