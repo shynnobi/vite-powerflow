@@ -188,7 +188,7 @@ This combination enables:
 This project uses a two-layered CI/CD workflow:
 
 - **Local Git hooks** (`.husky/pre-commit`, `.husky/pre-push`) to catch issues before code leaves your machine
-- **Remote CI pipelines** ([.github/workflows/ci.yml](./.github/workflows/ci.yml)) to ensure code quality and consistency on every push and pull request
+- **Remote CI pipelines** ([.github/workflows/ci.yml](./.github/workflows/ci.yml)) to ensure code quality and consistency on every pull request and on direct pushes to `main` and `dev`
 
 #### Local Quality Checks (Git Hooks)
 
@@ -199,11 +199,9 @@ Automated checks run locally before every commit and push to prevent errors from
 
 #### Continuous Integration (GitHub Actions)
 
-Server-side pipelines validate all code pushed to `main`, `dev`, and pull requests.
+Server-side pipelines validate all code submitted via pull requests.
 
-- **CI Workflow** ([.github/workflows/ci.yml](./.github/workflows/ci.yml))
-  - Lint, format, type-check, build, commit message validation
-  - Runs on Push and Pull Requests
+- **CI Workflow** ([.github/workflows/ci.yml](./.github/workflows/ci.yml)) — Lint, format, type-check, build, commit message validation
 
 #### Branch Protection
 
