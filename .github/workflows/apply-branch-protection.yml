@@ -1,11 +1,11 @@
-name: Branch Protection
+name: Apply Branch Protection
 
 on:
   push:
     branches:
       - main
     paths:
-      - '.github/branch-protection.yml'
+      - '.github/branch-protection-rules.yml'
   workflow_dispatch:
 
 permissions:
@@ -18,6 +18,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install js-yaml
+        run: npm install js-yaml
+
       - name: Apply branch protection rules
         uses: actions/github-script@v7
         with:
@@ -25,7 +28,7 @@ jobs:
             const fs = require('fs');
             const yaml = require('js-yaml');
 
-            const config = yaml.load(fs.readFileSync('.github/branch-protection.yml', 'utf8'));
+            const config = yaml.load(fs.readFileSync('.github/branch-protection-rules.yml', 'utf8'));
 
             for (const branch of config.branches) {
               await github.rest.repos.updateBranchProtection({
