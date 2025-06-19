@@ -121,7 +121,6 @@ The following rules are pre-configured to enhance your development experience:
 | [documentation-versioning.mdc](./.cursor/rules/documentation-versioning.mdc)               | How to manage documentation and versioning                               |
 | [ecosystem-convention.mdc](./.cursor/rules/ecosystem-convention.mdc)                       | How to align with ecosystem and tool-specific conventions                |
 | [expected-AI-behavior.mdc](./.cursor/rules/expected-AI-behavior.mdc)                       | How the AI should interact, suggest, and validate code                   |
-| [git-practices.mdc](./.cu)                                                                 | Commit message conventions and best practices                            |
 | [github-cli-integration.mdc](./.cursor/rules/github-cli-integration.mdc)                   | How to use GitHub CLI efficiently in the workflow                        |
 | [github-pr-conventions.mdc](./.cursor/rules/github-pr-conventions.mdc)                     | Pull request standards and templates                                     |
 | [interaction-protocol.mdc](./.cursor/rules/interaction-protocol.mdc)                       | How the AI should communicate and interact with the user                 |
@@ -216,15 +215,18 @@ The CI workflow ([.github/workflows/ci.yml](./.github/workflows/ci.yml)) ensures
 
 #### Branch Protection
 
-Branch protection rules are managed through Configuration as Code. The rules defined in [.github/branch-protection.yml](./.github/branch-protection.yml) are automatically applied by a GitHub Actions workflow, ensuring consistent protection across all environments.
+Branch protection rules are managed as code using [Probot Settings](https://github.com/apps/settings).
+To enable automatic enforcement, install the app on your repository or organization.
+Any change to `.github/settings.yml` on the default branch will be automatically applied.
 
-- **Branch Protection**
-  - Automated protection rules for `main` and `dev` branches
-  - Required status checks for all branches
-  - Linear history enforcement
-  - Pull request review requirements
-
-> For detailed GitHub permissions and branch protection setup, see [GitHub Permissions Setup](docs/github-permissions-setup.md)
+- **Protected branches:** `main` and `dev`
+- **Required status checks:** Commitlint, ESLint, Prettier, build, TypeScript
+- **Pull request review:** At least 1 approval, dismiss stale reviews
+- **Enforce admins:** Yes
+- **Force pushes:** Not allowed
+- **Branch deletions:** Not allowed
+- **Linear history:** Not required (merge commits allowed)
+- **Conversation resolution:** Required before merging
 
 #### Dependency Management
 
