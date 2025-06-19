@@ -215,7 +215,9 @@ The CI workflow ([.github/workflows/ci.yml](./.github/workflows/ci.yml)) ensures
 
 #### Branch Protection
 
-Branch protection rules are managed as code. The rules defined in [.github/branch-protection.yml](./.github/branch-protection.yml) are automatically enforced by a GitHub Actions workflow ([.github/workflows/branch-protection.yml](./.github/workflows/branch-protection.yml)), ensuring consistent protection across all environments.
+Branch protection rules are managed as code using [Probot Settings](https://github.com/apps/settings).
+To enable automatic enforcement, install the app on your repository or organization.
+Any change to `.github/settings.yml` on the default branch will be automatically applied.
 
 - **Protected branches:** `main` and `dev`
 - **Required status checks:** Commitlint, ESLint, Prettier, build, TypeScript
@@ -225,8 +227,6 @@ Branch protection rules are managed as code. The rules defined in [.github/branc
 - **Branch deletions:** Not allowed
 - **Linear history:** Not required (merge commits allowed)
 - **Conversation resolution:** Required before merging
-
-> Any change to `.github/branch-protection.yml` must be pushed to `main` to update the protection rules.
 
 #### Dependency Management
 
