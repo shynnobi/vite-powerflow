@@ -10,15 +10,15 @@ import { ThemeProvider } from '@/context/theme/ThemeProvider';
 const rootElement = document.getElementById('root');
 
 if (!rootElement) {
-	throw new Error('Failed to find the root element');
+  throw new Error('Failed to find the root element');
 }
 
 createRoot(rootElement).render(
-	<StrictMode>
-		<BrowserRouter>
-			<ThemeProvider storageKey="vite-ui-theme">
-				<App />
-			</ThemeProvider>
-		</BrowserRouter>
-	</StrictMode>
+  <StrictMode>
+    <BrowserRouter>
+      <ThemeProvider storageKey="vite-ui-theme">
+        <App />
+      </ThemeProvider>
+    </BrowserRouter>
+  </StrictMode>
 );
