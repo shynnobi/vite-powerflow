@@ -64,15 +64,6 @@ A React + Vite starter, fully containerized for reproducible and collaborative d
 - **[commitlint](https://commitlint.js.org/)** - Standardized commits for clear commit history
 - **[GitHub Actions](https://github.com/features/actions)** - Automated CI/CD for seamless integration and deployment
 
-## 📦 Dependency Management
-
-This project uses Dependabot for automated dependency updates, keeping your dependencies up-to-date while maintaining security and stability. You can modify or remove these configurations to customize the update behavior - removing them will disable automatic updates completely, requiring manual activation in your repository settings if you want to use it later.
-
-### Configuration Files
-
-- [.github/dependabot.yml](./.github/dependabot.yml) — Dependabot configuration
-- [.github/workflows/dependabot-auto.yml](./.github/workflows/dependabot-auto.yml) — Auto-merge workflow
-
 <hr>
 
 ## 🚀 Quick Start
@@ -81,30 +72,40 @@ This project uses Dependabot for automated dependency updates, keeping your depe
 
 - [Node.js](https://nodejs.org/) (v18 or higher)
 - [Cursor AI Editor](https://www.cursor.com) or [Visual Studio Code](https://code.visualstudio.com/)
-- [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension
+- [Docker](https://www.docker.com/)
 
-### Installation
+> **Note:** For the best AI-assisted development experience, use [Cursor AI Editor](https://www.cursor.com).
+> If you prefer a classic setup, [Visual Studio Code](https://code.visualstudio.com/) works perfectly.
 
-1. **Create a new project using the CLI**
+### Create a new project using the CLI tool
+
+1. Run this command in your terminal
 
    ```bash
-   npx create-powerflow-app my-app
-   cd my-app
+   npx create-vite-powerflow-app my-app
    ```
 
-2. Open your new project in **Cursor** or **Visual Studio Code**
+2. Open the folder in your code editor
 
 3. `Reopen in Container` when prompted (Dev Container)
 
    ![DevContainer Prompt](https://www.dropbox.com/scl/fi/9rm4he8t53h9l30wz10vm/reopen-500.jpg?rlkey=dbrafybaezjnce85vj3b7p2jm&st=b22afec3&raw=1)
 
-4. Start developing! 🚀
+4. Wait for the installation (It can take a few minutes)
+
+5. Launch dev server:
+
+   ```bash
+   pnpm dev
+   ```
+
+6. Start developing! 🚀
 
 <hr>
 
 ## 🤖 AI-Powered Development
 
-**Vite PowerFlow** is optimized for **Cursor AI Code Editor** with pre-configured rules that enhance AI code assistance and code generation. These rules are defined in the [.cursor/rules/](./.cursor/rules/) directory and help the AI understand your project's context and best practices.
+The **Vite PowerFlow** starter is optimized for **Cursor AI Code Editor** with pre-configured rules that enhance AI code assistance and code generation. These rules are defined in the [.cursor/rules/](./.cursor/rules/) directory and help the AI understand your project's context and best practices.
 
 **Note**: While the project works perfectly with any IDE, Cursor's AI features are limited to 50 requests in the free tier. A paid subscription is required to access the enhanced development experience.
 
