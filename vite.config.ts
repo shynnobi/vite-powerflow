@@ -13,34 +13,34 @@ const __dirname = dirname(__filename);
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [react(), visualizer() as PluginOption, tailwindcss()],
-	server: {
-		host: '0.0.0.0',
-		port: 5173,
-	},
-	resolve: {
-		alias: [
-			{ find: '@', replacement: resolve(__dirname, 'src') },
-			{ find: '@/store', replacement: resolve(__dirname, 'src/store') },
-			{ find: '@/assets', replacement: resolve(__dirname, 'src/assets') },
-			{ find: '@/tests', replacement: resolve(__dirname, 'tests') },
-			{ find: '@/components', replacement: resolve(__dirname, 'src/components') },
-			{ find: '@/context', replacement: resolve(__dirname, 'src/context') },
-			{ find: '@/pages', replacement: resolve(__dirname, 'src/pages') },
-			{ find: '@/lib', replacement: resolve(__dirname, 'src/lib') },
-			{ find: '@/types', replacement: resolve(__dirname, 'src/types') },
-			{ find: '@/utils', replacement: resolve(__dirname, 'src/utils') },
-		],
-	},
-	test: {
-		globals: true,
-		environment: 'jsdom',
-		setupFiles: ['./tests/unit/setup.ts'],
-		include: ['./tests/unit/**/*.{test,spec}.{ts,tsx}'],
-		coverage: {
-			provider: 'v8',
-			reporter: ['text', 'json', 'html'],
-			reportsDirectory: './coverage/unit',
-		},
-	},
+  plugins: [react(), visualizer() as PluginOption, tailwindcss()],
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+  },
+  resolve: {
+    alias: [
+      { find: '@', replacement: resolve(__dirname, 'src') },
+      { find: '@/store', replacement: resolve(__dirname, 'src/store') },
+      { find: '@/assets', replacement: resolve(__dirname, 'src/assets') },
+      { find: '@/tests', replacement: resolve(__dirname, 'tests') },
+      { find: '@/components', replacement: resolve(__dirname, 'src/components') },
+      { find: '@/context', replacement: resolve(__dirname, 'src/context') },
+      { find: '@/pages', replacement: resolve(__dirname, 'src/pages') },
+      { find: '@/lib', replacement: resolve(__dirname, 'src/lib') },
+      { find: '@/types', replacement: resolve(__dirname, 'src/types') },
+      { find: '@/utils', replacement: resolve(__dirname, 'src/utils') },
+    ],
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./tests/unit/setup.ts'],
+    include: ['./tests/unit/**/*.{test,spec}.{ts,tsx}'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      reportsDirectory: './coverage/unit',
+    },
+  },
 });
