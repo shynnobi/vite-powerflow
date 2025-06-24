@@ -290,7 +290,7 @@ pnpm test:coverage
 
 ### Browser Management
 
-E2E testing is streamlined through our custom script (`scripts/ai-workflow/ai-run-e2e-tests.sh`):
+E2E testing is streamlined through our custom script (`scripts/run-e2e-tests.sh`):
 
 - Automatically checks for E2E test files
 - Installs Chromium and its dependencies only if needed
