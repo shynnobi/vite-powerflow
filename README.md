@@ -264,6 +264,7 @@ Our testing strategy ensures code quality and reliability through a comprehensiv
 - **Location**: `tests/unit/` and `tests/integration/`
 - **Coverage**: Components, utilities, and business logic
 - **Configuration**: [vitest.config.ts](./vitest.config.ts)
+- **Script**: `scripts/run-unit-inte-tests.sh`
 
 #### End-to-End Tests
 
@@ -272,29 +273,31 @@ Our testing strategy ensures code quality and reliability through a comprehensiv
 - **Coverage**: User flows and cross-browser compatibility
 - **Configuration**: [playwright.config.ts](./playwright.config.ts)
 - **Browsers**: Chromium (default), Firefox, WebKit
+- **Script**: `scripts/run-e2e-tests.sh`
 
-### Running Tests
+### Test Scripts
 
-```bash
-# Run all tests
-pnpm test
+The custom scripts for test execution are automatically integrated into the main validation workflow:
 
-# Run specific test types
-pnpm test:unit
-pnpm test:integration
-pnpm test:e2e
+- `scripts/run-unit-inte-tests.sh` (unit & integration tests)
 
-# Generate coverage report
-pnpm test:coverage
-```
+  - Detects the presence of unit and integration test files
+  - Runs Vitest only if relevant test files are present
+  - Prints a non-blocking warning if no tests are detected
 
-### Browser Management
+- `scripts/run-e2e-tests.sh` (end-to-end tests)
+  - Detects the presence of E2E test files
+  - Installs all Playwright browsers and dependencies only if needed
+  - Uses a persistent browser cache for faster test runs
+  - Prints a non-blocking warning if no E2E tests are detected
 
-E2E testing is streamlined through our custom script (`scripts/run-e2e-tests.sh`):
+These scripts are invoked by the following validation commands:
 
-- Automatically checks for E2E test files
-- Installs Chromium and its dependencies only if needed
-- Uses persistent browser cache for faster test runs
+- `pnpm validate:precommit`
+- `pnpm validate:full`
+- `pnpm validate:quick`
+
+You do not need to run these scripts directly during normal development. They are integrated into the pre-commit, pre-push, and CI workflows to ensure that tests are always checked when relevant.
 
 <hr>
 
