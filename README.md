@@ -64,15 +64,6 @@ A React + Vite starter, fully containerized for reproducible and collaborative d
 - **[commitlint](https://commitlint.js.org/)** - Standardized commits for clear commit history
 - **[GitHub Actions](https://github.com/features/actions)** - Automated CI/CD for seamless integration and deployment
 
-## 📦 Dependency Management
-
-This project uses Dependabot for automated dependency updates, keeping your dependencies up-to-date while maintaining security and stability. You can modify or remove these configurations to customize the update behavior - removing them will disable automatic updates completely, requiring manual activation in your repository settings if you want to use it later.
-
-### Configuration Files
-
-- [.github/dependabot.yml](./.github/dependabot.yml) — Dependabot configuration
-- [.github/workflows/dependabot-auto.yml](./.github/workflows/dependabot-auto.yml) — Auto-merge workflow
-
 <hr>
 
 ## 🚀 Quick Start
@@ -81,30 +72,40 @@ This project uses Dependabot for automated dependency updates, keeping your depe
 
 - [Node.js](https://nodejs.org/) (v18 or higher)
 - [Cursor AI Editor](https://www.cursor.com) or [Visual Studio Code](https://code.visualstudio.com/)
-- [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension
+- [Docker](https://www.docker.com/)
 
-### Installation
+> **Note:** For the best AI-assisted development experience, use [Cursor AI Editor](https://www.cursor.com).
+> If you prefer a classic setup, [Visual Studio Code](https://code.visualstudio.com/) works perfectly.
 
-1. **Create a new project using the CLI**
+### Create a new project using the CLI tool
+
+1. Run this command in your terminal
 
    ```bash
-   npx create-powerflow-app my-app
-   cd my-app
+   npx create-vite-powerflow-app my-app
    ```
 
-2. Open your new project in **Cursor** or **Visual Studio Code**
+2. Open the folder in your code editor
 
 3. `Reopen in Container` when prompted (Dev Container)
 
    ![DevContainer Prompt](https://www.dropbox.com/scl/fi/9rm4he8t53h9l30wz10vm/reopen-500.jpg?rlkey=dbrafybaezjnce85vj3b7p2jm&st=b22afec3&raw=1)
 
-4. Start developing! 🚀
+4. Wait for the installation (It can take a few minutes)
+
+5. Launch dev server:
+
+   ```bash
+   pnpm dev
+   ```
+
+6. Start developing! 🚀
 
 <hr>
 
 ## 🤖 AI-Powered Development
 
-**Vite PowerFlow** is optimized for **Cursor AI Code Editor** with pre-configured rules that enhance AI code assistance and code generation. These rules are defined in the [.cursor/rules/](./.cursor/rules/) directory and help the AI understand your project's context and best practices.
+The **Vite PowerFlow** starter is optimized for **Cursor AI Code Editor** with pre-configured rules that enhance AI code assistance and code generation. These rules are defined in the [.cursor/rules/](./.cursor/rules/) directory and help the AI understand your project's context and best practices.
 
 **Note**: While the project works perfectly with any IDE, Cursor's AI features are limited to 50 requests in the free tier. A paid subscription is required to access the enhanced development experience.
 
@@ -263,6 +264,7 @@ Our testing strategy ensures code quality and reliability through a comprehensiv
 - **Location**: `tests/unit/` and `tests/integration/`
 - **Coverage**: Components, utilities, and business logic
 - **Configuration**: [vitest.config.ts](./vitest.config.ts)
+- **Script**: `scripts/run-unit-inte-tests.sh`
 
 #### End-to-End Tests
 
@@ -271,29 +273,31 @@ Our testing strategy ensures code quality and reliability through a comprehensiv
 - **Coverage**: User flows and cross-browser compatibility
 - **Configuration**: [playwright.config.ts](./playwright.config.ts)
 - **Browsers**: Chromium (default), Firefox, WebKit
+- **Script**: `scripts/run-e2e-tests.sh`
 
-### Running Tests
+### Test Scripts
 
-```bash
-# Run all tests
-pnpm test
+The custom scripts for test execution are automatically integrated into the main validation workflow:
 
-# Run specific test types
-pnpm test:unit
-pnpm test:integration
-pnpm test:e2e
+- `scripts/run-unit-inte-tests.sh` (unit & integration tests)
 
-# Generate coverage report
-pnpm test:coverage
-```
+  - Detects the presence of unit and integration test files
+  - Runs Vitest only if relevant test files are present
+  - Prints a non-blocking warning if no tests are detected
 
-### Browser Management
+- `scripts/run-e2e-tests.sh` (end-to-end tests)
+  - Detects the presence of E2E test files
+  - Installs all Playwright browsers and dependencies only if needed
+  - Uses a persistent browser cache for faster test runs
+  - Prints a non-blocking warning if no E2E tests are detected
 
-E2E testing is streamlined through our custom script (`scripts/ai-workflow/ai-run-e2e-tests.sh`):
+These scripts are invoked by the following validation commands:
 
-- Automatically checks for E2E test files
-- Installs Chromium and its dependencies only if needed
-- Uses persistent browser cache for faster test runs
+- `pnpm validate:precommit`
+- `pnpm validate:full`
+- `pnpm validate:quick`
+
+You do not need to run these scripts directly during normal development. They are integrated into the pre-commit, pre-push, and CI workflows to ensure that tests are always checked when relevant.
 
 <hr>
 

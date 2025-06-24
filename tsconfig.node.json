@@ -1,11 +1,11 @@
 {
-	"compilerOptions": {
-		"composite": true,
-		"skipLibCheck": true,
-		"module": "NodeNext",
-		"moduleResolution": "NodeNext",
-		"allowSyntheticDefaultImports": true,
-		"target": "ESNext"
-	},
-	"include": ["*.config.ts", "*.d.ts"]
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "allowSyntheticDefaultImports": true,
+    "target": "ESNext"
+  },
+  "include": ["*.config.ts", "*.d.ts"]
 }
