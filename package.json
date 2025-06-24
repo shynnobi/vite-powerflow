@@ -48,7 +48,7 @@
     "test:e2e:ui": "playwright test --ui --ui-host 0.0.0.0 --ui-port 9324",
     "test:e2e:report": "playwright show-report --host 0.0.0.0 --port 9323",
     "test:e2e:verbose": "playwright test --trace on",
-    "test:all": "vitest run && pnpm test:e2e",
+    "test:all": "pnpm test && pnpm test:e2e",
     "test:coverage": "vitest run --coverage",
     "test:coverage:report": "vitest run --coverage --reporter=html",
     "lint": "eslint src tests --ext ts,tsx,js,jsx",
