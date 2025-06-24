@@ -27,5 +27,6 @@ fi
 if [ -n "$(find tests/e2e -name '*.spec.ts' -o -name '*.test.ts' 2>/dev/null)" ]; then
     pnpm exec playwright test --reporter=dot "$@"
 else
-    echo "No E2E test files found"
+    # Print warning in yellow if no E2E tests are found
+    printf "\033[33m⚠️  No end-to-end tests detected.\033[0m\n"
 fi
