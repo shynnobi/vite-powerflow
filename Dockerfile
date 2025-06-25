@@ -1,8 +1,6 @@
-# Use the same base image specified in the original devcontainer.json
 FROM mcr.microsoft.com/devcontainers/typescript-node:1-20-bookworm
 
 # Install system dependencies required for Playwright browsers
-# Combine all dependencies found during troubleshooting
 RUN sudo apt-get update && sudo apt-get install -y \
     libnss3 libnspr4 libdbus-1-3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libxkbcommon0 libatspi2.0-0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libasound2 \
     libx11-xcb1 libxcursor1 libgtk-3-0 \

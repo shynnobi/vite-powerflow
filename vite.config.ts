@@ -21,13 +21,13 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: '@', replacement: resolve(__dirname, 'src') },
-      { find: '@/store', replacement: resolve(__dirname, 'src/store') },
       { find: '@/assets', replacement: resolve(__dirname, 'src/assets') },
-      { find: '@/tests', replacement: resolve(__dirname, 'tests') },
       { find: '@/components', replacement: resolve(__dirname, 'src/components') },
       { find: '@/context', replacement: resolve(__dirname, 'src/context') },
-      { find: '@/pages', replacement: resolve(__dirname, 'src/pages') },
       { find: '@/lib', replacement: resolve(__dirname, 'src/lib') },
+      { find: '@/pages', replacement: resolve(__dirname, 'src/pages') },
+      { find: '@/store', replacement: resolve(__dirname, 'src/store') },
+      { find: '@/tests', replacement: resolve(__dirname, 'tests') },
       { find: '@/types', replacement: resolve(__dirname, 'src/types') },
       { find: '@/utils', replacement: resolve(__dirname, 'src/utils') },
     ],
