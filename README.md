@@ -151,7 +151,6 @@ This project uses VS Code Dev Containers to provide a consistent development env
 The VS Code Dev Container setup provides a complete development environment:
 
 - **VS Code Dev Container**
-
   - **Configuration** ([.devcontainer/devcontainer.json](./.devcontainer/devcontainer.json)) — Main container configuration with editor extensions and workspace settings
   - **Editor Settings** ([.vscode/settings.json](./.vscode/settings.json)) — Cross-editor settings for consistent development experience
   - **Lifecycle Scripts** ([.devcontainer/scripts/](./.devcontainer/scripts/))
@@ -199,7 +198,6 @@ Automated checks run locally before every commit and push to prevent errors from
 The CI workflow ([.github/workflows/ci.yml](./.github/workflows/ci.yml)) ensures code quality through automated validation on critical branches:
 
 - **On push to `main` or `dev`**:
-
   - Linting (ESLint)
   - Formatting (Prettier)
   - Type-checking (TypeScript)
@@ -234,13 +232,11 @@ Any change to `.github/settings.yml` on the default branch will be automatically
 Dependencies are automatically managed through Dependabot:
 
 - **Update Schedule**
-
   - Weekly updates for npm packages
   - Weekly updates for GitHub Actions
   - Security updates are processed immediately
 
 - **Update Strategy**
-
   - Grouped updates by dependency type (dev/prod)
   - Auto-merge for compatible updates
   - Automatic PR approval for security patches
@@ -280,7 +276,6 @@ Our testing strategy ensures code quality and reliability through a comprehensiv
 The custom scripts for test execution are automatically integrated into the main validation workflow:
 
 - `scripts/run-unit-inte-tests.sh` (unit & integration tests)
-
   - Detects the presence of unit and integration test files
   - Runs Vitest only if relevant test files are present
   - Prints a non-blocking warning if no tests are detected
@@ -323,6 +318,68 @@ This section details the essential configuration aspects of the project, includi
 │   └── e2e/           # End-to-end tests
 └── public/            # Static assets
 ```
+
+### Path Aliases
+
+To simplify imports and avoid long relative paths, this project uses **TypeScript path aliases** (e.g. `@/components`, `@/lib`).
+These aliases are configured in:
+
+- [`tsconfig.json`](./tsconfig.json) — for TypeScript
+- [`vite.config.ts`](./vite.config.ts) — for Vite (development/build)
+- [`vitest.config.ts`](./vitest.config.ts) — for Vitest (unit/integration tests)
+  Ensure that these three files remain synchronized to maintain consistency.
+
+**Example usage:**
+
+```ts
+import { Button } from '@/components/ui/button';
+import { logger } from '@/lib/utils';
+```
+
+**Configuration example:**
+
+- In `tsconfig.json`:
+  ```json
+  {
+    "compilerOptions": {
+      // ...other config
+      "paths": {
+        "@/*": ["src/*"],
+        "@/components/*": ["src/components/*"]
+        // ...other aliases
+      }
+    }
+  }
+  ```
+- In `vite.config.ts`:
+
+  ```ts
+  export default defineConfig({
+    // ...other config
+    resolve: {
+      alias: [
+        { find: '@', replacement: resolve(__dirname, 'src') },
+        { find: '@/components', replacement: resolve(__dirname, 'src/components') },
+        // ...other aliases
+      ],
+    },
+  });
+  ```
+
+- In `vitest.config.ts`:
+
+  ```ts
+  export default defineConfig({
+    // ...other config
+    resolve: {
+      alias: [
+        { find: '@', replacement: resolve(__dirname, 'src') },
+        { find: '@/components', replacement: resolve(__dirname, 'src/components') },
+        // ...other aliases
+      ],
+    },
+  });
+  ```
 
 ### TypeScript Configuration
 
