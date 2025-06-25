@@ -77,12 +77,12 @@ A React + Vite starter, fully containerized for reproducible and collaborative d
 > **Note:** For the best AI-assisted development experience, use [Cursor AI Editor](https://www.cursor.com).
 > If you prefer a classic setup, [Visual Studio Code](https://code.visualstudio.com/) works perfectly.
 
-### Create a new project using the CLI tool
+### Generate an app using the CLI tool
 
 1. Run this command in your terminal
 
    ```bash
-   npx create-vite-powerflow-app my-app
+   npx create-vite-powerflow my-app
    ```
 
 2. Open the folder in your code editor
@@ -195,7 +195,7 @@ Automated checks run locally before every commit and push to prevent errors from
 
 #### Remote Pipelines (GitHub Actions)
 
-The CI workflow ([.github/workflows/ci.yml](./.github/workflows/ci.yml)) ensures code quality through automated validation on critical branches:
+The CI workflow ([.github/workflows/execute-ci-pipeline.yml](./.github/workflows/execute-ci-pipeline.yml)) ensures code quality through automated validation on critical branches:
 
 - **On push to `main` or `dev`**:
   - Linting (ESLint)
