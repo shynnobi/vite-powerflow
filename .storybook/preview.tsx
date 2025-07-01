@@ -1,5 +1,6 @@
 import { withThemeByClassName } from '@storybook/addon-themes';
 import type { Preview } from '@storybook/react-vite';
+import { initialize, mswLoader } from 'msw-storybook-addon';
 import { INITIAL_VIEWPORTS, MINIMAL_VIEWPORTS } from 'storybook/viewport';
 
 import '../src/index.css';
@@ -50,6 +51,8 @@ const CUSTOM_VIEWPORTS = {
   },
 };
 
+initialize();
+
 const preview: Preview = {
   parameters: {
     controls: {
@@ -80,6 +83,8 @@ const preview: Preview = {
   ],
 
   tags: ['autodocs'],
+
+  loaders: [mswLoader],
 };
 
 export default preview;
