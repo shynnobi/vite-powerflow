@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 
 import { Counter } from '@/components/examples/Counter';
-import { ThemeToggle } from '@/components/ThemeToggle';
+import { ThemeToggle } from '@/components/themeToggle/ThemeToggle';
 
 export default function Home(): ReactElement {
   return (

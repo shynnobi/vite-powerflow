@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { ThemeToggle } from '@/components/ThemeToggle';
+import { ThemeToggle } from '@/components/themeToggle/ThemeToggle';
 import { ThemeProviderContext } from '@/context/theme/ThemeContext';
 
 const ThemeProvider = ({
