@@ -122,7 +122,8 @@
   "pnpm": {
     "ignoredBuiltDependencies": [
       "@swc/core",
-      "esbuild"
+      "esbuild",
+      "msw"
     ],
     "overrides": {
       "rollup": "npm:@rollup/wasm-node",
