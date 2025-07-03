@@ -15,12 +15,25 @@ afterEach(() => {
 
 describe('usePosts', () => {
   it('should fetch and display posts when the API responds successfully', async () => {
-    // Given: The hook is rendered
+    // Given: The API call is mocked to succeed
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(
+        JSON.stringify([
+          { id: 1, title: 'First Post', body: 'This is the first post.' },
+          { id: 2, title: 'Second Post', body: 'This is the second post.' },
+        ]),
+        {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    );
+
+    // When: The hook is rendered
     const { result } = renderHook(() => usePosts(), {
       wrapper: createWrapper(),
     });
 
-    // When: The initial data fetch is triggered
     // Then: The hook should show a loading state
     expect(result.current.isLoading).toBe(true);
 

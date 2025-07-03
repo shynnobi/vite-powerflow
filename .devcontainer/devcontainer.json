@@ -25,7 +25,6 @@
         "bradlc.vscode-tailwindcss",
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
-        "formulahendry.auto-close-tag",
         "github.vscode-github-actions",
         "GitHub.vscode-pull-request-github",
         "ms-playwright.playwright",
@@ -33,7 +32,8 @@
         "PKief.material-icon-theme",
         "shd101wyy.markdown-preview-enhanced",
         "Tyriar.sort-lines",
-        "vitest.explorer"
+        "vitest.explorer",
+        "chunsen.bracket-select"
       ],
       "settings": {
         "editor.formatOnSave": true,
