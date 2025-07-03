@@ -61,3 +61,6 @@ bin/
 playwright-report/
 test-results/
 playwright-report.json
+
+# Ignore temporary commit message file
+/temp_commit_msg.txt
