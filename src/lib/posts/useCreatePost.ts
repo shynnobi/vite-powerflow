@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { CreatePostInput, Post } from './post.types';
 
 const createPost = async (post: CreatePostInput): Promise<Post> => {
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+  const response = await fetch('/api/posts', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

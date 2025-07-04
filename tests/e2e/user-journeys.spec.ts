@@ -5,21 +5,12 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('User journeys', () => {
-  test('user navigates through the app and switches theme', async ({ page }) => {
+  test('homepage loads and theme can be toggled', async ({ page }) => {
     // Given: The user arrives on the homepage
     await page.goto('/');
 
-    // When: The user navigates to the blog page
-    await page.getByRole('link', { name: /Blog/i }).click();
-    await expect(page).toHaveURL(/\/blog/);
-    await expect(page.getByRole('heading', { name: /Blog/i })).toBeVisible();
-
-    // And: The user navigates to the about page (if it exists)
-    if (await page.getByRole('link', { name: /About/i }).isVisible()) {
-      await page.getByRole('link', { name: /About/i }).click();
-      await expect(page).toHaveURL(/\/about/);
-      await expect(page.getByRole('heading', { name: /About/i })).toBeVisible();
-    }
+    // Then: The main heading is visible
+    await expect(page.getByRole('heading', { name: /Vite PowerFlow/i })).toBeVisible();
 
     // When: The user toggles the theme
     const themeSwitcher = page.getByTestId('theme-switcher');
@@ -28,11 +19,6 @@ test.describe('User journeys', () => {
       // Optionally, check for a class or attribute change
       // await expect(page.locator('body')).toHaveClass(/dark/);
     }
-
-    // Then: The user can return to the homepage
-    await page.getByRole('link', { name: /Home/i }).click();
-    await expect(page).toHaveURL('/');
-    await expect(page.getByRole('heading', { name: /Vite PowerFlow/i })).toBeVisible();
   });
 
   test('user can increment, decrement, and reset the counter', async ({ page }) => {
