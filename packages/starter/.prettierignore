@@ -1,0 +1,15 @@
+# Ignore artifacts:
+dist
+node_modules
+coverage
+build
+.git
+.husky
+yarn.lock
+package-lock.json
+pnpm-lock.yaml
+
+# Ignore Playwright reports and artifacts
+playwright-report.json
+playwright-report/
+test-results/

@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "allowJs": true,
+    "checkJs": true,
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "types": ["node"]
+  },
+  "include": [".storybook/**/*"],
+  "exclude": ["node_modules"]
+}
