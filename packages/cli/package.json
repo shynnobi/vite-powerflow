@@ -7,12 +7,27 @@
     "create-vite-powerflow": "dist/index.js"
   },
   "scripts": {
-    "prebuild": "pnpm --workspace-root sync-template",
+    "prebuild": "pnpm --workspace-root sync-starter-to-cli",
     "build": "tsc && cp -r template dist/template",
     "dev": "tsc -w",
     "start": "node dist/index.js",
     "test": "vitest run",
-    "prepublishOnly": "pnpm sync-template && pnpm build"
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "test:all": "pnpm test",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:report": "vitest run --coverage --reporter=html",
+    "validate:static": "pnpm format:check && pnpm lint && pnpm type-check",
+    "validate:quick": "pnpm validate:static && pnpm test",
+    "validate:full": "pnpm validate:static && pnpm test",
+    "validate:commit": "pnpm lint && pnpm type-check && pnpm test:unit",
+    "validate:precommit": "npx lint-staged && pnpm test:unit",
+    "lint": "eslint src --ext ts,tsx,js,jsx",
+    "lint:fix": "eslint . --ext ts,tsx,js,jsx --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix",
+    "type-check": "tsc --noEmit"
   },
   "keywords": [
     "cli",
