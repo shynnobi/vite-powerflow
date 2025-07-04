@@ -42,6 +42,7 @@ export default [
       },
       globals: {
         process: 'readonly',
+        console: 'readonly',
       },
     },
     plugins: {
@@ -51,6 +52,18 @@ export default [
       ...tsPlugin.configs.recommended.rules,
     },
   },
+  // Main configuration for JS, MJS files
+  {
+    files: ['scripts/**/*.{js,mjs}'],
+    languageOptions: {
+      globals: {
+        process: 'readonly',
+        console: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+      },
+    },
+  },
   // Main configuration for TypeScript/React files
   {
     files: ['**/*.{ts,tsx}'],
@@ -58,7 +71,7 @@ export default [
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-        project: './tsconfig.eslint.json',
+        projectService: true,
       },
       globals: {
         process: 'readonly',

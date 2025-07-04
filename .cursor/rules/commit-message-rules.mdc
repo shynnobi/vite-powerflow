@@ -1,47 +1,15 @@
 ---
-description:
-globs:
-alwaysApply: true
+description: Enforces Conventional Commit format and commitlint rules for all commit messages created by the AI or users. Ensures all commit messages are in English and follow project
+alwaysApply: false
 ---
-# Commit Message Rules
 
-## Format
-
-```
-<type>(<scope>): <subject>
-
-<body>
-
-<footer>
-```
-
-## Rules
-
-1. Header (first line):
-   - Must be ≤ 72 characters
-   - Format: `<type>(<scope>): <subject>`
-   - No period at the end
-   - Use imperative mood ("add" not "added")
-
-2. Body:
-   - Must be ≤ 100 characters per line
-   - Each line must be a complete thought
-   - Be descriptive and provide context
-   - Optional: Use bullet points for better readability when listing multiple changes
-   - Make small, focused commits that can be easily reviewed
-
-3. Types:
-   - build: Changes to build system
-   - chore: Maintenance tasks
-   - ci: CI configuration changes
-   - docs: Documentation changes
-   - feat: New features
-   - fix: Bug fixes
-   - perf: Performance improvements
-   - refactor: Code refactoring
-   - revert: Revert changes
-   - style: Code style changes
-   - test: Test changes
+- All commit messages must follow the Conventional Commit format.
+- The header (first line) must be ≤ 72 characters, imperative mood, no period at the end.
+- The body (optional) must be ≤ 100 characters per line, each line a complete thought.
+- Allowed types: build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test.
+- Use bullet points in the body for multiple changes.
+- Make small, focused commits that are easy to review.
+- All commit messages and comments must be written in English.
 
 ## Examples
 
@@ -62,15 +30,12 @@ Changes include:
 fix(auth): resolve login token expiration
 
 Update token refresh logic to prevent premature expiration
-Add proper error handling for expired tokens
 ```
 
 ❌ Bad (exceeds character limits):
 
 ```text
-feat(ui): add cursor-pointer to all interactive buttons
+feat(ui): add cursor-pointer to all interactive buttons for improved user experience
 
 Update Button component to ensure pointer feedback for better UX. No visual regression, only improved user experience.
 ```
-
-> **Note:** When the AI generates a commit, it MUST follow the workflow defined in [ai-commit-workflow.mdc](mdc:.cursor/rules/ai-commit-workflow.mdc). The commit message body is optional.

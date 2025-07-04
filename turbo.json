@@ -9,6 +9,9 @@
       "cache": false
     },
     "lint": {},
-    "test": {}
+    "test": {},
+    "format": {},
+    "format:check": {},
+    "fix": {}
   }
 }
