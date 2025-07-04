@@ -6,6 +6,7 @@ import { simpleGit } from 'simple-git';
 
 import { directoryExists } from '../utils/fs-utils.js';
 import { generateReadme } from '../utils/generate-readme.js';
+import { safePackageName } from '../utils/safePackageName.js';
 
 interface ProjectOptions {
   projectName: string;
@@ -20,13 +21,6 @@ const TEMPLATE_REPO = 'https://github.com/shynnobi/vite-powerflow.git';
 export const spinner = ora();
 
 export async function createProject(options: ProjectOptions): Promise<void> {
-  // Fonction pour rendre le nom safe pour npm et le dossier
-  function safePackageName(name: string) {
-    return name
-      .toLowerCase()
-      .replace(/\s+/g, '-')
-      .replace(/[^a-z0-9-_.]/g, '');
-  }
   const safeDirName = safePackageName(options.projectName);
   const projectPath = path.join(process.cwd(), safeDirName);
 
