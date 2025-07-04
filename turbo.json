@@ -12,6 +12,7 @@
     "test": {},
     "format": {},
     "format:check": {},
-    "fix": {}
+    "fix": {},
+    "validate:precommit": {}
   }
 }

@@ -1,10 +1,10 @@
 {
-  "name": "create-vite-powerflow",
+  "name": "create-powerflow-app",
   "version": "1.0.4b",
   "description": "CLI tool to create a new Vite PowerFlow app",
   "type": "module",
   "bin": {
-    "create-vite-powerflow": "dist/index.js"
+    "create-powerflow-app": "dist/index.js"
   },
   "scripts": {
     "prebuild": "pnpm --workspace-root sync-starter-to-cli",
@@ -12,7 +12,7 @@
     "dev": "tsc -w",
     "start": "node dist/index.js",
     "test": "vitest run",
-    "test:unit": "vitest run tests/unit",
+    "test:unit": "vitest run src/**/*.test.ts tests/unit/**/*.test.ts",
     "test:integration": "vitest run tests/integration",
     "test:all": "pnpm test",
     "test:coverage": "vitest run --coverage",
