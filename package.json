@@ -64,7 +64,9 @@
     "prepare": "husky",
     "postinstall": "node -e \"try { require('child_process').execSync('git rev-parse --is-inside-work-tree', {stdio: 'ignore'}); } catch (e) { require('child_process').execSync('git init', {stdio: 'inherit'}); } process.exit(0);\" && git config core.hooksPath .husky && chmod +x .husky/*",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "sync-template": "node scripts/sync-template.cjs",
+    "cli:run": "node packages/cli/dist/index.js"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
@@ -100,6 +102,7 @@
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-storybook": "9.1.0-alpha.6",
     "execa": "^9.6.0",
+    "fs-extra": "^11.3.0",
     "globals": "^16.3.0",
     "husky": "^9.1.7",
     "jest-axe": "^10.0.0",
@@ -115,6 +118,7 @@
     "react-dom": "^19.1.0",
     "rollup-plugin-visualizer": "^6.0.3",
     "storybook": "9.1.0-alpha.6",
+    "ts-node": "^10.9.2",
     "turbo": "^2.5.4",
     "typescript": "^5.8.3",
     "vite": "^7.0.0",

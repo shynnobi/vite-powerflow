@@ -1,11 +1,12 @@
 import chalk from 'chalk';
 import fs from 'fs/promises';
+import fsExtra from 'fs-extra';
 import ora from 'ora';
 import path from 'path';
 import { simpleGit } from 'simple-git';
+import { fileURLToPath } from 'url';
 
 import { directoryExists } from '../utils/fs-utils.js';
-import { generateReadme } from '../utils/generate-readme.js';
 import { safePackageName } from '../utils/safePackageName.js';
 
 interface ProjectOptions {
@@ -15,10 +16,10 @@ interface ProjectOptions {
   git: boolean;
 }
 
-const TEMPLATE_REPO = 'https://github.com/shynnobi/vite-powerflow.git';
-
 // Create a global spinner so it can be stopped from anywhere
 export const spinner = ora();
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export async function createProject(options: ProjectOptions): Promise<void> {
   const safeDirName = safePackageName(options.projectName);
@@ -31,18 +32,11 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       process.exit(1);
     }
 
-    // Clone template
-    spinner.start('Cloning template...');
-    const git = simpleGit();
-    await git.clone(TEMPLATE_REPO, projectPath);
-    spinner.succeed('Template cloned successfully');
-
-    // Remove .git directory
-    spinner.start('Cleaning up...');
-    await fs.rm(path.join(projectPath, '.git'), { recursive: true, force: true });
-    // Remove docs directory if it exists
-    await fs.rm(path.join(projectPath, 'docs'), { recursive: true, force: true });
-    spinner.succeed('Cleaned up successfully');
+    // Copy local template
+    spinner.start('Copying template...');
+    const templatePath = path.join(__dirname, '..', 'template');
+    await fsExtra.copy(templatePath, projectPath);
+    spinner.succeed('Template copied successfully');
 
     // Update package.json
     spinner.start('Updating package.json...');
@@ -53,17 +47,13 @@ export async function createProject(options: ProjectOptions): Promise<void> {
     packageJson.description = options.description;
     packageJson.author = options.author;
 
-    // Supprimer les champs liés au starter d'origine
+    // Remove fields related to the original starter
     delete packageJson.repository;
     delete packageJson.homepage;
     delete packageJson.bugs;
 
     await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
     spinner.succeed('Updated package.json successfully');
-
-    // Generate README.md
-    const readme = generateReadme(options);
-    await fs.writeFile(path.join(projectPath, 'README.md'), readme);
 
     // Initialize Git if requested
     if (options.git) {
@@ -164,6 +154,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
     console.log(chalk.cyan('  pnpm dev'));
   } catch (error) {
     spinner.fail('Failed to create project');
+    console.error('CREATE PROJECT ERROR:', error); // Log the error for debugging
     throw error;
   }
 }

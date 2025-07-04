@@ -7,10 +7,12 @@
     "create-vite-powerflow": "dist/index.js"
   },
   "scripts": {
-    "build": "tsc && mkdir -p dist/templates && cp src/templates/*.md dist/templates/",
+    "prebuild": "pnpm --workspace-root sync-template",
+    "build": "tsc && cp -r template dist/template",
     "dev": "tsc -w",
     "start": "node dist/index.js",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepublishOnly": "pnpm sync-template && pnpm build"
   },
   "keywords": [
     "cli",
