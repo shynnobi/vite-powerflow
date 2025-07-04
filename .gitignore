@@ -16,6 +16,7 @@ node_modules
 dist
 dist-ssr
 *.local
+.turbo/
 
 # Editor directories and files
 .vscode/*
@@ -64,3 +65,5 @@ playwright-report.json
 
 # Ignore temporary commit message file
 /temp_commit_msg.txt
+
+
