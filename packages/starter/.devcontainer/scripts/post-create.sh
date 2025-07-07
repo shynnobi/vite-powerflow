@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+# Make all scripts executable
+chmod +x .devcontainer/scripts/*.sh 2>/dev/null || true
+
 echo "==> Configuring husky (if present)"
 if [ -d .husky ]; then
   git config core.hooksPath .husky

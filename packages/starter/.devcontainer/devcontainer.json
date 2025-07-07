@@ -2,7 +2,7 @@
   "name": "Node-TS (Compose)",
   "dockerComposeFile": ["../docker-compose.yml"],
   "service": "app",
-  "workspaceFolder": "/workspaces/vite-powerflow",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": true,
@@ -46,9 +46,9 @@
   },
   "forwardPorts": [5173, 4000],
   "mounts": ["source=${localEnv:HOME}/.gitconfig,target=/home/node/.gitconfig,type=bind,readonly"],
-  "onCreateCommand": "./.devcontainer/scripts/on-create.sh",
-  "postCreateCommand": "./.devcontainer/scripts/post-create.sh",
-  "updateContentCommand": "./.devcontainer/scripts/update-content.sh",
+  "onCreateCommand": "chmod +x .devcontainer/scripts/*.sh && sh .devcontainer/scripts/on-create.sh",
+  "postCreateCommand": "chmod +x .devcontainer/scripts/*.sh && sh .devcontainer/scripts/post-create.sh",
+  "updateContentCommand": "chmod +x .devcontainer/scripts/*.sh && sh .devcontainer/scripts/update-content.sh",
   "remoteEnv": {
     "SWC_PLATFORM_ARCH": "linux-x64-gnu",
     "npm_config_arch": "x64"
