@@ -3,7 +3,7 @@ import path from 'path';
 import tmp from 'tmp-promise';
 import { describe, expect, it } from 'vitest';
 
-import { copyConfigFile, copyConfigFolder } from './copyUtils.js';
+import { copyConfigFile, copyConfigFolder } from '../utils/copyUtils.js';
 
 describe('copyConfigFile', () => {
   it('copies a config file and preserves content', async () => {

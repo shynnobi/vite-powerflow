@@ -1,7 +1,7 @@
 import path from 'path';
 import { findUp } from 'find-up';
 import fs from 'fs-extra';
-import { copyConfigFile } from './copyUtils.js';
+import { copyConfigFile } from '../utils/copyUtils.js';
 
 const root = await findUp(
   async directory => {
@@ -10,8 +10,12 @@ const root = await findUp(
   { type: 'directory' }
 );
 
+if (!root) {
+  throw new Error('Monorepo root not found (pnpm-workspace.yaml missing)');
+}
 const starter = path.resolve(root, 'packages/starter');
 const configFiles = [
+  '.gitignore',
   '.editorconfig',
   '.prettierrc',
   '.prettierignore',

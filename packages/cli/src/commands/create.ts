@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { execa } from 'execa';
 import fs from 'fs/promises';
 import fsExtra from 'fs-extra';
 import ora from 'ora';
@@ -7,7 +8,8 @@ import { simpleGit } from 'simple-git';
 import { fileURLToPath } from 'url';
 
 import { directoryExists } from '../utils/fs-utils.js';
-import { safePackageName } from '../utils/safePackageName.js';
+import { updateDevcontainerWorkspaceFolder, updateDockerComposeVolume } from '../utils/fs-utils.js';
+import { safePackageName } from '../utils/safe-package-name.js';
 
 interface ProjectOptions {
   projectName: string;
@@ -36,6 +38,15 @@ export async function createProject(options: ProjectOptions): Promise<void> {
     spinner.start('Copying template...');
     const templatePath = path.join(__dirname, '..', 'template');
     await fsExtra.copy(templatePath, projectPath);
+
+    // Update devcontainer.json workspaceFolder
+    await updateDevcontainerWorkspaceFolder(projectPath);
+    // Update docker-compose.yml volume mapping
+    await updateDockerComposeVolume(projectPath);
+
+    // Generate the .gitignore file using the tools script
+    const toolsScript = path.resolve(__dirname, '../../../tools/cli-scripts/generate-gitignore.ts');
+    await execa('tsx', [toolsScript, projectPath], { stdio: 'inherit' });
     spinner.succeed('Template copied successfully');
 
     // Update package.json

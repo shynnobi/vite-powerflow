@@ -1,7 +1,7 @@
 import path from 'path';
 import { findUp } from 'find-up';
 import fs from 'fs-extra';
-import { copyConfigFolder } from './copyUtils.js';
+import { copyConfigFolder } from '../utils/copyUtils.js';
 
 const root = await findUp(
   async directory => {
@@ -10,6 +10,9 @@ const root = await findUp(
   { type: 'directory' }
 );
 
+if (!root) {
+  throw new Error('Monorepo root not found');
+}
 const starter = path.resolve(root, 'packages/starter');
 const configFolders = ['.cursor', '.devcontainer', '.github', '.husky', '.vscode'];
 

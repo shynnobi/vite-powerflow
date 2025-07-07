@@ -1,19 +1,13 @@
 {
-  "name": "create-powerflow-app",
-  "version": "1.0.4b",
-  "description": "CLI tool to create a new Vite PowerFlow app",
+  "name": "@vite-powerflow/tools",
+  "version": "1.0.0",
+  "description": "",
   "type": "module",
-  "bin": {
-    "create-powerflow-app": "dist/index.js"
-  },
   "scripts": {
-    "prebuild": "pnpm --workspace-root sync-starter-to-cli",
-    "build": "rm -rf dist && tsc && mkdir -p dist && cp -r template dist/template",
-    "dev": "tsc -w",
-    "start": "node dist/index.js",
-    "test": "vitest run --passWithNoTests",
     "lint": "eslint . --ext ts,tsx,js,jsx",
-    "lint:fix": "eslint . --ext ts,tsx,js,jsx --fix"
+    "lint:fix": "eslint . --ext ts,tsx,js,jsx --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write ."
   },
   "keywords": [
     "cli",
