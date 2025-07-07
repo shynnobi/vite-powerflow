@@ -9,9 +9,19 @@
       "cache": false
     },
     "lint": {},
+    "lint:fix": {},
+    "lint:root": {},
+    "lint:root:fix": {},
     "test": {},
+    "test:unit": {},
+    "test:integration": {},
+    "test:e2e": {},
+    "test:coverage": {},
+    "test:coverage:report": {},
     "format": {},
     "format:check": {},
+    "format:root": {},
+    "format:root:fix": {},
     "fix": {},
     "validate:precommit": {}
   }
