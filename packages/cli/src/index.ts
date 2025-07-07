@@ -34,7 +34,7 @@ async function cleanup() {
 }
 
 // Handle Ctrl+C
-process.stdin.on('keypress', (str, key) => {
+process.stdin.on('keypress', (_, key) => {
   if (key.ctrl && key.name === 'c') {
     cleanup();
   }

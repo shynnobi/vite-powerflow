@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { safePackageName } from './safePackageName.js';
+import { safePackageName } from './safe-package-name.js';
 
 describe('safePackageName', () => {
   it('formats the name correctly', () => {
