@@ -4,7 +4,4 @@ node_modules
 coverage
 dist
 build
-packages
-scripts
-cli-scripts
-utils
+

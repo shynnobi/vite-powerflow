@@ -18,6 +18,7 @@ dist-ssr
 *.local
 .turbo/
 packages/cli/template
+my-vite-powerflow-app
 
 # Editor directories and files
 .vscode/*

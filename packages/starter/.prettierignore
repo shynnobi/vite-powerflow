@@ -3,6 +3,7 @@ dist
 node_modules
 coverage
 build
+html
 .git
 .husky
 .pnpm-store

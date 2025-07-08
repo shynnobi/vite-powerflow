@@ -260,7 +260,6 @@ Our testing strategy ensures code quality and reliability through a comprehensiv
 - **Location**: `tests/unit/` and `tests/integration/`
 - **Coverage**: Components, utilities, and business logic
 - **Configuration**: [vitest.config.ts](./vitest.config.ts)
-- **Script**: `scripts/runUnitIntegrationTests.sh`
 
 #### End-to-End Tests
 
@@ -269,18 +268,13 @@ Our testing strategy ensures code quality and reliability through a comprehensiv
 - **Coverage**: User flows and cross-browser compatibility
 - **Configuration**: [playwright.config.ts](./playwright.config.ts)
 - **Browsers**: Chromium (default), Firefox, WebKit
-- **Script**: `scripts/runEndToEndTests.sh`
+- **Script**: `scripts/run-end-to-end-tests.sh`
 
 ### Test Scripts
 
 The custom scripts for test execution are automatically integrated into the main validation workflow:
 
-- `scripts/runUnitIntegrationTests.sh` (unit & integration tests)
-  - Detects the presence of unit and integration test files
-  - Runs Vitest only if relevant test files are present
-  - Prints a non-blocking warning if no tests are detected
-
-- `scripts/runEndToEndTests.sh` (end-to-end tests)
+- `scripts/run-end-to-end-tests.sh` (end-to-end tests)
   - Detects the presence of E2E test files
   - Installs all Playwright browsers and dependencies only if needed
   - Uses a persistent browser cache for faster test runs
