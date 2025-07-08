@@ -17,7 +17,7 @@ fs.removeSync(templateDest);
 fs.copySync(starterSrc, templateDest, {
   filter: srcPath => {
     const ignore = ['node_modules', '.git', '.DS_Store', 'template'];
-    return !ignore.some(dir => srcPath.includes(dir));
+    return !ignore.some(dir => path.basename(srcPath) === dir);
   },
 });
 
