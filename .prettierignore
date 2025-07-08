@@ -8,7 +8,6 @@ html
 .husky
 .pnpm-store
 .turbo
-packages
 # Lockfiles
 pnpm-lock.yaml
 /pnpm-lock.yaml

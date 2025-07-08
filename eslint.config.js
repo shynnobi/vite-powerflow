@@ -26,7 +26,6 @@ export default [
       '.next/**',
       '.turbo/**',
       'coverage/**',
-      'packages/**',
       '.pnpm-store/**',
       '.husky/**',
       '.git/**',
