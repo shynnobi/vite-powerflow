@@ -5,7 +5,7 @@ import path from 'path';
 
 import { createProject, spinner } from './commands/create.js';
 import { directoryExists } from './utils/fs-utils.js';
-import { promptGit, promptProjectInfo, promptProjectName } from './utils/prompt-ui.js';
+import { promptGit, promptGitIdentity,promptProjectInfo, promptProjectName } from './utils/prompt-ui.js';
 
 let currentProjectPath: string | null = null;
 let isCleaningUp = false;
@@ -69,12 +69,25 @@ async function init() {
     // Step 2: Git configuration
     const { git } = await promptGit();
 
-    // Step 3: Project creation
+    // Step 3: Git identity (if needed)
+    let gitUserName: string | undefined = undefined;
+    let gitUserEmail: string | undefined = undefined;
+    if (git) {
+      const identity = await promptGitIdentity();
+      if (identity) {
+        gitUserName = identity.gitUserName;
+        gitUserEmail = identity.gitUserEmail;
+      }
+    }
+
+    // Step 4: Project creation (atomic, spinner inside)
     await createProject({
       projectName,
       description,
       author,
       git,
+      gitUserName,
+      gitUserEmail,
     });
   } catch {
     await cleanup();

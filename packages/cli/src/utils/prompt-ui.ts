@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import fs from 'fs/promises';
 import inquirer, { Question, QuestionCollection } from 'inquirer';
 import path from 'path';
+import { simpleGit } from 'simple-git';
 
 async function validateProjectName(input: string): Promise<boolean | string> {
   if (!input.trim()) {
@@ -71,4 +72,49 @@ export async function promptGit(): Promise<GitConfig> {
       prefix: '',
     } as Question<GitConfig>,
   ]);
+}
+
+export async function promptGitIdentity(): Promise<{ gitUserName: string; gitUserEmail: string } | null> {
+  const projectGit = simpleGit();
+  let gitUserName = '';
+  let gitUserEmail = '';
+  try {
+    gitUserName = (await projectGit.raw(['config', '--global', '--get', 'user.name'])).trim();
+  } catch {
+    // ignore error
+  }
+  try {
+    gitUserEmail = (await projectGit.raw(['config', '--global', '--get', 'user.email'])).trim();
+  } catch {
+    // ignore error
+  }
+  if (gitUserName && gitUserEmail) {
+    const { useGlobal } = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'useGlobal',
+        message: `Found global git identity:\n  Name: ${gitUserName}\n  Email: ${gitUserEmail}\nDo you want to use this for this project?`,
+        default: true,
+      },
+    ]);
+    if (useGlobal) {
+      return { gitUserName, gitUserEmail };
+    }
+  }
+  // If not using global, prompt for both
+  const answers = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'gitUserName',
+      message: 'Git user.name (for commits):',
+      default: gitUserName || undefined,
+    },
+    {
+      type: 'input',
+      name: 'gitUserEmail',
+      message: 'Git user.email (for commits):',
+      default: gitUserEmail || undefined,
+    },
+  ]);
+  return { gitUserName: answers.gitUserName, gitUserEmail: answers.gitUserEmail };
 }
