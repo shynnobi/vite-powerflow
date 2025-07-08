@@ -8,8 +8,12 @@ alwaysApply: false
 - The body (optional) must be ≤ 100 characters per line, each line a complete thought.
 - Allowed types: build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test.
 - Use bullet points in the body for multiple changes.
-- Make small, focused commits that are easy to review.
+- Make atomic commits for single changes, or grouped commits for logically related changes, ensuring each commit is easy to review.
 - All commit messages and comments must be written in English.
+- Before each commit, ensure only the files relevant to that commit are staged.
+  - Use `git reset` to unstage all files, then `git add` only the files for the current logical change.
+  - This guarantees atomic, focused commits and a clean project history.
+  - Never commit unrelated changes together.
 
 ## Examples
 
