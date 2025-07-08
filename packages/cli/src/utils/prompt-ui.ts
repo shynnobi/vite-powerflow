@@ -74,7 +74,10 @@ export async function promptGit(): Promise<GitConfig> {
   ]);
 }
 
-export async function promptGitIdentity(): Promise<{ gitUserName: string; gitUserEmail: string } | null> {
+export async function promptGitIdentity(): Promise<{
+  gitUserName: string;
+  gitUserEmail: string;
+} | null> {
   const projectGit = simpleGit();
   let gitUserName = '';
   let gitUserEmail = '';

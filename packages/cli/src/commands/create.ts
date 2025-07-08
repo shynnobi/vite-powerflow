@@ -87,7 +87,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
     }
     if (filesToFormat.length > 0) {
       const { exec } = await import('child_process');
-      await new Promise<void>((resolve) => {
+      await new Promise<void>(resolve => {
         exec(
           `npx prettier --write ${filesToFormat.map(f => `"${f}"`).join(' ')}`,
           { cwd: projectPath },

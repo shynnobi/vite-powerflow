@@ -25,8 +25,8 @@ export async function updateDevcontainerWorkspaceFolder(projectDir: string): Pro
 
     // Format the file with Prettier after modification
     const { exec } = await import('child_process');
-    await new Promise<void>((resolve) => {
-      exec(`npx prettier --write "${devcontainerPath}"`, (err) => {
+    await new Promise<void>(resolve => {
+      exec(`npx prettier --write "${devcontainerPath}"`, err => {
         if (err) {
           messages.push('⚠️ Prettier failed to format devcontainer.json');
         } else {

@@ -56,7 +56,10 @@ describe('prompt-ui', () => {
 
   it('promptProjectInfo returns default description if left empty', async () => {
     const projectName = 'my-app';
-    vi.mocked(inquirer.prompt).mockResolvedValue({ description: `A Vite PowerFlow project named ${projectName}`, author: 'me' });
+    vi.mocked(inquirer.prompt).mockResolvedValue({
+      description: `A Vite PowerFlow project named ${projectName}`,
+      author: 'me',
+    });
     const info = await promptUi.promptProjectInfo(projectName);
     expect(info.description).toBe(`A Vite PowerFlow project named ${projectName}`);
     expect(info.author).toBe('me');
@@ -83,9 +86,7 @@ describe('prompt-ui', () => {
   it('promptGitIdentity uses global identity if available and user accepts', async () => {
     const gitMock = { raw: vi.fn() };
     vi.spyOn(simpleGitModule, 'simpleGit').mockReturnValue(gitMock as never);
-    gitMock.raw
-      .mockResolvedValueOnce('John Doe\n')
-      .mockResolvedValueOnce('john@example.com\n');
+    gitMock.raw.mockResolvedValueOnce('John Doe\n').mockResolvedValueOnce('john@example.com\n');
     vi.mocked(inquirer.prompt).mockResolvedValueOnce({ useGlobal: true });
     const identity = await promptUi.promptGitIdentity();
     expect(identity).toEqual({ gitUserName: 'John Doe', gitUserEmail: 'john@example.com' });
@@ -94,9 +95,7 @@ describe('prompt-ui', () => {
   it('promptGitIdentity handles user refusing global identity', async () => {
     const gitMock = { raw: vi.fn() };
     vi.spyOn(simpleGitModule, 'simpleGit').mockReturnValue(gitMock as never);
-    gitMock.raw
-      .mockResolvedValueOnce('John Doe\n')
-      .mockResolvedValueOnce('john@example.com\n');
+    gitMock.raw.mockResolvedValueOnce('John Doe\n').mockResolvedValueOnce('john@example.com\n');
     vi.mocked(inquirer.prompt)
       .mockResolvedValueOnce({ useGlobal: false })
       .mockResolvedValueOnce({ gitUserName: 'Other', gitUserEmail: 'other@x.com' });
@@ -117,7 +116,10 @@ describe('prompt-ui', () => {
     const gitMock = { raw: vi.fn() };
     vi.spyOn(simpleGitModule, 'simpleGit').mockReturnValue(gitMock as never);
     gitMock.raw.mockRejectedValue(new Error('not set'));
-    vi.mocked(inquirer.prompt).mockResolvedValueOnce({ gitUserName: 'Jane', gitUserEmail: 'jane@x.com' });
+    vi.mocked(inquirer.prompt).mockResolvedValueOnce({
+      gitUserName: 'Jane',
+      gitUserEmail: 'jane@x.com',
+    });
     const identity = await promptUi.promptGitIdentity();
     expect(identity).toEqual({ gitUserName: 'Jane', gitUserEmail: 'jane@x.com' });
   });

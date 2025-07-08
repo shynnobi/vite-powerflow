@@ -5,7 +5,12 @@ import path from 'path';
 
 import { createProject, spinner } from './commands/create.js';
 import { directoryExists } from './utils/fs-utils.js';
-import { promptGit, promptGitIdentity,promptProjectInfo, promptProjectName } from './utils/prompt-ui.js';
+import {
+  promptGit,
+  promptGitIdentity,
+  promptProjectInfo,
+  promptProjectName,
+} from './utils/prompt-ui.js';
 
 let currentProjectPath: string | null = null;
 let isCleaningUp = false;
