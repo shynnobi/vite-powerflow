@@ -42,7 +42,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
     const templatePath = path.join(__dirname, '..', 'template');
     await fsExtra.copy(templatePath, projectPath);
 
-    // Update devcontainer and docker-compose (no logs)
+    // Update devcontainer and docker-compose
     await updateDevcontainerWorkspaceFolder(projectPath);
     await updateDockerComposeVolume(projectPath);
 
@@ -58,19 +58,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
     delete packageJson.bugs;
     await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
 
-    // Initialize Git if requested (no prompts)
-    if (options.git) {
-      const projectGit = simpleGit(projectPath);
-      await projectGit.init();
-      if (options.gitUserName && options.gitUserEmail) {
-        await projectGit.addConfig('user.name', options.gitUserName, false, 'local');
-        await projectGit.addConfig('user.email', options.gitUserEmail, false, 'local');
-      }
-      await projectGit.add('.');
-      await projectGit.commit('Initial commit: Project created with create-vite-powerflow-app');
-    }
-
-    // Format package.json and devcontainer.json at the very end
+    // Format package.json and devcontainer.json
     const devcontainerJsonPath = path.join(projectPath, '.devcontainer', 'devcontainer.json');
     const filesToFormat: string[] = [];
     try {
@@ -94,6 +82,18 @@ export async function createProject(options: ProjectOptions): Promise<void> {
           () => resolve()
         );
       });
+    }
+
+    // Initialize Git if requested (no prompts)
+    if (options.git) {
+      const projectGit = simpleGit(projectPath);
+      await projectGit.init();
+      if (options.gitUserName && options.gitUserEmail) {
+        await projectGit.addConfig('user.name', options.gitUserName, false, 'local');
+        await projectGit.addConfig('user.email', options.gitUserEmail, false, 'local');
+      }
+      await projectGit.add('.');
+      await projectGit.commit('Initial commit: Project created with create-vite-powerflow-app');
     }
 
     // Stop the spinner and show a single success message
