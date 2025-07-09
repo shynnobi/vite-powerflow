@@ -1,10 +1,10 @@
 {
-  "name": "create-powerflow-app",
-  "version": "1.0.4b",
+  "name": "@vite-powerflow/create",
+  "version": "1.0.0",
   "description": "CLI tool to create a new Vite PowerFlow app",
   "type": "module",
   "bin": {
-    "create-powerflow-app": "dist/index.js"
+    "create": "dist/index.js"
   },
   "scripts": {
     "prebuild": "pnpm --workspace-root sync-starter-to-cli",
