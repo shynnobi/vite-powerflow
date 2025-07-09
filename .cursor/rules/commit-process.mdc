@@ -1,0 +1,71 @@
+---
+alwaysApply: true
+---
+
+# AI Commit Process Rules
+
+## 1. Commit Workflow
+
+When the user requests to make a commit, the AI must:
+
+1. Analyze all files listed in source control (modified, added, deleted).
+2. Analyze separately the files in staged changes and unstaged changes.
+3. For each file, review the actual differences (diff): content, permissions, renames, etc.
+4. Present a clear, English summary of all changes, file by file.
+5. Propose two commit plans, **including only files that are currently staged**:
+   - Atomic commits: one commit per logical change or file.
+   - Grouped commits: changes grouped by feature or logical unit.
+6. Wait for the user to choose the preferred plan.
+7. For each commit in the chosen plan:
+   - Present the commit title (header) and body (Conventional Commit format) in a code block.
+   - List the files included in the commit below the message.
+8. Wait for explicit user validation before staging and committing.
+9. **Never include unstaged files in a commit unless the user explicitly requests it. Only files that are currently staged will be included in the commit.**
+
+## 2. Commit Process Interruption Policy
+
+If the commit process (following a chosen commit plan) is interrupted (e.g., due to lint/test failure, manual code change, or user intervention), the assistant or contributor MUST:
+
+- Re-analyze the current state of the repository (staged/unstaged files, diffs).
+- Update the commit plan and commit messages to reflect any new changes or corrections.
+- Present the revised plan and messages for user validation before proceeding.
+- No commit should be made based on outdated or partial analysis.
+- The process MUST always resume from the current, real state of the repository.
+- If the user manually corrects code or staging, the assistant MUST re-summarize and re-propose the commit(s) before continuing.
+
+## 3. Commit Message Rules
+
+- All commit messages must follow the Conventional Commit format.
+- The header (first line) must be ≤ 72 characters, imperative mood, no period at the end.
+- The body (optional) must be ≤ 100 characters per line, each line a complete thought.
+- Allowed types: build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test.
+- Use bullet points in the body for multiple changes.
+- All commit messages and comments must be written in English.
+
+## Examples
+
+✅ Good (with bullet points for multiple changes):
+
+```text
+feat(ui): add cursor-pointer to interactive elements
+
+- Add cursor-pointer to all buttons
+- Update hover states for better feedback
+- Ensure consistent behavior across themes
+```
+
+✅ Good (without bullet points for focused change):
+
+```text
+fix(auth): resolve login token expiration
+
+Update token refresh logic to prevent premature expiration
+```
+
+❌ Bad (exceeds character limits):
+
+```text
+feat(ui): add cursor-pointer to all interactive buttons for improved user experience
+
+Update Button component to ensure pointer feedback for better UX. No visual regression, only improved user experience.
+```
