@@ -52,6 +52,9 @@ test-results
 .tmp
 .tsbuildinfo
 
+# TypeScript incremental build info
+**/tsconfig.tsbuildinfo
+
 # Build visualizer
 stats.html
 

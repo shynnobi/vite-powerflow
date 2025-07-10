@@ -59,7 +59,7 @@
     "validate:full": "pnpm validate:static && pnpm test && pnpm test:e2e",
     "validate:precommit": "npx lint-staged && pnpm test",
     "prepare": "husky",
-    "postinstall": "node -e \"try { require('child_process').execSync('git rev-parse --is-inside-work-tree', {stdio: 'ignore'}); } catch (e) { require('child_process').execSync('git init', {stdio: 'inherit'}); } process.exit(0);\" && git config core.hooksPath .husky && chmod +x .husky/*",
+    "postinstall": "./scripts/postinstall.sh",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -97,6 +97,7 @@
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-storybook": "9.1.0-alpha.6",
     "execa": "^9.6.0",
+    "glob": "^11.0.3",
     "globals": "^16.3.0",
     "husky": "^9.1.7",
     "jest-axe": "^10.0.0",
