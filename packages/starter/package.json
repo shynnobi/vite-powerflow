@@ -1,20 +1,9 @@
 {
   "name": "@vite-powerflow/starter",
   "private": true,
-  "version": "1.1.0",
-  "description": "A React + Vite starter, fully containerized for reproducible and collaborative development, with strict code quality tooling and AI pair programming workflow (Cursor rules). Includes comprehensive testing, linting, and CI/CD configurations following industry best practices.",
-  "author": {
-    "name": "Shynn",
-    "url": "http://github.com/shynnobi"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+http://github.com/shynnobi/vite-powerflow.git"
-  },
-  "homepage": "http://github.com/shynnobi/vite-powerflow#readme",
-  "bugs": {
-    "url": "http://github.com/shynnobi/vite-powerflow/issues"
-  },
+  "version": "0.0.0",
+  "description": "",
+  "author": "",
   "license": "MIT",
   "keywords": [
     "vite",

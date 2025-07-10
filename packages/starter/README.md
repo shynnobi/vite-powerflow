@@ -1,8 +1,5 @@
 # {{projectName}}
 
-Description: {{description}}
-Author: {{author}}
-
 ## Quick Start
 
 1. Open your app in [**Cursor**](https://www.cursor.so/) or [**Visual Studio Code**](https://code.visualstudio.com/)
