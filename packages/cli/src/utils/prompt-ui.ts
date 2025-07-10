@@ -1,123 +1,103 @@
 import chalk from 'chalk';
-import fs from 'fs/promises';
-import inquirer, { Question, QuestionCollection } from 'inquirer';
-import path from 'path';
 import { simpleGit } from 'simple-git';
+import validator from 'validator';
 
-async function validateProjectName(input: string): Promise<boolean | string> {
-  if (!input.trim()) {
-    return 'Project name cannot be empty';
-  }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type PromptConstructor = new (options: any) => any;
 
-  const projectPath = path.join(process.cwd(), input);
-  try {
-    await fs.access(projectPath);
-    return chalk.red(`Directory "${input}" already exists, please choose a different name`);
-  } catch {
-    return true;
-  }
+export async function promptProjectName(defaultName?: string): Promise<string> {
+  if (defaultName) return defaultName;
+  const { default: InputPrompt } = await import('enquirer/lib/prompts/input.js');
+  return await new (InputPrompt as unknown as PromptConstructor)({
+    message: 'Project name:',
+    initial: 'my-vite-powerflow-app',
+    // No validation: allow any input for project name
+  }).run();
 }
 
-export async function promptProjectName(): Promise<string> {
-  const { projectName } = await inquirer.prompt<{ projectName: string }>([
-    {
-      type: 'input',
-      name: 'projectName',
-      message: 'Project name:',
-      default: 'my-vite-powerflow-app',
-      prefix: '',
-      validate: validateProjectName,
-    } as Question<{ projectName: string }>,
-  ]);
-  return projectName;
+export async function promptGit(defaultGit?: boolean): Promise<boolean> {
+  if (typeof defaultGit === 'boolean') return defaultGit;
+  const { default: ConfirmPrompt } = await import('enquirer/lib/prompts/confirm.js');
+  return await new (ConfirmPrompt as unknown as PromptConstructor)({
+    message: 'Initialize Git?',
+    initial: true,
+  }).run();
 }
 
-export interface ProjectInfo {
-  projectName: string;
-  description: string;
-  author: string;
-}
+// Optional parameters added
+type GitIdentity = { gitUserName: string; gitUserEmail: string };
 
-export async function promptProjectInfo(
-  projectName: string
-): Promise<Pick<ProjectInfo, 'description' | 'author'>> {
-  return inquirer.prompt<Pick<ProjectInfo, 'description' | 'author'>>([
-    {
-      type: 'input',
-      name: 'description',
-      message: 'Description:',
-      default: `A Vite PowerFlow project named ${projectName}`,
-      prefix: '',
-    },
-    {
-      type: 'input',
-      name: 'author',
-      message: 'Author:',
-      prefix: '',
-    },
-  ] as QuestionCollection<Pick<ProjectInfo, 'description' | 'author'>>);
-}
-
-interface GitConfig {
-  git: boolean;
-}
-
-export async function promptGit(): Promise<GitConfig> {
-  return inquirer.prompt<GitConfig>([
-    {
-      type: 'confirm',
-      name: 'git',
-      message: 'Initialize a git repository?',
-      default: true,
-      prefix: '',
-    } as Question<GitConfig>,
-  ]);
-}
-
-export async function promptGitIdentity(): Promise<{
-  gitUserName: string;
-  gitUserEmail: string;
-} | null> {
-  const projectGit = simpleGit();
-  let gitUserName = '';
-  let gitUserEmail = '';
-  try {
-    gitUserName = (await projectGit.raw(['config', '--global', '--get', 'user.name'])).trim();
-  } catch {
-    // ignore error
-  }
-  try {
-    gitUserEmail = (await projectGit.raw(['config', '--global', '--get', 'user.email'])).trim();
-  } catch {
-    // ignore error
-  }
+export async function promptGitIdentity(
+  gitUserName?: string,
+  gitUserEmail?: string,
+  useGlobalIfFound?: boolean
+): Promise<GitIdentity | undefined> {
+  // Non-interactive mode: if both are provided, return directly
   if (gitUserName && gitUserEmail) {
-    const { useGlobal } = await inquirer.prompt([
-      {
-        type: 'confirm',
-        name: 'useGlobal',
-        message: `Found global git identity:\n  Name: ${gitUserName}\n  Email: ${gitUserEmail}\nDo you want to use this for this project?`,
-        default: true,
-      },
-    ]);
+    return { gitUserName, gitUserEmail };
+  }
+
+  const projectGit = simpleGit();
+  let userName = '';
+  let userEmail = '';
+  try {
+    userName = (await projectGit.raw(['config', '--global', '--get', 'user.name'])).trim();
+  } catch {
+    // ignore error
+  }
+  try {
+    userEmail = (await projectGit.raw(['config', '--global', '--get', 'user.email'])).trim();
+  } catch {
+    // ignore error
+  }
+
+  // Early return if useGlobalIfFound is true and both userName and userEmail are found
+  if (useGlobalIfFound && userName && userEmail) {
+    return { gitUserName: userName, gitUserEmail: userEmail };
+  }
+
+  if (userName && userEmail) {
+    const question = chalk.blue('?');
+    const bold = chalk.bold;
+    const message =
+      `Found global Git identity:\n` +
+      `  ${bold('Name:')}  ${userName}\n` +
+      `  ${bold('Email:')} ${userEmail}\n` +
+      `${question} Use this identity for the project?`;
+
+    const { default: ConfirmPrompt } = await import('enquirer/lib/prompts/confirm.js');
+    const useGlobal = await new (ConfirmPrompt as unknown as PromptConstructor)({
+      message,
+      initial: true,
+      prefix: chalk.green('✔'),
+    }).run();
     if (useGlobal) {
-      return { gitUserName, gitUserEmail };
+      return { gitUserName: userName, gitUserEmail: userEmail };
     }
   }
-  // If not using global, prompt for both
-  const answers = await inquirer.prompt([
-    {
-      type: 'input',
-      name: 'gitUserName',
-      message: 'Git user.name (for commits):',
-      default: gitUserName || undefined,
+
+  // If the user refuses the global identity or if no global identity is found,
+  // prompt for both user.name and user.email manually (with validation to prevent empty values)
+  const { default: InputPrompt } = await import('enquirer/lib/prompts/input.js');
+  userName = await new (InputPrompt as unknown as PromptConstructor)({
+    message: 'Git user.name (for commits):',
+    initial: userName || '',
+    validate: (input: string) => {
+      if (input.trim() === '') return 'Name cannot be empty';
+      // Optionally: disallow certain special characters
+      if (/[^-\w\s.]/.test(input)) return 'Name contains invalid characters';
+      return true;
     },
-    {
-      type: 'input',
-      name: 'gitUserEmail',
-      message: 'Git user.email (for commits):',
-      default: gitUserEmail || undefined,
+  }).run();
+  userEmail = await new (InputPrompt as unknown as PromptConstructor)({
+    message: 'Git user.email (for commits):',
+    initial: userEmail || '',
+    validate: (input: string) => {
+      if (input.trim() === '') return 'Email cannot be empty';
+      // Use validator to validate email format
+      if (!validator.isEmail(input)) return 'Invalid email format';
+      return true;
     },
-  ]);
-  return { gitUserName: answers.gitUserName, gitUserEmail: answers.gitUserEmail };
+  }).run();
+  return { gitUserName: userName, gitUserEmail: userEmail };
 }

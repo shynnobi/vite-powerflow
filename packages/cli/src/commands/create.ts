@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import fs from 'fs/promises';
 import fsExtra from 'fs-extra';
 import ora from 'ora';
@@ -8,12 +7,10 @@ import { fileURLToPath } from 'url';
 
 import { directoryExists } from '../utils/fs-utils.js';
 import { updateDevcontainerWorkspaceFolder, updateDockerComposeVolume } from '../utils/fs-utils.js';
-import { safePackageName } from '../utils/safe-package-name.js';
 
 interface ProjectOptions {
-  projectName: string;
-  description: string;
-  author: string;
+  projectName: string; // for display/README
+  packageName: string; // for directory and package.json
   git: boolean;
   gitUserName?: string;
   gitUserEmail?: string;
@@ -25,16 +22,10 @@ export const spinner = ora();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export async function createProject(options: ProjectOptions): Promise<void> {
-  const safeDirName = safePackageName(options.projectName);
-  const projectPath = path.join(process.cwd(), safeDirName);
+  let packageName = options.packageName;
+  let projectPath = path.join(process.cwd(), packageName);
 
   try {
-    // Check if directory already exists
-    if (await directoryExists(projectPath)) {
-      console.error(chalk.red(`Error: Directory "${options.projectName}" already exists`));
-      process.exit(1);
-    }
-
     // Start a single spinner for the whole process
     spinner.start('Creating project...');
 
@@ -50,13 +41,17 @@ export async function createProject(options: ProjectOptions): Promise<void> {
     const packageJsonPath = path.join(projectPath, 'package.json');
     const packageJsonRaw = await fs.readFile(packageJsonPath, 'utf-8');
     const packageJson = JSON.parse(packageJsonRaw);
-    packageJson.name = safePackageName(options.projectName);
-    packageJson.description = options.description;
-    packageJson.author = options.author;
-    delete packageJson.repository;
-    delete packageJson.homepage;
-    delete packageJson.bugs;
+    packageJson.name = options.packageName;
     await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
+
+    // Update README.md placeholder for project name only
+    const readmePath = path.join(projectPath, 'README.md');
+    if ((await directoryExists(projectPath)) && (await fsExtra.pathExists(readmePath))) {
+      let readmeContent = await fs.readFile(readmePath, 'utf-8');
+      // Use the original projectName (not safe/slugified) for README
+      readmeContent = readmeContent.replace(/{{projectName}}/g, options.projectName);
+      await fs.writeFile(readmePath, readmeContent);
+    }
 
     // Format package.json and devcontainer.json
     const devcontainerJsonPath = path.join(projectPath, '.devcontainer', 'devcontainer.json');
@@ -93,7 +88,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
         await projectGit.addConfig('user.email', options.gitUserEmail, false, 'local');
       }
       await projectGit.add('.');
-      await projectGit.commit('Initial commit: Project created with create-vite-powerflow-app');
+      await projectGit.commit('chore: initial commit');
     }
 
     // Stop the spinner and show a single success message

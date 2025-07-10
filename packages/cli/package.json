@@ -36,19 +36,22 @@
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@types/fs-extra": "^11.0.4",
-    "@types/inquirer": "^9.0.8",
     "@types/node": "^22.15.33",
+    "@types/validator": "^13.15.2",
     "fs-extra": "^11.3.0",
     "tmp-promise": "^3.0.3",
     "vitest": "^1.0.0"
   },
   "dependencies": {
+    "@sindresorhus/slugify": "^2.2.1",
     "@vite-powerflow/tools": "workspace:*",
     "chalk": "^5.4.1",
+    "commander": "^14.0.0",
+    "enquirer": "^2.4.1",
     "find-up": "^7.0.0",
-    "inquirer": "^9.3.7",
     "ora": "^8.2.0",
     "simple-git": "^3.28.0",
-    "tsconfig-paths": "^4.2.0"
+    "tsconfig-paths": "^4.2.0",
+    "validator": "^13.15.15"
   }
 }
