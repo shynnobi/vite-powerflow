@@ -11,7 +11,7 @@
     "paths": {
       "@starter/*": ["packages/starter/*"],
       "@cli/*": ["packages/cli/*"],
-      "@tools/*": ["packages/tools/*"]
+      "@tools/*": ["packages/tools/dist/*"]
     }
   }
 }
