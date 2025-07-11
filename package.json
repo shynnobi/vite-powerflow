@@ -36,7 +36,7 @@
     "testing"
   ],
   "type": "module",
-  "packageManager": "pnpm@10.6.5",
+  "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad",
   "scripts": {
     "test": "pnpm turbo run test",
     "test:e2e": "pnpm turbo run test:e2e",
@@ -58,7 +58,10 @@
     "sync-starter-to-cli": "tsx packages/tools/src/cli-scripts/sync-starter-to-template.mts",
     "sync-all": "pnpm sync-root-to-starter && pnpm sync-starter-to-cli",
     "cli:build": "pnpm --filter @vite-powerflow/create build",
-    "cli:run": "node packages/cli/dist/index.js"
+    "cli:start": "node packages/cli/dist/index.js",
+    "cli:buista": "pnpm cli:build && node packages/cli/dist/index.js",
+    "sta:dev": "pnpm -filter @vite-powerflow/starter dev",
+    "sta:storybook": "pnpm --filter @vite-powerflow/starter storybook"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
