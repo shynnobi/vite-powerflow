@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-/* global process, console */
+/* global process */
+/* eslint-env node */
+/* global console */
 
 // process and console are Node.js globals
 import { execSync } from 'child_process';

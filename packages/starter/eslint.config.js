@@ -143,4 +143,12 @@ export default [
       'react-refresh/only-export-components': 'off',
     },
   },
+  // Add Node.js environment for run-end-to-end-tests.js
+  {
+    files: ['scripts/run-end-to-end-tests.js'],
+    languageOptions: {
+      env: { node: true },
+      globals: { process: 'readonly', console: 'readonly' },
+    },
+  },
 ];

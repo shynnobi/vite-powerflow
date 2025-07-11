@@ -16,51 +16,24 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const CenteredWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '2rem',
-      background: 'var(--background)',
-      width: '100%',
-      boxSizing: 'border-box',
-    }}
-  >
-    {children}
-  </div>
-);
+// Wrapper component that properly handles state initialization
+const CounterWithInitialState: React.FC<{ initialCount: number }> = ({ initialCount }) => {
+  // Initialize state directly without useEffect
+  React.useMemo(() => {
+    useCounterStore.setState({ count: initialCount });
+  }, [initialCount]);
+
+  return <Counter />;
+};
 
 export const Default: Story = {
-  render: () => (
-    <CenteredWrapper>
-      <Counter />
-    </CenteredWrapper>
-  ),
-  play: async () => {
-    useCounterStore.setState({ count: 0 });
-  },
+  render: () => <CounterWithInitialState initialCount={0} />,
 };
 
 export const WithPositiveCount: Story = {
-  render: () => (
-    <CenteredWrapper>
-      <Counter />
-    </CenteredWrapper>
-  ),
-  play: async () => {
-    useCounterStore.setState({ count: 5 });
-  },
+  render: () => <CounterWithInitialState initialCount={5} />,
 };
 
 export const WithNegativeCount: Story = {
-  render: () => (
-    <CenteredWrapper>
-      <Counter />
-    </CenteredWrapper>
-  ),
-  play: async () => {
-    useCounterStore.setState({ count: -3 });
-  },
+  render: () => <CounterWithInitialState initialCount={-3} />,
 };
