@@ -15,7 +15,16 @@ import { getMonorepoRoot } from '../utils/getMonorepoRoot.js';
   // Copy starter to template
   await fs.copy(starterSrc, templateDest, {
     filter: srcPath => {
-      const ignore = ['node_modules', '.git', '.DS_Store', '.turbo'];
+      const ignore = [
+        'node_modules',
+        '.git',
+        '.DS_Store',
+        '.turbo',
+        'coverage',
+        'dist',
+        'test-results',
+        'html',
+      ];
       return !ignore.some(dir => path.basename(srcPath) === dir);
     },
   });
