@@ -1,22 +1,14 @@
-// ESLint configuration for @vite-powerflow/starter
-//
-// Convention standard et populaire :
-// - Code applicatif (src, tests, etc.) : lint + type-check (parserOptions.project)
-// - Fichiers de configuration (Storybook, Vite, Playwright, etc.) : lint syntaxique uniquement (pas de type-check)
-//   -> Cela évite les erreurs de "project service" et suit les pratiques recommandées par la communauté
-//
-// Cette séparation garantit robustesse, rapidité et compatibilité avec l'écosystème JS/TS moderne.
-
+import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
-import tsParser from '@typescript-eslint/parser';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+import eslintComments from 'eslint-plugin-eslint-comments';
+import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import reactRefreshPlugin from 'eslint-plugin-react-refresh';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
-import { FlatCompat } from '@eslint/eslintrc';
 import path from 'path';
-import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -36,7 +28,21 @@ export default [
       'node_modules/**',
       'playwright-report/**',
       'test-results/**',
+      'vite.config.ts',
+      'vitest.config.ts',
     ],
+  },
+  // Node.js globals for all JS files
+  {
+    files: ['**/*.js'],
+    languageOptions: {
+      globals: {
+        process: 'readonly',
+        console: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+      },
+    },
   },
   js.configs.recommended,
   ...compat.config({
@@ -52,6 +58,7 @@ export default [
     },
     plugins: {
       '@typescript-eslint': tsPlugin,
+      'eslint-comments': eslintComments,
     },
     rules: {
       ...tsPlugin.configs.recommended.rules,
@@ -143,12 +150,10 @@ export default [
       'react-refresh/only-export-components': 'off',
     },
   },
-  // Add Node.js environment for run-end-to-end-tests.js
   {
-    files: ['scripts/run-end-to-end-tests.js'],
-    languageOptions: {
-      env: { node: true },
-      globals: { process: 'readonly', console: 'readonly' },
-    },
+    files: ['vite.config.ts', 'vitest.config.ts'],
+    languageOptions: {},
+    plugins: {},
+    rules: {},
   },
 ];

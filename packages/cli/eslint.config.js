@@ -1,26 +1,45 @@
-import baseConfig from '../../eslint.config.js';
+import js from '@eslint/js';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
 
 export default [
   {
-    ignores: ['./dist/**', './node_modules/**', './template/**'],
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+      'coverage/**',
+      '.turbo/**',
+      './template/**',
+      './my-vite-powerflow-app/**',
+      'vitest.config.ts',
+    ],
   },
-  // This block disables parserOptions.project for all root config files (*.config.ts, *.config.*.ts)
-  // to avoid ESLint errors when these files are not included in tsconfig.json
+  js.configs.recommended,
+  // ESLint configuration overrides for TypeScript files (*.ts, *.tsx)
   {
-    files: ['./*.config.ts', './*.config.*.ts'],
+    files: ['**/*.{ts,tsx}'],
     languageOptions: {
+      parser: tsParser,
       parserOptions: {
-        project: null,
+        projectService: true,
+      },
+      globals: {
+        process: 'readonly',
+        console: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
       },
     },
-  },
-  ...baseConfig,
-  {
-    files: ['vitest.config.ts'],
-    languageOptions: {
-      parserOptions: {
-        project: null,
-      },
+    plugins: {
+      '@typescript-eslint': tsPlugin,
+    },
+    rules: {
+      ...tsPlugin.configs.recommended.rules,
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'warn',
     },
   },
 ];

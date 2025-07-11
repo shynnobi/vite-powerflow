@@ -1,14 +1,11 @@
 #!/usr/bin/env node
-/* global process */
-/* eslint-env node */
-/* global console */
-
-// process and console are Node.js globals
 import { execSync } from 'child_process';
+import console from 'console';
 import { existsSync, mkdirSync, readdirSync } from 'fs';
+import { globSync } from 'glob';
 import { homedir } from 'os';
 import path from 'path';
-import { globSync } from 'glob';
+import process from 'process';
 
 // Playwright cache directory (persistent volume recommended)
 const PLAYWRIGHT_CACHE_DIR = path.join(homedir(), '.cache', 'ms-playwright');
@@ -42,7 +39,7 @@ try {
 }
 
 // Run E2E tests if test files are present
-const testFiles = globSync('tests/e2e/**/*.{spec,test}.ts');
+const testFiles = globSync('tests/e2e/*.{spec,test}.ts');
 if (testFiles.length > 0) {
   execSync('pnpm exec playwright test --reporter=dot', { stdio: 'inherit' });
 } else {

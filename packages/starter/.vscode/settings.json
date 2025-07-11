@@ -2,6 +2,7 @@
   "typescript.tsserver.experimental.enableProjectDiagnostics": false,
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
+    "source.organizeImports": "always",
     "source.fixAll.eslint": "explicit"
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -21,7 +22,6 @@
   "typescript.disableAutomaticTypeAcquisition": false,
   "typescript.reportStyleChecksAsWarnings": true,
   "javascript.validate.enable": true,
-  "problems.excludePathsWatcher": ["**/node_modules/**"],
   "css.customData": [".vscode/tailwind.json"],
   "css.lint.unknownAtRules": "ignore",
   "typescript.preferences.importModuleSpecifier": "relative",
