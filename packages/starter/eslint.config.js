@@ -1,3 +1,12 @@
+// ESLint configuration for @vite-powerflow/starter
+//
+// Convention standard et populaire :
+// - Code applicatif (src, tests, etc.) : lint + type-check (parserOptions.project)
+// - Fichiers de configuration (Storybook, Vite, Playwright, etc.) : lint syntaxique uniquement (pas de type-check)
+//   -> Cela évite les erreurs de "project service" et suit les pratiques recommandées par la communauté
+//
+// Cette séparation garantit robustesse, rapidité et compatibilité avec l'écosystème JS/TS moderne.
+
 import js from '@eslint/js';
 import tsParser from '@typescript-eslint/parser';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
@@ -19,27 +28,24 @@ const compat = new FlatCompat({
 export default [
   {
     ignores: [
-      'node_modules/**',
-      'dist/**',
-      'coverage/**',
-      'test-results/**',
-      'playwright-report/**',
       '.next/**',
       '.turbo/**',
+      'coverage/**',
+      'dist/**',
+      'html/**',
+      'node_modules/**',
+      'playwright-report/**',
+      'test-results/**',
     ],
   },
   js.configs.recommended,
   ...compat.config({
     extends: ['plugin:storybook/recommended'],
   }),
-  // Configuration for TypeScript configuration files
   {
-    files: ['*.config.ts'],
     languageOptions: {
       parser: tsParser,
-      parserOptions: {
-        project: './tsconfig.node.json',
-      },
+      parserOptions: {},
       globals: {
         process: 'readonly',
       },
@@ -54,7 +60,15 @@ export default [
   // Main configuration for TypeScript/React files
   {
     files: ['**/*.{ts,tsx}'],
-    ignores: ['*.config.ts'],
+    ignores: [
+      '*.config.ts',
+      '.storybook/**/*.ts',
+      '.storybook/*.ts',
+      'vite.config.ts',
+      'vitest.config.ts',
+      'vitest.storybook.config.ts',
+      'playwright.config.ts',
+    ],
     languageOptions: {
       parser: tsParser,
       parserOptions: {

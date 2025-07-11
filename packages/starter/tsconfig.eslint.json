@@ -1,4 +1,15 @@
 {
-  "extends": "./tsconfig.base.json",
-  "include": ["src", "tests", "scripts", "vitest.shims.d.ts"]
+  "extends": "./tsconfig.json",
+  "include": [
+    "src/**/*",
+    "tests/**/*",
+    "scripts/**/*",
+    ".storybook/**/*",
+    ".storybook/*.ts",
+    "*.config.ts",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "vitest.storybook.config.ts",
+    "vitest.shims.d.ts"
+  ]
 }
