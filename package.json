@@ -51,7 +51,7 @@
     "validate:static": "pnpm turbo run lint && pnpm turbo run format",
     "validate:quick": "pnpm turbo run lint && pnpm turbo run format && pnpm turbo run test",
     "validate:full": "pnpm turbo run lint && pnpm turbo run format && pnpm turbo run test && pnpm turbo run test:e2e",
-    "validate:precommit": "npx lint-staged && pnpm test",
+    "validate:precommit": "npx lint-staged --config .lintstagedrc.js && pnpm test",
     "prepare": "husky",
     "postinstall": "./scripts/postinstall.sh",
     "sync-root-to-starter": "tsx packages/tools/src/cli-scripts/sync-root-to-starter.mts",
@@ -72,6 +72,7 @@
     "@typescript-eslint/parser": "^8.36.0",
     "dir-compare": "^5.0.0",
     "eslint": "^9.30.1",
+    "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -95,6 +96,7 @@
   "pnpm": {
     "ignoredBuiltDependencies": [
       "@swc/core",
+      "@tailwindcss/oxide",
       "esbuild",
       "msw"
     ],

@@ -1,36 +1,37 @@
 # Logs
-logs
 *.log
+*storybook.log
+lerna-debug.log*
+logs
+npm-debug.log*
 pnpm-debug.log*
 pnpm-error.log*
-npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-lerna-debug.log*
 
 # Dependency directories
-node_modules
 .pnpm-store/
+node_modules
 
 # Build outputs
-dist
-dist-ssr
 *.local
 .turbo/
-packages/cli/template
+dist
+dist-ssr
 my-vite-powerflow-app
+packages/cli/template
 
 # Editor directories and files
-.vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
 !.vscode/tailwind.json
-.idea
 .DS_Store
-*.suo
-*.ntvs*
+.idea
+.vscode/*
 *.njsproj
+*.ntvs*
 *.sln
+*.suo
 *.sw?
 
 # Testing
@@ -61,12 +62,10 @@ stats.html
 # Binary files
 bin/
 
-*storybook.log
-
 # Playwright
+playwright-report.json
 playwright-report/
 test-results/
-playwright-report.json
 
 # Ignore temporary commit message file
 /temp_commit_msg.txt
