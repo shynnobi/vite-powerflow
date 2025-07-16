@@ -6,7 +6,7 @@ export function createSpinner(text: string): Ora {
 }
 
 export function logInfo(msg: string) {
-  console.log(chalk.cyan('▪'), msg);
+  console.log(chalk.cyan('❯'), msg);
 }
 
 export function logSuccess(msg: string) {
