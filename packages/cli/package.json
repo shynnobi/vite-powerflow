@@ -17,7 +17,6 @@
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
     "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix",
-    "validate:precommit": "pnpm format && pnpm lint && pnpm test",
     "clean": "rm -rf dist"
   },
   "keywords": [

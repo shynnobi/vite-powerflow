@@ -30,7 +30,6 @@
     "test:coverage:report": {},
     "format": {},
     "fix": {},
-    "validate:precommit": {},
     "clean": {
       "outputs": []
     }
