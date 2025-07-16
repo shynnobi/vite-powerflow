@@ -1,7 +1,8 @@
-import path from 'path';
-import { getMonorepoRoot } from '../utils/getMonorepoRoot.js';
 import fs from 'fs-extra';
-import { copyConfigFile, copyConfigFolder } from '../utils/copyUtils.js';
+import path from 'path';
+
+import { copyConfigFile, copyConfigFolder } from '@/shared/copyUtils';
+import { getMonorepoRoot } from '@/shared/getMonorepoRoot';
 
 const configFolders = ['.cursor', '.devcontainer', '.github', '.husky', '.vscode'];
 

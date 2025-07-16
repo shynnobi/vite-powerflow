@@ -1,13 +1,16 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "composite": true,
     "outDir": "dist",
-    "rootDir": "src",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "jsx": "react-jsx",
+    "baseUrl": ".",
     "paths": {
-      "@tools/*": ["../tools/dist/*"]
+      "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"],
-  "references": [{ "path": "../tools" }]
+  "include": ["src/**/*", "src/index.ts", "types/*"],
+  "exclude": ["dist", "node_modules", "template"]
 }

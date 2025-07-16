@@ -2,6 +2,18 @@ import js from '@eslint/js';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 
+const nodeGlobals = {
+  process: 'readonly',
+  console: 'readonly',
+  __dirname: 'readonly',
+  __filename: 'readonly',
+  Buffer: 'readonly',
+  global: 'readonly',
+  module: 'readonly',
+  require: 'readonly',
+  exports: 'readonly',
+};
+
 export default [
   {
     ignores: [
@@ -15,20 +27,22 @@ export default [
     ],
   },
   js.configs.recommended,
-  // ESLint configuration overrides for TypeScript files (*.ts, *.tsx)
+  // ESLint configuration for JavaScript files (Node.js, all extensions)
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ['**/*.js', '**/*.mjs', '**/*.cjs'],
+    languageOptions: {
+      globals: nodeGlobals,
+    },
+  },
+  // ESLint configuration for TypeScript files (Node.js)
+  {
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
         projectService: true,
       },
-      globals: {
-        process: 'readonly',
-        console: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-      },
+      globals: nodeGlobals,
     },
     plugins: {
       '@typescript-eslint': tsPlugin,

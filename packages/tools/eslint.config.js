@@ -2,35 +2,49 @@ import js from '@eslint/js';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 
+const nodeGlobals = {
+  process: 'readonly',
+  console: 'readonly',
+  __dirname: 'readonly',
+  __filename: 'readonly',
+  Buffer: 'readonly',
+  global: 'readonly',
+  module: 'readonly',
+  require: 'readonly',
+  exports: 'readonly',
+};
+
 export default [
   {
-    ignores: ['dist/**', 'node_modules/**', 'coverage/**', '.turbo/**', 'vitest.config.ts'],
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+      'coverage/**',
+      '.turbo/**',
+      'vitest.config.ts',
+      '*.config.ts',
+      '*.config.js',
+    ],
   },
   js.configs.recommended,
-  // ESLint configuration overrides for TypeScript files (*.ts, *.tsx)
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ['**/*.js', '**/*.mjs', '**/*.cjs'],
+    languageOptions: {
+      globals: nodeGlobals,
+    },
+  },
+  {
+    files: ['**/*.ts', '**/*.tsx', '**/*.mtx'],
     languageOptions: {
       parser: tsParser,
-      parserOptions: {
-        projectService: true,
-      },
-      globals: {
-        process: 'readonly',
-        console: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-      },
+      globals: nodeGlobals,
     },
     plugins: {
       '@typescript-eslint': tsPlugin,
     },
     rules: {
-      ...tsPlugin.configs.recommended.rules,
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-non-null-assertion': 'warn',
     },
   },

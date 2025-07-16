@@ -1,4 +1,17 @@
 {
-  "files": [],
-  "references": [{ "path": "./packages/starter" }]
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "types": ["vitest/globals"]
+  },
+  "references": [
+    {
+      "path": "packages/cli"
+    },
+    {
+      "path": "packages/example-utils"
+    },
+    {
+      "path": "packages/tools"
+    }
+  ]
 }

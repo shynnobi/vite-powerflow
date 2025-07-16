@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+http://github.com/shynnobi/vite-powerflow.git"
+    "url": "https://github.com/shynnobi/vite-powerflow.git"
   },
   "homepage": "http://github.com/shynnobi/vite-powerflow#readme",
   "bugs": {
@@ -38,40 +38,56 @@
   "type": "module",
   "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad",
   "scripts": {
-    "test": "pnpm turbo run test",
-    "test:e2e": "pnpm turbo run test:e2e",
-    "test:all": "pnpm turbo run test && pnpm turbo run test:e2e",
-    "test:coverage": "pnpm turbo run test:coverage",
-    "test:coverage:report": "pnpm turbo run test:coverage:report",
-    "lint": "pnpm turbo run lint",
-    "lint:fix": "pnpm turbo run lint:fix",
-    "format": "pnpm turbo run format",
-    "format:fix": "pnpm turbo run format:fix",
-    "fix": "pnpm turbo run fix",
-    "validate:static": "pnpm turbo run lint && pnpm turbo run format",
-    "validate:quick": "pnpm turbo run lint && pnpm turbo run format && pnpm turbo run test",
-    "validate:full": "pnpm turbo run lint && pnpm turbo run format && pnpm turbo run test && pnpm turbo run test:e2e",
-    "validate:precommit": "npx lint-staged --config .lintstagedrc.js && pnpm test",
+    "clean": "pnpm -r exec rm -rf dist",
+    "generate:aliases": "pnpm --filter @vite-powerflow/tools generate:aliases",
+    "build": "npx turbo run build",
+    "test": "npx turbo run test",
+    "test:e2e": "npx turbo run test:e2e",
+    "test:all": "npx turbo run test && npx turbo run test:e2e",
+    "test:coverage": "npx turbo run test:coverage",
+    "test:coverage:report": "npx turbo run test:coverage:report",
+    "lint": "npx turbo run lint",
+    "lint:fix": "npx turbo run lint:fix",
+    "format": "npx turbo run format",
+    "format:fix": "npx turbo run format:fix",
+    "fix": "npx turbo run fix",
+    "validate:static": "npx turbo run lint && npx turbo run format",
+    "validate:quick": "npx turbo run lint && npx turbo run format && npx turbo run test",
+    "validate:full": "npx turbo run lint && npx turbo run format && npx turbo run test && npx turbo run test:e2e",
+    "validate:precommit": "npx lint-staged --config .lintstagedrc.cjs && pnpm test",
     "prepare": "husky",
     "postinstall": "./scripts/postinstall.sh",
-    "sync-root-to-starter": "tsx packages/tools/src/cli-scripts/sync-root-to-starter.mts",
-    "sync-starter-to-cli": "tsx packages/tools/src/cli-scripts/sync-starter-to-template.mts",
-    "sync-all": "pnpm sync-root-to-starter && pnpm sync-starter-to-cli",
     "cli:build": "pnpm --filter @vite-powerflow/create build",
     "cli:start": "node packages/cli/dist/index.js",
     "cli:buista": "pnpm cli:build && node packages/cli/dist/index.js",
+    "cli:test": "tsx packages/tools/src/cli-scripts/test-cli.mts",
+    "predev": "pnpm gen-aliases",
     "sta:dev": "pnpm -filter @vite-powerflow/starter dev",
-    "sta:storybook": "pnpm --filter @vite-powerflow/starter storybook"
+    "sta:storybook": "pnpm --filter @vite-powerflow/starter storybook",
+    "sync:starter-to-template": "pnpm --filter @vite-powerflow/tools sync:starter-to-template",
+    "cli:sbt": "pnpm sync:starter-to-template && pnpm --filter @vite-powerflow/create build && pnpm cli:test",
+    "lint:staged": "turbo run lint --filter=...[HEAD^]",
+    "format:staged": "turbo run format --filter=...[HEAD^]"
+  },
+  "dependencies": {
+    "commander": "^14.0.0",
+    "enquirer": "^2.4.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.0.0"
   },
   "devDependencies": {
+    "@awalgawe/esbuild-typescript-paths-plugin": "^1.0.1",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.30.1",
+    "@tailwindcss/vite": "^4.1.11",
     "@typescript-eslint/eslint-plugin": "^8.36.0",
     "@typescript-eslint/parser": "^8.36.0",
+    "add": "^2.0.6",
     "dir-compare": "^5.0.0",
-    "eslint": "^9.30.1",
+    "eslint": "^9.31.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
@@ -84,6 +100,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
     "listr2": "^8.3.3",
+    "pnpm": "^10.13.1",
     "prettier": "^3.6.2",
     "tmp-promise": "^3.0.3",
     "ts-node": "^10.9.2",
@@ -99,10 +116,6 @@
       "@tailwindcss/oxide",
       "esbuild",
       "msw"
-    ],
-    "overrides": {
-      "rollup": "npm:@rollup/wasm-node",
-      "esbuild": "npm:esbuild-wasm@latest"
-    }
+    ]
   }
 }

@@ -4,13 +4,17 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsx src/build.ts",
     "lint": "eslint . --ext ts,tsx,js,jsx",
     "lint:fix": "eslint . --ext ts,tsx,js,jsx --fix",
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
     "test": "vitest run",
-    "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix"
+    "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix",
+    "clean": "rm -rf dist",
+    "sync:starter-to-template": "tsx -r tsconfig-paths/register src/cli-scripts/sync-starter-to-template.mts",
+    "test:cli": "node ./src/cli-scripts/test-cli.mjs",
+    "generate:aliases": "tsx src/monorepo-scripts/generate-vite-aliases.mjs"
   },
   "keywords": [
     "cli",
@@ -26,14 +30,25 @@
   "license": "MIT",
   "packageManager": "pnpm@10.6.5",
   "devDependencies": {
+    "@awalgawe/esbuild-typescript-paths-plugin": "^1.0.1",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
+    "@esbuild-plugins/tsconfig-paths": "^0.1.2",
     "@types/fs-extra": "^11.0.4",
     "@types/inquirer": "^9.0.8",
     "@types/node": "^22.15.33",
+    "esbuild": "^0.25.6",
     "fs-extra": "^11.3.0",
     "tmp-promise": "^3.0.3",
     "vitest": "^1.0.0"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
   "dependencies": {
     "chalk": "^5.4.1",

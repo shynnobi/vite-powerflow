@@ -7,17 +7,18 @@
     "create": "dist/index.js"
   },
   "scripts": {
-    "prebuild": "pnpm --workspace-root sync-starter-to-cli",
-    "build": "rm -rf dist && tsc && mkdir -p dist && cp -r template dist/template",
+    "build": "node build.js && mkdir -p dist && cp -r template dist/template",
+    "build:tsc": "rm -rf dist && tsc && mkdir -p dist && cp -r template dist/template",
     "dev": "tsc -w",
-    "start": "node -r tsconfig-paths/register dist/index.js",
+    "start": "node dist/index.js",
     "test": "vitest run",
     "lint": "eslint . --ext ts,tsx,js,jsx",
     "lint:fix": "eslint . --ext ts,tsx,js,jsx --fix",
-    "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix",
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
-    "validate:precommit": "pnpm format && pnpm lint && pnpm test"
+    "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix",
+    "validate:precommit": "pnpm format && pnpm lint && pnpm test",
+    "clean": "rm -rf dist"
   },
   "keywords": [
     "cli",
@@ -38,6 +39,7 @@
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.15.33",
     "@types/validator": "^13.15.2",
+    "esbuild": "npm:esbuild-wasm@^0.25.6",
     "fs-extra": "^11.3.0",
     "tmp-promise": "^3.0.3",
     "vitest": "^1.0.0"
@@ -45,6 +47,7 @@
   "dependencies": {
     "@sindresorhus/slugify": "^2.2.1",
     "@vite-powerflow/tools": "workspace:*",
+    "@vite-powerflow/example-utils": "workspace:*",
     "chalk": "^5.4.1",
     "commander": "^14.0.0",
     "enquirer": "^2.4.1",
@@ -53,5 +56,7 @@
     "simple-git": "^3.28.0",
     "tsconfig-paths": "^4.2.0",
     "validator": "^13.15.15"
-  }
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts"
 }

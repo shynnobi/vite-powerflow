@@ -1,10 +1,11 @@
 #!/usr/bin/env node
+import { logError } from '@vite-powerflow/tools';
 import chalk from 'chalk';
 import { Command } from 'commander';
 import fs from 'fs/promises';
 import path from 'path';
 
-import { createProject, spinner } from './commands/create.js';
+import { createProject } from './commands/create.js';
 import { directoryExists } from './utils/fs-utils.js';
 import { promptProjectName } from './utils/prompt-ui.js';
 import { safePackageName } from './utils/safe-package-name.js';
@@ -13,15 +14,13 @@ let currentProjectPath: string | null = null;
 let isCleaningUp = false;
 
 process.on('SIGINT', () => {
-  console.log('\n' + chalk.yellow('Operation cancelled.'));
+  logError('Operation cancelled.');
   process.exit(0);
 });
 
 async function cleanup() {
   if (isCleaningUp) return;
   isCleaningUp = true;
-
-  spinner.stop();
 
   if (currentProjectPath) {
     try {
@@ -31,7 +30,7 @@ async function cleanup() {
     }
   }
 
-  console.log(chalk.red('\n✖ Operation cancelled'));
+  logError('Operation cancelled');
   process.exit(0);
 }
 
@@ -69,7 +68,7 @@ async function init() {
 
     // Loop to re-prompt until the directory does not already exist
     while (await directoryExists(projectPath)) {
-      console.error(chalk.red(`✘ Error: Directory "${packageName}" already exists.`));
+      console.error(chalk.red(`✘ Error: Directory already exists, choose another name.`));
       projectName = await promptProjectName();
       packageName = safePackageName(projectName);
       projectPath = path.join(process.cwd(), packageName);

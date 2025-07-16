@@ -1,0 +1,28 @@
+{
+  "name": "@vite-powerflow/example-utils",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "build": "tsx src/build.ts",
+    "clean": "rm -rf dist",
+    "lint": "eslint . --ext ts,tsx,js,jsx",
+    "lint:fix": "eslint . --ext ts,tsx,js,jsx --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write ."
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "dependencies": {
+    "@vite-powerflow/tools": "workspace:*"
+  },
+  "devDependencies": {
+    "@awalgawe/esbuild-typescript-paths-plugin": "^1.0.1",
+    "esbuild": "^0.25.6"
+  }
+}

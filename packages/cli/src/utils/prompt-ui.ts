@@ -2,26 +2,26 @@ import chalk from 'chalk';
 import { simpleGit } from 'simple-git';
 import validator from 'validator';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type PromptConstructor = new (options: any) => any;
+type PromptConstructor = new (options: Record<string, unknown>) => { run: () => Promise<unknown> };
 
 export async function promptProjectName(defaultName?: string): Promise<string> {
   if (defaultName) return defaultName;
   const { default: InputPrompt } = await import('enquirer/lib/prompts/input.js');
-  return await new (InputPrompt as unknown as PromptConstructor)({
+  // Dynamically cast the constructor to satisfy TypeScript
+  return (await new (InputPrompt as unknown as PromptConstructor)({
     message: 'Project name:',
     initial: 'my-vite-powerflow-app',
     // No validation: allow any input for project name
-  }).run();
+  }).run()) as string;
 }
 
 export async function promptGit(defaultGit?: boolean): Promise<boolean> {
   if (typeof defaultGit === 'boolean') return defaultGit;
   const { default: ConfirmPrompt } = await import('enquirer/lib/prompts/confirm.js');
-  return await new (ConfirmPrompt as unknown as PromptConstructor)({
+  return (await new (ConfirmPrompt as unknown as PromptConstructor)({
     message: 'Initialize Git?',
     initial: true,
-  }).run();
+  }).run()) as boolean;
 }
 
 // Optional parameters added
@@ -79,7 +79,7 @@ export async function promptGitIdentity(
   // If the user refuses the global identity or if no global identity is found,
   // prompt for both user.name and user.email manually (with validation to prevent empty values)
   const { default: InputPrompt } = await import('enquirer/lib/prompts/input.js');
-  userName = await new (InputPrompt as unknown as PromptConstructor)({
+  userName = (await new (InputPrompt as unknown as PromptConstructor)({
     message: 'Git user.name (for commits):',
     initial: userName || '',
     validate: (input: string) => {
@@ -88,8 +88,8 @@ export async function promptGitIdentity(
       if (/[^-\w\s.]/.test(input)) return 'Name contains invalid characters';
       return true;
     },
-  }).run();
-  userEmail = await new (InputPrompt as unknown as PromptConstructor)({
+  }).run()) as string;
+  userEmail = (await new (InputPrompt as unknown as PromptConstructor)({
     message: 'Git user.email (for commits):',
     initial: userEmail || '',
     validate: (input: string) => {
@@ -98,6 +98,6 @@ export async function promptGitIdentity(
       if (!validator.isEmail(input)) return 'Invalid email format';
       return true;
     },
-  }).run();
+  }).run()) as string;
   return { gitUserName: userName, gitUserEmail: userEmail };
 }

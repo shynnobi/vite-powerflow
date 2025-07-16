@@ -1,8 +1,20 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
-    "build": {
+    "generate:aliases": {
       "dependsOn": ["^build"],
+      "outputs": ["scripts/generated-aliases/**"]
+    },
+    "@vite-powerflow/tools#generate:aliases": {
+      "outputs": [
+        "../../tsconfig.base.json",
+        "../../vite.aliases.json",
+        "../../tsconfig.json",
+        "../../vitest.config.ts"
+      ]
+    },
+    "build": {
+      "dependsOn": ["@vite-powerflow/tools#generate:aliases", "^build"],
       "outputs": ["dist/**", "src/**/*.d.ts"]
     },
     "dev": {
@@ -18,6 +30,9 @@
     "test:coverage:report": {},
     "format": {},
     "fix": {},
-    "validate:precommit": {}
+    "validate:precommit": {},
+    "clean": {
+      "outputs": []
+    }
   }
 }
