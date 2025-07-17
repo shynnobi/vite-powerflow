@@ -6,8 +6,18 @@ on:
   pull_request:
 
 jobs:
+  clean-pnpm:
+    name: Clean global pnpm install and cache
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove pnpm install dir
+        run: rm -rf /home/runner/setup-pnpm || true
+      - name: Remove pnpm global cache
+        run: rm -rf ~/.pnpm-store || true
+
   eslint:
     name: ESLint
+    needs: clean-pnpm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,14 +31,6 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10.6.5
-
-      - name: Clean pnpm cache
-        run: pnpm store prune || true
-
-      - name: Check pnpm version and path
-        run: |
-          which pnpm
-          pnpm --version
 
       - name: Get pnpm store directory
         id: pnpm-cache
@@ -52,6 +54,7 @@ jobs:
 
   prettier:
     name: Prettier
+    needs: clean-pnpm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -65,14 +68,6 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10.6.5
-
-      - name: Clean pnpm cache
-        run: pnpm store prune || true
-
-      - name: Check pnpm version and path
-        run: |
-          which pnpm
-          pnpm --version
 
       - name: Get pnpm store directory
         id: pnpm-cache
@@ -96,6 +91,7 @@ jobs:
 
   typescript:
     name: TypeScript
+    needs: clean-pnpm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -109,14 +105,6 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10.6.5
-
-      - name: Clean pnpm cache
-        run: pnpm store prune || true
-
-      - name: Check pnpm version and path
-        run: |
-          which pnpm
-          pnpm --version
 
       - name: Get pnpm store directory
         id: pnpm-cache
@@ -154,6 +142,7 @@ jobs:
 
   root-scripts-quality:
     name: Root Scripts Quality
+    needs: clean-pnpm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -167,14 +156,6 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10.6.5
-
-      - name: Clean pnpm cache
-        run: pnpm store prune || true
-
-      - name: Check pnpm version and path
-        run: |
-          which pnpm
-          pnpm --version
 
       - name: Get pnpm store directory
         id: pnpm-cache
@@ -212,14 +193,6 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10.6.5
-
-      - name: Clean pnpm cache
-        run: pnpm store prune || true
-
-      - name: Check pnpm version and path
-        run: |
-          which pnpm
-          pnpm --version
 
       - name: Get pnpm store directory
         id: pnpm-cache
