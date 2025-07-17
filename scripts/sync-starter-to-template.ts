@@ -1,13 +1,18 @@
 import fs from 'fs-extra';
 import { Ora } from 'ora';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
 
 import { createRootSpinner, logRootError } from './monorepo-logger';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 (async () => {
   // 1. Setup source and destination paths
-  const starterSrc = path.resolve('apps/starter');
-  const templateDest = path.resolve('packages/cli/template');
+  const root = path.resolve(__dirname, '..');
+  const starterSrc = path.join(root, 'apps/starter');
+  const templateDest = path.join(root, 'packages/cli/template');
 
   // 2. Create spinner for user feedback
   const spinner = createRootSpinner(

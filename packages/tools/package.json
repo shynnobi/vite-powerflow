@@ -14,7 +14,7 @@
     "type-check": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
     "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix",
-    "sync:starter-to-template": "tsx src/cli-scripts/sync-starter-to-template.mts"
+    "sync:starter-to-template": "tsx ../../scripts/sync-starter-to-template.ts"
   },
   "keywords": [
     "cli",
