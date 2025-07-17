@@ -5,7 +5,8 @@
     "outDir": "dist",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "types": ["vitest/globals"]
   },
   "include": ["src/**/*", "src/index.ts", "types/*", "build.ts"],
   "exclude": ["dist", "node_modules", "template"],
