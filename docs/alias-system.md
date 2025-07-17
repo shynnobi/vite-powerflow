@@ -20,7 +20,7 @@ Our monorepo uses a consistent alias system to eliminate relative paths and enab
 ### 2. Inter-Package Aliases (`@vite-powerflow/*`)
 
 **Usage:** Functions from other packages in the monorepo
-**Example:** `import { exampleFunction } from '@vite-powerflow/example-utils';`
+**Example:** `import { exampleFunction } from '@vite-powerflow/example-package';`
 
 **Configuration:**
 
@@ -57,7 +57,7 @@ Our monorepo uses a consistent alias system to eliminate relative paths and enab
 ```
 Monorepo
 ├── packages/
-│   ├── example-utils/
+│   ├── example-package/
 │   │   ├── tsconfig.json (internal aliases: @/*)
 │   │   ├── build.js (esbuild with alias resolution)
 │   │   └── src/
@@ -218,7 +218,7 @@ const __dirname = path.dirname(__filename);
 ```json
 {
   "dependencies": {
-    "@vite-powerflow/example-utils": "workspace:*"
+    "@vite-powerflow/example-package": "workspace:*"
   }
 }
 ```
@@ -289,7 +289,7 @@ export { add } from './utils/math.js';
 {
   "compilerOptions": {
     "paths": {
-      "@vite-powerflow/example-utils": ["packages/example-utils/dist/index.js"],
+      "@vite-powerflow/example-package": ["packages/example-package/dist/index.js"],
       "@vite-powerflow/tools": ["packages/tools/dist/index.js"]
     }
   }
@@ -330,7 +330,7 @@ export function myFunction() {
 import { appUtil } from '@/utils/logger';
 
 // Inter-package alias (resolved by Vite)
-import { packageUtil } from '@vite-powerflow/example-utils';
+import { packageUtil } from '@vite-powerflow/example-package';
 
 export function appFunction() {
   appUtil();
@@ -400,7 +400,7 @@ export function appFunction() {
 
 1. Check that all packages are built
 2. Check TypeScript configuration
-3. Run `pnpm gen-aliases` again
+3. Run `pnpm generate:aliases` again
 4. For packages: ensure esbuild is installed and `build.js` is configured
 
 ### Package build fails with aliases
