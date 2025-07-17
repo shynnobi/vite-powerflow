@@ -64,10 +64,14 @@ function getInternalPackages(dir: string, appsDir: string): InternalPackage[] {
   if (!tsconfig.compilerOptions) tsconfig.compilerOptions = {};
   if (!tsconfig.compilerOptions.paths) tsconfig.compilerOptions.paths = {};
 
-  // 3.1. Remove old @vite-powerflow/* path aliases
+  // 3.1. Remove old path aliases for all internal packages and apps
   Object.keys(tsconfig.compilerOptions.paths).forEach((key: string) => {
-    if (key.startsWith('@vite-powerflow/')) {
-      delete tsconfig.compilerOptions.paths[key];
+    const paths = tsconfig.compilerOptions.paths[key];
+    if (Array.isArray(paths) && paths.length > 0) {
+      const firstPath = paths[0];
+      if (firstPath.startsWith('packages/') || firstPath.startsWith('apps/')) {
+        delete tsconfig.compilerOptions.paths[key];
+      }
     }
   });
 

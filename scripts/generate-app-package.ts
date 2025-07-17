@@ -9,16 +9,32 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 function usageAndExit() {
-  console.error('Usage: pnpm generate:app <app-name>');
+  console.error('Usage: pnpm generate:<type> <name>');
+  console.error('  <type>: app | package');
   process.exit(1);
 }
 
-const [, , appName] = process.argv;
-if (!appName || !/^[a-zA-Z0-9-_]+$/.test(appName)) usageAndExit();
+const [, , type, name] = process.argv;
+if (!type || !name || !/^(app|package)$/.test(type) || !/^[a-zA-Z0-9-_]+$/.test(name))
+  usageAndExit();
 
 const root = path.resolve(__dirname, '..');
-const templateDir = path.join(root, 'templates', 'example-app');
-const destDir = path.join(root, 'apps', appName);
+const templateDir = path.join(
+  root,
+  'templates',
+  type === 'app' ? 'example-app' : 'example-package'
+);
+const destDir = path.join(root, type === 'app' ? 'apps' : 'packages', name);
+const templateName = type === 'app' ? 'example-app' : 'example-package';
+
+// For packages, enforce the @vite-powerflow scope in package.json
+function getScopedPackageName(name: string): string {
+  if (type === 'package') {
+    return name.startsWith('@vite-powerflow/') ? name : `@vite-powerflow/${name}`;
+  }
+  return name;
+}
+const scopedName = getScopedPackageName(name);
 
 if (fs.existsSync(destDir)) {
   console.error(`Error: ${destDir} already exists.`);
@@ -57,30 +73,30 @@ function walkFiles(dir: string, cb: (file: string) => void) {
   }
 }
 
-// 1. Copy the template
 type LogFn = (msg: string) => void;
-const log: LogFn = msg => console.log(`\x1b[36m[generate:app]\x1b[0m ${msg}`);
+const log: LogFn = msg => console.log(`\x1b[36m[generate:${type}]\x1b[0m ${msg}`);
 
-log(`Copying template to apps/${appName}...`);
+log(`Copying template to ${type === 'app' ? 'apps' : 'packages'}/${name}...`);
 copyDir(templateDir, destDir);
 
-// 2. Replace 'example-app' with the new name in all files
-log('Replacing occurrences of "example-app"...');
-walkFiles(destDir, file => replaceInFile(file, 'example-app', appName));
+log(`Replacing occurrences of "${templateName}"...`);
+walkFiles(destDir, file => replaceInFile(file, templateName, name));
 
-// 3. Update the "name" field in package.json
 const pkgJsonPath = path.join(destDir, 'package.json');
 if (fs.existsSync(pkgJsonPath)) {
   const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf-8'));
-  pkg.name = appName;
+  pkg.name = scopedName;
   fs.writeFileSync(pkgJsonPath, JSON.stringify(pkg, null, 2));
   log('Updated package.json name field.');
 }
 
-// 4. Run build and generate:aliases
-log(`Running pnpm --filter ${appName}... build...`);
-execSync(`pnpm --filter ${appName}... build`, { stdio: 'inherit', cwd: root });
 log('Running pnpm generate:aliases...');
 execSync('pnpm generate:aliases', { stdio: 'inherit', cwd: root });
 
-log(`App ${appName} generated successfully!`);
+log(`Running pnpm --filter ${name}... build...`);
+execSync(`pnpm --filter ${name}... build`, { stdio: 'inherit', cwd: root });
+
+log(`${type.charAt(0).toUpperCase() + type.slice(1)} ${name} generated successfully!`);
+
+log('Running pnpm install...');
+execSync('pnpm install', { stdio: 'inherit', cwd: root });
