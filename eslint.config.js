@@ -1,5 +1,54 @@
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import tsParser from '@typescript-eslint/parser';
+import importPlugin from 'eslint-plugin-import';
+
+// Common settings and plugins
+const commonSettings = {
+  'import/resolver': {
+    node: {
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.svg', '.png', '.jpg'],
+    },
+  },
+};
+
+const commonPlugins = {
+  'simple-import-sort': simpleImportSort,
+  import: importPlugin,
+};
+
+const commonRules = {
+  'simple-import-sort/imports': [
+    'error',
+    {
+      groups: [
+        // React and external packages
+        ['^react', '^@?\\w'],
+        // Internal imports with alias (@)
+        ['^@\\w'],
+        // Relative imports
+        ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
+        // Style imports
+        ['^.+\\.css$'],
+      ],
+    },
+  ],
+  'simple-import-sort/exports': 'error',
+  'padding-line-between-statements': [
+    'error',
+    { blankLine: 'always', prev: 'import', next: '*' },
+    { blankLine: 'any', prev: 'import', next: 'import' },
+  ],
+  'import/no-unresolved': 'error',
+};
+
+const commonGlobals = {
+  process: 'readonly',
+  require: 'readonly',
+  module: 'readonly',
+  __dirname: 'readonly',
+  __filename: 'readonly',
+  console: 'readonly',
+};
 
 export default [
   {
@@ -28,43 +77,15 @@ export default [
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',
-      globals: {
-        process: 'readonly',
-        require: 'readonly',
-        module: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        console: 'readonly',
-      },
+      globals: commonGlobals,
     },
-    plugins: {
-      'simple-import-sort': simpleImportSort,
-    },
+    plugins: commonPlugins,
     rules: {
+      ...commonRules,
       'no-unused-vars': 'error',
       'no-undef': 'error',
-      'simple-import-sort/imports': [
-        'error',
-        {
-          groups: [
-            // React and external packages
-            ['^react', '^@?\\w'],
-            // Internal imports with alias (@)
-            ['^@\\w'],
-            // Relative imports
-            ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
-            // Style imports
-            ['^.+\\.css$'],
-          ],
-        },
-      ],
-      'simple-import-sort/exports': 'error',
-      'padding-line-between-statements': [
-        'error',
-        { blankLine: 'always', prev: 'import', next: '*' },
-        { blankLine: 'any', prev: 'import', next: 'import' },
-      ],
     },
+    settings: commonSettings,
   },
   // Configuration for TypeScript files (avec TypeScript parser)
   {
@@ -77,40 +98,10 @@ export default [
         ecmaFeatures: { jsx: true },
         projectService: true,
       },
-      globals: {
-        process: 'readonly',
-        require: 'readonly',
-        module: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        console: 'readonly',
-      },
+      globals: commonGlobals,
     },
-    plugins: {
-      'simple-import-sort': simpleImportSort,
-    },
-    rules: {
-      'simple-import-sort/imports': [
-        'error',
-        {
-          groups: [
-            // React and external packages
-            ['^react', '^@?\\w'],
-            // Internal imports with alias (@)
-            ['^@\\w'],
-            // Relative imports
-            ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
-            // Style imports
-            ['^.+\\.css$'],
-          ],
-        },
-      ],
-      'simple-import-sort/exports': 'error',
-      'padding-line-between-statements': [
-        'error',
-        { blankLine: 'always', prev: 'import', next: '*' },
-        { blankLine: 'any', prev: 'import', next: 'import' },
-      ],
-    },
+    plugins: commonPlugins,
+    rules: commonRules,
+    settings: commonSettings,
   },
 ];

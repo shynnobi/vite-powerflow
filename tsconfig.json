@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
     "jsx": "react-jsx",
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals"],
+    "module": "es2022",
+    "moduleResolution": "bundler"
   },
   "references": [
     {

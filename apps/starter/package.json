@@ -30,8 +30,7 @@
   "packageManager": "pnpm@10.6.5",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --declaration --emitDeclarationOnly --outDir dist-types && vite build && cp -r dist-types/* dist/ && rm -rf dist-types",
-    "build:types": "tsc -p tsconfig.types.json",
+    "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
     "test:e2e": "node ./scripts/run-end-to-end-tests.js",

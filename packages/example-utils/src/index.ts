@@ -1,1 +1,1 @@
-export { exampleFunction, exampleFunctionWithInternalHelper } from './utils/example.js';
+export { exampleFunction, exampleFunctionWithInternalHelper, internalHelper } from './utils';

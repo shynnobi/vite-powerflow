@@ -2,8 +2,8 @@ import fs from 'fs-extra';
 import { Ora } from 'ora';
 import * as path from 'path';
 
-import { getMonorepoRoot } from '@/shared/getMonorepoRoot';
-import { createSpinner, logError } from '@/shared/logger';
+import { getMonorepoRoot } from '../lib/getMonorepoRoot';
+import { createSpinner, logError } from '../lib/logger';
 
 (async () => {
   const monorepoRoot = await getMonorepoRoot();

@@ -3,8 +3,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import { dir as tmpDir } from 'tmp-promise';
 import { describe, expect, it } from 'vitest';
-
-import { getMonorepoRoot } from '@/shared/getMonorepoRoot';
+import { getMonorepoRoot } from '../lib/getMonorepoRoot';
 
 // Unique exclusion list (should match sync-starter-to-template)
 const IGNORED = ['node_modules', '.git', '.DS_Store', 'template', '.turbo'];

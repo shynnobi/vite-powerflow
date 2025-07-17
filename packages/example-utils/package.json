@@ -3,12 +3,17 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "build": "tsx src/build.ts",
+    "generate:barrels": "node ../../scripts/generate-barrels.js",
+    "prebuild": "pnpm run generate:barrels",
+    "build": "pnpm run prebuild && tsx src/build.ts && tsc --emitDeclarationOnly --outDir dist",
     "clean": "rm -rf dist",
     "lint": "eslint . --ext ts,tsx,js,jsx",
     "lint:fix": "eslint . --ext ts,tsx,js,jsx --fix",
     "format": "prettier --check .",
-    "format:fix": "prettier --write ."
+    "format:fix": "prettier --write .",
+    "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -22,7 +27,6 @@
     "@vite-powerflow/tools": "workspace:*"
   },
   "devDependencies": {
-    "@awalgawe/esbuild-typescript-paths-plugin": "^1.0.1",
     "esbuild": "^0.25.6"
   }
 }

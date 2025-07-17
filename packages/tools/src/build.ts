@@ -1,6 +1,5 @@
-import { tsPathsPlugin } from '@awalgawe/esbuild-typescript-paths-plugin';
 import * as esbuild from 'esbuild';
-import { logError, logInfo, logSuccess } from '@/shared/logger';
+import { logInfo, logSuccess, logError } from './lib/logger';
 
 (async () => {
   logInfo('Building @vite-powerflow/tools...');
@@ -12,10 +11,15 @@ import { logError, logInfo, logSuccess } from '@/shared/logger';
       target: 'node18',
       outdir: 'dist',
       format: 'esm',
+      mainFields: ['module', 'main'],
+      conditions: ['import', 'node'],
       external: [],
       sourcemap: true,
       minify: true,
-      plugins: [tsPathsPlugin()],
+      metafile: true,
+      treeShaking: true,
+      keepNames: true,
+      legalComments: 'none',
     })
     .then(() => {
       logSuccess('Build completed for @vite-powerflow/tools!');

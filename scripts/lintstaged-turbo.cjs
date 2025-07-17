@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 
-const { execSync, spawnSync } = require('child_process');
+const { spawnSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
+const { logRootInfo, logRootError } = require('./monorepo-logger.js');
 
 // 1. Get the list of files passed as arguments
 const files = process.argv.slice(2).filter(f => !f.startsWith('-'));
 if (files.length === 0) {
-  console.log('[lintstaged-turbo] No files to process.');
+  logRootInfo('[lintstaged-turbo] No files to process.');
   process.exit(0);
 }
 
@@ -73,7 +74,7 @@ for (const file of files) {
 let hasError = false;
 const impactedWorkspaces = Object.keys(wsToFiles);
 if (impactedWorkspaces.length) {
-  console.log(`[lintstaged-turbo] Impacted workspaces: ${impactedWorkspaces.join(', ')}`);
+  logRootInfo(`[lintstaged-turbo] Impacted workspaces: ${impactedWorkspaces.join(', ')}`);
   const turboArgs = ['run', 'lint', 'format'];
   for (const ws of impactedWorkspaces) {
     const filterArg = `--filter=${ws}`;
@@ -86,11 +87,11 @@ if (impactedWorkspaces.length) {
 
 // 5. For files outside any workspace, apply prettier and show a warning
 if (filesOutside.length) {
-  console.warn(
+  logRootError(
     '[lintstaged-turbo] Warning: The following files are not part of any workspace and will only be formatted:'
   );
   for (const f of filesOutside) {
-    console.warn('  -', f);
+    logRootError('  -', f);
   }
   const prettierResult = spawnSync('npx', ['prettier', '--write', ...filesOutside], {
     stdio: 'inherit',

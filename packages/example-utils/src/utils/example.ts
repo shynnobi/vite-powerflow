@@ -1,4 +1,4 @@
-import { internalHelper } from './helper.js';
+import { internalHelper } from './helper';
 
 export function exampleFunction(name: string): string {
   console.log(`Calling exampleFunction with: ${name}`);

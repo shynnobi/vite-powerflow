@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "allowJs": true
+  },
+  "include": [
+    "apps/*/*.config.ts",
+    "apps/*/vite.config.ts",
+    "packages/*/*.config.ts",
+    "packages/*/vite.config.ts",
+    "*.config.ts",
+    "vite.config.ts"
+  ]
+}
