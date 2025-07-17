@@ -90,12 +90,18 @@ importers:
       fs-extra:
         specifier: ^11.3.0
         version: 11.3.0
+      glob:
+        specifier: ^11.0.3
+        version: 11.0.3
       globals:
         specifier: ^16.3.0
         version: 16.3.0
       husky:
         specifier: ^9.1.7
         version: 9.1.7
+      js-yaml:
+        specifier: ^4.1.0
+        version: 4.1.0
       lint-staged:
         specifier: ^16.1.2
         version: 16.1.2
