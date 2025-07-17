@@ -1,4 +1,4 @@
-# @vite-powerflow/example-utils — Package Template
+# @vite-powerflow/example-package — Package Template
 
 This package is a **template** for creating new shared packages in the Vite Powerflow monorepo. It follows modern best practices: fast builds with **esbuild**, type generation with **TypeScript**, modular structure with **barrels**, and monorepo conventions.
 
@@ -6,7 +6,7 @@ This package is a **template** for creating new shared packages in the Vite Powe
 
 ## 🚀 Quick Checklist to Create a New Package
 
-1. **Copy this folder** into `packages/` and rename it (`example-utils` → `your-new-package`).
+1. **Copy this folder** into `packages/` and rename it (`example-package` → `your-new-package`).
 2. **Update `package.json`**:
    - `name`: `@vite-powerflow/your-new-package`
    - Adjust `description`, `version`, etc.

@@ -1,5 +1,5 @@
 {
-  "name": "@vite-powerflow/example-utils",
+  "name": "@vite-powerflow/example-package",
   "version": "0.0.1",
   "type": "module",
   "scripts": {
