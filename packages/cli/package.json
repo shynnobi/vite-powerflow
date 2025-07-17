@@ -45,7 +45,6 @@
   "dependencies": {
     "@sindresorhus/slugify": "^2.2.1",
     "@vite-powerflow/tools": "workspace:*",
-    "@vite-powerflow/example-utils": "workspace:*",
     "chalk": "^5.4.1",
     "commander": "^14.0.0",
     "enquirer": "^2.4.1",

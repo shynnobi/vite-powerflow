@@ -10,9 +10,6 @@
       "path": "packages/cli"
     },
     {
-      "path": "packages/example-utils"
-    },
-    {
       "path": "packages/tools"
     }
   ]

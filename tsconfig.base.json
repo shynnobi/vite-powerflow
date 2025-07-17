@@ -10,8 +10,6 @@
     "paths": {
       "@vite-powerflow/create": ["packages/cli/dist/index.js"],
       "@vite-powerflow/create/*": ["packages/cli/dist/*"],
-      "@vite-powerflow/example-utils": ["packages/example-utils/dist/index.js"],
-      "@vite-powerflow/example-utils/*": ["packages/example-utils/dist/*"],
       "@vite-powerflow/tools": ["packages/tools/dist/index.js"],
       "@vite-powerflow/tools/*": ["packages/tools/dist/*"]
     }
