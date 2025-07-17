@@ -16,8 +16,7 @@
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
     "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix",
-    "type-check": "tsc --noEmit",
-    "clean": "rm -rf dist"
+    "type-check": "tsc --noEmit"
   },
   "keywords": [
     "cli",

@@ -2,15 +2,13 @@ import fs from 'fs-extra';
 import { Ora } from 'ora';
 import * as path from 'path';
 
-import { getMonorepoRoot } from '../lib/getMonorepoRoot';
-import { createSpinner, logError } from '../lib/logger';
+import { createRootSpinner, logRootError } from './monorepo-logger';
 
 (async () => {
-  const monorepoRoot = await getMonorepoRoot();
-  const starterSrc = path.join(monorepoRoot, 'apps/starter');
-  const templateDest = path.join(monorepoRoot, 'packages/cli/template');
+  const starterSrc = path.resolve('apps/starter');
+  const templateDest = path.resolve('packages/cli/template');
 
-  const spinner = createSpinner(
+  const spinner = createRootSpinner(
     'Synchronizing template from apps/starter/ to packages/cli/template/...'
   );
 
@@ -94,7 +92,7 @@ import { createSpinner, logError } from '../lib/logger';
     spinner.succeed('Template synchronized successfully!');
   } catch (err) {
     spinner.fail('Template synchronization failed!');
-    logError(err instanceof Error ? err.message : String(err));
+    logRootError(err instanceof Error ? err.message : String(err));
     process.exit(1);
   }
 })();

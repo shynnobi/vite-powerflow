@@ -1,9 +1,12 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsx
 
-const { spawnSync } = require('child_process');
-const path = require('path');
-const fs = require('fs');
-const { logRootInfo, logRootError } = require('./monorepo-logger.js');
+import { spawnSync } from 'child_process';
+import fs from 'fs';
+import { globSync } from 'glob';
+import * as yaml from 'js-yaml';
+import path from 'path';
+
+import { logRootError, logRootInfo } from './monorepo-logger';
 
 // 1. Get the list of files passed as arguments
 const files = process.argv.slice(2).filter(f => !f.startsWith('-'));
@@ -13,18 +16,16 @@ if (files.length === 0) {
 }
 
 // 2. Load the list of workspaces from pnpm-workspace.yaml or turbo.json
-function getWorkspaces() {
+function getWorkspaces(): string[] {
   // Try pnpm-workspace.yaml first
-  const yaml = require('js-yaml');
   const wsPath = path.resolve(process.cwd(), 'pnpm-workspace.yaml');
   if (fs.existsSync(wsPath)) {
-    const wsYaml = yaml.load(fs.readFileSync(wsPath, 'utf8'));
-    const globs = wsYaml.packages || [];
+    const wsYaml = yaml.load(fs.readFileSync(wsPath, 'utf8')) as { packages?: string[] };
+    const globs: string[] = wsYaml.packages || [];
     // Expand globs to actual folders
-    const glob = require('glob');
-    let workspaces = [];
+    let workspaces: string[] = [];
     for (const g of globs) {
-      workspaces = workspaces.concat(glob.sync(g, { cwd: process.cwd(), absolute: true }));
+      workspaces = workspaces.concat(globSync(g, { cwd: process.cwd(), absolute: true }));
     }
     // Only keep folders with package.json
     return workspaces.filter(ws => fs.existsSync(path.join(ws, 'package.json')));
@@ -47,7 +48,7 @@ const workspaces = getWorkspaces();
 const workspaceRoots = workspaces.map(ws => path.relative(process.cwd(), ws));
 
 // 3. Map each file to a workspace
-function findWorkspaceForFile(file) {
+function findWorkspaceForFile(file: string): string | null {
   // Find the workspace whose path is a prefix of the file
   const normFile = path.normalize(file);
   for (const ws of workspaceRoots) {
@@ -58,8 +59,8 @@ function findWorkspaceForFile(file) {
   return null;
 }
 
-const wsToFiles = {};
-const filesOutside = [];
+const wsToFiles: Record<string, string[]> = {};
+const filesOutside: string[] = [];
 for (const file of files) {
   const ws = findWorkspaceForFile(file);
   if (ws) {
@@ -91,7 +92,7 @@ if (filesOutside.length) {
     '[lintstaged-turbo] Warning: The following files are not part of any workspace and will only be formatted:'
   );
   for (const f of filesOutside) {
-    logRootError('  -', f);
+    logRootError('  - ' + f);
   }
   const prettierResult = spawnSync('npx', ['prettier', '--write', ...filesOutside], {
     stdio: 'inherit',

@@ -1,47 +1,53 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsx
 
 import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import { logRootError, logRootInfo, logRootSuccess } from './monorepo-logger.js';
+import { logRootError, logRootInfo, logRootSuccess } from './monorepo-logger';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+interface InternalPackage {
+  name: string;
+  path: string;
+  isApp: boolean;
+  projectPath: string;
+}
+
+function getInternalPackages(dir: string, appsDir: string): InternalPackage[] {
+  if (!fs.existsSync(dir)) return [];
+  return fs
+    .readdirSync(dir)
+    .filter(name => fs.statSync(path.join(dir, name)).isDirectory())
+    .map(name => {
+      const pkgJsonPath = path.join(dir, name, 'package.json');
+      if (!fs.existsSync(pkgJsonPath)) return null;
+      const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf-8'));
+      const isApp = dir === appsDir;
+      return {
+        name: pkgJson.name,
+        path: path.join(dir, name, isApp ? 'src/dist' : 'dist'),
+        isApp,
+        projectPath: path.join(dir, name),
+      };
+    })
+    .filter(Boolean) as InternalPackage[];
+}
 
 (async () => {
   const root = path.resolve(__dirname, '..');
   const pkgsDir = path.join(root, 'packages');
   const appsDir = path.join(root, 'apps');
 
-  function getInternalPackages(dir) {
-    if (!fs.existsSync(dir)) return [];
-    return fs
-      .readdirSync(dir)
-      .filter(name => fs.statSync(path.join(dir, name)).isDirectory())
-      .map(name => {
-        const pkgJsonPath = path.join(dir, name, 'package.json');
-        if (!fs.existsSync(pkgJsonPath)) return null;
-        const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf-8'));
-        // Use src as the entry point for apps and 'dist' for packages
-        const isApp = dir === appsDir;
-        return {
-          name: pkgJson.name,
-          path: path.join(dir, name, isApp ? 'src/dist' : 'dist'),
-          isApp,
-          projectPath: path.join(dir, name),
-        };
-      })
-      .filter(Boolean);
-  }
-
-  const pkgs = getInternalPackages(pkgsDir); // Only packages, not apps
+  const pkgs = getInternalPackages(pkgsDir, appsDir);
 
   logRootInfo('Monorepo: Sync aliases and paths...');
 
   // Generate Vite aliases for internal packages only (not apps)
-  const aliases = {};
+  const aliases: Record<string, string> = {};
   pkgs.forEach(pkg => {
     aliases[pkg.name] = pkg.path;
   });
@@ -55,7 +61,7 @@ const __dirname = path.dirname(__filename);
   if (!tsconfig.compilerOptions.paths) tsconfig.compilerOptions.paths = {};
 
   // Remove old @vite-powerflow/* path aliases
-  Object.keys(tsconfig.compilerOptions.paths).forEach(key => {
+  Object.keys(tsconfig.compilerOptions.paths).forEach((key: string) => {
     if (key.startsWith('@vite-powerflow/')) {
       delete tsconfig.compilerOptions.paths[key];
     }
@@ -83,14 +89,13 @@ const __dirname = path.dirname(__filename);
   // Update or create vitest.config.ts so its test.projects array lists all internal packages and apps on a single line
   const vitestConfigPath = path.join(root, 'vitest.config.ts');
   const allProjects = [
-    ...getInternalPackages(pkgsDir).map(
+    ...getInternalPackages(pkgsDir, appsDir).map(
       pkg => './' + path.relative(root, pkg.projectPath).replace(/\\/g, '/')
     ),
-    ...getInternalPackages(appsDir).map(
+    ...getInternalPackages(appsDir, appsDir).map(
       app => './' + path.relative(root, app.projectPath).replace(/\\/g, '/')
     ),
   ];
-  // Always overwrite vitest.config.ts with the latest projects list
   const projectsList = allProjects.map(p => `      ${p}`).join(',\n');
   const vitestConfig = `// AUTO-GENERATED FILE. DO NOT EDIT MANUALLY.
 import { defineConfig } from 'vitest/config';

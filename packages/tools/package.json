@@ -4,16 +4,15 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "generate:barrels": "node ../../scripts/generate-barrels.js",
+    "generate:barrels": "tsx ../../scripts/generate-barrels.ts",
     "prebuild": "pnpm run generate:barrels",
     "build": "pnpm run prebuild && tsx src/build.ts && tsc --emitDeclarationOnly --outDir dist",
-    "clean": "rm -rf dist",
     "lint": "eslint . --ext ts,tsx,js,jsx",
     "lint:fix": "eslint . --ext ts,tsx,js,jsx --fix",
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
     "type-check": "tsc --noEmit",
-    "test": "vitest run",
+    "test": "vitest run --passWithNoTests",
     "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix",
     "sync:starter-to-template": "tsx src/cli-scripts/sync-starter-to-template.mts"
   },

@@ -116,7 +116,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       await projectGit.commit('chore: initial commit');
     }
 
-    spinner.succeed(`Project created successfully: ${projectPath}`);
+    spinner.succeed(`Project created at: ${projectPath}`);
   } catch (error) {
     spinner.fail('Failed to create project');
     logError(error instanceof Error ? error.message : String(error));
