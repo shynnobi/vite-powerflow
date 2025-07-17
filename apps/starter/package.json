@@ -47,6 +47,7 @@
     "format:fix": "prettier --write .",
     "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix",
     "type-check": "tsc --noEmit",
+    "lintstaged:dry": "HUSKY=0 lint-staged --allow-empty && pnpm test",
     "validate:static": "pnpm format && pnpm lint && pnpm type-check",
     "validate:quick": "pnpm validate:static && pnpm test",
     "validate:full": "pnpm validate:static && pnpm test && pnpm test:e2e",

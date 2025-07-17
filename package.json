@@ -72,7 +72,7 @@
     "lint:root-scripts": "eslint scripts --ext .ts",
     "typecheck:root-scripts": "tsc --noEmit --project tsconfig.scripts.json",
     "validate:root-scripts": "run-s format:root-scripts lint:root-scripts typecheck:root-scripts",
-    "lintstaged:dry": "HUSKY=0 lint-staged --allow-empty"
+    "lintstaged:dry": "HUSKY=0 lint-staged --allow-empty && pnpm test"
   },
   "dependencies": {
     "commander": "^14.0.0",
