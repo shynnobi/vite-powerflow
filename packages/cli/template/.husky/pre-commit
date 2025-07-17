@@ -1,0 +1,10 @@
+#!/bin/sh
+
+echo "🔍 Validating your commit..."
+
+pnpm validate:commit || {
+  echo "❌ Validation failed. Please fix the issues above."
+  exit 1
+}
+
+echo "✅ All checks passed! Committing..."

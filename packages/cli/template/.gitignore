@@ -14,11 +14,12 @@ yarn-error.log*
 node_modules
 
 # Build outputs
-*.local
 .turbo/
+*.local
 dist
 dist-ssr
-my-vite-powerflow-app
+html
+packages/cli/template
 
 # Editor directories and files
 !.vscode/extensions.json
@@ -39,27 +40,26 @@ playwright-report
 test-results
 
 # Environment variables
+!.env.example
 .env
 .env.*
-!.env.example
 
 # Cache
-.eslintcache
-.stylelintcache
 .cache
+.eslintcache
 .npm
+.stylelintcache
 .temp
 .tmp
 .tsbuildinfo
-
-# TypeScript incremental build info
-**/tsconfig.tsbuildinfo
 
 # Build visualizer
 stats.html
 
 # Binary files
 bin/
+
+
 
 # Playwright
 playwright-report.json
@@ -68,6 +68,4 @@ test-results/
 
 # Ignore temporary commit message file
 /temp_commit_msg.txt
-
-
 

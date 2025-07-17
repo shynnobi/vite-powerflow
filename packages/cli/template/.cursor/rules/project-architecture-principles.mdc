@@ -1,0 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+- Adapt architecture to project requirements rather than forcing specific technologies
+- Follow domain-driven design where appropriate
+- Maintain clear separation of concerns (UI, business logic, data access)
+- Prioritize modularity and reusability of components
+- Ensure consistent patterns within each architectural layer
+- Document architecture decisions and their rationales
+- Consider scalability, performance, and maintainability in all design choices

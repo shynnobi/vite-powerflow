@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+- Package.json/dependencies files: Use precise semver versions (^6.2.6)
+- CHANGELOG.md: Use precise versions (6.2.6) with detailed changelog entries
+- Technical documentation: Use major or minor versions only (Vite 6.x) for installation guides
+- UI/Marketing text: Use major versions only (Vite 6) to minimize maintenance
+- Maintain consistency across similar components in the documentation
+- When updating dependencies for security, only update relevant version references

@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# Read all refs from stdin into a variable
+refs=$(cat)
+
+run_validation=false
+
+if [ -z "$refs" ]; then
+  # No refs to push: likely a remote branch deletion
+  echo "⏩ Skipping validation for remote branch deletion (no refs to push)."
+  exit 0
+fi
+
+# Otherwise, check if any ref is not a deletion
+printf '%s\n' "$refs" | while read local_ref local_sha remote_ref remote_sha; do
+  if [ "$remote_sha" != "0000000000000000000000000000000000000000" ]; then
+    run_validation=true
+  fi
+done
+
+if [ "$run_validation" = true ]; then
+  echo "🧪 Running full validation before push..."
+
+  # Run all validations including E2E tests
+  pnpm validate:prepush || {
+    echo "❌ Validation failed."
+    exit 1
+  }
+
+  echo "✅ All checks passed. Proceeding with push..."
+else
+  echo "⏩ Skipping validation for remote branch deletion."
+fi

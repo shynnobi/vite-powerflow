@@ -1,0 +1,9 @@
+---
+alwaysApply: true
+---
+
+## Language Policy
+
+- All commit messages, code comments, documentation, and UI/marketing text must be written in English.
+- All variable names, function names, and other identifiers must be in English.
+- This policy does not apply to conversations between the user and the AI assistant.
