@@ -1,0 +1,76 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# Commit Message Rules
+
+## Format
+
+```
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+## Rules
+
+1. Header (first line):
+   - Must be ≤ 72 characters
+   - Format: `<type>(<scope>): <subject>`
+   - No period at the end
+   - Use imperative mood ("add" not "added")
+
+2. Body:
+   - Must be ≤ 100 characters per line
+   - Each line must be a complete thought
+   - Be descriptive and provide context
+   - Optional: Use bullet points for better readability when listing multiple changes
+   - Make small, focused commits that can be easily reviewed
+
+3. Types:
+   - build: Changes to build system
+   - chore: Maintenance tasks
+   - ci: CI configuration changes
+   - docs: Documentation changes
+   - feat: New features
+   - fix: Bug fixes
+   - perf: Performance improvements
+   - refactor: Code refactoring
+   - revert: Revert changes
+   - style: Code style changes
+   - test: Test changes
+
+## Examples
+
+✅ Good (with bullet points for multiple changes):
+
+```text
+feat(ui): add cursor-pointer to interactive elements
+
+Changes include:
+- Add cursor-pointer to all buttons
+- Update hover states for better feedback
+- Ensure consistent behavior across themes
+```
+
+✅ Good (without bullet points for focused change):
+
+```text
+fix(auth): resolve login token expiration
+
+Update token refresh logic to prevent premature expiration
+Add proper error handling for expired tokens
+```
+
+❌ Bad (exceeds character limits):
+
+```text
+feat(ui): add cursor-pointer to all interactive buttons
+
+Update Button component to ensure pointer feedback for better UX. No visual regression, only improved user experience.
+```
+
+> **Note:** When the AI generates a commit, it MUST follow the workflow defined in [ai-commit-workflow.mdc](mdc:.cursor/rules/ai-commit-workflow.mdc). The commit message body is optional.

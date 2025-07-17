@@ -190,7 +190,7 @@ This project implements a robust two-layered CI/CD workflow that ensures code qu
 
 Automated checks run locally before every commit and push to prevent errors from reaching the repository.
 
-- **Pre-commit** ([.husky/pre-commit](./.husky/pre-commit)) — Lint, unit/integration tests (`pnpm validate:commit`)
+- **Pre-commit** ([.husky/pre-commit](./.husky/pre-commit)) — Lint, unit/integration tests (`pnpm validate:precommit`)
 - **Pre-push** ([.husky/pre-push](./.husky/pre-push)) — Full validation: lint, format, type-check, all tests (`pnpm validate:full`)
 
 #### Remote Pipelines (GitHub Actions)
@@ -260,6 +260,7 @@ Our testing strategy ensures code quality and reliability through a comprehensiv
 - **Location**: `tests/unit/` and `tests/integration/`
 - **Coverage**: Components, utilities, and business logic
 - **Configuration**: [vitest.config.ts](./vitest.config.ts)
+- **Script**: `scripts/run-unit-inte-tests.sh`
 
 #### End-to-End Tests
 
@@ -268,13 +269,18 @@ Our testing strategy ensures code quality and reliability through a comprehensiv
 - **Coverage**: User flows and cross-browser compatibility
 - **Configuration**: [playwright.config.ts](./playwright.config.ts)
 - **Browsers**: Chromium (default), Firefox, WebKit
-- **Script**: `scripts/run-end-to-end-tests.sh`
+- **Script**: `scripts/run-e2e-tests.sh`
 
 ### Test Scripts
 
 The custom scripts for test execution are automatically integrated into the main validation workflow:
 
-- `scripts/run-end-to-end-tests.sh` (end-to-end tests)
+- `scripts/run-unit-inte-tests.sh` (unit & integration tests)
+  - Detects the presence of unit and integration test files
+  - Runs Vitest only if relevant test files are present
+  - Prints a non-blocking warning if no tests are detected
+
+- `scripts/run-e2e-tests.sh` (end-to-end tests)
   - Detects the presence of E2E test files
   - Installs all Playwright browsers and dependencies only if needed
   - Uses a persistent browser cache for faster test runs
@@ -282,7 +288,7 @@ The custom scripts for test execution are automatically integrated into the main
 
 These scripts are invoked by the following validation commands:
 
-- `pnpm validate:commit`
+- `pnpm validate:precommit`
 - `pnpm validate:full`
 - `pnpm validate:quick`
 
@@ -410,7 +416,7 @@ This project includes a comprehensive set of scripts to streamline development, 
 
 ### Quality Assurance
 
-- `pnpm validate:commit` — Fast validation (lint, format, type-check and unit tests)
+- `pnpm validate:precommit` — Fast validation (lint, format, type-check and unit tests)
 - `pnpm validate:full` — Full validation (lint, format, type-check and unit tests, integration tests, E2E tests)
 - `pnpm storybook` — Start Storybook local server
 

@@ -2,7 +2,7 @@
 
 echo "🔍 Validating your commit..."
 
-pnpm validate:commit || {
+pnpm validate:precommit || {
   echo "❌ Validation failed. Please fix the issues above."
   exit 1
 }

@@ -1,9 +1,9 @@
 ---
+description: 
+globs: 
 alwaysApply: true
 ---
-
-## Language Policy
-
-- All commit messages, code comments, documentation, and UI/marketing text must be written in English.
-- All variable names, function names, and other identifiers must be in English.
-- This policy does not apply to conversations between the user and the AI assistant.
+- All source code comments must be written in English
+- Variable names, function names, and other identifiers must be in English
+- All documentation (READMEs, wikis, guides, JSDoc, etc.) must be written in English
+- Commit messages must be in English

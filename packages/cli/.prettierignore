@@ -1,8 +1,0 @@
-node_modules
-.turbo
-.pnpm-store
-coverage
-dist
-build
-template/**
-**/test-results/

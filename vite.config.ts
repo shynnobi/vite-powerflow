@@ -1,15 +1,23 @@
-/// <reference types="vitest" />
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react-swc';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig } from 'vitest/config';
+import type { PluginOption } from 'vite';
 
-// Determine the current directory
+// Determine the current directory so the project
+// can be use wether from a Docker container or from the local machine
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), visualizer() as PluginOption, tailwindcss()],
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+  },
   resolve: {
     alias: [
       { find: '@', replacement: resolve(__dirname, 'src') },
@@ -25,33 +33,14 @@ export default defineConfig({
     ],
   },
   test: {
-    environment: 'jsdom',
     globals: true,
-    setupFiles: ['./tests/config/reactTestSetup.tsx'],
-    include: ['./tests/{unit,integration}/**/*.{test,spec}.{ts,tsx}'],
-    exclude: ['./tests/e2e/**/*', '.storybook/**/*'],
-    reporters: ['default'],
+    environment: 'jsdom',
+    setupFiles: ['./tests/unit/setup.ts'],
+    include: ['./tests/unit/**/*.{test,spec}.{ts,tsx}'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      include: ['src/**/*.{ts,tsx}'],
-      exclude: [
-        '**/*.d.ts',
-        '**/*.test.{ts,tsx}',
-        '**/*.spec.{ts,tsx}',
-        '**/*.types.ts',
-        '.storybook/**/*',
-        '**/stories/**/*',
-        '**/*.stories.{ts,tsx}',
-        '**/components/ui/**/*',
-        '**/pages/**/*',
-        '**/main.tsx',
-        '**/logger.ts',
-        '**/ThemeProvider.tsx',
-        '**/node_modules/**/*',
-        '**/dist/**/*',
-        '**/coverage/**/*',
-      ],
+      reportsDirectory: './coverage/unit',
     },
   },
 });
