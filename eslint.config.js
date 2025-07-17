@@ -1,132 +1,140 @@
-import js from '@eslint/js';
-import tsParser from '@typescript-eslint/parser';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
-import reactPlugin from 'eslint-plugin-react';
-import reactHooksPlugin from 'eslint-plugin-react-hooks';
-import reactRefreshPlugin from 'eslint-plugin-react-refresh';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
-import { FlatCompat } from '@eslint/eslintrc';
-import path from 'path';
-import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
-import { fileURLToPath } from 'url';
+import tsParser from '@typescript-eslint/parser';
+import importPlugin from 'eslint-plugin-import';
+import vitest from 'eslint-plugin-vitest';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
+// Common settings and plugins
+const commonSettings = {
+  'import/resolver': {
+    node: {
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.svg', '.png', '.jpg'],
+    },
+  },
+};
+
+const commonPlugins = {
+  'simple-import-sort': simpleImportSort,
+  import: importPlugin,
+  vitest,
+};
+
+const commonRules = {
+  'simple-import-sort/imports': [
+    'error',
+    {
+      groups: [
+        // React and external packages
+        ['^react', '^@?\\w'],
+        // Internal imports with alias (@)
+        ['^@\\w'],
+        // Relative imports
+        ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
+        // Style imports
+        ['^.+\\.css$'],
+      ],
+    },
+  ],
+  'simple-import-sort/exports': 'error',
+  'padding-line-between-statements': [
+    'error',
+    { blankLine: 'always', prev: 'import', next: '*' },
+    { blankLine: 'any', prev: 'import', next: 'import' },
+  ],
+  'import/no-unresolved': 'error',
+};
+
+const commonGlobals = {
+  process: 'readonly',
+  require: 'readonly',
+  module: 'readonly',
+  __dirname: 'readonly',
+  __filename: 'readonly',
+  console: 'readonly',
+};
 
 export default [
   {
     ignores: [
       'node_modules/**',
+      '**/dist/**',
       'dist/**',
-      'coverage/**',
-      'test-results/**',
-      'playwright-report/**',
       '.next/**',
       '.turbo/**',
+      'coverage/**',
+      '.pnpm-store/**',
+      '.git/**',
+      '.devcontainer/**',
+      '.vscode/**',
+      '.github/**',
+      'docs/**',
+      '**/eslint.config.js',
+      'packages/cli/template/**',
+      'vitest.config.ts',
+      'vite.config.ts',
     ],
   },
-  js.configs.recommended,
-  ...compat.config({
-    extends: ['plugin:storybook/recommended'],
-  }),
-  // Configuration for TypeScript configuration files
+  // Configuration for JavaScript files (without TypeScript parser, with Node.js globals)
   {
-    files: ['*.config.ts'],
+    files: ['**/*.{js,jsx,cjs,mjs}'],
     languageOptions: {
-      parser: tsParser,
-      parserOptions: {
-        project: './tsconfig.node.json',
-      },
-      globals: {
-        process: 'readonly',
-      },
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      globals: commonGlobals,
     },
-    plugins: {
-      '@typescript-eslint': tsPlugin,
-    },
+    plugins: commonPlugins,
     rules: {
-      ...tsPlugin.configs.recommended.rules,
+      ...commonRules,
+      'no-unused-vars': 'error',
+      'no-undef': 'error',
     },
+    settings: commonSettings,
   },
-  // Main configuration for TypeScript/React files
+  // Configuration for TypeScript files (avec TypeScript parser)
   {
     files: ['**/*.{ts,tsx}'],
-    ignores: ['*.config.ts'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-        project: './tsconfig.eslint.json',
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: { jsx: true },
+        projectService: true,
       },
-      globals: {
-        process: 'readonly',
-        document: 'readonly',
-        window: 'readonly',
-        console: 'readonly',
-        fetch: 'readonly',
-      },
+      globals: commonGlobals,
     },
-    plugins: {
-      '@typescript-eslint': tsPlugin,
-      react: reactPlugin,
-      'react-hooks': reactHooksPlugin,
-      'react-refresh': reactRefreshPlugin,
-      'simple-import-sort': simpleImportSort,
-      'jsx-a11y': jsxA11yPlugin,
-    },
-    rules: {
-      ...tsPlugin.configs.recommended.rules,
-      ...reactPlugin.configs.recommended.rules,
-      ...reactHooksPlugin.configs.recommended.rules,
-      ...jsxA11yPlugin.configs.recommended.rules,
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-      '@typescript-eslint/triple-slash-reference': 'off',
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
-      'react/react-in-jsx-scope': 'off',
-      'react/no-unescaped-entities': 'off',
-      'simple-import-sort/imports': [
-        'error',
-        {
-          groups: [
-            // React and external packages
-            ['^react', '^@?\\w'],
-            // Internal imports with alias (@)
-            ['^@\\w'],
-            // Relative imports
-            ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
-            // Style imports
-            ['^.+\\.css$'],
-          ],
-        },
-      ],
-      'simple-import-sort/exports': 'error',
-      'padding-line-between-statements': [
-        'error',
-        { blankLine: 'always', prev: 'import', next: '*' },
-        { blankLine: 'any', prev: 'import', next: 'import' },
-      ],
-      'react/jsx-uses-react': 'off',
-      'react/prop-types': 'off',
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/explicit-module-boundary-types': 'off',
-      '@typescript-eslint/no-non-null-assertion': 'warn',
-    },
+    plugins: commonPlugins,
+    rules: commonRules,
     settings: {
-      react: {
-        version: 'detect',
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: ['./tsconfig.json', './packages/*/tsconfig.json', './apps/*/tsconfig.json'],
+        },
       },
     },
   },
-  // Specific rule for shadcn UI components
+  // Configuration for Vitest test files (compatible flat config)
   {
-    files: ['**/src/components/ui/**/*.{ts,tsx}'],
+    files: ['**/*.test.ts', '**/*.spec.ts'],
+    plugins: { vitest },
     rules: {
-      'react-refresh/only-export-components': 'off',
+      'vitest/no-focused-tests': 'error',
+      'vitest/no-disabled-tests': 'warn',
+      'vitest/expect-expect': 'warn',
+      // Add more Vitest rules here if needed
+    },
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: { jsx: true },
+        projectService: true,
+      },
+      globals: {
+        ...commonGlobals,
+        // Vitest globals are added by the plugin
+      },
     },
   },
 ];
