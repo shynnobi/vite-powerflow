@@ -1,0 +1,70 @@
+# AI Commit Process Rules
+
+## 1. Commit Workflow
+
+When the user requests to make a commit, the AI must:
+
+1. Analyze all files listed in source control (modified, added, deleted).
+2. Analyze separately the files in staged changes and unstaged changes.
+3. For each file, review the actual differences (diff): content, permissions, renames, etc. If the number of modified files exceeds 20, analyze the differences (diff) in groups of up to 20 files at a time to respect terminal limitations.
+4. Present a clear, English summary of all changes, file by file.
+5. Propose a grouped commit plan, **including only files that are currently staged**:
+   - Grouped commits: changes grouped by feature or logical unit.
+6. Wait for the user to validate the plan.
+7. For each commit in the plan:
+   - Present the commit title (header) and body (Conventional Commit format) in a code block.
+8. Wait for explicit user validation before staging and committing.
+9. **Never include unstaged files in a commit unless the user explicitly requests it. Only files that are currently staged will be included in the commit.**
+
+## 2. Commit Process Interruption Policy
+
+If the commit process (following a chosen commit plan) is interrupted (e.g., due to lint/test failure, manual code change, or user intervention), the assistant or contributor MUST:
+
+- Re-analyze the current state of the repository (staged/unstaged files, diffs).
+- Update the commit plan and commit messages to reflect any new changes or corrections.
+- Present the revised plan and messages for user validation before proceeding.
+- No commit should be made based on outdated or partial analysis.
+- The process MUST always resume from the current, real state of the repository.
+- If the user manually corrects code or staging, the assistant MUST re-summarize and re-propose the commit(s) before continuing.
+
+## 3. Commit Message Guidelines (Format & Readability)
+
+- All commit messages must follow the Conventional Commit format.
+  - Allowed types: build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test.
+  - The header (first line) must be ≤ 72 characters, imperative mood, no period at the end.
+  - The body (optional) must be ≤ 100 characters per line, each line a complete thought.
+  - Use bullet points in the body for multiple changes.
+  - All commit messages and comments must be written in English.
+- Commit messages must be readable and understandable by anyone reviewing the history, even without detailed knowledge of the code.
+- Each message must:
+  - Clearly describe the scope and purpose of the change (what is changed and why it matters).
+  - Explicitly mention the technical elements impacted (e.g., module names, scripts, templates, configs, etc.).
+  - Avoid raw file lists or overly generic descriptions.
+- The assistant must always prioritize clarity, readability, and technical context in commit message writing.
+
+### Examples
+
+**Good:**
+
+```
+feat(templates): provide example-app and utils as reusable templates
+
+- Move example-app and example-utils to templates/ for easier project bootstrapping
+- Update helper.ts and README.md to reflect new structure
+```
+
+**To avoid:**
+
+```
+refactor: update files
+```
+
+or
+
+```
+chore: migration
+```
+
+```
+
+```

@@ -6,8 +6,18 @@ on:
   pull_request:
 
 jobs:
+  clean-pnpm:
+    name: Clean global pnpm install and cache
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove pnpm install dir
+        run: rm -rf /home/runner/setup-pnpm || true
+      - name: Remove pnpm global cache
+        run: rm -rf ~/.pnpm-store || true
+
   eslint:
     name: ESLint
+    needs: clean-pnpm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,7 +30,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.6.5
+          version: 10.13.1
 
       - name: Get pnpm store directory
         id: pnpm-cache
@@ -44,6 +54,7 @@ jobs:
 
   prettier:
     name: Prettier
+    needs: clean-pnpm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -56,7 +67,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.6.5
+          version: 10.13.1
 
       - name: Get pnpm store directory
         id: pnpm-cache
@@ -76,10 +87,11 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Check formatting
-        run: pnpm prettier --check .
+        run: pnpm format
 
   typescript:
     name: TypeScript
+    needs: clean-pnpm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -92,7 +104,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.6.5
+          version: 10.13.1
 
       - name: Get pnpm store directory
         id: pnpm-cache
@@ -111,8 +123,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Run type check
-        run: pnpm type-check
+      # Build only the tools package (and its dependencies) to ensure type declarations are available for the CLI
+      - name: Build tools package (required for CLI type-check)
+        run: pnpm --filter @vite-powerflow/tools... build
+
+      # Type-check only the CLI package (and its dependencies)
+      - name: Run CLI type check
+        run: pnpm --filter @vite-powerflow/create... type-check
 
   commitlint:
     name: Commitlint
@@ -128,8 +145,45 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+  root-scripts-quality:
+    name: Root Scripts Quality
+    needs: clean-pnpm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.13.1
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm config get store-dir)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Check root scripts quality
+        run: pnpm run validate:root-scripts
+
   build:
-    needs: [eslint, prettier, typescript, commitlint]
+    needs: [eslint, prettier, typescript, commitlint, root-scripts-quality]
     if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
     runs-on: ubuntu-latest
     steps:
@@ -143,7 +197,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.6.5
+          version: 10.13.1
 
       - name: Get pnpm store directory
         id: pnpm-cache
