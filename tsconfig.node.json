@@ -6,6 +6,5 @@
     "moduleResolution": "NodeNext",
     "allowSyntheticDefaultImports": true,
     "target": "ESNext"
-  },
-  "include": ["*.config.ts", "*.d.ts"]
+  }
 }

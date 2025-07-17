@@ -18,11 +18,21 @@ printf '%s\n' "$refs" | while read local_ref local_sha remote_ref remote_sha; do
   fi
 done
 
+# Check scripts/ TypeScript quality only if scripts have changed
+changed_scripts=$(git diff --cached --name-only | grep '^scripts/.*\.ts$' || true)
+if [ -n "$changed_scripts" ]; then
+  echo "🔎 Checking root scripts quality before push..."
+  pnpm run validate:root-scripts || {
+    echo "❌ Scripts quality check failed."
+    exit 1
+  }
+fi
+
 if [ "$run_validation" = true ]; then
   echo "🧪 Running full validation before push..."
 
   # Run all validations including E2E tests
-  pnpm validate:full || {
+  pnpm validate:prepush || {
     echo "❌ Validation failed."
     exit 1
   }

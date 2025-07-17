@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": false,
+    "baseUrl": ".",
+    "paths": {
+      "@vite-powerflow/create": ["packages/cli/src/index.ts"],
+      "@vite-powerflow/create/*": ["packages/cli/src/*"],
+      "@vite-powerflow/tools": ["packages/tools/src/index.ts"],
+      "@vite-powerflow/tools/*": ["packages/tools/src/*"]
+    }
+  }
+}

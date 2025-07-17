@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+- Functional React components with hooks
+- Strict TypeScript typing
+- Explicit names for functions and variables
+- Meaningful tests (Given-When-Then pattern)
+- Comments only when necessary to clarify complex logic
+- Feature-based architecture rather than technical type

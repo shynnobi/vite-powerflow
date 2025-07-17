@@ -1,0 +1,32 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "generate:aliases": {
+      "outputs": ["vite.aliases.json", "tsconfig.base.json", "tsconfig.json", "vitest.config.ts"]
+    },
+    "generate:barrels": {
+      "outputs": ["src/**/index.ts"]
+    },
+    "build": {
+      "dependsOn": ["^generate:aliases", "generate:barrels", "^build"],
+      "outputs": ["dist/**", "src/**/*.d.ts"]
+    },
+    "clean": {
+      "outputs": []
+    },
+    "dev": {
+      "cache": false
+    },
+    "fix": {},
+    "format": {},
+    "lint:fix": {},
+    "lint": {},
+    "test:coverage:report": {},
+    "test:coverage": {},
+    "test:e2e": {},
+    "test:integration": {},
+    "test:unit": {},
+    "test": {},
+    "type-check": {}
+  }
+}
