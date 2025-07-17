@@ -22,6 +22,14 @@ jobs:
         with:
           version: 10.6.5
 
+      - name: Clean pnpm cache
+        run: pnpm store prune || true
+
+      - name: Check pnpm version and path
+        run: |
+          which pnpm
+          pnpm --version
+
       - name: Get pnpm store directory
         id: pnpm-cache
         shell: bash
@@ -58,6 +66,14 @@ jobs:
         with:
           version: 10.6.5
 
+      - name: Clean pnpm cache
+        run: pnpm store prune || true
+
+      - name: Check pnpm version and path
+        run: |
+          which pnpm
+          pnpm --version
+
       - name: Get pnpm store directory
         id: pnpm-cache
         shell: bash
@@ -93,6 +109,14 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10.6.5
+
+      - name: Clean pnpm cache
+        run: pnpm store prune || true
+
+      - name: Check pnpm version and path
+        run: |
+          which pnpm
+          pnpm --version
 
       - name: Get pnpm store directory
         id: pnpm-cache
@@ -144,6 +168,14 @@ jobs:
         with:
           version: 10.6.5
 
+      - name: Clean pnpm cache
+        run: pnpm store prune || true
+
+      - name: Check pnpm version and path
+        run: |
+          which pnpm
+          pnpm --version
+
       - name: Get pnpm store directory
         id: pnpm-cache
         shell: bash
@@ -180,6 +212,14 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10.6.5
+
+      - name: Clean pnpm cache
+        run: pnpm store prune || true
+
+      - name: Check pnpm version and path
+        run: |
+          which pnpm
+          pnpm --version
 
       - name: Get pnpm store directory
         id: pnpm-cache
