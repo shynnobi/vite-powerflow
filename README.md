@@ -190,7 +190,7 @@ This project implements a robust two-layered CI/CD workflow that ensures code qu
 
 Automated checks run locally before every commit and push to prevent errors from reaching the repository.
 
-- **Pre-commit** ([.husky/pre-commit](./.husky/pre-commit)) — Lint, unit/integration tests (`pnpm validate:precommit`)
+- **Pre-commit** ([.husky/pre-commit](./.husky/pre-commit)) — Lint, unit/integration tests (`pnpm validate:commit`)
 - **Pre-push** ([.husky/pre-push](./.husky/pre-push)) — Full validation: lint, format, type-check, all tests (`pnpm validate:full`)
 
 #### Remote Pipelines (GitHub Actions)
@@ -282,7 +282,7 @@ The custom scripts for test execution are automatically integrated into the main
 
 These scripts are invoked by the following validation commands:
 
-- `pnpm validate:precommit`
+- `pnpm validate:commit`
 - `pnpm validate:full`
 - `pnpm validate:quick`
 
@@ -410,7 +410,7 @@ This project includes a comprehensive set of scripts to streamline development, 
 
 ### Quality Assurance
 
-- `pnpm validate:precommit` — Fast validation (lint, format, type-check and unit tests)
+- `pnpm validate:commit` — Fast validation (lint, format, type-check and unit tests)
 - `pnpm validate:full` — Full validation (lint, format, type-check and unit tests, integration tests, E2E tests)
 - `pnpm storybook` — Start Storybook local server
 

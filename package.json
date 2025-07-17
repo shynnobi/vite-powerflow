@@ -54,7 +54,7 @@
     "validate:static": "npx turbo run lint && npx turbo run format && npx turbo run type-check",
     "validate:quick": "npx turbo run lint && npx turbo run format && npx turbo run test",
     "validate:full": "npx turbo run lint && npx turbo run format && npx turbo run test && npx turbo run test:e2e",
-    "validate:precommit": "npx lint-staged --config .lintstagedrc.cjs && pnpm test",
+    "validate:commit": "npx lint-staged --config .lintstagedrc.cjs && pnpm test",
     "prepare": "husky",
     "postinstall": "./scripts/postinstall.sh",
     "cli:build": "pnpm --filter @vite-powerflow/create build",

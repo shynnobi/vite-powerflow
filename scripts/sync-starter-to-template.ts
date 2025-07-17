@@ -59,7 +59,7 @@ import { createRootSpinner, logRootError } from './monorepo-logger';
       'validate:static': 'run-p format lint type-check',
       'validate:quick': 'run-s validate:static test',
       'validate:full': 'run-s validate:static test test:e2e',
-      'validate:precommit': 'npx lint-staged && pnpm test',
+      'validate:commit': 'npx lint-staged && pnpm test',
     };
     if (pkg.dependencies) {
       Object.keys(pkg.dependencies).forEach(dep => {

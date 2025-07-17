@@ -50,7 +50,7 @@
     "validate:static": "pnpm format && pnpm lint && pnpm type-check",
     "validate:quick": "pnpm validate:static && pnpm test",
     "validate:full": "pnpm validate:static && pnpm test && pnpm test:e2e",
-    "validate:precommit": "npx lint-staged && pnpm test",
+    "validate:commit": "npx lint-staged && pnpm test",
     "prepare": "husky",
     "postinstall": "./scripts/postinstall.sh",
     "storybook": "storybook dev -p 6006",
