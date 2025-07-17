@@ -1,6 +1,7 @@
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import tsParser from '@typescript-eslint/parser';
 import importPlugin from 'eslint-plugin-import';
+import vitest from 'eslint-plugin-vitest';
 
 // Common settings and plugins
 const commonSettings = {
@@ -14,6 +15,7 @@ const commonSettings = {
 const commonPlugins = {
   'simple-import-sort': simpleImportSort,
   import: importPlugin,
+  vitest,
 };
 
 const commonRules = {
@@ -102,6 +104,37 @@ export default [
     },
     plugins: commonPlugins,
     rules: commonRules,
-    settings: commonSettings,
+    settings: {
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: ['./tsconfig.json', './packages/*/tsconfig.json', './apps/*/tsconfig.json'],
+        },
+      },
+    },
+  },
+  // Configuration for Vitest test files (compatible flat config)
+  {
+    files: ['**/*.test.ts', '**/*.spec.ts'],
+    plugins: { vitest },
+    rules: {
+      'vitest/no-focused-tests': 'error',
+      'vitest/no-disabled-tests': 'warn',
+      'vitest/expect-expect': 'warn',
+      // Add more Vitest rules here if needed
+    },
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: { jsx: true },
+        projectService: true,
+      },
+      globals: {
+        ...commonGlobals,
+        // Vitest globals are added by the plugin
+      },
+    },
   },
 ];

@@ -87,7 +87,7 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Check formatting
-        run: pnpm prettier --check .
+        run: pnpm format
 
   typescript:
     name: TypeScript
@@ -122,6 +122,10 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
+
+      # Build all packages first to ensure type declarations are available for cross-package imports
+      - name: Build all packages (required for type-check)
+        run: pnpm build
 
       - name: Run type check
         run: pnpm type-check

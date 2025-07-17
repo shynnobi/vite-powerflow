@@ -15,6 +15,7 @@ interface InternalPackage {
   path: string;
   isApp: boolean;
   projectPath: string;
+  srcPath: string;
 }
 
 function getInternalPackages(dir: string, appsDir: string): InternalPackage[] {
@@ -32,6 +33,7 @@ function getInternalPackages(dir: string, appsDir: string): InternalPackage[] {
         path: path.join(dir, name, isApp ? 'src/dist' : 'dist'),
         isApp,
         projectPath: path.join(dir, name),
+        srcPath: path.join(dir, name, 'src'),
       };
     })
     .filter(Boolean) as InternalPackage[];
@@ -77,9 +79,10 @@ function getInternalPackages(dir: string, appsDir: string): InternalPackage[] {
 
   // 3.2. Add TypeScript path aliases for internal packages only (not apps)
   pkgs.forEach(pkg => {
-    const relDist = path.relative(root, pkg.path).replace(/\\/g, '/');
-    tsconfig.compilerOptions.paths[pkg.name] = [relDist + '/index.js'];
-    tsconfig.compilerOptions.paths[`${pkg.name}/*`] = [relDist + '/*']; // Always an array
+    // Use srcPath for TypeScript path aliases
+    const relSrc = path.relative(root, pkg.srcPath).replace(/\\/g, '/');
+    tsconfig.compilerOptions.paths[pkg.name] = [relSrc];
+    tsconfig.compilerOptions.paths[`${pkg.name}/*`] = [`${relSrc}/*`];
   });
   fs.writeFileSync(tsconfigPath, JSON.stringify(tsconfig, null, 2));
   logRootSuccess(`TypeScript paths updated in tsconfig.base.json`);

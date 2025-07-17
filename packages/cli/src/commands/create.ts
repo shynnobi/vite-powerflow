@@ -1,13 +1,12 @@
 import { createSpinner, logError } from '@vite-powerflow/tools';
-
 import fs from 'fs/promises';
 import fsExtra from 'fs-extra';
 import path from 'path';
 import { simpleGit } from 'simple-git';
 import { fileURLToPath } from 'url';
 
-import { directoryExists } from '@/utils/fs-utils.js';
-import { updateDevcontainerWorkspaceFolder, updateDockerComposeVolume } from '@/utils/fs-utils.js';
+import { updateDevcontainerWorkspaceFolder, updateDockerComposeVolume } from '../utils/fs-utils.js';
+import { directoryExists } from '../utils/fs-utils.js';
 
 interface ProjectOptions {
   projectName: string;

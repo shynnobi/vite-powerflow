@@ -5,13 +5,9 @@
     "outDir": "dist",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "jsx": "react-jsx",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    }
+    "jsx": "react-jsx"
   },
-  "include": ["src/**/*", "src/index.ts", "types/*"],
+  "include": ["src/**/*", "src/index.ts", "types/*", "build.ts"],
   "exclude": ["dist", "node_modules", "template"],
   "references": [
     {

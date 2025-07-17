@@ -8,8 +8,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Generate package aliases for esbuild
-async function generateAliases() {
-  const aliases = {};
+async function generateAliases(): Promise<Record<string, string>> {
+  const aliases: Record<string, string> = {};
   const workspaceRoot = await getMonorepoRoot();
   const packagesDir = path.join(workspaceRoot, 'packages');
 
