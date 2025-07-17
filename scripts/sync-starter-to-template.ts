@@ -5,24 +5,26 @@ import * as path from 'path';
 import { createRootSpinner, logRootError } from './monorepo-logger';
 
 (async () => {
+  // 1. Setup source and destination paths
   const starterSrc = path.resolve('apps/starter');
   const templateDest = path.resolve('packages/cli/template');
 
+  // 2. Create spinner for user feedback
   const spinner = createRootSpinner(
     'Synchronizing template from apps/starter/ to packages/cli/template/...'
   );
 
-  // Utility to set spinner text
+  // 2.1. Utility to set spinner text
   function setSpinnerText(spinner: Ora, text: string) {
     spinner.text = text;
   }
 
   try {
-    // Remove any existing template directory before copying
+    // 3. Remove any existing template directory before copying
     setSpinnerText(spinner, 'Removing existing template...');
     await fs.remove(templateDest);
 
-    // Copy the starter app to the template destination
+    // 4. Copy the starter app to the template destination
     setSpinnerText(spinner, 'Copying starter to template...');
     await fs.copy(starterSrc, templateDest, {
       filter: srcPath => {
@@ -42,14 +44,14 @@ import { createRootSpinner, logRootError } from './monorepo-logger';
       },
     });
 
-    // Ensure the template directory exists after copy
+    // 5. Ensure the template directory exists after copy
     setSpinnerText(spinner, 'Verifying template directory...');
     if (!(await fs.pathExists(templateDest))) {
       spinner.fail('Template sync failed: template directory does not exist!');
       process.exit(1);
     }
 
-    // Patch package.json scripts and remove workspace:* dependencies
+    // 6. Patch package.json scripts and remove workspace:* dependencies
     setSpinnerText(spinner, 'Patching package.json scripts and cleaning workspace dependencies...');
     const pkgPath = path.join(templateDest, 'package.json');
     const pkg = await fs.readJson(pkgPath);
@@ -77,7 +79,7 @@ import { createRootSpinner, logRootError } from './monorepo-logger';
     }
     await fs.writeJson(pkgPath, pkg, { spaces: 2 });
 
-    // Clean tsconfig.json by removing 'extends' for standalone usage
+    // 7. Clean tsconfig.json by removing 'extends' for standalone usage
     setSpinnerText(spinner, 'Cleaning tsconfig.json (removing extends)...');
     const tsconfigPath = path.join(templateDest, 'tsconfig.json');
     if (await fs.pathExists(tsconfigPath)) {
@@ -89,8 +91,10 @@ import { createRootSpinner, logRootError } from './monorepo-logger';
       }
     }
 
+    // 8. Success
     spinner.succeed('Template synchronized successfully!');
   } catch (err) {
+    // 9. Error handling
     spinner.fail('Template synchronization failed!');
     logRootError(err instanceof Error ? err.message : String(err));
     process.exit(1);

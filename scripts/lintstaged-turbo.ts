@@ -17,25 +17,25 @@ if (files.length === 0) {
 
 // 2. Load the list of workspaces from pnpm-workspace.yaml or turbo.json
 function getWorkspaces(): string[] {
-  // Try pnpm-workspace.yaml first
+  // 2.1. Try pnpm-workspace.yaml first
   const wsPath = path.resolve(process.cwd(), 'pnpm-workspace.yaml');
   if (fs.existsSync(wsPath)) {
     const wsYaml = yaml.load(fs.readFileSync(wsPath, 'utf8')) as { packages?: string[] };
     const globs: string[] = wsYaml.packages || [];
-    // Expand globs to actual folders
+    // 2.2. Expand globs to actual folders
     let workspaces: string[] = [];
     for (const g of globs) {
       workspaces = workspaces.concat(globSync(g, { cwd: process.cwd(), absolute: true }));
     }
-    // Only keep folders with package.json
+    // 2.3. Only keep folders with package.json
     return workspaces.filter(ws => fs.existsSync(path.join(ws, 'package.json')));
   }
-  // Fallback: try turbo.json
+  // 2.4. Fallback: try turbo.json
   const turboPath = path.resolve(process.cwd(), 'turbo.json');
   if (fs.existsSync(turboPath)) {
     const turbo = JSON.parse(fs.readFileSync(turboPath, 'utf8'));
     if (turbo && turbo.pipeline) {
-      // Try to infer workspaces from pipeline keys
+      // 2.5. Try to infer workspaces from pipeline keys
       return Object.keys(turbo.pipeline)
         .map(name => path.resolve('packages', name))
         .filter(ws => fs.existsSync(path.join(ws, 'package.json')));
@@ -49,7 +49,7 @@ const workspaceRoots = workspaces.map(ws => path.relative(process.cwd(), ws));
 
 // 3. Map each file to a workspace
 function findWorkspaceForFile(file: string): string | null {
-  // Find the workspace whose path is a prefix of the file
+  // 3.1. Find the workspace whose path is a prefix of the file
   const normFile = path.normalize(file);
   for (const ws of workspaceRoots) {
     if (normFile === ws || normFile.startsWith(ws + path.sep)) {
@@ -102,4 +102,5 @@ if (filesOutside.length) {
   }
 }
 
+// 6. Exit with error code if any error occurred
 process.exit(hasError ? 1 : 0);
