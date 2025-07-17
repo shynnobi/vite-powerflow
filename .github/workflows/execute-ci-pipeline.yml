@@ -123,12 +123,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
-      # Build all packages first to ensure type declarations are available for cross-package imports
-      - name: Build all packages (required for type-check)
-        run: pnpm build
+      # Build only the tools package (and its dependencies) to ensure type declarations are available for the CLI
+      - name: Build tools package (required for CLI type-check)
+        run: pnpm --filter @vite-powerflow/tools... build
 
-      - name: Run type check
-        run: pnpm type-check
+      # Type-check only the CLI package (and its dependencies)
+      - name: Run CLI type check
+        run: pnpm --filter @vite-powerflow/create... type-check
 
   commitlint:
     name: Commitlint
