@@ -29,6 +29,9 @@ export default {
       ],
     ],
   },
-  // Ignore Dependabot commits
-  ignores: [commit => commit.includes('dependabot[bot]') || commit.includes('Dependabot')],
+  // Ignore Dependabot commits and Changesets commits
+  ignores: [
+    commit => commit.includes('dependabot[bot]') || commit.includes('Dependabot'),
+    commit => commit.includes('Version Packages') || commit.includes('chore(release)'),
+  ],
 };
