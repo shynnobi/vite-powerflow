@@ -5,7 +5,33 @@ All notable changes to the Vite PowerFlow project will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.0.0] - 2025-07-17
+
+### Added
+
+- Migrated the project to a pnpm monorepo structure using TurboRepo for scalable, modular development.
+- Centralized and refactored all scripts (build, test, lint, format, type-check, validation) for workspace awareness and DRY principles.
+- Introduced advanced automation with lint-staged and Husky for robust pre-commit and pre-push validation.
+- Unified and upgraded all dependencies and configuration files across all workspaces.
+- Updated documentation and onboarding to reflect the new monorepo structure and developer workflow.
+
+### Changed
+
+- All apps and packages are now managed under a unified monorepo layout.
+- Local development workflow now requires running `pnpm install` at the root.
+- Removed legacy scripts, configs, and obsolete dependencies from the previous single-package structure.
+
+### Documentation
+
+- Main README and contribution guidelines updated for monorepo usage and best practices.
+
+### Breaking Changes
+
+- Project structure has changed: all local scripts, paths, and commands must be updated to use the new monorepo layout.
+
+[2.0.0]: https://github.com/shynnobi/vite-powerflow/releases/tag/v2.0.0
+
+## [1.2.0] 2025-04-12
 
 ### Added
 
@@ -48,6 +74,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated development dependencies with security patches and new features
 - Updated production dependencies for improved performance and compatibility
 
+[1.2.0]: https://github.com/shynnobi/vite-powerflow/releases/tag/v1.2.0
+
 ## [1.1.0] - 2025-04-03
 
 ### Added
@@ -75,6 +103,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Strengthened safety measures for Git operations
   - Improved code organization principles
 
+[1.1.0]: https://github.com/shynnobi/vite-powerflow/releases/tag/v1.1.0
+
 ## [1.0.0] - Initial Release
 
 ### Added
@@ -96,3 +126,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Detailed README
   - Code conventions
   - Project structure
+
+[1.0.0]: https://github.com/shynnobi/vite-powerflow/releases/tag/v1.0.0
