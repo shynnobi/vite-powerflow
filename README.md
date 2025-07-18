@@ -1,22 +1,11 @@
 # Vite PowerFlow ⚡
 
-<div style="display: flex; flex-wrap: wrap; gap: 4px;">
-  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/dev/vite?label=Vite&logo=vite&logoColor=white&color=646CFF" alt="Vite" />
-  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/dev/react?label=React&logo=react&logoColor=white&color=61DAFB" alt="React" />
-  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/dev/typescript?label=TypeScript&logo=typescript&logoColor=white&color=3178C6" alt="TypeScript" />
-  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/tailwindcss?label=Tailwind%20CSS&logo=tailwindcss&logoColor=white&color=06B6D4" alt="Tailwind CSS" />
-  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/dev/vitest?label=Vitest&logo=vitest&logoColor=white&color=6E9F18" alt="Vitest" />
-  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/dev/@playwright/test?label=Playwright&logo=playwright&logoColor=white&color=2EAD33" alt="Playwright" />
-  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/dev/eslint?label=ESLint&logo=eslint&logoColor=white&color=4B32C3" alt="ESLint" />
-  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/dev/storybook?label=Storybook&logo=storybook&logoColor=white&color=FF4785" alt="Storybook" />
-  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/zustand?label=Zustand&logo=zustand&logoColor=white&color=F45825" alt="Zustand" />
-  <img src="https://img.shields.io/github/package-json/dependency-version/shynnobi/vite-powerflow/@tanstack/react-query?label=TanStack%20Query&logo=react-query&logoColor=white&color=FF4154" alt="TanStack Query" />
-  <img src="https://img.shields.io/github/license/shynnobi/vite-powerflow?color=yellow&label=License" alt="License" />
+![Monorepo](https://img.shields.io/badge/monorepo-pnpm%20workspaces-blue) ![License](https://img.shields.io/github/license/shynnobi/vite-powerflow?color=yellow&label=License) [![CI](https://github.com/shynnobi/vite-powerflow/actions/workflows/execute-ci-pipeline.yml/badge.svg)](https://github.com/shynnobi/vite-powerflow/actions)
 
-</div>
-<br/>
+A React + Vite monorepo starter, fully containerized for reproducible and collaborative development, with strict code quality tooling and AI pair programming workflow (Cursor rules). Includes comprehensive testing, linting, and CI/CD configurations following industry best practices.
 
-A React + Vite starter, fully containerized for reproducible and collaborative development, with strict code quality tooling and AI pair programming workflow (Cursor rules). Includes comprehensive testing, linting, and CI/CD configurations following industry best practices.
+> **Note:** This project is a monorepo managed with pnpm workspaces and TurboRepo.
+> Main applications and packages are located in the [`apps/`](./apps/) and [`packages/`](./packages/) directories.
 
 ## 📋 Table of Contents
 
@@ -386,6 +375,23 @@ TypeScript configuration is split across multiple files to maintain a clean sepa
 - [tsconfig.eslint.json](./tsconfig.eslint.json) — ESLint-specific overrides
 
 <hr>
+
+## 🗂️ Monorepo Structure
+
+```
+/
+├── apps/
+│   └── starter/         # Main application (see its own README)
+├── packages/
+│   ├── cli/             # CLI tool
+│   └── tools/           # Shared utilities
+└── ...
+```
+
+- [apps/starter/README.md](./apps/starter/README.md) — Main app documentation
+- [packages/cli/README.md](./packages/cli/README.md) — CLI tool documentation
+
+> _More badges (npm downloads, version, etc.) will be added when the project is published._
 
 ## 🚀 Available Scripts
 

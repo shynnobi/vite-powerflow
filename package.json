@@ -53,7 +53,7 @@
     "validate:static": "npx turbo run lint && npx turbo run format && npx turbo run type-check",
     "validate:quick": "npx turbo run lint && npx turbo run format && npx turbo run test",
     "validate:commit": "npx lint-staged --config .lintstagedrc.cjs && pnpm test",
-    "validate:prepush": "npx turbo run lint && npx turbo run format && npx turbo run test && npx turbo run test:e2e",
+    "validate:full": "npx turbo run lint && npx turbo run format && npx turbo run test && npx turbo run test:e2e",
     "prepare": "husky",
     "postinstall": "./scripts/postinstall.sh",
     "cli:build": "pnpm --filter @vite-powerflow/create build",
@@ -74,17 +74,19 @@
     "lint:root-scripts": "eslint scripts --ext .ts",
     "typecheck:root-scripts": "tsc --noEmit --project tsconfig.scripts.json",
     "validate:root-scripts": "run-s format:root-scripts lint:root-scripts typecheck:root-scripts",
-    "lintstaged:dry": "HUSKY=0 lint-staged --allow-empty && pnpm test"
+    "lintstaged:dry": "HUSKY=0 lint-staged --allow-empty && pnpm test",
+    "release": "changeset publish"
   },
   "dependencies": {
     "commander": "^14.0.0",
     "enquirer": "^2.4.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-icons": "^5.5.0"
   },
   "devDependencies": {
     "@awalgawe/esbuild-typescript-paths-plugin": "^1.0.1",
+    "@changesets/cli": "^2.29.5",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@eslint/eslintrc": "^3.3.1",

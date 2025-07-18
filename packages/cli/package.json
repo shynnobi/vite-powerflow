@@ -1,6 +1,7 @@
 {
   "name": "@vite-powerflow/create",
-  "version": "1.0.0",
+  "private": false,
+  "version": "0.0.1",
   "description": "CLI tool to create a new Vite PowerFlow app",
   "type": "module",
   "bin": {
