@@ -2,7 +2,7 @@
   "name": "@vite-powerflow/create",
   "private": false,
   "version": "0.0.1",
-  "description": "CLI tool to create a new Vite PowerFlow app",
+  "description": "Create modern React + Vite apps with production-ready tooling, testing, and best practices. Includes TypeScript, Tailwind CSS, shadcn/ui, Zustand, TanStack Query, and more.",
   "type": "module",
   "bin": {
     "create": "dist/index.js"
@@ -20,17 +20,40 @@
     "type-check": "tsc --noEmit"
   },
   "keywords": [
+    "create",
     "cli",
-    "powerflow",
     "react",
     "vite",
-    "typescript"
+    "typescript",
+    "scaffold",
+    "boilerplate",
+    "starter",
+    "template",
+    "tailwind",
+    "shadcn",
+    "zustand",
+    "tanstack-query",
+    "testing",
+    "eslint",
+    "prettier",
+    "husky",
+    "storybook",
+    "monorepo"
   ],
   "author": {
     "name": "Shynn",
     "url": "http://github.com/shynnobi"
   },
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shynnobi/vite-powerflow.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/shynnobi/vite-powerflow#readme",
+  "bugs": {
+    "url": "https://github.com/shynnobi/vite-powerflow/issues"
+  },
   "packageManager": "pnpm@10.6.5",
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
