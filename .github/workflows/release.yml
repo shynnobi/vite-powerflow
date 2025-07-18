@@ -1,4 +1,4 @@
-name: Release
+name: Changeset Release
 
 on:
   push:
@@ -15,6 +15,10 @@ jobs:
         with:
           node-version: 18
           registry-url: 'https://registry.npmjs.org/'
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Create Release Pull Request or Publish to npm
@@ -22,5 +26,5 @@ jobs:
         with:
           publish: pnpm run release
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN || '' }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
