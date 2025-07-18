@@ -1,7 +1,7 @@
 {
   "name": "@vite-powerflow/create",
   "private": false,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Create modern React + Vite apps with production-ready tooling, testing, and best practices. Includes TypeScript, Tailwind CSS, shadcn/ui, Zustand, TanStack Query, and more.",
   "type": "module",
   "bin": {
