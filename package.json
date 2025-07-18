@@ -74,7 +74,8 @@
     "lint:root-scripts": "eslint scripts --ext .ts",
     "typecheck:root-scripts": "tsc --noEmit --project tsconfig.scripts.json",
     "validate:root-scripts": "run-s format:root-scripts lint:root-scripts typecheck:root-scripts",
-    "lintstaged:dry": "HUSKY=0 lint-staged --allow-empty && pnpm test"
+    "lintstaged:dry": "HUSKY=0 lint-staged --allow-empty && pnpm test",
+    "release": "changeset publish"
   },
   "dependencies": {
     "commander": "^14.0.0",
@@ -85,6 +86,7 @@
   },
   "devDependencies": {
     "@awalgawe/esbuild-typescript-paths-plugin": "^1.0.1",
+    "@changesets/cli": "^2.29.5",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@eslint/eslintrc": "^3.3.1",
