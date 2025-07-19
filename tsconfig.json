@@ -10,7 +10,7 @@
       "path": "packages/cli"
     },
     {
-      "path": "packages/tools"
+      "path": "packages/utils"
     },
     {
       "path": "apps/starter"
