@@ -10,8 +10,8 @@
     "paths": {
       "@vite-powerflow/create": ["packages/cli/src/index.ts"],
       "@vite-powerflow/create/*": ["packages/cli/src/*"],
-      "@vite-powerflow/tools": ["packages/tools/src/index.ts"],
-      "@vite-powerflow/tools/*": ["packages/tools/src/*"]
+      "@vite-powerflow/utils": ["packages/utils/src/index.ts"],
+      "@vite-powerflow/utils/*": ["packages/utils/src/*"]
     }
   }
 }

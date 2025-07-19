@@ -1,8 +1,8 @@
 {
-  "name": "@vite-powerflow/tools",
-  "private": "true",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@vite-powerflow/utils",
+  "private": false,
+  "version": "0.0.1",
+  "description": "Internal utility functions for the Vite PowerFlow project",
   "type": "module",
   "scripts": {
     "generate:barrels": "tsx ../../scripts/generate-barrels.ts",
@@ -13,16 +13,19 @@
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
     "type-check": "tsc --noEmit",
-    "test": "vitest run --passWithNoTests",
+    "test": "vitest run",
     "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix",
     "sync:starter-to-template": "tsx ../../scripts/sync-starter-to-template.ts"
   },
   "keywords": [
-    "cli",
-    "powerflow",
-    "react",
-    "vite",
-    "typescript"
+    "utils",
+    "utility",
+    "helpers",
+    "nodejs",
+    "typescript",
+    "javascript",
+    "functions",
+    "toolkit"
   ],
   "author": {
     "name": "Shynn",

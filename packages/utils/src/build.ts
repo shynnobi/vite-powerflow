@@ -2,7 +2,7 @@ import * as esbuild from 'esbuild';
 import { logInfo, logSuccess, logError } from './lib/logger';
 
 (async () => {
-  logInfo('Building @vite-powerflow/tools...');
+  logInfo('Building @vite-powerflow/utils...');
   await esbuild
     .build({
       entryPoints: ['src/index.ts'],
@@ -22,10 +22,10 @@ import { logInfo, logSuccess, logError } from './lib/logger';
       legalComments: 'none',
     })
     .then(() => {
-      logSuccess('Build completed for @vite-powerflow/tools!');
+      logSuccess('Build completed for @vite-powerflow/utils!');
     })
     .catch(error => {
-      logError('Build failed for @vite-powerflow/tools');
+      logError('Build failed for @vite-powerflow/utils');
       logError(error instanceof Error ? error.message : String(error));
       process.exit(1);
     });

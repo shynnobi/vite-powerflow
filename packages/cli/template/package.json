@@ -1,7 +1,7 @@
 {
   "name": "@vite-powerflow/starter",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "author": "",
   "license": "MIT",
@@ -51,12 +51,11 @@
     "validate:static": "run-p format lint type-check",
     "validate:quick": "run-s validate:static test",
     "validate:commit": "npx lint-staged && pnpm test",
-    "validate:prepush": "pnpm validate:static && pnpm test && pnpm test:e2e",
+    "validate:full": "run-s validate:static test test:e2e",
     "prepare": "husky",
     "postinstall": "./scripts/postinstall.sh",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "validate:full": "run-s validate:static test test:e2e"
+    "build-storybook": "storybook build"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",

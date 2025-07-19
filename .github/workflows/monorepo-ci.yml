@@ -2,8 +2,9 @@ name: Monorepo CI
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main, dev, 'changeset-release/**']
   pull_request:
+    branches: [main, dev, 'changeset-release/**']
 
 jobs:
   ci:
@@ -39,20 +40,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Lint
-        run: pnpm lint
-
-      - name: Format check
-        run: pnpm format
-
-      - name: Check root scripts quality
-        run: pnpm run validate:root-scripts
-
-      - name: Build all packages (TurboRepo)
-        run: pnpm build
-
-      - name: Type-check all packages (TurboRepo)
-        run: pnpm type-check
-
-      - name: Test all packages (TurboRepo)
-        run: pnpm test
+      - name: Run CI script
+        run: ./scripts/ci.sh

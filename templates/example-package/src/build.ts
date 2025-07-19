@@ -1,4 +1,4 @@
-import { logError, logInfo, logSuccess } from '@vite-powerflow/tools';
+import { logError, logInfo, logSuccess } from '@vite-powerflow/utils';
 import * as esbuild from 'esbuild';
 
 (async () => {

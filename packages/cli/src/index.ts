@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { logError } from '@vite-powerflow/tools';
+import { logError } from '@vite-powerflow/utils';
 import chalk from 'chalk';
 import { Command } from 'commander';
 import fs from 'fs/promises';
