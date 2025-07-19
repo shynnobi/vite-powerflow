@@ -388,9 +388,9 @@ importers:
       '@sindresorhus/slugify':
         specifier: ^2.2.1
         version: 2.2.1
-      '@vite-powerflow/tools':
+      '@vite-powerflow/utils':
         specifier: workspace:*
-        version: link:../tools
+        version: link:../utils
       chalk:
         specifier: ^5.4.1
         version: 5.4.1
@@ -441,7 +441,7 @@ importers:
         specifier: ^1.6.1
         version: 1.6.1(@types/node@24.0.14)(@vitest/browser@3.2.4(msw@2.10.4(@types/node@24.0.14)(typescript@5.8.3))(playwright@1.54.1)(vite@7.0.5(@types/node@24.0.14)(jiti@2.4.2)(lightningcss@1.30.1)(tsx@4.20.3)(yaml@2.8.0))(vitest@3.2.4))(@vitest/ui@3.2.4(vitest@3.2.4))(jsdom@26.1.0)(lightningcss@1.30.1)
 
-  packages/tools:
+  packages/utils:
     dependencies:
       chalk:
         specifier: ^5.4.1

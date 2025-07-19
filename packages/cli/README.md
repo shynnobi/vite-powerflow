@@ -12,6 +12,16 @@ The fastest way: run the CLI instantly, no installation required :
 npx create-vite-powerflow my-app
 ```
 
+#### **Available options**
+
+- `-n, --name <name>`: project name
+- `-g, --git`: initialize git
+- `-u, --git-user-name <name>`: git user.name
+- `-e, --git-user-email <email>`: git user.email
+- `-o, --use-global-git`: use global git identity without prompt
+
+**Tip:** If you provide all options, the CLI will not prompt for anything.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

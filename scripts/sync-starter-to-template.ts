@@ -1,9 +1,8 @@
 import fs from 'fs-extra';
-import { Ora } from 'ora';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
-import { createRootSpinner, logRootError } from './monorepo-logger';
+import { logRootError, logRootInfo, logRootSuccess } from './monorepo-logger';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,26 +13,18 @@ const __dirname = path.dirname(__filename);
   const starterSrc = path.join(root, 'apps/starter');
   const templateDest = path.join(root, 'packages/cli/template');
 
-  // 2. Create spinner for user feedback
-  const spinner = createRootSpinner(
-    'Synchronizing template from apps/starter/ to packages/cli/template/...'
-  );
-
-  // 2.1. Utility to set spinner text
-  function setSpinnerText(spinner: Ora, text: string) {
-    spinner.text = text;
-  }
-
+  logRootInfo('—— Sync apps/starter to packages/cli/template ——');
   try {
-    // 3. Remove any existing template directory before copying
-    setSpinnerText(spinner, 'Removing existing template...');
+    // 1. Remove any existing template directory before copying
+    logRootInfo('Deleting existing template folder...');
     await fs.remove(templateDest);
 
-    // 4. Copy the starter app to the template destination
-    setSpinnerText(spinner, 'Copying starter to template...');
+    // 2. Copy the starter app to the template destination
+    logRootInfo('Copying folders...');
     await fs.copy(starterSrc, templateDest, {
       filter: srcPath => {
         const ignore = [
+          '.changeset',
           '.DS_Store',
           '.git',
           '.turbo',
@@ -44,20 +35,23 @@ const __dirname = path.dirname(__filename);
           'stats.html',
           'test-results',
           'tsconfig.base.json',
+          'tsconfig.tsbuildinfo',
         ];
+        // Ignore explicit unwanted files/folders
         return !ignore.some(dir => path.basename(srcPath) === dir);
       },
     });
 
-    // 5. Ensure the template directory exists after copy
-    setSpinnerText(spinner, 'Verifying template directory...');
+    // 3. Ensure the template directory exists after copy
     if (!(await fs.pathExists(templateDest))) {
-      spinner.fail('Template sync failed: template directory does not exist!');
+      logRootError(
+        'Failed to copy the template directory. Please check the source and destination paths.'
+      );
       process.exit(1);
     }
 
-    // 6. Patch package.json scripts and remove workspace:* dependencies
-    setSpinnerText(spinner, 'Patching package.json scripts and cleaning workspace dependencies...');
+    // 5. Patch package.json scripts
+    logRootInfo('Patching package.json validate scripts');
     const pkgPath = path.join(templateDest, 'package.json');
     const pkg = await fs.readJson(pkgPath);
     pkg.scripts = {
@@ -68,24 +62,10 @@ const __dirname = path.dirname(__filename);
       'validate:full': 'run-s validate:static test test:e2e',
       'validate:commit': 'npx lint-staged && pnpm test',
     };
-    if (pkg.dependencies) {
-      Object.keys(pkg.dependencies).forEach(dep => {
-        if (pkg.dependencies[dep] === 'workspace:*') {
-          delete pkg.dependencies[dep];
-        }
-      });
-    }
-    if (pkg.devDependencies) {
-      Object.keys(pkg.devDependencies).forEach(dep => {
-        if (pkg.devDependencies[dep] === 'workspace:*') {
-          delete pkg.devDependencies[dep];
-        }
-      });
-    }
     await fs.writeJson(pkgPath, pkg, { spaces: 2 });
 
-    // 7. Clean tsconfig.json by removing 'extends' for standalone usage
-    setSpinnerText(spinner, 'Cleaning tsconfig.json (removing extends)...');
+    // 6. Clean tsconfig.json by removing 'extends' for standalone usage
+    logRootInfo('Cleaning tsconfig.json (removing extends)...');
     const tsconfigPath = path.join(templateDest, 'tsconfig.json');
     if (await fs.pathExists(tsconfigPath)) {
       const tsconfigRaw = await fs.readFile(tsconfigPath, 'utf-8');
@@ -96,11 +76,9 @@ const __dirname = path.dirname(__filename);
       }
     }
 
-    // 8. Success
-    spinner.succeed('Template synchronized successfully!');
+    logRootSuccess('Template synchronized successfully!');
   } catch (err) {
-    // 9. Error handling
-    spinner.fail('Template synchronization failed!');
+    logRootError('Template synchronization failed!');
     logRootError(err instanceof Error ? err.message : String(err));
     process.exit(1);
   }

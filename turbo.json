@@ -26,9 +26,7 @@
     "test:e2e": {},
     "test:integration": {},
     "test:unit": {},
-    "test": {
-      "dependsOn": ["^build"]
-    },
+    "test": {},
     "type-check": {}
   }
 }

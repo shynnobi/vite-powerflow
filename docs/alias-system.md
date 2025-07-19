@@ -34,7 +34,7 @@ Our monorepo uses a consistent alias system to eliminate relative paths and enab
 
 - **Purpose:** Import functions from the **current package's** `src/` directory
 - **Scope:** Local to the package/app where the import is written
-- **Example:** In `packages/tools/src/`, `@/utils/foo` points to `packages/tools/src/utils/foo.ts`
+- **Example:** In `packages/utils/src/`, `@/utils/foo` points to `packages/utils/src/utils/foo.ts`
 - **When to use:** For importing your own utilities within the same package
 
 ### Inter-Package Aliases (`@vite-powerflow/*`)
@@ -61,7 +61,7 @@ Monorepo
 │   │   ├── tsconfig.json (internal aliases: @/*)
 │   │   ├── build.js (esbuild with alias resolution)
 │   │   └── src/
-│   └── tools/
+│   └── utils/
 │       ├── tsconfig.json (internal aliases: @/*)
 │       └── src/
 ├── apps/
@@ -290,7 +290,7 @@ export { add } from './utils/math.js';
   "compilerOptions": {
     "paths": {
       "@vite-powerflow/example-package": ["packages/example-package/dist/index.js"],
-      "@vite-powerflow/tools": ["packages/tools/dist/index.js"]
+      "@vite-powerflow/utils": ["packages/utils/dist/index.js"]
     }
   }
 }
@@ -316,7 +316,7 @@ The `scripts/generate-vite-aliases.cjs` script:
 import { internalUtil } from '@/utils/helper';
 
 // Inter-package alias (resolved by Vite/TypeScript)
-import { externalUtil } from '@vite-powerflow/tools';
+import { externalUtil } from '@vite-powerflow/utils';
 
 export function myFunction() {
   return internalUtil() + externalUtil();
@@ -419,7 +419,7 @@ export function appFunction() {
   ```ts
   import { foo } from './foo';
   import { bar } from '@/utils/bar';
-  import { baz } from '@vite-powerflow/tools';
+  import { baz } from '@vite-powerflow/utils';
   ```
 - TypeScript resolves the correct file automatically.
 - If you use `.js` in a TypeScript import, it will fail in dev/test (file not found).
@@ -436,11 +436,11 @@ export function appFunction() {
 
 - **TypeScript:** Use the package alias without extension:
   ```ts
-  import { foo } from '@vite-powerflow/tools';
+  import { foo } from '@vite-powerflow/utils';
   ```
 - **JavaScript ESM:** Use the extension if required by the runtime:
   ```js
-  import { foo } from '@vite-powerflow/tools/index.js';
+  import { foo } from '@vite-powerflow/utils/index.js';
   ```
 
 ### Local Aliases (within a package/app)
@@ -462,8 +462,8 @@ export function appFunction() {
 | TypeScript source      |      ❌ (never)      | `import { foo } from './foo'`                          |
 | JavaScript ESM         |      ✅ (often)      | `import { foo } from './foo.js'`                       |
 | Tests TypeScript       |      ❌ (never)      | `import { foo } from '@/utils/bar'`                    |
-| Inter-package (TS)     |      ❌ (never)      | `import { foo } from '@vite-powerflow/tools'`          |
-| Inter-package (JS ESM) |   ✅ (if required)   | `import { foo } from '@vite-powerflow/tools/index.js'` |
+| Inter-package (TS)     |      ❌ (never)      | `import { foo } from '@vite-powerflow/utils'`          |
+| Inter-package (JS ESM) |   ✅ (if required)   | `import { foo } from '@vite-powerflow/utils/index.js'` |
 
 **Rule of thumb:**
 

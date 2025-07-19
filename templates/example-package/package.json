@@ -23,7 +23,7 @@
     }
   },
   "dependencies": {
-    "@vite-powerflow/tools": "workspace:*"
+    "@vite-powerflow/utils": "workspace:*"
   },
   "devDependencies": {
     "esbuild": "^0.25.6"
