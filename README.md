@@ -384,7 +384,7 @@ TypeScript configuration is split across multiple files to maintain a clean sepa
 │   └── starter/         # Main application (see its own README)
 ├── packages/
 │   ├── cli/             # CLI tool
-│   └── tools/           # Shared utilities
+│   └── utils/           # Shared utilities
 └── ...
 ```
 
