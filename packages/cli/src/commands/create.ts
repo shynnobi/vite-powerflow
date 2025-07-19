@@ -1,4 +1,4 @@
-import { createSpinner, logError } from '@vite-powerflow/tools';
+import { logError, logSuccess } from '@vite-powerflow/utils';
 import fs from 'fs/promises';
 import fsExtra from 'fs-extra';
 import path from 'path';
@@ -22,103 +22,110 @@ export async function createProject(options: ProjectOptions): Promise<void> {
   let packageName = options.packageName;
   let projectPath = path.join(process.cwd(), packageName);
 
-  // Use the shared spinner utility
-  const spinner = createSpinner('Creating project...');
-
   try {
-    // 1. Copy local template to the new project directory
-    spinner.text = 'Copying template...';
+    // Copy template
     const templatePath = path.join(__dirname, '..', 'template');
     await fsExtra.copy(templatePath, projectPath);
 
-    // Centralize all relevant file paths
+    // Files to update
     const packageJsonPath = path.join(projectPath, 'package.json');
-    const devcontainerJsonPath = path.join(projectPath, '.devcontainer', 'devcontainer.json');
     const tsconfigPath = path.join(projectPath, 'tsconfig.json');
     const readmePath = path.join(projectPath, 'README.md');
 
-    // 2. Clean the generated project's tsconfig.json: remove any reference to tsconfig.base.json
-    spinner.text = 'Cleaning tsconfig.json...';
-    if (await fsExtra.pathExists(tsconfigPath)) {
-      const tsconfigRaw = await fs.readFile(tsconfigPath, 'utf-8');
-      const tsconfig = JSON.parse(tsconfigRaw);
-      if (tsconfig.extends) {
-        delete tsconfig.extends;
-        await fs.writeFile(tsconfigPath, JSON.stringify(tsconfig, null, 2));
-      }
-    }
-
-    // 3. Update devcontainer and docker-compose configs
-    spinner.text = 'Updating devcontainer and docker-compose configs...';
+    // Update devcontainer and docker-compose configs
     await updateDevcontainerWorkspaceFolder(projectPath);
     await updateDockerComposeVolume(projectPath);
+    // logSuccess('Devcontainer and docker-compose configs updated.');
 
-    // 4. Update package.json with the new project name
-    spinner.text = 'Updating package.json...';
-    if (await fsExtra.pathExists(packageJsonPath)) {
-      const packageJsonRaw = await fs.readFile(packageJsonPath, 'utf-8');
-      const packageJson = JSON.parse(packageJsonRaw);
-      packageJson.name = options.packageName;
-      await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
+    // Update package.json with the new project name
+    try {
+      if (await fsExtra.pathExists(packageJsonPath)) {
+        const packageJsonRaw = await fs.readFile(packageJsonPath, 'utf-8');
+        const packageJson = JSON.parse(packageJsonRaw);
+        packageJson.name = options.packageName;
+        await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
+        // logSuccess('package.json updated.');
+      }
+    } catch (packageJsonError) {
+      logError('Failed to update package.json');
+      logError(
+        packageJsonError instanceof Error ? packageJsonError.message : String(packageJsonError)
+      );
+      throw packageJsonError;
     }
 
-    // 5. Update README.md placeholder for project name
-    spinner.text = 'Updating README.md...';
-    if ((await directoryExists(projectPath)) && (await fsExtra.pathExists(readmePath))) {
-      let readmeContent = await fs.readFile(readmePath, 'utf-8');
-      readmeContent = readmeContent.replace(/{{projectName}}/g, options.projectName);
-      await fs.writeFile(readmePath, readmeContent);
+    // Update README.md placeholder for project name
+    try {
+      if ((await directoryExists(projectPath)) && (await fsExtra.pathExists(readmePath))) {
+        let readmeContent = await fs.readFile(readmePath, 'utf-8');
+        readmeContent = readmeContent.replace(/{{projectName}}/g, options.projectName);
+        await fs.writeFile(readmePath, readmeContent);
+        // logSuccess('README.md updated.');
+      }
+    } catch (readmeError) {
+      logError('Failed to update README.md');
+      logError(readmeError instanceof Error ? readmeError.message : String(readmeError));
+      throw readmeError;
     }
 
-    // 6. Format package.json, devcontainer.json, and tsconfig.json with Prettier
-    spinner.text = 'Formatting files...';
+    // Files to format
     const filesToFormat: string[] = [];
-    async function addFileToFormat(filePath: string, filesToFormat: string[]) {
-      try {
-        await fs.access(filePath);
-        filesToFormat.push(filePath);
-      } catch {
-        // ignore missing files
-      }
-    }
-    await addFileToFormat(packageJsonPath, filesToFormat);
-    await addFileToFormat(devcontainerJsonPath, filesToFormat);
-    await addFileToFormat(tsconfigPath, filesToFormat);
-    if (filesToFormat.length > 0) {
-      const { exec } = await import('child_process');
-      await new Promise<void>((resolve, reject) => {
-        exec(
-          `npx prettier --write ${filesToFormat.map(f => `"${f}"`).join(' ')}`,
-          { cwd: projectPath },
-          (error, stdout, stderr) => {
-            if (error) {
-              logError('Failed to format files with Prettier: ' + (stderr || error.message));
-              reject(error);
-            } else {
-              resolve();
+    if (await fsExtra.pathExists(packageJsonPath)) filesToFormat.push(packageJsonPath);
+    if (await fsExtra.pathExists(tsconfigPath)) filesToFormat.push(tsconfigPath);
+    const devcontainerJsonPath = path.join(projectPath, '.devcontainer', 'devcontainer.json');
+    if (await fsExtra.pathExists(devcontainerJsonPath)) filesToFormat.push(devcontainerJsonPath);
+    const dockerComposePath = path.join(projectPath, 'docker-compose.yml');
+    if (await fsExtra.pathExists(dockerComposePath)) filesToFormat.push(dockerComposePath);
+
+    // Format files with Prettier
+    try {
+      if (filesToFormat.length > 0) {
+        const { exec } = await import('child_process');
+        await new Promise<void>((resolve, reject) => {
+          exec(
+            `npx prettier --write ${filesToFormat.map(f => `"${f}"`).join(' ')}`,
+            { cwd: projectPath },
+            (error, _stdout, stderr) => {
+              if (error) {
+                logError('Failed to format config files with Prettier');
+                logError(stderr || error.message);
+                reject(error);
+              } else {
+                resolve();
+              }
             }
-          }
-        );
-      });
-    }
-
-    // 7. Initialize Git if requested (no prompts)
-    spinner.text = 'Initializing Git...';
-    if (options.git) {
-      const projectGit = simpleGit(projectPath);
-      await projectGit.init();
-      if (options.gitUserName && options.gitUserEmail) {
-        await projectGit.addConfig('user.name', options.gitUserName, false, 'local');
-        await projectGit.addConfig('user.email', options.gitUserEmail, false, 'local');
+          );
+        });
       }
-      await projectGit.add('.');
-      await projectGit.commit('chore: initial commit');
+    } catch (formatError) {
+      logError('Error during config files formatting');
+      logError(formatError instanceof Error ? formatError.message : String(formatError));
+      throw formatError;
     }
 
-    spinner.succeed(`Project created at: ${projectPath}`);
+    // Initialize Git if requested (no prompts)
+    if (options.git) {
+      try {
+        const projectGit = simpleGit(projectPath);
+        await projectGit.init();
+        if (options.gitUserName && options.gitUserEmail) {
+          await projectGit.addConfig('user.name', options.gitUserName, false, 'local');
+          await projectGit.addConfig('user.email', options.gitUserEmail, false, 'local');
+        }
+        await projectGit.add('.');
+        await projectGit.commit('chore: initial commit');
+        // logSuccess('Git initialized and initial commit created.');
+      } catch (gitError) {
+        logError('Failed to initialize Git or create initial commit');
+        logError(gitError instanceof Error ? gitError.message : String(gitError));
+        throw gitError;
+      }
+    }
+
+    logSuccess(`Project created at: ${projectPath}`);
   } catch (error) {
-    spinner.fail('Failed to create project');
+    logError('Failed to create project');
     logError(error instanceof Error ? error.message : String(error));
-    throw error;
+    process.exit(1);
   }
 }

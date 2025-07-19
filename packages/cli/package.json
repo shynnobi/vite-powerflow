@@ -8,7 +8,7 @@
     "create": "dist/index.js"
   },
   "scripts": {
-    "build": "tsx build.ts && mkdir -p dist && cp -r template dist/template",
+    "build": "tsx build.ts",
     "dev": "tsc -w",
     "start": "node dist/index.js",
     "test": "vitest run",
@@ -67,7 +67,7 @@
   },
   "dependencies": {
     "@sindresorhus/slugify": "^2.2.1",
-    "@vite-powerflow/tools": "workspace:*",
+    "@vite-powerflow/utils": "workspace:*",
     "chalk": "^5.4.1",
     "commander": "^14.0.0",
     "enquirer": "^2.4.1",
