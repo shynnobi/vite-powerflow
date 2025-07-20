@@ -51,11 +51,23 @@ program
 program.parse(process.argv);
 const cliOptions = program.opts();
 
+function isNonInteractiveMode(opts: any) {
+  // All required options for non-interactive mode
+  return (
+    opts.name &&
+    typeof opts.git === 'boolean' &&
+    (opts.git === false || (opts.git === true && opts.gitUserName && opts.gitUserEmail))
+  );
+}
+
 async function init() {
   try {
-    // Enable raw mode to capture Ctrl+C
-    process.stdin.setRawMode(true);
-    process.stdin.resume();
+    // Only enable raw mode if not in non-interactive mode
+    const nonInteractive = isNonInteractiveMode(cliOptions);
+    if (!nonInteractive && process.stdin.isTTY) {
+      process.stdin.setRawMode(true);
+      process.stdin.resume();
+    }
 
     // Commander: get options
     let projectName = await (
@@ -68,6 +80,10 @@ async function init() {
 
     // Loop to re-prompt until the directory does not already exist
     while (await directoryExists(projectPath)) {
+      if (nonInteractive) {
+        logError('✘ Error: Directory already exists, choose another name.');
+        process.exit(1);
+      }
       console.error(chalk.red(`✘ Error: Directory already exists, choose another name.`));
       projectName = await promptProjectName();
       packageName = safePackageName(projectName);
@@ -99,9 +115,13 @@ async function init() {
   } catch {
     await cleanup();
   } finally {
-    // Always disable raw mode
-    process.stdin.setRawMode(false);
-    process.stdin.pause();
+    // Only disable raw mode if it was enabled
+    if (process.stdin.isTTY && process.stdin.setRawMode) {
+      try {
+        process.stdin.setRawMode(false);
+        process.stdin.pause();
+      } catch {}
+    }
   }
 }
 

@@ -69,5 +69,9 @@ test-results/
 # Ignore temporary commit message file
 /temp_commit_msg.txt
 
+# CLI test artifacts
+*.tgz
+vite-powerflow-create-*.tgz
+
 
 
