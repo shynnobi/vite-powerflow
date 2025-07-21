@@ -1,0 +1,15 @@
+# Ignore everything except what we want to include
+*
+
+# Include dist folder
+!dist/
+!dist/**
+
+# Include scripts folder
+!scripts/
+!scripts/**
+
+# Include package.json and other essential files
+!package.json
+!README.md
+!LICENSE

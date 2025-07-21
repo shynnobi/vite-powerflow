@@ -23,6 +23,30 @@ async function copyTemplate(): Promise<void> {
       overwrite: true,
     });
 
+    // Copy .gitignore as gitignore to avoid npm ignoring it
+    const gitignoreSource = path.join(templatePath, '.gitignore');
+    const gitignoreDest = path.join(distTemplatePath, 'gitignore');
+    if (await fs.pathExists(gitignoreSource)) {
+      await fs.copy(gitignoreSource, gitignoreDest);
+      // Remove the original .gitignore from dist to avoid duplication
+      const originalGitignoreInDist = path.join(distTemplatePath, '.gitignore');
+      if (await fs.pathExists(originalGitignoreInDist)) {
+        await fs.remove(originalGitignoreInDist);
+      }
+    }
+
+    // Copy .vscode as vscode to avoid npm ignoring it
+    const vscodeSource = path.join(templatePath, '.vscode');
+    const vscodeDest = path.join(distTemplatePath, 'vscode');
+    if (await fs.pathExists(vscodeSource)) {
+      await fs.copy(vscodeSource, vscodeDest);
+      // Remove the original .vscode from dist to avoid duplication
+      const originalVscodeInDist = path.join(distTemplatePath, '.vscode');
+      if (await fs.pathExists(originalVscodeInDist)) {
+        await fs.remove(originalVscodeInDist);
+      }
+    }
+
     logSuccess('Template copied successfully!');
   } catch (err) {
     logError('Template copy failed');

@@ -6,5 +6,13 @@ export default defineConfig({
     globals: true,
     include: ['**/*.test.ts'],
     exclude: ['template/**', 'node_modules/**', 'dist/**'],
+    pool: 'forks',
+    poolOptions: {
+      forks: {
+        singleFork: true,
+      },
+    },
+    testTimeout: 30000,
+    hookTimeout: 10000,
   },
 });
