@@ -4,6 +4,8 @@
 # Include dist folder
 !dist/
 !dist/**
+!dist/template/vscode/
+!dist/template/vscode/**
 
 # Include scripts folder
 !scripts/

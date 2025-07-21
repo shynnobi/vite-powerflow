@@ -23,6 +23,12 @@ async function copyTemplate(): Promise<void> {
       overwrite: true,
     });
 
+    // Make postinstall.sh executable if it exists
+    const postinstallPath = path.join(distTemplatePath, 'scripts', 'postinstall.sh');
+    if (await fs.pathExists(postinstallPath)) {
+      await fs.chmod(postinstallPath, 0o755);
+    }
+
     // Copy .gitignore as gitignore to avoid npm ignoring it
     const gitignoreSource = path.join(templatePath, '.gitignore');
     const gitignoreDest = path.join(distTemplatePath, 'gitignore');
