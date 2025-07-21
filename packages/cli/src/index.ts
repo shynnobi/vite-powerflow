@@ -53,7 +53,7 @@ const cliOptions = program.opts();
 
 function isNonInteractiveMode(opts: any) {
   // All required options for non-interactive mode
-  return (
+  return !!(
     opts.name &&
     typeof opts.git === 'boolean' &&
     (opts.git === false || (opts.git === true && opts.gitUserName && opts.gitUserEmail))

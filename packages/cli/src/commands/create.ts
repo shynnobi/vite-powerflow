@@ -24,8 +24,23 @@ export async function createProject(options: ProjectOptions): Promise<void> {
 
   try {
     // Copy template
-    const templatePath = path.join(__dirname, '..', 'template');
+    const templatePath = path.join(__dirname, 'template');
     await fsExtra.copy(templatePath, projectPath);
+    // logSuccess('Template copied successfully');
+
+    // Rename gitignore to .gitignore if it exists
+    const gitignorePath = path.join(projectPath, 'gitignore');
+    const dotGitignorePath = path.join(projectPath, '.gitignore');
+    if (await fsExtra.pathExists(gitignorePath)) {
+      await fsExtra.move(gitignorePath, dotGitignorePath);
+    }
+
+    // Rename vscode to .vscode if it exists
+    const vscodePath = path.join(projectPath, 'vscode');
+    const dotVscodePath = path.join(projectPath, '.vscode');
+    if (await fsExtra.pathExists(vscodePath)) {
+      await fsExtra.move(vscodePath, dotVscodePath);
+    }
 
     // Files to update
     const packageJsonPath = path.join(projectPath, 'package.json');
@@ -125,7 +140,10 @@ export async function createProject(options: ProjectOptions): Promise<void> {
     logSuccess(`Project created at: ${projectPath}`);
   } catch (error) {
     logError('Failed to create project');
-    logError(error instanceof Error ? error.message : String(error));
+    // Don't show "dest already exists" error as it's often a false positive
+    if (!(error instanceof Error) || !error.message?.includes('dest already exists')) {
+      logError(error instanceof Error ? error.message : String(error));
+    }
     process.exit(1);
   }
 }

@@ -1,30 +1,15 @@
-# Exclude logs and caches
-.turbo/
-*.log
+# Ignore everything except what we want to include
+*
 
-# Exclude tests
-__tests__/
-tests/
-**/*.test.*
-
-# Exclude TypeScript sources (only publish the build)
-src/
-
-# Exclude internal configurations
-*.tsbuildinfo
-*.eslint*
-*.prettier*
-*.devcontainer/
-*.github/
-.husky/
-
-# Exclude unnecessary files
-*.mdc
-
-# Explicitly include what should be published (dist, useful scripts, README, LICENSE, etc.)
+# Include dist folder
 !dist/
+!dist/**
+
+# Include scripts folder
 !scripts/
+!scripts/**
+
+# Include package.json and other essential files
+!package.json
 !README.md
 !LICENSE
-!CHANGELOG.md
-!package.json

@@ -8,7 +8,7 @@
   "description": "Create modern React + Vite apps with production-ready tooling, testing, and best practices. Includes TypeScript, Tailwind CSS, shadcn/ui, Zustand, TanStack Query, and more.",
   "type": "module",
   "bin": {
-    "create": "dist/index.js"
+    "vite-powerflow-create": "dist/index.js"
   },
   "scripts": {
     "build": "tsx build.ts",
@@ -86,8 +86,6 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist/",
-    "template/",
-    "template/.devcontainer/",
     "scripts/"
   ]
 }
