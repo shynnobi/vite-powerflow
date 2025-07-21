@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.2
+
+### Patch Changes
+
+- 52bc810: fix: ensure .vscode and postinstall.sh are always included and executable in published package
+  - Explicitly include `dist/template/vscode` in the npm package to guarantee VSCode settings are available in generated projects.
+  - Force executable permissions on `scripts/postinstall.sh` in the build output to prevent permission errors on install.
+  - This makes the CLI/starter robust and portable across all platforms and npm workflows.
+
 ## 1.0.1
 
 ### Patch Changes
