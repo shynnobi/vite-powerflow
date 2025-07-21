@@ -50,6 +50,14 @@ const __dirname = path.dirname(__filename);
       process.exit(1);
     }
 
+    // 4. Rename .vscode to _vscode in the template (for npm compatibility)
+    const vscodeSrc = path.join(templateDest, '.vscode');
+    const vscodeDest = path.join(templateDest, '_vscode');
+    if (await fs.pathExists(vscodeSrc)) {
+      await fs.move(vscodeSrc, vscodeDest, { overwrite: true });
+      logRootInfo('Renamed .vscode to _vscode in template');
+    }
+
     // 5. Patch package.json scripts
     logRootInfo('Patching package.json validate scripts');
     const pkgPath = path.join(templateDest, 'package.json');

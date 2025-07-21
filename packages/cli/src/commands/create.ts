@@ -35,11 +35,11 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       await fsExtra.move(gitignorePath, dotGitignorePath);
     }
 
-    // Rename vscode to .vscode if it exists
-    const vscodePath = path.join(projectPath, 'vscode');
+    // Rename _vscode to .vscode if it exists
+    const underscoreVscodePath = path.join(projectPath, '_vscode');
     const dotVscodePath = path.join(projectPath, '.vscode');
-    if (await fsExtra.pathExists(vscodePath)) {
-      await fsExtra.move(vscodePath, dotVscodePath);
+    if (await fsExtra.pathExists(underscoreVscodePath)) {
+      await fsExtra.move(underscoreVscodePath, dotVscodePath);
     }
 
     // Files to update
