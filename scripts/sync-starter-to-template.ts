@@ -22,7 +22,7 @@ const __dirname = path.dirname(__filename);
     // 2. Copy the starter app to the template destination
     logRootInfo('Copying folders...');
     await fs.copy(starterSrc, templateDest, {
-      filter: srcPath => {
+      filter: (srcPath: string) => {
         const ignore = [
           '.changeset',
           '.DS_Store',
@@ -36,6 +36,7 @@ const __dirname = path.dirname(__filename);
           'test-results',
           'tsconfig.base.json',
           'tsconfig.tsbuildinfo',
+          'CHANGELOG.md',
         ];
         // Ignore explicit unwanted files/folders
         return !ignore.some(dir => path.basename(srcPath) === dir);

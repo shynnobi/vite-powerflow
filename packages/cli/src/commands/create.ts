@@ -42,6 +42,24 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       await fsExtra.move(underscoreVscodePath, dotVscodePath);
     }
 
+    // Fix permissions for shell scripts in scripts/
+    async function fixShellScriptPermissions(targetDir: string) {
+      const fsSync = await import('fs');
+      const pathMod = await import('path');
+      // scripts/*.sh
+      const scriptsDir = pathMod.join(targetDir, 'scripts');
+      if (fsSync.existsSync(scriptsDir)) {
+        for (const file of fsSync.readdirSync(scriptsDir)) {
+          if (file.endsWith('.sh')) {
+            try {
+              fsSync.chmodSync(pathMod.join(scriptsDir, file), 0o755);
+            } catch {}
+          }
+        }
+      }
+    }
+    await fixShellScriptPermissions(projectPath);
+
     // Files to update
     const packageJsonPath = path.join(projectPath, 'package.json');
     const tsconfigPath = path.join(projectPath, 'tsconfig.json');
