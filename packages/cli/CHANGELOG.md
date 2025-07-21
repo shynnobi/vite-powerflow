@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.4
+
+### Patch Changes
+
+- b739801: - The CLI now sets executable permissions on all .sh files in scripts/ of generated projects.
+  - CHANGELOG.md is no longer included in the CLI template or generated projects.
+  - Fixed a TypeScript warning in the sync-starter-to-template script.
+
 ## 1.0.3
 
 ### Patch Changes
