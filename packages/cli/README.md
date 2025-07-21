@@ -1,33 +1,71 @@
-# Create Vite PowerFlow ⚡
+# @vite-powerflow/create
 
-The **Create Vite PowerFlow CLI** lets you quickly scaffold modern React apps using [Vite PowerFlow](https://github.com/shynnobi/vite-powerflow) — a fully containerized React + Vite starter with strict code quality, AI pair programming (Cursor rules), and robust testing, linting, and CI/CD configurations following industry best practices.
+Create modern React + Vite apps with production-ready tooling, testing, and best practices. Includes TypeScript, Tailwind CSS, shadcn/ui, Zustand, TanStack Query, and more.
 
-> 📚 For full documentation, see the [Vite PowerFlow starter README](https://github.com/shynnobi/vite-powerflow#readme).
-
-## Generate Your App
-
-The fastest way: run the CLI instantly, no installation required :
+## Quick Start
 
 ```bash
-npx create-vite-powerflow my-app
+npx @vite-powerflow/create my-app
+cd my-app
+npm run dev
 ```
 
-#### **Available options**
+## Development
 
-- `-n, --name <name>`: project name
-- `-g, --git`: initialize git
-- `-u, --git-user-name <name>`: git user.name
-- `-e, --git-user-email <email>`: git user.email
-- `-o, --use-global-git`: use global git identity without prompt
+### Testing
 
-**Tip:** If you provide all options, the CLI will not prompt for anything.
+The CLI includes multiple test types optimized for different scenarios:
+
+#### Fast Development Tests (Recommended for daily work)
+
+```bash
+# Unit tests only - very fast (~500ms)
+pnpm test:unit
+
+# Development tests with verbose output
+pnpm test:dev
+
+# Watch mode for unit tests
+pnpm test:watch:unit
+```
+
+#### Integration Tests (For CI/CD)
+
+```bash
+# All tests including E2E (slower, ~12s)
+pnpm test
+
+# Integration tests only (E2E + smoke)
+pnpm test:integration
+```
+
+#### Test Performance
+
+| Test Type   | Duration | Use Case          |
+| ----------- | -------- | ----------------- |
+| Unit tests  | ~500ms   | Daily development |
+| Integration | ~12s     | CI/CD, pre-commit |
+| All tests   | ~12s     | Full validation   |
+
+### Scripts
+
+- `pnpm test:unit` - Fast unit tests only
+- `pnpm test:dev` - Development tests (no coverage)
+- `pnpm test:integration` - E2E and smoke tests
+- `pnpm test:watch:unit` - Watch mode for unit tests
+- `pnpm test` - All tests
+
+## Features
+
+- **Modern Stack**: React 18, Vite 6, TypeScript
+- **UI Components**: shadcn/ui with Tailwind CSS
+- **State Management**: Zustand for simple state
+- **Data Fetching**: TanStack Query for server state
+- **Testing**: Vitest + React Testing Library
+- **Code Quality**: ESLint, Prettier, Husky
+- **Documentation**: Storybook for component docs
+- **DevOps**: GitHub Actions, Docker support
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 👤 Credits
-
-The [starter template](https://github.com/shynnobi/vite-powerflow) was created and is maintained by [Shynn](https://github.com/shynnobi)
-
-[![GitHub](https://img.shields.io/badge/GitHub-shynnobi-24292e.svg?style=for-the-badge&logo=github)](https://github.com/shynnobi)
+MIT

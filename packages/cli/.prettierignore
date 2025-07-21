@@ -6,3 +6,4 @@ dist
 build
 template/**
 **/test-results/
+template/

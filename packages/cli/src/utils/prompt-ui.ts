@@ -56,6 +56,11 @@ export async function promptGitIdentity(
     return { gitUserName: userName, gitUserEmail: userEmail };
   }
 
+  // Correction: if useGlobalIfFound is true and no global identity, do not prompt, just return undefined
+  if (useGlobalIfFound && (!userName || !userEmail)) {
+    return undefined;
+  }
+
   if (userName && userEmail) {
     const question = chalk.blue('?');
     const bold = chalk.bold;
