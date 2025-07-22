@@ -5,7 +5,6 @@
 A React + Vite monorepo starter, fully containerized for reproducible and collaborative development, with strict code quality tooling and AI pair programming workflow (Cursor rules). Includes comprehensive testing, linting, and CI/CD configurations following industry best practices.
 
 > **Note:** This project is a monorepo managed with pnpm workspaces and TurboRepo.
-> Main applications and packages are located in the [`apps/`](./apps/) and [`packages/`](./packages/) directories.
 
 ## 📋 Table of Contents
 
@@ -18,8 +17,6 @@ A React + Vite monorepo starter, fully containerized for reproducible and collab
 - [Available Scripts](#-available-scripts)
 - [Contribution Guidelines](#-contribution-guidelines)
 - [License](#-license)
-
-<hr>
 
 ## ✨ Features
 
@@ -53,8 +50,6 @@ A React + Vite monorepo starter, fully containerized for reproducible and collab
 - **[commitlint](https://commitlint.js.org/)** - Standardized commits for clear commit history
 - **[GitHub Actions](https://github.com/features/actions)** - Automated CI/CD for seamless integration and deployment
 
-<hr>
-
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -62,17 +57,18 @@ A React + Vite monorepo starter, fully containerized for reproducible and collab
 - [Node.js](https://nodejs.org/) (v18 or higher)
 - [Cursor AI Editor](https://www.cursor.com) or [Visual Studio Code](https://code.visualstudio.com/)
 - [Docker](https://www.docker.com/)
-
-> **Note:** For the best AI-assisted development experience, use [Cursor AI Editor](https://www.cursor.com).
-> If you prefer a classic setup, [Visual Studio Code](https://code.visualstudio.com/) works perfectly.
+  > **Note:** For the best AI-assisted development experience, use [Cursor AI Editor](https://www.cursor.com).
+  > If you prefer a classic setup, [Visual Studio Code](https://code.visualstudio.com/) works perfectly.
 
 ### Generate an app using the CLI tool
 
-1. Run this command in your terminal
+1. Run this command in your terminal:
 
    ```bash
-   npx create-vite-powerflow my-app
+   npx @vite-powerflow/create my-app
    ```
+
+   > You can also run the CLI tool in non-interactive mode for faster setup.
 
 2. Open the folder in your code editor
 
@@ -91,6 +87,18 @@ A React + Vite monorepo starter, fully containerized for reproducible and collab
 6. Start developing! 🚀
 
 <hr>
+
+### CLI Options
+
+The CLI tool supports the following options for non-interactive usage:
+
+| Flag/Argument                  | Description                                  |
+| ------------------------------ | -------------------------------------------- |
+| `[project-directory]`          | The name of the project directory (required) |
+| `-g, --git`                    | Initialize Git repository                    |
+| `-u, --git-user-name <name>`   | Git user.name (required with --git)          |
+| `-e, --git-user-email <email>` | Git user.email (required with --git)         |
+| `-o, --use-global-git`         | Use global Git identity if found             |
 
 ## 🤖 AI-Powered Development
 
@@ -119,8 +127,6 @@ The following rules are pre-configured to enhance your development experience:
 | [technical-AI-posture.mdc](./.cursor/rules/technical-AI-posture.mdc)                       | The expected technical rigor and posture of the AI assistant             |
 
 > **Note**: You can customize these rules by adding, removing, or modifying them in the '.cursor/rules/' directory to better match your project's requirements and development workflow.
-
-<hr>
 
 ## 💻 Development Setup
 
@@ -235,8 +241,6 @@ Dependencies are automatically managed through Dependabot:
   - [.github/dependabot.yml](./.github/dependabot.yml) — Dependabot configuration
   - [.github/workflows/dependabot-auto.yml](./.github/workflows/dependabot-auto.yml) — Auto-merge workflow
 
-<hr>
-
 ## 🧪 Testing
 
 Our testing strategy ensures code quality and reliability through a comprehensive suite of automated tests. We employ a multi-layered approach combining unit, integration, and end-to-end testing to catch issues early and maintain high standards.
@@ -276,8 +280,6 @@ These scripts are invoked by the following validation commands:
 - `pnpm validate:quick`
 
 You do not need to run these scripts directly during normal development. They are integrated into the pre-commit, pre-push, and CI workflows to ensure that tests are always checked when relevant.
-
-<hr>
 
 ## 🔧 Project Configuration
 
@@ -374,25 +376,6 @@ TypeScript configuration is split across multiple files to maintain a clean sepa
 - [tsconfig.storybook.json](./tsconfig.storybook.json) — Storybook-specific overrides
 - [tsconfig.eslint.json](./tsconfig.eslint.json) — ESLint-specific overrides
 
-<hr>
-
-## 🗂️ Monorepo Structure
-
-```
-/
-├── apps/
-│   └── starter/         # Main application (see its own README)
-├── packages/
-│   ├── cli/             # CLI tool
-│   └── utils/           # Shared utilities
-└── ...
-```
-
-- [apps/starter/README.md](./apps/starter/README.md) — Main app documentation
-- [packages/cli/README.md](./packages/cli/README.md) — CLI tool documentation
-
-> _More badges (npm downloads, version, etc.) will be added when the project is published._
-
 ## 🚀 Available Scripts
 
 This project includes a comprehensive set of scripts to streamline development, testing, and quality assurance workflows. These scripts are designed to maintain code quality and ensure consistent development practices.
@@ -421,8 +404,6 @@ This project includes a comprehensive set of scripts to streamline development, 
 - `pnpm storybook` — Start Storybook local server
 
 See [package.json](./package.json) for the complete list of available scripts.
-
-<hr>
 
 ## 🤝 Contribution Guidelines
 
@@ -509,13 +490,9 @@ For those not using Cursor, you can directly use the PR template located at `.gi
 
 Both approaches ensure consistent PR documentation by following the same template structure. Cursor IDE simply makes the process more efficient by automatically generating the content based on your changes.
 
-<hr>
-
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-<hr>
 
 ## 👤 Credits
 

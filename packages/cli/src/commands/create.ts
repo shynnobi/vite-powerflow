@@ -42,11 +42,12 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       await fsExtra.move(underscoreVscodePath, dotVscodePath);
     }
 
-    // Fix permissions for shell scripts in scripts/
-    async function fixShellScriptPermissions(targetDir: string) {
+    // Fix permissions for shell scripts in scripts/, .devcontainer/scripts/ and hooks in .husky/
+    async function fixPermissions(targetDir: string) {
       const fsSync = await import('fs');
       const pathMod = await import('path');
-      // scripts/*.sh
+
+      // scripts/*.sh at the project root
       const scriptsDir = pathMod.join(targetDir, 'scripts');
       if (fsSync.existsSync(scriptsDir)) {
         for (const file of fsSync.readdirSync(scriptsDir)) {
@@ -57,8 +58,30 @@ export async function createProject(options: ProjectOptions): Promise<void> {
           }
         }
       }
+
+      // .devcontainer/scripts/*.sh
+      const devcontainerScriptsDir = pathMod.join(targetDir, '.devcontainer', 'scripts');
+      if (fsSync.existsSync(devcontainerScriptsDir)) {
+        for (const file of fsSync.readdirSync(devcontainerScriptsDir)) {
+          if (file.endsWith('.sh')) {
+            try {
+              fsSync.chmodSync(pathMod.join(devcontainerScriptsDir, file), 0o755);
+            } catch {}
+          }
+        }
+      }
+
+      // .husky/* (all files, not just .sh)
+      const huskyDir = pathMod.join(targetDir, '.husky');
+      if (fsSync.existsSync(huskyDir)) {
+        for (const file of fsSync.readdirSync(huskyDir)) {
+          try {
+            fsSync.chmodSync(pathMod.join(huskyDir, file), 0o755);
+          } catch {}
+        }
+      }
     }
-    await fixShellScriptPermissions(projectPath);
+    await fixPermissions(projectPath);
 
     // Files to update
     const packageJsonPath = path.join(projectPath, 'package.json');

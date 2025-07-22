@@ -7,11 +7,10 @@
 !dist/template/_vscode/
 !dist/template/_vscode/**
 
-# Include scripts folder
-!scripts/
-!scripts/**
-
 # Include package.json and other essential files
 !package.json
 !README.md
 !LICENSE
+
+# Exclude scripts folder explicitly
+scripts/
