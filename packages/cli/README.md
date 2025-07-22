@@ -1,71 +1,62 @@
 # @vite-powerflow/create
 
-Create modern React + Vite apps with production-ready tooling, testing, and best practices. Includes TypeScript, Tailwind CSS, shadcn/ui, Zustand, TanStack Query, and more.
+Generate a new, production-ready [Vite PowerFlow](https://github.com/shynnobi/vite-powerflow) starter project in seconds.
 
-## Quick Start
+## 🚀 Quick Start
 
-```bash
-npx @vite-powerflow/create my-app
-cd my-app
-npm run dev
-```
+### Prerequisites
 
-## Development
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [Cursor AI Editor](https://www.cursor.com) or [Visual Studio Code](https://code.visualstudio.com/)
+- [Docker](https://www.docker.com/)
+  > **Note:** For the best AI-assisted development experience, use [Cursor AI Editor](https://www.cursor.com).
+  > If you prefer a classic setup, [Visual Studio Code](https://code.visualstudio.com/) works perfectly.
 
-### Testing
+### Generate an app using the CLI tool
 
-The CLI includes multiple test types optimized for different scenarios:
+1. Run this command in your terminal:
 
-#### Fast Development Tests (Recommended for daily work)
+   ```bash
+   npx @vite-powerflow/create my-app
+   ```
 
-```bash
-# Unit tests only - very fast (~500ms)
-pnpm test:unit
+   > You can also run the CLI tool in non-interactive mode for faster setup. See [CLI Options](#cli-options)
 
-# Development tests with verbose output
-pnpm test:dev
+2. Open the folder in your code editor
 
-# Watch mode for unit tests
-pnpm test:watch:unit
-```
+3. `Reopen in Container` when prompted (Dev Container)
 
-#### Integration Tests (For CI/CD)
+   ![DevContainer Prompt](https://www.dropbox.com/scl/fi/9rm4he8t53h9l30wz10vm/reopen-500.jpg?rlkey=dbrafybaezjnce85vj3b7p2jm&st=b22afec3&raw=1)
 
-```bash
-# All tests including E2E (slower, ~12s)
-pnpm test
+4. Wait for the installation (It can take a few minutes)
 
-# Integration tests only (E2E + smoke)
-pnpm test:integration
-```
+5. Launch dev server:
 
-#### Test Performance
+   ```bash
+   pnpm dev
+   ```
 
-| Test Type   | Duration | Use Case          |
-| ----------- | -------- | ----------------- |
-| Unit tests  | ~500ms   | Daily development |
-| Integration | ~12s     | CI/CD, pre-commit |
-| All tests   | ~12s     | Full validation   |
+6. Start developing! 🚀
 
-### Scripts
+<hr>
 
-- `pnpm test:unit` - Fast unit tests only
-- `pnpm test:dev` - Development tests (no coverage)
-- `pnpm test:integration` - E2E and smoke tests
-- `pnpm test:watch:unit` - Watch mode for unit tests
-- `pnpm test` - All tests
+### CLI Options
 
-## Features
+The CLI tool supports the following options for non-interactive usage:
 
-- **Modern Stack**: React 18, Vite 6, TypeScript
-- **UI Components**: shadcn/ui with Tailwind CSS
-- **State Management**: Zustand for simple state
-- **Data Fetching**: TanStack Query for server state
-- **Testing**: Vitest + React Testing Library
-- **Code Quality**: ESLint, Prettier, Husky
-- **Documentation**: Storybook for component docs
-- **DevOps**: GitHub Actions, Docker support
+| Flag/Argument                  | Description                                  |
+| ------------------------------ | -------------------------------------------- |
+| `[project-directory]`          | The name of the project directory (required) |
+| `-g, --git`                    | Initialize Git repository                    |
+| `-u, --git-user-name <name>`   | Git user.name (required with --git)          |
+| `-e, --git-user-email <email>` | Git user.email (required with --git)         |
+| `-o, --use-global-git`         | Use global Git identity if found             |
 
-## License
+## Documentation
 
-MIT
+For full documentation, features, and advanced usage, see the [Vite PowerFlow monorepo README](https://github.com/shynnobi/vite-powerflow#readme).
+(WIP: Vite Powerflow website coming soon )
+
+---
+
+MIT License
