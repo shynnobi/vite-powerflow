@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.5
+
+### Patch Changes
+
+- 3957f39: Improve CLI tool robustness and user experience
+  - Enhanced permission handling for .devcontainer/scripts/ and .husky/ directories
+  - Updated CLI documentation with clearer usage examples
+  - Replaced --name option with positional argument for simpler project creation
+  - Fixed package publishing to exclude internal scripts folder
+
 ## 1.0.4
 
 ### Patch Changes
