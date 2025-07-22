@@ -33,7 +33,6 @@ describe('CLI E2E: project generation (non-interactive)', () => {
       result = await execa(
         path.join(tempDir, 'node_modules', '.bin', 'create'),
         [
-          '--name',
           'my-app',
           '--git',
           '--git-user-name',

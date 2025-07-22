@@ -41,38 +41,54 @@ process.stdin.on('keypress', (_: string, key: { ctrl: boolean; name: string }) =
   }
 });
 
-const program = new Command();
-program
-  .option('-n, --name <name>', 'Project name')
-  .option('-g, --git', 'Initialize Git')
-  .option('-u, --git-user-name <name>', 'Git user.name')
-  .option('-e, --git-user-email <email>', 'Git user.email')
-  .option('-o, --use-global-git', 'Use global Git identity if found, without prompt');
+const program = new Command()
+  .name('@vite-powerflow/create')
+  .version(process.env.npm_package_version || '1.0.4')
+  .argument(
+    '[project-directory]',
+    'The name of the project directory (optional in interactive mode)'
+  )
+  .option('-g, --git', 'Initialize Git repository')
+  .option('-u, --git-user-name <name>', 'Git user.name (required with --git)')
+  .option('-e, --git-user-email <email>', 'Git user.email (required with --git)')
+  .option('-o, --use-global-git', 'Use global Git identity if found')
+  .addHelpText(
+    'after',
+    '\nExamples:\n  $ npx @vite-powerflow/create              # Interactive mode\n  $ npx @vite-powerflow/create my-app       # Non-interactive with project name\n  $ npx @vite-powerflow/create my-app --git # With Git initialization'
+  );
+
 program.parse(process.argv);
 const cliOptions = program.opts();
 
-function isNonInteractiveMode(opts: any) {
-  // All required options for non-interactive mode
-  return !!(
-    opts.name &&
-    typeof opts.git === 'boolean' &&
-    (opts.git === false || (opts.git === true && opts.gitUserName && opts.gitUserEmail))
-  );
+function isNonInteractiveMode(opts: any, args: string[]) {
+  // If no project directory is provided, force interactive mode
+  if (args.length === 0) return false;
+
+  // Check if we're in non-interactive mode (all required options are provided)
+  const hasGitOptions = opts.git && opts.gitUserName && opts.gitUserEmail;
+  const hasNoGitOptions =
+    !opts.git && !opts.gitUserName && !opts.gitUserEmail && !opts.useGlobalGit;
+
+  // We're in non-interactive mode only if:
+  // 1. All Git-related options are provided, or
+  // 2. No Git-related options are provided at all
+  return hasGitOptions || hasNoGitOptions;
 }
 
 async function init() {
   try {
     // Only enable raw mode if not in non-interactive mode
-    const nonInteractive = isNonInteractiveMode(cliOptions);
+    const nonInteractive = isNonInteractiveMode(cliOptions, program.args);
     if (!nonInteractive && process.stdin.isTTY) {
       process.stdin.setRawMode(true);
       process.stdin.resume();
     }
 
-    // Commander: get options
-    let projectName = await (
-      await import('./utils/prompt-ui.js')
-    ).promptProjectName(cliOptions.name);
+    // Get project name from argument or prompt if not provided
+    let projectName = program.args[0];
+    if (!projectName) {
+      projectName = await (await import('./utils/prompt-ui.js')).promptProjectName();
+    }
 
     // Always slugify the project name for the package name
     let packageName = safePackageName(projectName);
