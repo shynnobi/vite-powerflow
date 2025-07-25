@@ -2,9 +2,7 @@
 
 ![Monorepo](https://img.shields.io/badge/monorepo-pnpm%20workspaces-blue) ![License](https://img.shields.io/github/license/shynnobi/vite-powerflow?color=yellow&label=License) [![CI](https://github.com/shynnobi/vite-powerflow/actions/workflows/execute-ci-pipeline.yml/badge.svg)](https://github.com/shynnobi/vite-powerflow/actions)
 
-A React + Vite monorepo starter, fully containerized for reproducible and collaborative development, with strict code quality tooling and AI pair programming workflow (Cursor rules). Includes comprehensive testing, linting, and CI/CD configurations following industry best practices.
-
-> **Note:** This project is a monorepo managed with pnpm workspaces and TurboRepo.
+A React + Vite starter, fully containerized for reproducible and collaborative development, with strict code quality tooling. Includes comprehensive testing, linting, and CI/CD configurations following industry best practices.
 
 ## 📋 Table of Contents
 
