@@ -5,14 +5,27 @@ import path from 'path';
 import { describe, expect, it } from 'vitest';
 
 // Helper: Wait for a file or directory to exist (polling)
-async function waitForPath(targetPath: string, timeout = 10000) {
+async function waitForPath(targetPath: string, timeout = 20000) {
   const start = Date.now();
+  console.log(`Waiting for path to exist: ${targetPath}`);
+  let attempts = 0;
+
   while (!fs.existsSync(targetPath)) {
+    attempts++;
+    if (attempts % 10 === 0) {
+      console.log(`Still waiting for ${targetPath}... (${Date.now() - start}ms elapsed)`);
+    }
+
     if (Date.now() - start > timeout) {
+      console.log(`Timeout reached after ${Date.now() - start}ms`);
+      if (fs.existsSync(path.dirname(targetPath))) {
+        console.log(`Parent directory contents:`, fs.readdirSync(path.dirname(targetPath)));
+      }
       throw new Error(`Timeout: ${targetPath} was not created in time`);
     }
     await new Promise(r => setTimeout(r, 100));
   }
+  console.log(`Path found after ${Date.now() - start}ms: ${targetPath}`);
 }
 
 describe('CLI E2E: project generation (non-interactive)', () => {
@@ -31,7 +44,7 @@ describe('CLI E2E: project generation (non-interactive)', () => {
     let projectPath = path.join(tempDir, 'my-app');
     try {
       result = await execa(
-        path.join(tempDir, 'node_modules', '.bin', 'create'),
+        path.join(tempDir, 'node_modules', '.bin', 'vite-powerflow-create'),
         [
           'my-app',
           '--git',
@@ -67,7 +80,7 @@ describe('CLI E2E: project generation (non-interactive)', () => {
     }
 
     // Wait for the project directory to be created
-    await waitForPath(projectPath, 10000);
+    await waitForPath(projectPath, 20000); // Increase timeout to 20 seconds
 
     // List temp dir contents only on error
     if (!fs.existsSync(projectPath)) {

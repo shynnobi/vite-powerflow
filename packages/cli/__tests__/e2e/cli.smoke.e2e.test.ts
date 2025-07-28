@@ -32,7 +32,9 @@ describe('CLI smoke test', () => {
     }
 
     // Then: The CLI should run successfully and display help
-    const output = execSync('./node_modules/.bin/create --help', { cwd: tempDir }).toString();
+    const output = execSync('./node_modules/.bin/vite-powerflow-create --help', {
+      cwd: tempDir,
+    }).toString();
     expect(output).toMatch(/Usage:/); // Adjust this to match your CLI help output
 
     // Cleanup: remove temp directory and tarball
