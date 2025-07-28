@@ -32,6 +32,6 @@
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
   "extends": "../../tsconfig.base.json",
-  "include": ["src"],
+  "include": ["src", "tests"],
   "exclude": ["node_modules"]
 }
