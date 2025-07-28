@@ -75,7 +75,9 @@
     "generate:package": "tsx scripts/generate-app-package.ts package",
     "lintstaged:dry": "HUSKY=0 lint-staged --allow-empty && pnpm test",
     "release": "changeset publish",
-    "ci:local": "git clean -fdx && pnpm install --frozen-lockfile && CI=true ./scripts/ci.sh"
+    "ci:local": "git clean -fdx && pnpm install --frozen-lockfile && CI=true ./scripts/ci.sh",
+    "web:dev": "pnpm -filter @vite-powerflow/website dev",
+    "web:storybook": "pnpm -filter @vite-powerflow/website storybook"
   },
   "dependencies": {
     "commander": "^14.0.0",

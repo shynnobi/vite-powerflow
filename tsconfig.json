@@ -11,9 +11,6 @@
     },
     {
       "path": "packages/utils"
-    },
-    {
-      "path": "apps/starter"
     }
   ]
 }
