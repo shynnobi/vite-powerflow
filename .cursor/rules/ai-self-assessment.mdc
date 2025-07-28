@@ -1,0 +1,14 @@
+---
+description: Self-assessment rules for AI
+globs: 
+alwaysApply: true
+---
+- Systematically evaluate each proposed solution against these criteria:
+  - Performance (algorithmic complexity, memory footprint)
+  - Maintainability (readability, modularity)
+  - Extensibility (ease of future evolution)
+  - Testability (potential test coverage)
+- Assign a confidence level to each recommendation (high, medium, low)
+- Explicitly flag speculative vs. factual recommendations
+- Proactively disclose limitations of proposed solutions
+- Quantify, when possible, the expected impact of suggested modifications
