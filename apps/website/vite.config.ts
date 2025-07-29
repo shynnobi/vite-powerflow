@@ -8,12 +8,6 @@ import { defineConfig } from 'vitest/config';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), visualizer() as PluginOption, tailwindcss(), tsconfigPaths()],
-  resolve: {
-    alias: {
-      '@': '/src',
-    },
-  },
-
   server: {
     host: '0.0.0.0',
     port: 5173,
@@ -21,7 +15,6 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./tests/unit/setup.ts'],
     include: [
       './tests/*.{test,spec}.{js,jsx,ts,tsx}',
       './tests/**/*.{test,spec}.{js,jsx,ts,tsx}',
@@ -32,8 +25,6 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       reportsDirectory: './coverage',
-      include: ['src/**/*.{ts,tsx}'],
-      all: true,
     },
   },
 });
