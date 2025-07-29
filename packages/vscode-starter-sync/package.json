@@ -1,0 +1,50 @@
+{
+  "name": "vite-powerflow-starter-sync",
+  "displayName": "Vite Powerflow - Starter Sync Monitor",
+  "description": "Monitor sync status between Vite Powerflow starter app and CLI template. Detect when changeset is needed or template sync is required.",
+  "version": "0.0.1",
+  "publisher": "vite-powerflow",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shynnobi/vite-powerflow.git",
+    "directory": "packages/vscode-starter-sync"
+  },
+  "engines": {
+    "vscode": ">=1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "vite-powerflow",
+    "starter",
+    "cli",
+    "template",
+    "sync",
+    "changeset",
+    "monorepo"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "vitePowerflow.showStarterSyncStatus",
+        "title": "Show Vite Powerflow Starter Sync Status"
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./tsconfig.json",
+    "watch": "tsc -watch -p ./tsconfig.json",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.15",
+    "@types/vscode": "^1.80.0",
+    "typescript": "^5.0.0",
+    "vsce": "^2.15.0"
+  }
+}
