@@ -1,3 +1,4 @@
+import { execSync } from 'child_process';
 import fs from 'fs-extra';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
@@ -59,10 +60,12 @@ const __dirname = path.dirname(__filename);
       logRootInfo('Renamed .vscode to _vscode in template');
     }
 
-    // 5. Patch package.json scripts
-    logRootInfo('Patching package.json validate scripts');
+    // 5. Patch package.json scripts and add starterSource metadata
+    logRootInfo('Patching package.json validate scripts and adding starterSource metadata');
     const pkgPath = path.join(templateDest, 'package.json');
     const pkg = await fs.readJson(pkgPath);
+
+    // Add/update scripts
     pkg.scripts = {
       ...pkg.scripts,
       format: pkg.scripts.format || 'prettier --check .',
@@ -71,6 +74,21 @@ const __dirname = path.dirname(__filename);
       'validate:full': 'run-s validate:static test test:e2e',
       'validate:commit': 'npx lint-staged && pnpm test',
     };
+
+    // Add starterSource metadata
+    try {
+      const currentCommit = execSync('git rev-parse HEAD', { encoding: 'utf-8' }).trim();
+      const starterPkg = await fs.readJson(path.join(starterSrc, 'package.json'));
+
+      pkg.starterSource = {
+        version: starterPkg.version,
+        commit: currentCommit,
+        syncedAt: new Date().toISOString(),
+      };
+    } catch (error) {
+      logRootInfo('Warning: Could not add starterSource metadata');
+    }
+
     await fs.writeJson(pkgPath, pkg, { spaces: 2 });
 
     // 6. Clean tsconfig.json by removing 'extends' for standalone usage
