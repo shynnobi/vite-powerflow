@@ -23,27 +23,38 @@ export function activate(context: vscode.ExtensionContext) {
 
   const workspaceRoot = getWorkspaceRoot();
   if (workspaceRoot) {
-    // Initial check on activation.
-    checkIfStarterIsOutOfSync();
+    let debounceTimer: NodeJS.Timeout;
+    const debouncedCheck = (trigger: string) => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        outputChannel.appendLine(`[${trigger}] Triggering sync check...`);
+        checkIfStarterIsOutOfSync();
+      }, 200); // Debounce to avoid multiple rapid checks
+    };
 
-    // Re-check on git HEAD change (e.g., commit, checkout).
+    // Initial check on activation.
+    debouncedCheck('Activation');
+
+    // Watcher for branch changes (checkouts).
     const gitHeadWatcher = vscode.workspace.createFileSystemWatcher(
       new vscode.RelativePattern(workspaceRoot, '.git/HEAD')
     );
-    gitHeadWatcher.onDidChange(() => {
-      outputChannel.appendLine('Git HEAD changed, re-running sync check...');
-      checkIfStarterIsOutOfSync();
-    });
+    gitHeadWatcher.onDidChange(() => debouncedCheck('HEAD change'));
     context.subscriptions.push(gitHeadWatcher);
+
+    // Watcher for new commits on any local branch.
+    const gitRefsWatcher = vscode.workspace.createFileSystemWatcher(
+      new vscode.RelativePattern(workspaceRoot, '.git/refs/heads/**')
+    );
+    gitRefsWatcher.onDidChange(() => debouncedCheck('Branch commit'));
+    gitRefsWatcher.onDidCreate(() => debouncedCheck('Branch creation'));
+    context.subscriptions.push(gitRefsWatcher);
 
     // Also re-check when the template's package.json is modified.
     const templatePackageWatcher = vscode.workspace.createFileSystemWatcher(
       new vscode.RelativePattern(workspaceRoot, 'packages/cli/template/package.json')
     );
-    templatePackageWatcher.onDidChange(() => {
-      outputChannel.appendLine('Template package.json changed, re-running sync check...');
-      checkIfStarterIsOutOfSync();
-    });
+    templatePackageWatcher.onDidChange(() => debouncedCheck('Template package.json change'));
     context.subscriptions.push(templatePackageWatcher);
   } else {
     updateStatusBar('error', 'Not in a Vite Powerflow workspace.');
