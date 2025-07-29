@@ -25,18 +25,20 @@
     "monorepo"
   ],
   "activationEvents": [
-    "onStartupFinished"
+    "onStartup",
+    "workspaceContains:pnpm-workspace.yaml"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "vitePowerflow.showStarterSyncStatus",
-        "title": "Show Vite Powerflow Starter Sync Status"
+        "command": "vitePowerflow.runSyncCheck",
+        "title": "Vite Powerflow: Show Starter Sync Status"
       }
     ]
   },
   "scripts": {
+    "vscode:prepublish": "pnpm run compile",
     "compile": "tsc -p ./tsconfig.json",
     "watch": "tsc -watch -p ./tsconfig.json",
     "package": "vsce package"
