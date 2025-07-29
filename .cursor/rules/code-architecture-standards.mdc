@@ -2,6 +2,15 @@
 alwaysApply: true
 ---
 
+## Code Standards
+- Functional React components with hooks
+- Strict TypeScript typing
+- Explicit names for functions and variables
+- Meaningful tests (Given-When-Then pattern)
+- Comments only when necessary to clarify complex logic
+- Feature-based architecture rather than technical type
+
+## Architecture Principles
 - Adapt architecture to project requirements rather than forcing specific technologies
 - Follow domain-driven design where appropriate
 - Maintain clear separation of concerns (UI, business logic, data access)

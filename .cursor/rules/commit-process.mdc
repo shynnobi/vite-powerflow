@@ -1,3 +1,8 @@
+---
+description: Commit workflow, validation, and message rules for AI-driven commits.
+alwaysApply: false
+---
+
 # AI Commit Process Rules
 
 ## 1. Commit Workflow
@@ -31,8 +36,8 @@ If the commit process (following a chosen commit plan) is interrupted (e.g., due
 
 - All commit messages must follow the Conventional Commit format.
   - Allowed types: build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test.
-  - The header (first line) must be ≤ 72 characters, imperative mood, no period at the end.
-  - The body (optional) must be ≤ 100 characters per line, each line a complete thought.
+  - The header (first line) must be less than 72 characters, imperative mood, no period at the end.
+  - The body (optional) must be than 100 characters per line, each line a complete thought.
   - Use bullet points in the body for multiple changes.
   - All commit messages and comments must be written in English.
 - Commit messages must be readable and understandable by anyone reviewing the history, even without detailed knowledge of the code.
@@ -41,30 +46,3 @@ If the commit process (following a chosen commit plan) is interrupted (e.g., due
   - Explicitly mention the technical elements impacted (e.g., module names, scripts, templates, configs, etc.).
   - Avoid raw file lists or overly generic descriptions.
 - The assistant must always prioritize clarity, readability, and technical context in commit message writing.
-
-### Examples
-
-**Good:**
-
-```
-feat(templates): provide example-app and utils as reusable templates
-
-- Move example-app and example-utils to templates/ for easier project bootstrapping
-- Update helper.ts and README.md to reflect new structure
-```
-
-**To avoid:**
-
-```
-refactor: update files
-```
-
-or
-
-```
-chore: migration
-```
-
-```
-
-```
