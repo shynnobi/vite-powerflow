@@ -8,6 +8,12 @@ import { defineConfig } from 'vitest/config';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), visualizer() as PluginOption, tailwindcss(), tsconfigPaths()],
+  resolve: {
+    alias: {
+      '@': '/src',
+    },
+  },
+
   server: {
     host: '0.0.0.0',
     port: 5173,
@@ -29,6 +35,5 @@ export default defineConfig({
       include: ['src/**/*.{ts,tsx}'],
       all: true,
     },
-    alias: [{ find: '@', replacement: '/src' }],
   },
 });
