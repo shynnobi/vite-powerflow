@@ -99,6 +99,12 @@ export async function createProject(options: ProjectOptions): Promise<void> {
         const packageJsonRaw = await fs.readFile(packageJsonPath, 'utf-8');
         const packageJson = JSON.parse(packageJsonRaw);
         packageJson.name = options.packageName;
+
+        // Remove the starterSource property as it's not needed by the end user.
+        if (packageJson.starterSource) {
+          delete packageJson.starterSource;
+        }
+
         await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
         // logSuccess('package.json updated.');
       }

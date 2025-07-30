@@ -31,7 +31,7 @@ describe('CLI E2E: project generation (non-interactive)', () => {
     let projectPath = path.join(tempDir, 'my-app');
     try {
       result = await execa(
-        path.join(tempDir, 'node_modules', '.bin', 'create'),
+        path.join(tempDir, 'node_modules', '.bin', 'vite-powerflow-create'),
         [
           'my-app',
           '--git',
