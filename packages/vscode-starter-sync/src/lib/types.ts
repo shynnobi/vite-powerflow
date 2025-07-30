@@ -1,5 +1,3 @@
-import * as vscode from 'vscode';
-
 export type Status = 'sync' | 'warning' | 'error';
 
 export interface CheckResult {

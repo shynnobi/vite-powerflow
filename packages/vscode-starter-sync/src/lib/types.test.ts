@@ -1,6 +1,3 @@
-/// <reference types="vitest" />
-import { vi } from 'vitest';
-
 import type { CheckResult } from './types.js';
 
 describe('types', () => {

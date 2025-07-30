@@ -5,10 +5,11 @@ import * as path from 'path';
 /**
  * Returns the current git commit hash (HEAD) for the given workspace root.
  * @param workspaceRoot - The root directory of the git workspace
+ * @param exec - (optional) Function to execute shell commands (for testability)
  * @returns The current commit hash as a string
  */
-export function getCurrentCommit(workspaceRoot: string): string {
-  return execSync('git rev-parse HEAD', {
+export function getCurrentCommit(workspaceRoot: string, exec: typeof execSync = execSync): string {
+  return exec('git rev-parse HEAD', {
     encoding: 'utf-8',
     cwd: workspaceRoot,
   }).trim();

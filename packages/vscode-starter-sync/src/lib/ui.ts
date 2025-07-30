@@ -2,6 +2,12 @@ import * as vscode from 'vscode';
 
 import { CheckResult, Status } from './types.js';
 
+/**
+ * Updates the VS Code status bar with the current sync status and tooltip.
+ * @param statusBarItem - The status bar item to update
+ * @param status - The sync status ('sync', 'warning', 'error')
+ * @param tooltip - Tooltip text to display
+ */
 export function updateStatusBar(
   statusBarItem: vscode.StatusBarItem,
   status: Status,
@@ -30,6 +36,13 @@ export function updateStatusBar(
   statusBarItem.show();
 }
 
+/**
+ * Handles the result of sync checks and prompts the user for actions if needed.
+ * Shows a warning message if unreleased changes are detected and offers to create a changeset.
+ * @param starterResult - The result of the starter sync check
+ * @param cliResult - The result of the CLI sync check
+ * @param outputChannel - The VS Code output channel for logging
+ */
 export async function handleSyncResults(
   starterResult: CheckResult,
   cliResult: CheckResult,

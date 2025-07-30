@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 
 import { checkCliStatus, checkStarterStatus } from './lib/checks.js';
 import { handleSyncResults, updateStatusBar } from './lib/ui.js';
+import { createDebounced, createWatcher } from './lib/utils.js';
 import { getWorkspaceRoot } from './lib/workspace.js';
 
 let outputChannel: vscode.OutputChannel;
@@ -41,56 +42,45 @@ export function activate(context: vscode.ExtensionContext) {
 
   const workspaceRoot = getWorkspaceRoot();
   if (workspaceRoot) {
-    let debounceTimer: NodeJS.Timeout;
-    const debouncedCheck = (trigger: string) => {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
-        outputChannel.appendLine(`[${trigger}] Triggering sync check...`);
-        runSyncChecks();
-      }, 200);
-    };
+    const debouncedCheck = createDebounced((trigger: string) => {
+      outputChannel.appendLine(`[${trigger}] Triggering sync check...`);
+      runSyncChecks();
+    }, 200);
 
     debouncedCheck('Activation');
 
-    const gitHeadWatcher = vscode.workspace.createFileSystemWatcher(
-      new vscode.RelativePattern(workspaceRoot, '.git/HEAD')
+    createWatcher(
+      new vscode.RelativePattern(workspaceRoot, '.git/HEAD'),
+      (uri, event) => {
+        outputChannel.appendLine(`🔍 Git HEAD ${event}: ${uri.fsPath}`);
+        debouncedCheck('HEAD change');
+      },
+      context
     );
-    gitHeadWatcher.onDidChange(uri => {
-      outputChannel.appendLine(`🔍 Git HEAD changed: ${uri.fsPath}`);
-      debouncedCheck('HEAD change');
-    });
-    context.subscriptions.push(gitHeadWatcher);
-
-    const gitRefsWatcher = vscode.workspace.createFileSystemWatcher(
-      new vscode.RelativePattern(workspaceRoot, '.git/refs/heads/**')
+    createWatcher(
+      new vscode.RelativePattern(workspaceRoot, '.git/refs/heads/**'),
+      (uri, event) => {
+        outputChannel.appendLine(`🔍 Git refs ${event}: ${uri.fsPath}`);
+        debouncedCheck(event === 'created' ? 'Branch creation' : 'Branch commit');
+      },
+      context
     );
-    gitRefsWatcher.onDidChange(uri => {
-      outputChannel.appendLine(`🔍 Git refs changed: ${uri.fsPath}`);
-      debouncedCheck('Branch commit');
-    });
-    gitRefsWatcher.onDidCreate(uri => {
-      outputChannel.appendLine(`🔍 Git refs created: ${uri.fsPath}`);
-      debouncedCheck('Branch creation');
-    });
-    context.subscriptions.push(gitRefsWatcher);
-
-    const cliPackageWatcher = vscode.workspace.createFileSystemWatcher(
-      new vscode.RelativePattern(workspaceRoot, 'packages/cli/package.json')
+    createWatcher(
+      new vscode.RelativePattern(workspaceRoot, 'packages/cli/package.json'),
+      (uri, event) => {
+        outputChannel.appendLine(`🔍 CLI package.json ${event}: ${uri.fsPath}`);
+        debouncedCheck('CLI package.json change');
+      },
+      context
     );
-    cliPackageWatcher.onDidChange(uri => {
-      outputChannel.appendLine(`🔍 CLI package.json changed: ${uri.fsPath}`);
-      debouncedCheck('CLI package.json change');
-    });
-    context.subscriptions.push(cliPackageWatcher);
-
-    const templatePackageWatcher = vscode.workspace.createFileSystemWatcher(
-      new vscode.RelativePattern(workspaceRoot, 'packages/cli/template/package.json')
+    createWatcher(
+      new vscode.RelativePattern(workspaceRoot, 'packages/cli/template/package.json'),
+      (uri, event) => {
+        outputChannel.appendLine(`🔍 Template package.json ${event}: ${uri.fsPath}`);
+        debouncedCheck('Template package.json change');
+      },
+      context
     );
-    templatePackageWatcher.onDidChange(uri => {
-      outputChannel.appendLine(`🔍 Template package.json changed: ${uri.fsPath}`);
-      debouncedCheck('Template package.json change');
-    });
-    context.subscriptions.push(templatePackageWatcher);
   } else {
     updateStatusBar(statusBarItem, 'error', 'Not in a Vite Powerflow workspace.');
   }

@@ -121,6 +121,7 @@ export default [
       'vitest/no-focused-tests': 'error',
       'vitest/no-disabled-tests': 'warn',
       'vitest/expect-expect': 'warn',
+      'no-unused-vars': ['warn', { args: 'after-used', argsIgnorePattern: '^_' }],
       // Add more Vitest rules here if needed
     },
     languageOptions: {

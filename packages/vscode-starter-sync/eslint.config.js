@@ -5,7 +5,6 @@ export default [
   {
     files: ['src/lib/types.test.ts'],
     rules: {
-      // Autorise les tests de type sans assertion runtime
       'vitest/expect-expect': ['error', { assertFunctionNames: ['expect', 'expectTypeOf'] }],
     },
   },
