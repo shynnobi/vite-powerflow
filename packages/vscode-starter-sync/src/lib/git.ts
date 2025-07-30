@@ -2,6 +2,11 @@ import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 
+/**
+ * Returns the current git commit hash (HEAD) for the given workspace root.
+ * @param workspaceRoot - The root directory of the git workspace
+ * @returns The current commit hash as a string
+ */
 export function getCurrentCommit(workspaceRoot: string): string {
   return execSync('git rev-parse HEAD', {
     encoding: 'utf-8',
@@ -9,6 +14,13 @@ export function getCurrentCommit(workspaceRoot: string): string {
   }).trim();
 }
 
+/**
+ * Reads the CLI template's package.json and returns the baseline commit hash for the starter.
+ * Logs a warning and returns 'unknown' if not found or on error.
+ * @param workspaceRoot - The root directory of the workspace
+ * @param outputChannel - Output channel for logging messages
+ * @returns The baseline commit hash, or 'unknown' if not found
+ */
 export function getTemplateBaselineCommit(
   workspaceRoot: string,
   outputChannel: { appendLine: (value: string) => void }
@@ -30,6 +42,17 @@ export function getTemplateBaselineCommit(
   }
 }
 
+/**
+ * Returns a list of commit messages between baseRef and headRef for a given pathspec.
+ * If the base ref does not exist, logs a warning and throws an error.
+ * If the history is diverged, falls back to a diff check and returns a generic message if changes are detected.
+ * @param workspaceRoot - The root directory of the workspace
+ * @param baseRef - The base commit or tag to compare from
+ * @param headRef - The head commit or tag to compare to
+ * @param pathspec - The path to restrict the log/diff to
+ * @param outputChannel - Output channel for logging messages
+ * @returns An array of commit messages, or a generic message if diverged
+ */
 export function getCommitsSince(
   workspaceRoot: string,
   baseRef: string,
@@ -38,43 +61,44 @@ export function getCommitsSince(
   outputChannel: { appendLine: (value: string) => void }
 ): string[] {
   try {
-    // First, check if the base ref (commit or tag) exists in the local repository.
+    // Check if the base ref (commit or tag) exists in the local repository.
     execSync(`git cat-file -e ${baseRef}^{commit}`, {
       cwd: workspaceRoot,
-      stdio: 'ignore', // Don't print output or error.
+      stdio: 'ignore', // Suppress output and errors.
     });
   } catch (error) {
+    // If the base ref does not exist, log a warning and throw an error.
     outputChannel.appendLine(
       `⚠️ The base ref "${baseRef}" was not found in your local git history. Try running "git fetch --all --tags".`
     );
-    // Throw an error to indicate this specific problem.
     throw new Error(`Base ref ${baseRef} not found.`);
   }
 
   try {
+    // Try to get the list of commits between baseRef and headRef for the given pathspec.
     const command = `git log ${baseRef}..${headRef} --oneline -- ${pathspec}`;
     const commits = execSync(command, {
       encoding: 'utf-8',
       cwd: workspaceRoot,
     }).trim();
 
+    // If there are no commits, return an empty array.
     if (!commits) return [];
+    // Otherwise, split the output into individual commit lines.
     return commits.split('\n').filter(line => line.trim());
   } catch (error: any) {
-    // This can happen if the base ref is not an ancestor of the current ref (e.g., on a diverged branch).
-    // This is an expected scenario, not a critical error.
+    // If the history is diverged (baseRef is not an ancestor), this is not a critical error.
     outputChannel.appendLine(
       `ℹ️ Could not perform a direct log between ${baseRef} and ${headRef}. This may be normal if your branch has diverged. The check will fall back to a simple diff.`
     );
-    // We can't list commits, but we can still detect changes.
-    // A `git diff --quiet` will tell us if there are any differences.
+    // Fallback: use git diff to check if there are any changes at all.
     const diffCommand = `git diff --quiet ${baseRef}..${headRef} -- ${pathspec}`;
     try {
       execSync(diffCommand, { cwd: workspaceRoot, stdio: 'ignore' });
-      // Exit code is 0, meaning no differences were found.
+      // Exit code 0: no differences found.
       return [];
     } catch (diffError) {
-      // Exit code is 1, meaning there are differences.
+      // Exit code 1: differences found, but we can't list individual commits.
       return ['Changes detected (unable to list individual commits due to diverged history)'];
     }
   }

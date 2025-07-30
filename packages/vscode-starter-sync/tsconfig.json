@@ -1,18 +1,12 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "commonjs",
-    "lib": ["ES2020"],
+    "composite": true,
     "outDir": "dist",
-    "rootDir": "src",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "moduleResolution": "node",
-    "typeRoots": ["node_modules/@types"],
-    "forceConsistentCasingInFileNames": true,
-    "types": ["vscode", "node"]
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["vscode", "node", "vitest/globals"]
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src", "vitest.config.ts"],
+  "exclude": ["dist", "node_modules"]
 }

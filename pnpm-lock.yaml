@@ -492,9 +492,15 @@ importers:
       '@types/vscode':
         specifier: ^1.102.0
         version: 1.102.0
+      jest-mock-vscode:
+        specifier: ^4.6.0
+        version: 4.6.0(@types/vscode@1.102.0)
       typescript:
         specifier: ^5.0.0
         version: 5.8.3
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.4(@types/node@24.0.15)(@vitest/browser@3.2.4)(@vitest/ui@3.2.4)(jiti@2.4.2)(jsdom@26.1.0)(lightningcss@1.30.1)(msw@2.10.4(@types/node@24.0.15)(typescript@5.8.3))(tsx@4.20.3)(yaml@2.8.0)
       vsce:
         specifier: ^2.15.0
         version: 2.15.0
@@ -4733,6 +4739,12 @@ packages:
     resolution: {integrity: sha512-vXywcxmr0SsKXF/bAD7t7nMamRvPuJkras00gqYeB1V0WllxZrbZ0paRr3XqpFU2sYYjD0qAaG2fRyn/CGZ0aw==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
+  jest-mock-vscode@4.6.0:
+    resolution: {integrity: sha512-FTEGP5TT5y/NfoiCJQQOcauLFnA7wIcbedjlZbLZ+Udlm+QwoKcF1E+Qv5TiYTLRmV8jsPQf6RpzvLQk1iYDaw==}
+    engines: {node: '>20.0.0'}
+    peerDependencies:
+      '@types/vscode': ^1.90.0
+
   jest-mock@29.7.0:
     resolution: {integrity: sha512-ITOMZn+UkYS4ZFh83xYAOzWStloNzJFO2s8DWrE4lhtGD+AorgnbkiKERe4wQVBydIGPx059g6riW5Btp6Llnw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -6858,6 +6870,9 @@ packages:
     engines: {node: '>= 14'}
     deprecated: vsce has been renamed to @vscode/vsce. Install using @vscode/vsce instead.
     hasBin: true
+
+  vscode-uri@3.1.0:
+    resolution: {integrity: sha512-/BpdSx+yCQGnCvecbyXdxHDkuk55/G3xwnC0GqY4gmQ3j+A+g8kzzgB4Nk/SINjqn6+waqw3EgbVF2QKExkRxQ==}
 
   w3c-xmlserializer@5.0.0:
     resolution: {integrity: sha512-o8qghlI8NZHU1lLPrpi2+Uq7abh4GGPpYANlalzWxyWteJOCsr/P+oPBA49TOLu5FTZO4d3F9MnWJfiMo4BkmA==}
@@ -11756,6 +11771,11 @@ snapshots:
       slash: 3.0.0
       stack-utils: 2.0.6
 
+  jest-mock-vscode@4.6.0(@types/vscode@1.102.0):
+    dependencies:
+      '@types/vscode': 1.102.0
+      vscode-uri: 3.1.0
+
   jest-mock@29.7.0:
     dependencies:
       '@jest/types': 29.6.3
@@ -14116,6 +14136,8 @@ snapshots:
       xml2js: 0.4.23
       yauzl: 2.10.0
       yazl: 2.5.1
+
+  vscode-uri@3.1.0: {}
 
   w3c-xmlserializer@5.0.0:
     dependencies:

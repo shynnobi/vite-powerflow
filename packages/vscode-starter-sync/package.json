@@ -38,15 +38,27 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "pnpm run compile",
+    "build": "tsc -p ./tsconfig.json",
+    "dev": "tsc -watch -p ./tsconfig.json",
+    "test": "vitest run",
+    "lint": "eslint . --ext ts,tsx,js,jsx",
+    "lint:fix": "eslint . --ext ts,tsx,js,jsx --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix",
+    "type-check": "tsc --noEmit",
     "compile": "tsc -p ./tsconfig.json",
     "watch": "tsc -watch -p ./tsconfig.json",
+    "vscode:prepublish": "pnpm run compile",
     "package": "vsce package"
   },
   "devDependencies": {
     "@types/node": "^24.0.15",
     "@types/vscode": "^1.102.0",
+    "jest-mock-vscode": "^4.6.0",
     "typescript": "^5.0.0",
+    "vitest": "^3.2.4",
     "vsce": "^2.15.0"
-  }
+  },
+  "type": "module"
 }

@@ -16,18 +16,3 @@ export function getWorkspaceRoot(): string | null {
   }
   return null;
 }
-
-export async function getPackageInfo(
-  packagePath: string
-): Promise<{ name: string; version: string } | null> {
-  try {
-    const pkgContent = await fs.promises.readFile(packagePath, 'utf-8');
-    const pkg = JSON.parse(pkgContent);
-    if (pkg.name && pkg.version) {
-      return { name: pkg.name, version: pkg.version };
-    }
-    return null;
-  } catch (error) {
-    return null;
-  }
-}
