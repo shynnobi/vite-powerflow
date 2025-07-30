@@ -10,7 +10,7 @@
     "directory": "packages/vscode-starter-sync"
   },
   "engines": {
-    "vscode": ">=1.80.0"
+    "vscode": "^1.102.0"
   },
   "categories": [
     "Other"
@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@types/node": "^24.0.15",
-    "@types/vscode": "^1.80.0",
+    "@types/vscode": "^1.102.0",
     "typescript": "^5.0.0",
     "vsce": "^2.15.0"
   }

@@ -67,7 +67,6 @@
     "cli:sync-build-start": "pnpm sync:starter-to-template && pnpm cli:build && pnpm cli:start",
     "sta:dev": "pnpm -filter @vite-powerflow/starter dev",
     "sta:storybook": "pnpm --filter @vite-powerflow/starter storybook",
-    "sync:starter-to-template": "pnpm --filter @vite-powerflow/utils sync:starter-to-template",
     "extension:compile": "pnpm --filter vite-powerflow-starter-sync run compile",
     "extension:package": "pnpm --filter vite-powerflow-starter-sync run package",
     "extension:install": "code --install-extension packages/vscode-starter-sync/vite-powerflow-starter-sync-0.0.1.vsix",
@@ -79,7 +78,10 @@
     "generate:app": "tsx scripts/generate-app-package.ts app",
     "generate:package": "tsx scripts/generate-app-package.ts package",
     "lintstaged:dry": "HUSKY=0 lint-staged --allow-empty && pnpm test",
-    "release": "changeset publish",
+    "sync:starter-to-template": "tsx scripts/sync-starter-to-template.ts",
+    "set-cli-template-baseline": "tsx scripts/set-cli-template-baseline.ts",
+    "version:ci": "pnpm sync:starter-to-template && pnpm set-cli-template-baseline && changeset version",
+    "release": "pnpm build && changeset publish",
     "ci:local": "git clean -fdx && pnpm install --frozen-lockfile && CI=true ./scripts/ci.sh"
   },
   "dependencies": {

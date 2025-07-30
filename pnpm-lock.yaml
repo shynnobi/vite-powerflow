@@ -490,7 +490,7 @@ importers:
         specifier: ^24.0.15
         version: 24.0.15
       '@types/vscode':
-        specifier: ^1.80.0
+        specifier: ^1.102.0
         version: 1.102.0
       typescript:
         specifier: ^5.0.0
