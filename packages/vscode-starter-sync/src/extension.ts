@@ -5,8 +5,11 @@ import * as vscode from 'vscode';
 
 let outputChannel: vscode.OutputChannel;
 let statusBarItem: vscode.StatusBarItem;
+let lastCheckResult: string = '';
+let outputBuffer: string[] = []; // Buffer to store output lines
 
 const COMMAND_ID = 'vitePowerflow.runSyncCheck';
+const SHOW_LAST_RESULT_COMMAND_ID = 'vitePowerflow.showLastResult';
 
 export function activate(context: vscode.ExtensionContext) {
   outputChannel = vscode.window.createOutputChannel('Vite Powerflow');
@@ -14,12 +17,20 @@ export function activate(context: vscode.ExtensionContext) {
   statusBarItem.command = COMMAND_ID;
   context.subscriptions.push(statusBarItem);
 
-  // The command's role is now simply to show the output, not to trigger a new check.
-  // The check is triggered automatically by watchers.
-  const command = vscode.commands.registerCommand(COMMAND_ID, () => {
-    outputChannel.show(true);
+  // Register commands
+  const runSyncCheckCommand = vscode.commands.registerCommand(COMMAND_ID, () => {
+    if (lastCheckResult) {
+      outputChannel.clear();
+      outputChannel.append(lastCheckResult);
+      outputChannel.show(true);
+    } else {
+      vscode.window.showInformationMessage(
+        'No previous sync check result available. Waiting for watchers to trigger a check.'
+      );
+    }
   });
-  context.subscriptions.push(command);
+
+  context.subscriptions.push(runSyncCheckCommand);
 
   const workspaceRoot = getWorkspaceRoot();
   if (workspaceRoot) {
@@ -28,6 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
         outputChannel.appendLine(`[${trigger}] Triggering sync check...`);
+        outputBuffer.push(`[${trigger}] Triggering sync check...`);
         checkIfStarterIsOutOfSync();
       }, 200); // Debounce to avoid multiple rapid checks
     };
@@ -68,8 +80,10 @@ export function deactivate() {
 
 async function checkIfStarterIsOutOfSync() {
   try {
+    const logLine = `[${new Date().toISOString()}] Running starter sync check...`;
     outputChannel.appendLine('---');
-    outputChannel.appendLine(`[${new Date().toISOString()}] Running starter sync check...`);
+    outputChannel.appendLine(logLine);
+    outputBuffer.push('---', logLine);
 
     const workspaceRoot = getWorkspaceRoot();
     if (!workspaceRoot) {
@@ -78,31 +92,39 @@ async function checkIfStarterIsOutOfSync() {
       return;
     }
 
-    const baselineCommit = getBaselineCommit(workspaceRoot);
-    if (baselineCommit === 'unknown') {
-      updateStatusBar('error', 'Baseline commit not found in template.');
+    const templateBaselineCommit = getTemplateBaselineCommit(workspaceRoot);
+    if (templateBaselineCommit === 'unknown') {
+      updateStatusBar('error', 'Template baseline commit not found in CLI template.');
       return;
     }
-    const shortBaselineCommit = baselineCommit.substring(0, 7);
-    outputChannel.appendLine(
-      `📦 Checking against template's baseline (commit ${shortBaselineCommit})`
-    );
+    const shortTemplateBaselineCommit = templateBaselineCommit.substring(0, 7);
+    const templateLog = `📦 Checking against CLI template baseline commit (commit ${shortTemplateBaselineCommit})`;
+    outputChannel.appendLine(templateLog);
+    outputBuffer.push(templateLog);
 
     const currentCommit = getCurrentCommit(workspaceRoot);
     const shortCurrentCommit = currentCommit.substring(0, 7);
-    outputChannel.appendLine(`📍 HEAD is at commit ${shortCurrentCommit}`);
+    const headLog = `📍 HEAD is at commit ${shortCurrentCommit}`;
+    outputChannel.appendLine(headLog);
+    outputBuffer.push(headLog);
 
     outputChannel.appendLine("🔎 Searching for 'apps/starter' changes...");
-    const newStarterCommits = getStarterCommitsSinceBaseline(
+    outputBuffer.push("🔎 Searching for 'apps/starter' changes...");
+    const newStarterCommits = getStarterCommitsSinceTemplateBaseline(
       workspaceRoot,
-      baselineCommit,
+      templateBaselineCommit,
       currentCommit
     );
 
     if (newStarterCommits.length > 0) {
       const commitCount = newStarterCommits.length;
-      outputChannel.appendLine(`🚨 Found ${commitCount} unreleased commits for 'apps/starter'.`);
-      newStarterCommits.forEach(c => outputChannel.appendLine(`  - ${c}`));
+      const warningLog = `🚨 Found ${commitCount} unreleased commits for 'apps/starter'.`;
+      outputChannel.appendLine(warningLog);
+      outputBuffer.push(warningLog);
+      newStarterCommits.forEach(c => {
+        outputChannel.appendLine(`  - ${c}`);
+        outputBuffer.push(`  - ${c}`);
+      });
 
       updateStatusBar('warning', `Starter has ${commitCount} unreleased change(s).`);
 
@@ -120,11 +142,19 @@ async function checkIfStarterIsOutOfSync() {
         outputChannel.show(true);
       }
     } else {
-      outputChannel.appendLine("✅ 'apps/starter' is in sync with the latest template.");
+      const successLog =
+        "✅ 'apps/starter' is in sync with the latest CLI template baseline commit.";
+      outputChannel.appendLine(successLog);
+      outputBuffer.push(successLog);
       updateStatusBar('sync', 'Starter is in sync.');
     }
+
+    // Save the last result
+    lastCheckResult = outputBuffer.join('\n');
   } catch (error: any) {
-    outputChannel.appendLine(`❌ Error during sync check: ${error.message}`);
+    const errorLog = `❌ Error during sync check: ${error.message}`;
+    outputChannel.appendLine(errorLog);
+    outputBuffer.push(errorLog);
     updateStatusBar('error', 'Error during sync check.');
   }
 }
@@ -133,19 +163,25 @@ type Status = 'sync' | 'warning' | 'error';
 
 function updateStatusBar(status: Status, tooltip: string) {
   let icon: string;
+  let color: vscode.ThemeColor | undefined;
+
   switch (status) {
     case 'sync':
       icon = '$(check)';
+      color = new vscode.ThemeColor('statusBarItem.prominentBackground');
       break;
     case 'warning':
       icon = '$(warning)';
+      color = new vscode.ThemeColor('statusBarItem.warningBackground');
       break;
     case 'error':
       icon = '$(error)';
+      color = new vscode.ThemeColor('statusBarItem.errorBackground');
       break;
   }
   statusBarItem.text = `${icon} Vite Powerflow`;
   statusBarItem.tooltip = tooltip;
+  statusBarItem.backgroundColor = color;
   statusBarItem.show();
 }
 
@@ -171,56 +207,7 @@ function getCurrentCommit(workspaceRoot: string): string {
   }).trim();
 }
 
-function getStarterCommitsSinceBaseline(
-  workspaceRoot: string,
-  baselineCommit: string,
-  currentCommit: string
-): string[] {
-  try {
-    // First, check if the baseline commit exists in the local repository.
-    // `git cat-file -e` exits with 0 if it exists, non-zero otherwise.
-    execSync(`git cat-file -e ${baselineCommit}^{commit}`, {
-      cwd: workspaceRoot,
-      stdio: 'ignore', // Don't print output or error.
-    });
-  } catch (error) {
-    outputChannel.appendLine(
-      `⚠️ The baseline commit "${baselineCommit}" from the template was not found in your local git history. Try running "git fetch --all".`
-    );
-    // Throw an error to indicate this specific problem.
-    throw new Error(`Baseline commit ${baselineCommit} not found.`);
-  }
-
-  try {
-    const command = `git log ${baselineCommit}..${currentCommit} --oneline -- apps/starter/`;
-    const commits = execSync(command, {
-      encoding: 'utf-8',
-      cwd: workspaceRoot,
-    }).trim();
-
-    if (!commits) return [];
-    return commits.split('\n').filter(line => line.trim());
-  } catch (error: any) {
-    // This can happen if the baseline commit is not an ancestor of the current commit (e.g., on a diverged branch).
-    // This is an expected scenario, not a critical error.
-    outputChannel.appendLine(
-      `ℹ️ Could not perform a direct log between ${baselineCommit} and ${currentCommit}. This may be normal if your branch has diverged. The check will fall back to a simple diff.`
-    );
-    // We can't list commits, but we can still detect changes.
-    // A `git diff --quiet` will tell us if there are any differences.
-    const diffCommand = `git diff --quiet ${baselineCommit}..${currentCommit} -- apps/starter/`;
-    try {
-      execSync(diffCommand, { cwd: workspaceRoot, stdio: 'ignore' });
-      // Exit code is 0, meaning no differences were found.
-      return [];
-    } catch (diffError) {
-      // Exit code is 1, meaning there are differences.
-      return ['Changes detected (unable to list individual commits due to diverged history)'];
-    }
-  }
-}
-
-function getBaselineCommit(workspaceRoot: string): string {
+function getTemplateBaselineCommit(workspaceRoot: string): string {
   try {
     const templatePackagePath = path.join(workspaceRoot, 'packages/cli/template/package.json');
     const content = fs.readFileSync(templatePackagePath, 'utf-8');
@@ -230,10 +217,59 @@ function getBaselineCommit(workspaceRoot: string): string {
       return templatePackage.starterSource.commit;
     }
 
-    outputChannel.appendLine('⚠️ No "starterSource.commit" found in template package.json');
+    outputChannel.appendLine('⚠️ No "starterSource.commit" found in CLI template package.json');
     return 'unknown';
   } catch (error: any) {
-    outputChannel.appendLine(`❌ Error reading template package.json: ${error.message}`);
+    outputChannel.appendLine(`❌ Error reading CLI template package.json: ${error.message}`);
     return 'unknown';
+  }
+}
+
+function getStarterCommitsSinceTemplateBaseline(
+  workspaceRoot: string,
+  templateBaselineCommit: string,
+  currentCommit: string
+): string[] {
+  try {
+    // First, check if the template baseline commit exists in the local repository.
+    // `git cat-file -e` exits with 0 if it exists, non-zero otherwise.
+    execSync(`git cat-file -e ${templateBaselineCommit}^{commit}`, {
+      cwd: workspaceRoot,
+      stdio: 'ignore', // Don't print output or error.
+    });
+  } catch (error) {
+    outputChannel.appendLine(
+      `⚠️ The CLI template baseline commit "${templateBaselineCommit}" was not found in your local git history. Try running "git fetch --all".`
+    );
+    // Throw an error to indicate this specific problem.
+    throw new Error(`CLI template baseline commit ${templateBaselineCommit} not found.`);
+  }
+
+  try {
+    const command = `git log ${templateBaselineCommit}..${currentCommit} --oneline -- apps/starter/`;
+    const commits = execSync(command, {
+      encoding: 'utf-8',
+      cwd: workspaceRoot,
+    }).trim();
+
+    if (!commits) return [];
+    return commits.split('\n').filter(line => line.trim());
+  } catch (error: any) {
+    // This can happen if the template baseline commit is not an ancestor of the current commit (e.g., on a diverged branch).
+    // This is an expected scenario, not a critical error.
+    outputChannel.appendLine(
+      `ℹ️ Could not perform a direct log between ${templateBaselineCommit} and ${currentCommit}. This may be normal if your branch has diverged. The check will fall back to a simple diff.`
+    );
+    // We can't list commits, but we can still detect changes.
+    // A `git diff --quiet` will tell us if there are any differences.
+    const diffCommand = `git diff --quiet ${templateBaselineCommit}..${currentCommit} -- apps/starter/`;
+    try {
+      execSync(diffCommand, { cwd: workspaceRoot, stdio: 'ignore' });
+      // Exit code is 0, meaning no differences were found.
+      return [];
+    } catch (diffError) {
+      // Exit code is 1, meaning there are differences.
+      return ['Changes detected (unable to list individual commits due to diverged history)'];
+    }
   }
 }

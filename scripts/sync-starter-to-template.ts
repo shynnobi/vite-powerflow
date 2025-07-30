@@ -65,17 +65,7 @@ const __dirname = path.dirname(__filename);
     const pkgPath = path.join(templateDest, 'package.json');
     const pkg = await fs.readJson(pkgPath);
 
-    // Add/update scripts
-    pkg.scripts = {
-      ...pkg.scripts,
-      format: pkg.scripts.format || 'prettier --check .',
-      'validate:static': 'run-p format lint type-check',
-      'validate:quick': 'run-s validate:static test',
-      'validate:full': 'run-s validate:static test test:e2e',
-      'validate:commit': 'npx lint-staged && pnpm test',
-    };
-
-    // Add starterSource metadata
+    // Add CLI template baseline commit metadata
     try {
       const currentCommit = execSync('git rev-parse HEAD', { encoding: 'utf-8' }).trim();
       const starterPkg = await fs.readJson(path.join(starterSrc, 'package.json'));
@@ -86,13 +76,23 @@ const __dirname = path.dirname(__filename);
         syncedAt: new Date().toISOString(),
       };
     } catch (error) {
-      logRootInfo('Warning: Could not add starterSource metadata');
+      logRootInfo('Warning: Could not add CLI template baseline commit metadata');
     }
+
+    // Add/update scripts
+    pkg.scripts = {
+      ...pkg.scripts,
+      format: pkg.scripts.format || 'prettier --check .',
+      'validate:static': 'run-p format lint type-check',
+      'validate:quick': 'run-s validate:static test',
+      'validate:full': 'run-s validate:static test test:e2e',
+      'validate:commit': 'npx lint-staged && pnpm test',
+    };
 
     await fs.writeJson(pkgPath, pkg, { spaces: 2 });
 
     // 6. Clean tsconfig.json by removing 'extends' for standalone usage
-    logRootInfo('Cleaning tsconfig.json (removing extends)...');
+    logRootInfo("Cleaning tsconfig.json (removing 'extends')...");
     const tsconfigPath = path.join(templateDest, 'tsconfig.json');
     if (await fs.pathExists(tsconfigPath)) {
       const tsconfigRaw = await fs.readFile(tsconfigPath, 'utf-8');
