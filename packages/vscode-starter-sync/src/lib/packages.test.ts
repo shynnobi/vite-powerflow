@@ -1,4 +1,4 @@
-import { getLatestNpmVersion, getPackageInfo } from './packages';
+import { getLatestNpmVersion, getPackageInfo } from './packages.js';
 
 describe('packages utils', () => {
   it('should export functions', () => {

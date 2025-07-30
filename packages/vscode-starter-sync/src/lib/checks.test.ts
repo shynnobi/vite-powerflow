@@ -1,4 +1,4 @@
-import { checkCliStatus, checkStarterStatus } from './checks';
+import { checkCliStatus, checkStarterStatus } from './checks.js';
 
 describe('checks', () => {
   it('should export functions', () => {

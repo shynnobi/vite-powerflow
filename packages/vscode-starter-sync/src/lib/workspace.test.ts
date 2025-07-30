@@ -1,4 +1,4 @@
-import { getWorkspaceRoot } from './workspace';
+import { getWorkspaceRoot } from './workspace.js';
 
 describe('workspace', () => {
   it('should export getWorkspaceRoot', () => {

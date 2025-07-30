@@ -1,9 +1,9 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 
-import { getCommitsSince, getCurrentCommit, getTemplateBaselineCommit } from './git';
-import { getLatestNpmVersion, getPackageInfo } from './packages';
-import { CheckResult } from './types';
+import { getCommitsSince, getCurrentCommit, getTemplateBaselineCommit } from './git.js';
+import { getLatestNpmVersion, getPackageInfo } from './packages.js';
+import { CheckResult } from './types.js';
 
 /**
  * Checks the sync status of a workspace folder against a given baseline (commit or tag).
@@ -59,8 +59,22 @@ async function checkSyncStatus({
       };
     }
     // Log the baseline being checked
-    const shortBaseline = baseline.substring(0, 7);
-    const log = `📦 [${label}] Checking against baseline (commit/tag ${shortBaseline})`;
+    let shortBaseline: string;
+    // If baseline looks like a commit SHA, truncate it; otherwise, display as-is (tag)
+    if (/^[a-f0-9]{7,40}$/i.test(baseline)) {
+      shortBaseline = baseline.substring(0, 7);
+    } else {
+      shortBaseline = baseline;
+    }
+    let log = `📦 [${label}] Checking against baseline (commit/tag ${shortBaseline})`;
+    // For Starter, add version info if available
+    if (label === 'Starter') {
+      const templatePackagePath = path.join(workspaceRoot, 'packages/cli/template/package.json');
+      const templatePkg = await getPackageInfo(templatePackagePath);
+      if (templatePkg && templatePkg.version) {
+        log = `📦 [Starter] Checking against CLI template baseline (commit ${shortBaseline}, version ${templatePkg.version})`;
+      }
+    }
     outputChannel.appendLine(log);
     outputBuffer.push(log);
 
@@ -80,7 +94,7 @@ async function checkSyncStatus({
       const warningLog = `🚨 [${label}] Found ${commitCount} unreleased commits.`;
       outputChannel.appendLine(warningLog);
       outputBuffer.push(warningLog);
-      newCommits.forEach(c => {
+      newCommits.forEach((c: string) => {
         const commitLine = `  - ${c}`;
         outputChannel.appendLine(commitLine);
         outputBuffer.push(commitLine);
@@ -127,7 +141,7 @@ export async function checkStarterStatus(
     outputChannel,
     outputBuffer,
     workspaceRoot,
-    notFoundMsg: 'Template baseline commit not found in CLI template.',
+    notFoundMsg: 'Template baseline commit not found in CLI template (package.json).',
     inSyncMsg: 'In sync with the latest CLI template baseline.',
     unreleasedMsg: 'unreleased change(s).',
     errorPrefix: 'Error during sync check',

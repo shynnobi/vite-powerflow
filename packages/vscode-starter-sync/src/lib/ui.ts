@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { CheckResult, Status } from './types';
+import { CheckResult, Status } from './types.js';
 
 export function updateStatusBar(
   statusBarItem: vscode.StatusBarItem,

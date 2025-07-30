@@ -1,13 +1,14 @@
 import * as vscode from 'vscode';
 
-import { checkCliStatus, checkStarterStatus } from './lib/checks';
-import { handleSyncResults, updateStatusBar } from './lib/ui';
-import { getWorkspaceRoot } from './lib/workspace';
+import { checkCliStatus, checkStarterStatus } from './lib/checks.js';
+import { handleSyncResults, updateStatusBar } from './lib/ui.js';
+import { getWorkspaceRoot } from './lib/workspace.js';
 
 let outputChannel: vscode.OutputChannel;
 let statusBarItem: vscode.StatusBarItem;
 let lastCheckResult: string = '';
 let outputBuffer: string[] = [];
+let isChecking = false;
 
 const COMMAND_ID = 'vitePowerflow.runSyncCheck';
 
@@ -18,13 +19,21 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(statusBarItem);
 
   const runSyncCheckCommand = vscode.commands.registerCommand(COMMAND_ID, () => {
+    // If a check is currently running, just show the live output
+    if (isChecking) {
+      outputChannel.show(true);
+      return;
+    }
+
+    // If we have previous results, show them
     if (lastCheckResult) {
       outputChannel.clear();
       outputChannel.append(lastCheckResult);
       outputChannel.show(true);
     } else {
+      // No previous results and no check running - start a new one
       vscode.window.showInformationMessage('No previous sync check result. Running a new one...');
-      runSyncChecks();
+      runSyncChecks(true);
     }
   });
 
@@ -46,26 +55,41 @@ export function activate(context: vscode.ExtensionContext) {
     const gitHeadWatcher = vscode.workspace.createFileSystemWatcher(
       new vscode.RelativePattern(workspaceRoot, '.git/HEAD')
     );
-    gitHeadWatcher.onDidChange(() => debouncedCheck('HEAD change'));
+    gitHeadWatcher.onDidChange(uri => {
+      outputChannel.appendLine(`🔍 Git HEAD changed: ${uri.fsPath}`);
+      debouncedCheck('HEAD change');
+    });
     context.subscriptions.push(gitHeadWatcher);
 
     const gitRefsWatcher = vscode.workspace.createFileSystemWatcher(
       new vscode.RelativePattern(workspaceRoot, '.git/refs/heads/**')
     );
-    gitRefsWatcher.onDidChange(() => debouncedCheck('Branch commit'));
-    gitRefsWatcher.onDidCreate(() => debouncedCheck('Branch creation'));
+    gitRefsWatcher.onDidChange(uri => {
+      outputChannel.appendLine(`🔍 Git refs changed: ${uri.fsPath}`);
+      debouncedCheck('Branch commit');
+    });
+    gitRefsWatcher.onDidCreate(uri => {
+      outputChannel.appendLine(`🔍 Git refs created: ${uri.fsPath}`);
+      debouncedCheck('Branch creation');
+    });
     context.subscriptions.push(gitRefsWatcher);
 
     const cliPackageWatcher = vscode.workspace.createFileSystemWatcher(
       new vscode.RelativePattern(workspaceRoot, 'packages/cli/package.json')
     );
-    cliPackageWatcher.onDidChange(() => debouncedCheck('CLI package.json change'));
+    cliPackageWatcher.onDidChange(uri => {
+      outputChannel.appendLine(`🔍 CLI package.json changed: ${uri.fsPath}`);
+      debouncedCheck('CLI package.json change');
+    });
     context.subscriptions.push(cliPackageWatcher);
 
     const templatePackageWatcher = vscode.workspace.createFileSystemWatcher(
       new vscode.RelativePattern(workspaceRoot, 'packages/cli/template/package.json')
     );
-    templatePackageWatcher.onDidChange(() => debouncedCheck('Template package.json change'));
+    templatePackageWatcher.onDidChange(uri => {
+      outputChannel.appendLine(`🔍 Template package.json changed: ${uri.fsPath}`);
+      debouncedCheck('Template package.json change');
+    });
     context.subscriptions.push(templatePackageWatcher);
   } else {
     updateStatusBar(statusBarItem, 'error', 'Not in a Vite Powerflow workspace.');
@@ -77,7 +101,12 @@ export function deactivate() {
   outputChannel.dispose();
 }
 
-async function runSyncChecks() {
+async function runSyncChecks(forceRun = false) {
+  if (isChecking && !forceRun) {
+    outputChannel.appendLine('Sync check already running, skipping duplicate trigger.');
+    return;
+  }
+  isChecking = true;
   const startTime = Date.now();
   outputBuffer = [];
   const logLine = `[${new Date().toISOString()}] Running sync checks...`;
@@ -118,5 +147,6 @@ async function runSyncChecks() {
     outputChannel.appendLine(`✅ Checks completed in ${duration.toFixed(2)}s.`);
     outputBuffer.push(`✅ Checks completed in ${duration.toFixed(2)}s.`);
     lastCheckResult = outputBuffer.join('\n');
+    isChecking = false;
   }
 }

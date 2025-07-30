@@ -47,8 +47,8 @@
     "format:fix": "prettier --write .",
     "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix",
     "type-check": "tsc --noEmit",
-    "compile": "tsc -p ./tsconfig.json",
-    "watch": "tsc -watch -p ./tsconfig.json",
+    "compile": "tsc -p ./tsconfig.build.json",
+    "watch": "tsc -p ./tsconfig.build.json --watch",
     "vscode:prepublish": "pnpm run compile",
     "package": "vsce package"
   },

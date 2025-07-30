@@ -1,8 +1,13 @@
 /// <reference types="vitest" />
-import type { CheckResult } from './types';
+import { vi } from 'vitest';
+
+import type { CheckResult } from './types.js';
 
 describe('types', () => {
-  it('CheckResult should be an object type', () => {
+  it('should have a CheckResult type', () => {
     expectTypeOf<CheckResult>().toBeObject();
+    expectTypeOf<CheckResult>().toHaveProperty('status');
+    expectTypeOf<CheckResult>().toHaveProperty('message');
+    expectTypeOf<CheckResult>().toHaveProperty('commitCount');
   });
 });

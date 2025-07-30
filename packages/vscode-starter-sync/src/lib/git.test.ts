@@ -1,4 +1,4 @@
-import { getCommitsSince, getCurrentCommit, getTemplateBaselineCommit } from './git';
+import { getCommitsSince, getCurrentCommit, getTemplateBaselineCommit } from './git.js';
 
 describe('git utils', () => {
   it('should export functions', () => {
