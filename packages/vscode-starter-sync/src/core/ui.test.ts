@@ -60,7 +60,10 @@ describe('handleSyncResults', () => {
     };
     showWarningMessage = (vscode as any).window.showWarningMessage;
     createTerminal = (vscode as any).window.createTerminal;
-    outputChannel = { show: vi.fn() };
+    outputChannel = {
+      show: vi.fn(),
+      appendLine: vi.fn(),
+    };
   });
   it('shows warning and opens terminal if user selects Create Changeset', async () => {
     showWarningMessage.mockResolvedValue('Create Changeset');

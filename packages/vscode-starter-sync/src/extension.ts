@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 
-import { checkCliStatus, checkStarterStatus } from './lib/checks.js';
-import { handleSyncResults, updateStatusBar } from './lib/ui.js';
-import { createDebounced, createWatcher } from './lib/utils.js';
-import { getWorkspaceRoot } from './lib/workspace.js';
+import { checkCliStatus, checkStarterStatus } from './core/sync/checker.js';
+import { handleSyncResults, updateStatusBar } from './core/ui.js';
+import { createDebounced, createWatcher } from './core/utils.js';
+import { getWorkspaceRoot } from './core/workspace.js';
 
 let outputChannel: vscode.OutputChannel;
 let statusBarItem: vscode.StatusBarItem;

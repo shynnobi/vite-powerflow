@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { CheckResult, Status } from './types.js';
+import { CheckResult, Status } from '../types.js';
 
 /**
  * Updates the VS Code status bar with the current sync status and tooltip.
@@ -59,6 +59,10 @@ export async function handleSyncResults(
       messages.push(`'CLI' package has ${cliResult.commitCount} unreleased change(s).`);
     }
     const fullMessage = `${messages.join(' ')} A changeset is required.`;
+
+    // Log explicit changeset requirement in outputChannel
+    outputChannel.appendLine('⚠️ Unreleased changes detected: a changeset release is required.');
+    outputChannel.appendLine(fullMessage);
 
     const selection = await vscode.window.showWarningMessage(
       fullMessage,
