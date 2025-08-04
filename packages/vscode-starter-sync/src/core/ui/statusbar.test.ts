@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as vscode from 'vscode';
 
-import { handleSyncResults, updateStatusBar } from './ui.js';
+import { handleSyncResults, updateStatusBar } from './statusbar.js';
 
 const createMockStatusBarItem = () => ({
   text: '',
@@ -49,58 +49,73 @@ describe('updateStatusBar', () => {
 });
 
 describe('handleSyncResults', () => {
-  let showWarningMessage: any;
-  let createTerminal: any;
   let outputChannel: any;
   beforeEach(() => {
-    // Mock vscode.window and its methods
-    (vscode as any).window = {
-      showWarningMessage: vi.fn(),
-      createTerminal: vi.fn().mockReturnValue({ sendText: vi.fn(), show: vi.fn() }),
-    };
-    showWarningMessage = (vscode as any).window.showWarningMessage;
-    createTerminal = (vscode as any).window.createTerminal;
     outputChannel = {
       show: vi.fn(),
       appendLine: vi.fn(),
     };
   });
-  it('shows warning and opens terminal if user selects Create Changeset', async () => {
-    showWarningMessage.mockResolvedValue('Create Changeset');
+  it('shows summary with unreleased changes requiring changeset', async () => {
     await handleSyncResults(
       { commitCount: 1, status: 'warning', message: '' },
       { commitCount: 0, status: 'sync', message: '' },
       outputChannel
     );
-    expect(showWarningMessage).toHaveBeenCalledWith(
-      expect.stringContaining('unreleased change'),
-      'Create Changeset',
-      'Show Details'
+
+    expect(outputChannel.appendLine).toHaveBeenCalledWith(
+      expect.stringContaining('CHANGESET SUMMARY')
     );
-    expect(createTerminal).toHaveBeenCalled();
+    expect(outputChannel.appendLine).toHaveBeenCalledWith(
+      expect.stringContaining('Starter package has 1 unreleased change')
+    );
+    expect(outputChannel.appendLine).toHaveBeenCalledWith(
+      expect.stringContaining('CLI package is in sync')
+    );
+    expect(outputChannel.appendLine).toHaveBeenCalledWith(
+      expect.stringContaining('⚠️ A changeset release is required')
+    );
   });
-  it('shows warning and shows outputChannel if user selects Show Details', async () => {
-    showWarningMessage.mockResolvedValue('Show Details');
+
+  it('shows summary with multiple unreleased changes', async () => {
     await handleSyncResults(
       { commitCount: 0, status: 'sync', message: '' },
       { commitCount: 2, status: 'warning', message: '' },
       outputChannel
     );
-    expect(showWarningMessage).toHaveBeenCalledWith(
-      expect.stringContaining('unreleased change'),
-      'Create Changeset',
-      'Show Details'
+
+    expect(outputChannel.appendLine).toHaveBeenCalledWith(
+      expect.stringContaining('CHANGESET SUMMARY')
     );
-    expect(outputChannel.show).toHaveBeenCalledWith(true);
+    expect(outputChannel.appendLine).toHaveBeenCalledWith(
+      expect.stringContaining('Starter package is in sync')
+    );
+    expect(outputChannel.appendLine).toHaveBeenCalledWith(
+      expect.stringContaining('CLI package has 2 unreleased change')
+    );
+    expect(outputChannel.appendLine).toHaveBeenCalledWith(
+      expect.stringContaining('⚠️ A changeset release is required')
+    );
   });
-  it('does nothing if user dismisses the warning', async () => {
-    showWarningMessage.mockResolvedValue(undefined);
+
+  it('shows summary when all packages are in sync', async () => {
     await handleSyncResults(
-      { commitCount: 1, status: 'warning', message: '' },
-      { commitCount: 1, status: 'warning', message: '' },
+      { commitCount: 0, status: 'sync', message: '' },
+      { commitCount: 0, status: 'sync', message: '' },
       outputChannel
     );
-    expect(outputChannel.show).not.toHaveBeenCalled();
-    expect(createTerminal).not.toHaveBeenCalled();
+
+    expect(outputChannel.appendLine).toHaveBeenCalledWith(
+      expect.stringContaining('CHANGESET SUMMARY')
+    );
+    expect(outputChannel.appendLine).toHaveBeenCalledWith(
+      expect.stringContaining('Starter package is in sync')
+    );
+    expect(outputChannel.appendLine).toHaveBeenCalledWith(
+      expect.stringContaining('CLI package is in sync')
+    );
+    expect(outputChannel.appendLine).toHaveBeenCalledWith(
+      expect.stringContaining('✅ All packages are in sync')
+    );
   });
 });

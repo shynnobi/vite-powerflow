@@ -4,12 +4,12 @@ import * as vscode from 'vscode';
 import { CheckResult, SyncCheckConfig } from '../../types.js';
 import { getCommitsSince, getCurrentCommit, getTemplateBaselineCommit } from '../git.js';
 import { getLatestNpmVersion, getPackageInfo } from '../packages.js';
+import { logMessage } from '../utils.js';
 import {
   formatBaselineLog,
   handleError,
   handleInSync,
   handleUnreleasedCommits,
-  logMessage,
 } from './handlers.js';
 
 /**
@@ -32,7 +32,6 @@ class SyncCheckError extends Error {
 async function checkSyncStatus(
   config: SyncCheckConfig,
   outputChannel: vscode.OutputChannel,
-  outputBuffer: string[],
   workspaceRoot: string
 ): Promise<CheckResult> {
   try {
@@ -50,7 +49,7 @@ async function checkSyncStatus(
 
     // Log the baseline being checked
     const baselineLog = await formatBaselineLog(config, baseline, workspaceRoot);
-    logMessage(outputChannel, outputBuffer, baselineLog);
+    logMessage(outputChannel, baselineLog);
 
     // Get the current commit and collect new commits since the baseline
     const currentCommit = getCurrentCommit(workspaceRoot);
@@ -64,11 +63,11 @@ async function checkSyncStatus(
 
     // Handle results based on commit count
     return newCommits.length > 0
-      ? handleUnreleasedCommits(config, newCommits, outputChannel, outputBuffer)
-      : handleInSync(config, outputChannel, outputBuffer);
+      ? handleUnreleasedCommits(config, newCommits, outputChannel)
+      : handleInSync(config, outputChannel);
   } catch (error) {
     const syncError = error instanceof Error ? error : new Error(String(error));
-    return handleError(config, syncError, outputChannel, outputBuffer);
+    return handleError(config, syncError, outputChannel);
   }
 }
 
@@ -78,8 +77,7 @@ async function checkSyncStatus(
  */
 export async function checkStarterStatus(
   workspaceRoot: string,
-  outputChannel: vscode.OutputChannel,
-  outputBuffer: string[]
+  outputChannel: vscode.OutputChannel
 ): Promise<CheckResult> {
   const config: SyncCheckConfig = {
     label: 'Starter',
@@ -93,7 +91,7 @@ export async function checkStarterStatus(
     },
   };
 
-  return checkSyncStatus(config, outputChannel, outputBuffer, workspaceRoot);
+  return checkSyncStatus(config, outputChannel, workspaceRoot);
 }
 
 /**
@@ -102,8 +100,7 @@ export async function checkStarterStatus(
  */
 export async function checkCliStatus(
   workspaceRoot: string,
-  outputChannel: vscode.OutputChannel,
-  outputBuffer: string[]
+  outputChannel: vscode.OutputChannel
 ): Promise<CheckResult> {
   try {
     const cliPackagePath = path.join(workspaceRoot, 'packages/cli/package.json');
@@ -113,31 +110,29 @@ export async function checkCliStatus(
       throw new SyncCheckError('CLI package.json not found.');
     }
 
-    const latestPublishedVersion = await getLatestNpmVersion(
-      cliPkg.name,
-      outputChannel,
-      outputBuffer
-    );
+    const latestPublishedVersion = await getLatestNpmVersion(cliPkg.name, outputChannel);
 
     if (!latestPublishedVersion) {
       const message = 'Not published on npm yet.';
-      logMessage(outputChannel, outputBuffer, `ℹ️ [CLI] ${message}`);
+      logMessage(outputChannel, `ℹ️ [CLI] ${message}`);
       return { status: 'sync', message, commitCount: 0 };
     }
 
+    const cliNpmTag = `${cliPkg.name}@${latestPublishedVersion}`;
+
     const config: SyncCheckConfig = {
       label: 'CLI',
-      baseline: () => `${cliPkg.name}@${latestPublishedVersion}`,
+      baseline: () => cliNpmTag,
       commitPath: 'packages/cli/',
       messages: {
-        notFound: 'Published version tag not found.',
-        inSync: 'In sync with the latest published npm version.',
-        unreleased: 'unreleased change(s).',
-        errorPrefix: 'Error during sync check',
+        notFound: 'No published CLI tag found on npm.',
+        inSync: `All CLI changes since ${cliNpmTag} have been published.`,
+        unreleased: 'unreleased CLI changes found.',
+        errorPrefix: 'CLI status check failed',
       },
     };
 
-    return checkSyncStatus(config, outputChannel, outputBuffer, workspaceRoot);
+    return checkSyncStatus(config, outputChannel, workspaceRoot);
   } catch (error) {
     const syncError = error instanceof Error ? error : new Error(String(error));
     return handleError(
@@ -153,8 +148,7 @@ export async function checkCliStatus(
         },
       },
       syncError,
-      outputChannel,
-      outputBuffer
+      outputChannel
     );
   }
 }

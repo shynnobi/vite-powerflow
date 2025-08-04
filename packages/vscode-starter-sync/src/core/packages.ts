@@ -38,8 +38,7 @@ export async function getPackageInfo(
  */
 export async function getLatestNpmVersion(
   packageName: string,
-  outputChannel: vscode.OutputChannel,
-  outputBuffer: string[]
+  outputChannel: vscode.OutputChannel
 ): Promise<string | null> {
   const cached = npmVersionCache.get(packageName);
   // Cache for 5 minutes to avoid excessive network requests.
@@ -57,9 +56,6 @@ export async function getLatestNpmVersion(
     return version;
   } catch (error) {
     outputChannel.appendLine(
-      `ℹ️ Could not fetch version for '${packageName}' from npm. It may not be published yet.`
-    );
-    outputBuffer.push(
       `ℹ️ Could not fetch version for '${packageName}' from npm. It may not be published yet.`
     );
     return null;

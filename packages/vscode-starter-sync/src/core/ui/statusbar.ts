@@ -49,45 +49,41 @@ export async function handleSyncResults(
   outputChannel: vscode.OutputChannel
 ) {
   const totalUnreleasedCommits = starterResult.commitCount + cliResult.commitCount;
+  const hasErrors = starterResult.status === 'error' || cliResult.status === 'error';
 
-  if (totalUnreleasedCommits > 0) {
-    // Create a clean summary
-    outputChannel.appendLine('='.repeat(50));
-    outputChannel.appendLine('📋 CHANGESET SUMMARY');
-    outputChannel.appendLine('='.repeat(50));
+  // Always show a summary section
+  const summaryLines = ['='.repeat(50), '📋 CHANGESET SUMMARY', '='.repeat(50)];
 
-    if (starterResult.commitCount > 0) {
-      outputChannel.appendLine(
-        `- Starter package has ${starterResult.commitCount} unreleased change(s)`
-      );
-    }
-    if (cliResult.commitCount > 0) {
-      outputChannel.appendLine(`- CLI package has ${cliResult.commitCount} unreleased change(s)`);
-    }
-    outputChannel.appendLine('');
-    outputChannel.appendLine('⚠️ A changeset release is required.');
-
-    const messages = [];
-    if (starterResult.commitCount > 0) {
-      messages.push(`'starter' app has ${starterResult.commitCount} unreleased change(s).`);
-    }
-    if (cliResult.commitCount > 0) {
-      messages.push(`'CLI' package has ${cliResult.commitCount} unreleased change(s).`);
-    }
-    const fullMessage = `${messages.join(' ')} A changeset is required.`;
-
-    const selection = await vscode.window.showWarningMessage(
-      fullMessage,
-      'Create Changeset',
-      'Show Details'
-    );
-
-    if (selection === 'Create Changeset') {
-      const terminal = vscode.window.createTerminal({ name: 'Changeset' });
-      terminal.sendText('pnpm changeset');
-      terminal.show();
-    } else if (selection === 'Show Details') {
-      outputChannel.show(true);
-    }
+  // Show individual package status
+  if (starterResult.commitCount > 0) {
+    summaryLines.push(`- Starter package has ${starterResult.commitCount} unreleased change(s)`);
+  } else if (starterResult.status === 'error') {
+    summaryLines.push(`- Starter package check failed: ${starterResult.message}`);
+  } else {
+    summaryLines.push(`- Starter package is in sync`);
   }
+
+  if (cliResult.commitCount > 0) {
+    summaryLines.push(`- CLI package has ${cliResult.commitCount} unreleased change(s)`);
+  } else if (cliResult.status === 'error') {
+    summaryLines.push(`- CLI package check failed: ${cliResult.message}`);
+  } else {
+    summaryLines.push(`- CLI package is in sync`);
+  }
+
+  summaryLines.push('');
+
+  // Final status
+  if (hasErrors) {
+    summaryLines.push('❌ Some checks failed - fix errors to get accurate status.');
+  } else if (totalUnreleasedCommits > 0) {
+    summaryLines.push('⚠️ A changeset release is required.');
+  } else {
+    summaryLines.push('✅ All packages are in sync.');
+  }
+
+  // Add to output channel
+  summaryLines.forEach(line => {
+    outputChannel.appendLine(line);
+  });
 }

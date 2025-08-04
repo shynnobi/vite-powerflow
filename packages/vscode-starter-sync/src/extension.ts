@@ -8,8 +8,6 @@ import { getWorkspaceRoot } from './core/workspace.js';
 
 let outputChannel: vscode.OutputChannel;
 let statusBarItem: vscode.StatusBarItem;
-let lastCheckResult: string = '';
-let outputBuffer: string[] = [];
 let isChecking = false;
 
 const COMMAND_ID = 'vitePowerflow.runSyncCheck';
@@ -24,22 +22,9 @@ export function activate(context: vscode.ExtensionContext) {
   createRefreshStatusBar(context, () => runSyncChecks(true));
 
   const runSyncCheckCommand = vscode.commands.registerCommand(COMMAND_ID, () => {
-    // If a check is currently running, just show the live output
-    if (isChecking) {
-      outputChannel.show(true);
-      return;
-    }
-
-    // If we have previous results, show them
-    if (lastCheckResult) {
-      outputChannel.clear();
-      outputChannel.append(lastCheckResult);
-      outputChannel.show(true);
-    } else {
-      // No previous results and no check running - start a new one
-      vscode.window.showInformationMessage('No previous sync check result. Running a new one...');
-      runSyncChecks(true);
-    }
+    // Just show the output channel, don't run a new sync
+    // The refresh button is there for running new syncs
+    outputChannel.show(true);
   });
 
   context.subscriptions.push(runSyncCheckCommand);
@@ -49,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
     const debouncedCheck = createDebounced((trigger: string) => {
       outputChannel.appendLine(`[${trigger}] Triggering sync check...`);
       runSyncChecks();
-    }, 200);
+    }, 1000);
 
     debouncedCheck('Activation');
 
@@ -101,11 +86,9 @@ async function runSyncChecks(forceRun = false) {
     return;
   }
   isChecking = true;
-  outputBuffer = [];
   const logLine = `[${new Date().toLocaleTimeString()}] Running sync checks...`;
   outputChannel.appendLine('---');
   outputChannel.appendLine(logLine);
-  outputBuffer.push('---', logLine);
 
   try {
     const workspaceRoot = getWorkspaceRoot();
@@ -114,8 +97,10 @@ async function runSyncChecks(forceRun = false) {
       return;
     }
 
-    const starterResult = await checkStarterStatus(workspaceRoot, outputChannel, outputBuffer);
-    const cliResult = await checkCliStatus(workspaceRoot, outputChannel, outputBuffer);
+    const starterResult = await checkStarterStatus(workspaceRoot, outputChannel);
+    const cliResult = await checkCliStatus(workspaceRoot, outputChannel);
+
+    outputChannel.show(true);
 
     const allResults = [starterResult, cliResult];
     const finalStatus = allResults.some(r => r.status === 'error')
@@ -128,15 +113,9 @@ async function runSyncChecks(forceRun = false) {
     updateStatusBar(statusBarItem, finalStatus, tooltip);
 
     await handleSyncResults(starterResult, cliResult, outputChannel);
-
-    const completionLog = '✅ Sync checks completed.';
-    outputChannel.appendLine(completionLog);
-    outputBuffer.push(completionLog);
-    lastCheckResult = outputBuffer.join('\n');
   } catch (error: any) {
     const errorLog = `❌ Error during sync checks: ${error.message}`;
     outputChannel.appendLine(errorLog);
-    outputBuffer.push(errorLog);
     updateStatusBar(statusBarItem, 'error', 'Error during sync checks.');
   } finally {
     isChecking = false;

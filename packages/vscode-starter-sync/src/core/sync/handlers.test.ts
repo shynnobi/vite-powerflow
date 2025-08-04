@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { SyncCheckConfig } from '../../types.js';
+import { logMessage } from '../utils.js';
 import {
   formatBaselineLog,
   handleError,
   handleInSync,
   handleUnreleasedCommits,
-  logMessage,
 } from './handlers.js';
 
 // Mock the packages module
@@ -23,7 +23,6 @@ describe('sync/handlers', () => {
   const mockOutputChannel = {
     appendLine: vi.fn(),
   } as any;
-  const mockOutputBuffer: string[] = [];
 
   const mockConfig: SyncCheckConfig = {
     label: 'Test',
@@ -39,15 +38,13 @@ describe('sync/handlers', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    mockOutputBuffer.length = 0;
   });
 
   describe('logMessage', () => {
-    it('should log to both output channel and buffer', () => {
-      logMessage(mockOutputChannel, mockOutputBuffer, 'test message');
+    it('should log to output channel only', () => {
+      logMessage(mockOutputChannel, 'test message');
 
       expect(mockOutputChannel.appendLine).toHaveBeenCalledWith('test message');
-      expect(mockOutputBuffer).toEqual(['test message']);
     });
   });
 
@@ -92,12 +89,7 @@ describe('sync/handlers', () => {
   describe('handleUnreleasedCommits', () => {
     it('should return warning status with commit count', () => {
       const commits = ['commit1', 'commit2'];
-      const result = handleUnreleasedCommits(
-        mockConfig,
-        commits,
-        mockOutputChannel,
-        mockOutputBuffer
-      );
+      const result = handleUnreleasedCommits(mockConfig, commits, mockOutputChannel);
 
       expect(result).toEqual({
         status: 'warning',
@@ -109,7 +101,7 @@ describe('sync/handlers', () => {
 
   describe('handleInSync', () => {
     it('should return sync status with zero commits', () => {
-      const result = handleInSync(mockConfig, mockOutputChannel, mockOutputBuffer);
+      const result = handleInSync(mockConfig, mockOutputChannel);
 
       expect(result).toEqual({
         status: 'sync',
@@ -122,7 +114,7 @@ describe('sync/handlers', () => {
   describe('handleError', () => {
     it('should return error status with error message', () => {
       const error = new Error('Test error');
-      const result = handleError(mockConfig, error, mockOutputChannel, mockOutputBuffer);
+      const result = handleError(mockConfig, error, mockOutputChannel);
 
       expect(result).toEqual({
         status: 'error',
