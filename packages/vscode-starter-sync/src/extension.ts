@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
 
 import { checkCliStatus, checkStarterStatus } from './core/sync/checker.js';
-import { handleSyncResults, updateStatusBar } from './core/ui.js';
+import { createRefreshStatusBar } from './core/ui/refresh.js';
+import { handleSyncResults, updateStatusBar } from './core/ui/statusbar.js';
 import { createDebounced, createWatcher } from './core/utils.js';
 import { getWorkspaceRoot } from './core/workspace.js';
 
@@ -17,7 +18,10 @@ export function activate(context: vscode.ExtensionContext) {
   outputChannel = vscode.window.createOutputChannel('Vite Powerflow');
   statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
   statusBarItem.command = COMMAND_ID;
+  statusBarItem.tooltip = 'Show sync status and re-run check';
   context.subscriptions.push(statusBarItem);
+
+  createRefreshStatusBar(context, () => runSyncChecks(true));
 
   const runSyncCheckCommand = vscode.commands.registerCommand(COMMAND_ID, () => {
     // If a check is currently running, just show the live output
@@ -97,9 +101,8 @@ async function runSyncChecks(forceRun = false) {
     return;
   }
   isChecking = true;
-  const startTime = Date.now();
   outputBuffer = [];
-  const logLine = `[${new Date().toISOString()}] Running sync checks...`;
+  const logLine = `[${new Date().toLocaleTimeString()}] Running sync checks...`;
   outputChannel.appendLine('---');
   outputChannel.appendLine(logLine);
   outputBuffer.push('---', logLine);
@@ -111,10 +114,8 @@ async function runSyncChecks(forceRun = false) {
       return;
     }
 
-    const [starterResult, cliResult] = await Promise.all([
-      checkStarterStatus(workspaceRoot, outputChannel, outputBuffer),
-      checkCliStatus(workspaceRoot, outputChannel, outputBuffer),
-    ]);
+    const starterResult = await checkStarterStatus(workspaceRoot, outputChannel, outputBuffer);
+    const cliResult = await checkCliStatus(workspaceRoot, outputChannel, outputBuffer);
 
     const allResults = [starterResult, cliResult];
     const finalStatus = allResults.some(r => r.status === 'error')
@@ -127,16 +128,17 @@ async function runSyncChecks(forceRun = false) {
     updateStatusBar(statusBarItem, finalStatus, tooltip);
 
     await handleSyncResults(starterResult, cliResult, outputChannel);
+
+    const completionLog = '✅ Sync checks completed.';
+    outputChannel.appendLine(completionLog);
+    outputBuffer.push(completionLog);
+    lastCheckResult = outputBuffer.join('\n');
   } catch (error: any) {
     const errorLog = `❌ Error during sync checks: ${error.message}`;
     outputChannel.appendLine(errorLog);
     outputBuffer.push(errorLog);
     updateStatusBar(statusBarItem, 'error', 'Error during sync checks.');
   } finally {
-    const duration = (Date.now() - startTime) / 1000;
-    outputChannel.appendLine(`✅ Checks completed in ${duration.toFixed(2)}s.`);
-    outputBuffer.push(`✅ Checks completed in ${duration.toFixed(2)}s.`);
-    lastCheckResult = outputBuffer.join('\n');
     isChecking = false;
   }
 }

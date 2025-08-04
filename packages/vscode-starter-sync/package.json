@@ -34,6 +34,10 @@
       {
         "command": "vitePowerflow.runSyncCheck",
         "title": "Vite Powerflow: Show Starter Sync Status"
+      },
+      {
+        "command": "vitePowerflow.refreshSyncCheck",
+        "title": "Vite Powerflow: Refresh Sync Status"
       }
     ]
   },
