@@ -1,11 +1,15 @@
 import * as vscode from 'vscode';
 
-export type Status = 'sync' | 'warning' | 'error';
+export type SyncStatus = 'sync' | 'warning' | 'error' | 'pending';
 
 export interface CheckResult {
-  status: Status;
+  status: SyncStatus;
   message: string;
   commitCount: number;
+  changeset?: Changeset;
+  packageVersion?: string;
+  baselineCommit?: string;
+  currentCommit?: string;
 }
 
 /**
@@ -21,6 +25,17 @@ export interface SyncCheckConfig {
     unreleased: string;
     errorPrefix: string;
   };
+  targetPackage?: string;
+}
+
+export interface Changeset {
+  fileName: string;
+  bumpType: 'minor' | 'patch' | 'major';
+}
+
+export interface ChangesetStatus {
+  status: 'pending';
+  changeset: Changeset;
 }
 
 /**

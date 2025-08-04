@@ -1,16 +1,16 @@
 import * as vscode from 'vscode';
 
-import { CheckResult, Status } from '../../types.js';
+import { CheckResult, SyncStatus } from '../../types.js';
 
 /**
  * Updates the VS Code status bar with the current sync status and tooltip.
  * @param statusBarItem - The status bar item to update
- * @param status - The sync status ('sync', 'warning', 'error')
+ * @param status - The sync status ('sync', 'warning', 'error', 'pending')
  * @param tooltip - Tooltip text to display
  */
 export function updateStatusBar(
   statusBarItem: vscode.StatusBarItem,
-  status: Status,
+  status: SyncStatus,
   tooltip: string
 ) {
   let icon: string;
@@ -20,6 +20,10 @@ export function updateStatusBar(
     case 'sync':
       icon = '$(check)';
       color = new vscode.ThemeColor('statusBarItem.prominentBackground');
+      break;
+    case 'pending':
+      icon = '$(clock)';
+      color = new vscode.ThemeColor('statusBarItem.debuggingBackground');
       break;
     case 'warning':
       icon = '$(warning)';
@@ -48,42 +52,98 @@ export async function handleSyncResults(
   cliResult: CheckResult,
   outputChannel: vscode.OutputChannel
 ) {
-  const totalUnreleasedCommits = starterResult.commitCount + cliResult.commitCount;
   const hasErrors = starterResult.status === 'error' || cliResult.status === 'error';
+  const packagesWithUnreleasedChanges = [starterResult, cliResult].filter(r => r.commitCount > 0);
+  const packagesWithPendingReleases = [starterResult, cliResult].filter(
+    r => r.status === 'pending'
+  );
+  const allHaveChangesets =
+    packagesWithUnreleasedChanges.length > 0 &&
+    packagesWithUnreleasedChanges.every(r => r.status === 'pending');
 
-  // Always show a summary section
-  const summaryLines = ['='.repeat(50), '📋 CHANGESET SUMMARY', '='.repeat(50)];
+  // Package status lines
+  const statusLines: string[] = [];
 
-  // Show individual package status
-  if (starterResult.commitCount > 0) {
-    summaryLines.push(`- Starter package has ${starterResult.commitCount} unreleased change(s)`);
-  } else if (starterResult.status === 'error') {
-    summaryLines.push(`- Starter package check failed: ${starterResult.message}`);
+  // Starter status
+  if (starterResult.status === 'error') {
+    statusLines.push(`[Starter]: Check failed - ${starterResult.message}`);
+  } else if (starterResult.status === 'pending' && starterResult.changeset) {
+    const versionInfo = starterResult.packageVersion ? ` (v${starterResult.packageVersion})` : '';
+    statusLines.push(
+      `[Starter]: Package has a pending ${starterResult.changeset.bumpType} release${versionInfo} (${starterResult.changeset.fileName})`
+    );
+  } else if (starterResult.commitCount > 0) {
+    const versionInfo = starterResult.packageVersion ? ` (v${starterResult.packageVersion})` : '';
+    statusLines.push(
+      `[Starter]: Found ${starterResult.commitCount} unreleased commit(s)${versionInfo}.`
+    );
   } else {
-    summaryLines.push(`- Starter package is in sync`);
+    const versionInfo = starterResult.packageVersion ? ` (v${starterResult.packageVersion})` : '';
+    const commitInfo = starterResult.baselineCommit
+      ? ` - baseline ${starterResult.baselineCommit.substring(0, 7)}`
+      : '';
+    statusLines.push(`[Starter]: Package in sync${versionInfo}${commitInfo}`);
   }
 
-  if (cliResult.commitCount > 0) {
-    summaryLines.push(`- CLI package has ${cliResult.commitCount} unreleased change(s)`);
-  } else if (cliResult.status === 'error') {
-    summaryLines.push(`- CLI package check failed: ${cliResult.message}`);
+  // CLI status
+  if (cliResult.status === 'error') {
+    statusLines.push(`[CLI]: Check failed - ${cliResult.message}`);
+  } else if (cliResult.status === 'pending' && cliResult.changeset) {
+    const versionInfo = cliResult.packageVersion ? ` (v${cliResult.packageVersion})` : '';
+    statusLines.push(
+      `[CLI]: Package has a pending ${cliResult.changeset.bumpType} release${versionInfo} (${cliResult.changeset.fileName})`
+    );
+  } else if (cliResult.commitCount > 0) {
+    const versionInfo = cliResult.packageVersion ? ` (v${cliResult.packageVersion})` : '';
+    statusLines.push(`[CLI]: Found ${cliResult.commitCount} unreleased commit(s)${versionInfo}.`);
   } else {
-    summaryLines.push(`- CLI package is in sync`);
+    const versionInfo = cliResult.packageVersion ? ` (v${cliResult.packageVersion})` : '';
+    const commitInfo = cliResult.baselineCommit
+      ? ` - baseline ${cliResult.baselineCommit.substring(0, 7)}`
+      : '';
+    statusLines.push(`[CLI]: Package in sync${versionInfo}${commitInfo}`);
   }
 
-  summaryLines.push('');
+  // Separator
+  statusLines.push('———');
 
-  // Final status
+  // Final status message
   if (hasErrors) {
-    summaryLines.push('❌ Some checks failed - fix errors to get accurate status.');
-  } else if (totalUnreleasedCommits > 0) {
-    summaryLines.push('⚠️ A changeset release is required.');
+    statusLines.push('❌ Some checks failed - fix errors to get accurate status.');
+  } else if (packagesWithPendingReleases.length > 0) {
+    // If ANY package has a pending release, show pending status
+    statusLines.push('⏳ Ready for release. Merge to main to publish automatically.');
+  } else if (packagesWithUnreleasedChanges.length === 0) {
+    statusLines.push('✅ Everything in sync.');
   } else {
-    summaryLines.push('✅ All packages are in sync.');
+    // Some packages need changesets
+    const needChangesets: string[] = [];
+    const inSync: string[] = [];
+
+    if (starterResult.commitCount > 0 && starterResult.status !== 'pending') {
+      needChangesets.push('Starter');
+    } else if (starterResult.commitCount === 0) {
+      inSync.push('Starter');
+    }
+
+    if (cliResult.commitCount > 0 && cliResult.status !== 'pending') {
+      needChangesets.push('CLI');
+    } else if (cliResult.commitCount === 0) {
+      inSync.push('CLI');
+    }
+
+    let message = '⚠️ ';
+    if (needChangesets.length > 0) {
+      message += `${needChangesets.join(' and ')} package${needChangesets.length > 1 ? 's' : ''} require${needChangesets.length === 1 ? 's' : ''} a changeset.`;
+    }
+    if (inSync.length > 0) {
+      message += ` ${inSync.join(' and ')} in sync.`;
+    }
+    statusLines.push(message);
   }
 
-  // Add to output channel
-  summaryLines.forEach(line => {
+  // Output everything
+  statusLines.forEach(line => {
     outputChannel.appendLine(line);
   });
 }

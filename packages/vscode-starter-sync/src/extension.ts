@@ -5,6 +5,7 @@ import { createRefreshStatusBar } from './core/ui/refresh.js';
 import { handleSyncResults, updateStatusBar } from './core/ui/statusbar.js';
 import { createDebounced, createWatcher } from './core/utils.js';
 import { getWorkspaceRoot } from './core/workspace.js';
+import { SyncStatus } from './types.js';
 
 let outputChannel: vscode.OutputChannel;
 let statusBarItem: vscode.StatusBarItem;
@@ -32,7 +33,6 @@ export function activate(context: vscode.ExtensionContext) {
   const workspaceRoot = getWorkspaceRoot();
   if (workspaceRoot) {
     const debouncedCheck = createDebounced((trigger: string) => {
-      outputChannel.appendLine(`[${trigger}] Triggering sync check...`);
       runSyncChecks();
     }, 1000);
 
@@ -103,11 +103,31 @@ async function runSyncChecks(forceRun = false) {
     outputChannel.show(true);
 
     const allResults = [starterResult, cliResult];
-    const finalStatus = allResults.some(r => r.status === 'error')
-      ? 'error'
-      : allResults.some(r => r.status === 'warning')
-        ? 'warning'
-        : 'sync';
+
+    // Determine final status with proper logic:
+    // - error: if any package has an error
+    // - pending: if ALL packages with unreleased changes have changesets
+    // - warning: if ANY package has unreleased changes without a changeset
+    // - sync: if all packages are in sync
+
+    let finalStatus: SyncStatus;
+    if (allResults.some(r => r.status === 'error')) {
+      finalStatus = 'error';
+    } else {
+      // Check if we have any packages with unreleased changes
+      const packagesWithChanges = allResults.filter(
+        r => r.commitCount > 0 || r.status === 'pending'
+      );
+
+      if (packagesWithChanges.length === 0) {
+        // No changes at all
+        finalStatus = 'sync';
+      } else {
+        // We have changes, check if ALL have changesets
+        const allHaveChangesets = packagesWithChanges.every(r => r.status === 'pending');
+        finalStatus = allHaveChangesets ? 'pending' : 'warning';
+      }
+    }
 
     const tooltip = `Starter: ${starterResult.message} | CLI: ${cliResult.message}`;
     updateStatusBar(statusBarItem, finalStatus, tooltip);

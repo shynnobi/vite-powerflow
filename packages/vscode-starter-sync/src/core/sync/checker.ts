@@ -2,6 +2,7 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 
 import { CheckResult, SyncCheckConfig } from '../../types.js';
+import { getChangesetStatus } from '../changesets.js';
 import { getCommitsSince, getCurrentCommit, getTemplateBaselineCommit } from '../git.js';
 import { getLatestNpmVersion, getPackageInfo } from '../packages.js';
 import { logMessage } from '../utils.js';
@@ -35,6 +36,43 @@ async function checkSyncStatus(
   workspaceRoot: string
 ): Promise<CheckResult> {
   try {
+    // Check for an existing changeset first
+    if (config.targetPackage) {
+      const changesetStatus = await getChangesetStatus(
+        workspaceRoot,
+        config.targetPackage,
+        outputChannel
+      );
+      if (changesetStatus) {
+        // Get package version for changeset results too
+        let packageVersion: string | undefined;
+        try {
+          if (config.label === 'Starter') {
+            const templatePackagePath = path.join(
+              workspaceRoot,
+              'packages/cli/template/package.json'
+            );
+            const templatePkg = await getPackageInfo(templatePackagePath);
+            packageVersion = templatePkg?.version;
+          } else if (config.label === 'CLI') {
+            const cliPackagePath = path.join(workspaceRoot, 'packages/cli/package.json');
+            const cliPkg = await getPackageInfo(cliPackagePath);
+            packageVersion = cliPkg?.version;
+          }
+        } catch {
+          // Ignore version retrieval errors
+        }
+
+        return {
+          status: 'pending',
+          message: `Changeset found: ${changesetStatus.changeset.fileName} (${changesetStatus.changeset.bumpType})`,
+          commitCount: 0, // Not relevant when a changeset is pending
+          changeset: changesetStatus.changeset,
+          packageVersion,
+        };
+      }
+    }
+
     // Get the baseline commit/tag
     const baseline = await Promise.resolve(config.baseline());
 
@@ -47,10 +85,6 @@ async function checkSyncStatus(
       };
     }
 
-    // Log the baseline being checked
-    const baselineLog = await formatBaselineLog(config, baseline, workspaceRoot);
-    logMessage(outputChannel, baselineLog);
-
     // Get the current commit and collect new commits since the baseline
     const currentCommit = getCurrentCommit(workspaceRoot);
     const newCommits = getCommitsSince(
@@ -61,10 +95,33 @@ async function checkSyncStatus(
       outputChannel
     );
 
+    // Get package version if possible
+    let packageVersion: string | undefined;
+    try {
+      if (config.label === 'Starter') {
+        const templatePackagePath = path.join(workspaceRoot, 'packages/cli/template/package.json');
+        const templatePkg = await getPackageInfo(templatePackagePath);
+        packageVersion = templatePkg?.version;
+      } else if (config.label === 'CLI') {
+        const cliPackagePath = path.join(workspaceRoot, 'packages/cli/package.json');
+        const cliPkg = await getPackageInfo(cliPackagePath);
+        packageVersion = cliPkg?.version;
+      }
+    } catch {
+      // Ignore version retrieval errors
+    }
+
+    // Prepare additional info for handlers
+    const additionalInfo = {
+      packageVersion,
+      baselineCommit: baseline,
+      currentCommit,
+    };
+
     // Handle results based on commit count
     return newCommits.length > 0
-      ? handleUnreleasedCommits(config, newCommits, outputChannel)
-      : handleInSync(config, outputChannel);
+      ? handleUnreleasedCommits(config, newCommits, outputChannel, additionalInfo)
+      : handleInSync(config, outputChannel, additionalInfo);
   } catch (error) {
     const syncError = error instanceof Error ? error : new Error(String(error));
     return handleError(config, syncError, outputChannel);
@@ -83,6 +140,7 @@ export async function checkStarterStatus(
     label: 'Starter',
     baseline: () => getTemplateBaselineCommit(workspaceRoot, outputChannel),
     commitPath: 'apps/starter/',
+    targetPackage: '@vite-powerflow/starter',
     messages: {
       notFound: 'Template baseline commit not found in CLI template (package.json).',
       inSync: 'In sync with the latest CLI template baseline.',
@@ -124,6 +182,7 @@ export async function checkCliStatus(
       label: 'CLI',
       baseline: () => cliNpmTag,
       commitPath: 'packages/cli/',
+      targetPackage: '@vite-powerflow/create',
       messages: {
         notFound: 'No published CLI tag found on npm.',
         inSync: `All CLI changes since ${cliNpmTag} have been published.`,

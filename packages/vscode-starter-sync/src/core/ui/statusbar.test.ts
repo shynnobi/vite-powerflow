@@ -46,6 +46,15 @@ describe('updateStatusBar', () => {
     expect(item.backgroundColor).toEqual({ id: 'statusBarItem.errorBackground' });
     expect(item.show).toHaveBeenCalled();
   });
+
+  it('sets correct icon, color, and tooltip for pending', () => {
+    const item = createMockStatusBarItem();
+    updateStatusBar(item as any, 'pending', 'Release pending');
+    expect(item.text).toContain('clock');
+    expect(item.tooltip).toBe('Release pending');
+    expect(item.backgroundColor).toEqual({ id: 'statusBarItem.debuggingBackground' });
+    expect(item.show).toHaveBeenCalled();
+  });
 });
 
 describe('handleSyncResults', () => {
@@ -64,16 +73,12 @@ describe('handleSyncResults', () => {
     );
 
     expect(outputChannel.appendLine).toHaveBeenCalledWith(
-      expect.stringContaining('CHANGESET SUMMARY')
+      '[Starter]: Found 1 unreleased commit(s).'
     );
+    expect(outputChannel.appendLine).toHaveBeenCalledWith('[CLI]: Package in sync');
+    expect(outputChannel.appendLine).toHaveBeenCalledWith('———');
     expect(outputChannel.appendLine).toHaveBeenCalledWith(
-      expect.stringContaining('Starter package has 1 unreleased change')
-    );
-    expect(outputChannel.appendLine).toHaveBeenCalledWith(
-      expect.stringContaining('CLI package is in sync')
-    );
-    expect(outputChannel.appendLine).toHaveBeenCalledWith(
-      expect.stringContaining('⚠️ A changeset release is required')
+      '⚠️ Starter package requires a changeset. CLI in sync.'
     );
   });
 
@@ -84,17 +89,11 @@ describe('handleSyncResults', () => {
       outputChannel
     );
 
+    expect(outputChannel.appendLine).toHaveBeenCalledWith('[Starter]: Package in sync');
+    expect(outputChannel.appendLine).toHaveBeenCalledWith('[CLI]: Found 2 unreleased commit(s).');
+    expect(outputChannel.appendLine).toHaveBeenCalledWith('———');
     expect(outputChannel.appendLine).toHaveBeenCalledWith(
-      expect.stringContaining('CHANGESET SUMMARY')
-    );
-    expect(outputChannel.appendLine).toHaveBeenCalledWith(
-      expect.stringContaining('Starter package is in sync')
-    );
-    expect(outputChannel.appendLine).toHaveBeenCalledWith(
-      expect.stringContaining('CLI package has 2 unreleased change')
-    );
-    expect(outputChannel.appendLine).toHaveBeenCalledWith(
-      expect.stringContaining('⚠️ A changeset release is required')
+      '⚠️ CLI package requires a changeset. Starter in sync.'
     );
   });
 
@@ -105,17 +104,32 @@ describe('handleSyncResults', () => {
       outputChannel
     );
 
-    expect(outputChannel.appendLine).toHaveBeenCalledWith(
-      expect.stringContaining('CHANGESET SUMMARY')
+    expect(outputChannel.appendLine).toHaveBeenCalledWith('[Starter]: Package in sync');
+    expect(outputChannel.appendLine).toHaveBeenCalledWith('[CLI]: Package in sync');
+    expect(outputChannel.appendLine).toHaveBeenCalledWith('———');
+    expect(outputChannel.appendLine).toHaveBeenCalledWith('✅ Everything in sync.');
+  });
+
+  it('shows pending release when changeset is available', async () => {
+    await handleSyncResults(
+      { commitCount: 0, status: 'sync', message: '' },
+      {
+        commitCount: 0,
+        status: 'pending',
+        message: '',
+        changeset: { fileName: 'test-changeset.md', bumpType: 'minor' },
+        packageVersion: '1.0.5',
+      },
+      outputChannel
     );
+
+    expect(outputChannel.appendLine).toHaveBeenCalledWith('[Starter]: Package in sync');
     expect(outputChannel.appendLine).toHaveBeenCalledWith(
-      expect.stringContaining('Starter package is in sync')
+      '[CLI]: Package has a pending minor release (v1.0.5) (test-changeset.md)'
     );
+    expect(outputChannel.appendLine).toHaveBeenCalledWith('———');
     expect(outputChannel.appendLine).toHaveBeenCalledWith(
-      expect.stringContaining('CLI package is in sync')
-    );
-    expect(outputChannel.appendLine).toHaveBeenCalledWith(
-      expect.stringContaining('✅ All packages are in sync')
+      '⏳ Ready for release. Merge to main to publish automatically.'
     );
   });
 });

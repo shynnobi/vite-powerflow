@@ -38,20 +38,18 @@ export async function formatBaselineLog(
 export function handleUnreleasedCommits(
   config: SyncCheckConfig,
   newCommits: string[],
-  outputChannel: vscode.OutputChannel
+  outputChannel: vscode.OutputChannel,
+  additionalInfo?: { packageVersion?: string; baselineCommit?: string; currentCommit?: string }
 ): CheckResult {
   const commitCount = newCommits.length;
-  const warningLog = `🚨 [${config.label}] Found ${commitCount} unreleased commits.`;
-  logMessage(outputChannel, warningLog);
-
-  newCommits.forEach((commit: string) => {
-    logMessage(outputChannel, `  - ${commit}`);
-  });
 
   return {
     status: 'warning',
     message: `${commitCount} ${config.messages.unreleased}`,
     commitCount,
+    packageVersion: additionalInfo?.packageVersion,
+    baselineCommit: additionalInfo?.baselineCommit,
+    currentCommit: additionalInfo?.currentCommit,
   };
 }
 
@@ -60,14 +58,16 @@ export function handleUnreleasedCommits(
  */
 export function handleInSync(
   config: SyncCheckConfig,
-  outputChannel: vscode.OutputChannel
+  outputChannel: vscode.OutputChannel,
+  additionalInfo?: { packageVersion?: string; baselineCommit?: string; currentCommit?: string }
 ): CheckResult {
-  const successLog = `✅ [${config.label}] ${config.messages.inSync}`;
-  logMessage(outputChannel, successLog);
   return {
     status: 'sync',
     message: config.messages.inSync,
     commitCount: 0,
+    packageVersion: additionalInfo?.packageVersion,
+    baselineCommit: additionalInfo?.baselineCommit,
+    currentCommit: additionalInfo?.currentCommit,
   };
 }
 
