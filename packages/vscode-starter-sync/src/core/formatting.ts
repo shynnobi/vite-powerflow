@@ -10,23 +10,32 @@ import { CheckResult, PackageLabel } from '../types.js';
 export function formatPackageStatus(label: PackageLabel, result: CheckResult): string {
   const versionInfo = result.packageVersion ? ` (v${result.packageVersion})` : '';
 
+  let lines: string[] = [];
+
   if (result.status === 'error') {
-    return `[${label}]: Check failed - ${result.message}`;
+    lines.push(`[${label}]: Check failed - ${result.message}`);
+  } else if (result.status === 'pending' && result.changeset) {
+    lines.push(
+      `[${label}]: Package has a pending ${result.changeset.bumpType} release${versionInfo} (${result.changeset.fileName})`
+    );
+  } else if (result.commitCount > 0) {
+    lines.push(`[${label}]: Found ${result.commitCount} unreleased commit(s)${versionInfo}.`);
+  } else {
+    // No unreleased commits, package is in sync
+    const commitInfo = result.baselineCommit
+      ? ` - baseline ${result.baselineCommit.substring(0, 7)}`
+      : '';
+    lines.push(`[${label}]: Package in sync${versionInfo}${commitInfo}`);
   }
 
-  if (result.status === 'pending' && result.changeset) {
-    return `[${label}]: Package has a pending ${result.changeset.bumpType} release${versionInfo} (${result.changeset.fileName})`;
+  // Add the list of commits if present
+  if (result.commits && result.commits.length > 0) {
+    for (const c of result.commits) {
+      lines.push(`  - ${c.sha} ${c.message}`);
+    }
   }
 
-  if (result.commitCount > 0) {
-    return `[${label}]: Found ${result.commitCount} unreleased commit(s)${versionInfo}.`;
-  }
-
-  // In sync
-  const commitInfo = result.baselineCommit
-    ? ` - baseline ${result.baselineCommit.substring(0, 7)}`
-    : '';
-  return `[${label}]: Package in sync${versionInfo}${commitInfo}`;
+  return lines.join('\n');
 }
 
 /**
@@ -92,7 +101,8 @@ export function formatSyncOutput(
 
   // Package status lines
   for (const { label, result } of results) {
-    lines.push(formatPackageStatus(label, result));
+    const statusLines = formatPackageStatus(label, result).split('\n');
+    lines.push(...statusLines);
   }
 
   // Separator

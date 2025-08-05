@@ -67,13 +67,18 @@ export async function getSyncStatus(
 
   // Get the current commit and collect new commits since the baseline
   const currentCommit = getCurrentCommit(workspaceRoot);
-  const newCommits = getCommitsSince(
+  const newCommitsRaw = getCommitsSince(
     workspaceRoot,
     baseline,
     currentCommit,
     config.commitPath,
     outputChannel
   );
+  // Parse commit lines: '<sha> <message>'
+  const newCommits = newCommitsRaw.map(line => {
+    const [sha, ...msgParts] = line.split(' ');
+    return { sha: sha?.substring(0, 7) || '', message: msgParts.join(' ') };
+  });
 
   let packageVersion: string | undefined;
   try {
@@ -103,6 +108,7 @@ export async function getSyncStatus(
           packageVersion,
           baselineCommit: baseline,
           currentCommit,
+          commits: newCommits,
         };
       }
     }
@@ -113,6 +119,7 @@ export async function getSyncStatus(
       packageVersion,
       baselineCommit: baseline,
       currentCommit,
+      commits: newCommits,
     };
   }
   return {

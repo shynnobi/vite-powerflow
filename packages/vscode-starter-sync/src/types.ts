@@ -15,6 +15,7 @@ export interface CheckResult {
   packageVersion?: string;
   baselineCommit?: string;
   currentCommit?: string;
+  commits?: { sha: string; message: string }[];
 }
 
 /**
