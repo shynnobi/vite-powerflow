@@ -3,12 +3,13 @@ import fs from 'fs-extra';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
+import { StarterPkgJson, TemplatePkgJson, TsConfigJson } from './types/package-json';
 import { logRootError, logRootInfo, logRootSuccess } from './monorepo-logger';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-(async () => {
+void (async () => {
   // 1. Setup source and destination paths
   const root = path.resolve(__dirname, '..');
   const starterSrc = path.join(root, 'apps/starter');
@@ -63,43 +64,56 @@ const __dirname = path.dirname(__filename);
     // 5. Patch package.json scripts and add starterSource metadata
     logRootInfo('Patching package.json validate scripts and adding starterSource metadata');
     const pkgPath = path.join(templateDest, 'package.json');
-    const pkg = await fs.readJson(pkgPath);
+    const pkgRaw = await fs.readFile(pkgPath, 'utf8');
+    const pkg = JSON.parse(pkgRaw) as TemplatePkgJson;
 
     // Add CLI template baseline commit metadata
     try {
       const currentCommit = execSync('git rev-parse HEAD', { encoding: 'utf-8' }).trim();
-      const starterPkg = await fs.readJson(path.join(starterSrc, 'package.json'));
+      const starterPkgRaw = await fs.readFile(path.join(starterSrc, 'package.json'), 'utf8');
+      const starterPkg = JSON.parse(starterPkgRaw) as StarterPkgJson;
 
-      pkg.starterSource = {
-        version: starterPkg.version,
-        commit: currentCommit,
-        syncedAt: new Date().toISOString(),
-      };
-    } catch (error) {
+      // PATCH: initialize starterSource with historic commit if missing
+      const HISTORIC_COMMIT = '668ab2e8f19ec5a066bfdba3e5f2713f29078ff5';
+      if (!pkg.starterSource) {
+        pkg.starterSource = {
+          version: starterPkg.version,
+          commit: HISTORIC_COMMIT,
+          syncedAt: new Date().toISOString(),
+        };
+        logRootInfo('starterSource initialized with historic commit');
+      } else {
+        pkg.starterSource = {
+          version: starterPkg.version,
+          commit: currentCommit,
+          syncedAt: new Date().toISOString(),
+        };
+      }
+    } catch {
       logRootInfo('Warning: Could not add CLI template baseline commit metadata');
     }
 
     // Add/update scripts
     pkg.scripts = {
       ...pkg.scripts,
-      format: pkg.scripts.format || 'prettier --check .',
+      format: pkg.scripts?.format || 'prettier --check .',
       'validate:static': 'run-p format lint type-check',
       'validate:quick': 'run-s validate:static test',
       'validate:full': 'run-s validate:static test test:e2e',
       'validate:commit': 'npx lint-staged && pnpm test',
     };
 
-    await fs.writeJson(pkgPath, pkg, { spaces: 2 });
+    await fs.writeFile(pkgPath, JSON.stringify(pkg, null, 2), 'utf8');
 
     // 6. Clean tsconfig.json by removing 'extends' for standalone usage
     logRootInfo("Cleaning tsconfig.json (removing 'extends')...");
     const tsconfigPath = path.join(templateDest, 'tsconfig.json');
     if (await fs.pathExists(tsconfigPath)) {
       const tsconfigRaw = await fs.readFile(tsconfigPath, 'utf-8');
-      const tsconfig = JSON.parse(tsconfigRaw);
+      const tsconfig = JSON.parse(tsconfigRaw) as TsConfigJson;
       if (tsconfig.extends) {
         delete tsconfig.extends;
-        await fs.writeFile(tsconfigPath, JSON.stringify(tsconfig, null, 2));
+        await fs.writeFile(tsconfigPath, JSON.stringify(tsconfig, null, 2), 'utf8');
       }
     }
 

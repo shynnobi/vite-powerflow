@@ -26,7 +26,8 @@ function getInternalPackages(dir: string, appsDir: string): InternalPackage[] {
     .map(name => {
       const pkgJsonPath = path.join(dir, name, 'package.json');
       if (!fs.existsSync(pkgJsonPath)) return null;
-      const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf-8'));
+      const pkgJsonRaw = fs.readFileSync(pkgJsonPath, 'utf-8');
+      const pkgJson = JSON.parse(pkgJsonRaw) as { name: string };
       const isApp = dir === appsDir;
       return {
         name: pkgJson.name,
@@ -36,11 +37,11 @@ function getInternalPackages(dir: string, appsDir: string): InternalPackage[] {
         srcPath: path.join(dir, name, 'src'),
       };
     })
-    .filter(Boolean) as InternalPackage[];
+    .filter((x): x is InternalPackage => Boolean(x));
 }
 
 // 1. Main async function
-(async () => {
+void (() => {
   // 1.1. Setup root and workspace paths
   const root = path.resolve(__dirname, '..');
   const pkgsDir = path.join(root, 'packages');
@@ -62,7 +63,10 @@ function getInternalPackages(dir: string, appsDir: string): InternalPackage[] {
 
   // 3. Update tsconfig.base.json with TypeScript path aliases
   const tsconfigPath = path.join(root, 'tsconfig.base.json');
-  const tsconfig = JSON.parse(fs.readFileSync(tsconfigPath, 'utf-8'));
+  const tsconfigRaw = fs.readFileSync(tsconfigPath, 'utf-8');
+  const tsconfig = JSON.parse(tsconfigRaw) as {
+    compilerOptions?: { paths?: Record<string, string[]> };
+  };
   if (!tsconfig.compilerOptions) tsconfig.compilerOptions = {};
   if (!tsconfig.compilerOptions.paths) tsconfig.compilerOptions.paths = {};
 
@@ -89,7 +93,8 @@ function getInternalPackages(dir: string, appsDir: string): InternalPackage[] {
 
   // 4. Update tsconfig.json with project references
   const tsconfigRefPath = path.join(root, 'tsconfig.json');
-  const tsconfigRef = JSON.parse(fs.readFileSync(tsconfigRefPath, 'utf-8'));
+  const tsconfigRefRaw = fs.readFileSync(tsconfigRefPath, 'utf-8');
+  const tsconfigRef = JSON.parse(tsconfigRefRaw) as { references?: { path: string }[] };
 
   // 4.1. Update TypeScript project references for all internal packages only (exclude apps)
   tsconfigRef.references = pkgs.map(pkg => ({
@@ -109,17 +114,7 @@ function getInternalPackages(dir: string, appsDir: string): InternalPackage[] {
     ),
   ];
   const projectsList = allProjects.map(p => `      ${JSON.stringify(p)}`).join(',\n');
-  const vitestConfig = `// AUTO-GENERATED FILE. DO NOT EDIT MANUALLY.
-import { defineConfig } from 'vitest/config';
-
-export default defineConfig({
-  test: {
-    projects: [
-${projectsList}
-    ],
-  },
-});
-`;
+  const vitestConfig = `// AUTO-GENERATED FILE. DO NOT EDIT MANUALLY.\nimport { defineConfig } from 'vitest/config';\n\nexport default defineConfig({\n  test: {\n    projects: [\n${projectsList}\n    ],\n  },\n});\n`;
   fs.writeFileSync(vitestConfigPath, vitestConfig);
   logRootSuccess('Vitest config generated in vitest.config.ts');
 
@@ -136,8 +131,8 @@ ${projectsList}
     // logRootSuccess('Prettier formatting applied to generated files.');
   } catch (err) {
     logRootError('Prettier formatting failed.');
-    if (err && err.stderr) {
-      console.error(err.stderr.toString());
+    if (err && (err as { stderr?: Buffer }).stderr) {
+      console.error((err as { stderr?: Buffer }).stderr.toString());
     }
   }
   // 7. End of main async function

@@ -33,8 +33,9 @@ function getWorkspaces(): string[] {
   // 2.4. Fallback: try turbo.json
   const turboPath = path.resolve(process.cwd(), 'turbo.json');
   if (fs.existsSync(turboPath)) {
-    const turbo = JSON.parse(fs.readFileSync(turboPath, 'utf8'));
-    if (turbo && turbo.pipeline) {
+    const turboRaw = fs.readFileSync(turboPath, 'utf8');
+    const turbo = JSON.parse(turboRaw) as { pipeline?: Record<string, unknown> };
+    if (turbo && turbo.pipeline && typeof turbo.pipeline === 'object') {
       // 2.5. Try to infer workspaces from pipeline keys
       return Object.keys(turbo.pipeline)
         .map(name => path.resolve('packages', name))

@@ -43,7 +43,6 @@ describe('sync/handlers', () => {
     it('should log to output channel only', () => {
       logMessage(mockOutputChannel, 'test message');
 
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(mockOutputChannel.appendLine).toHaveBeenCalledWith('test message');
     });
   });

@@ -3,12 +3,13 @@ import fs from 'fs-extra';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
+import { StarterPkgJson, TemplatePkgJson } from './types/package-json';
 import { logRootError, logRootInfo, logRootSuccess } from './monorepo-logger';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-(async () => {
+void (async () => {
   const root = path.resolve(__dirname, '..');
   const starterPkgPath = path.join(root, 'apps/starter/package.json');
   const templatePkgPath = path.join(root, 'packages/cli/template/package.json');
@@ -17,7 +18,9 @@ const __dirname = path.dirname(__filename);
 
   try {
     // Ensure both package.json files exist before proceeding.
-    if (!(await fs.pathExists(starterPkgPath)) || !(await fs.pathExists(templatePkgPath))) {
+    const starterExists: boolean = await fs.pathExists(starterPkgPath);
+    const templateExists: boolean = await fs.pathExists(templatePkgPath);
+    if (!starterExists || !templateExists) {
       logRootError(
         'starter or template package.json not found. Make sure to run the sync script first.'
       );
@@ -32,8 +35,10 @@ const __dirname = path.dirname(__filename);
     }
 
     // Read the necessary package.json files.
-    const starterPkg = await fs.readJson(starterPkgPath);
-    const templatePkg = await fs.readJson(templatePkgPath);
+    const starterPkgRaw = await fs.readFile(starterPkgPath, 'utf8');
+    const templatePkgRaw = await fs.readFile(templatePkgPath, 'utf8');
+    const starterPkg = JSON.parse(starterPkgRaw) as StarterPkgJson;
+    const templatePkg = JSON.parse(templatePkgRaw) as TemplatePkgJson;
 
     // Create or update the starterSource object.
     templatePkg.starterSource = {
@@ -43,7 +48,7 @@ const __dirname = path.dirname(__filename);
     };
 
     // Write the updated package.json back to the template directory.
-    await fs.writeJson(templatePkgPath, templatePkg, { spaces: 2 });
+    await fs.writeFile(templatePkgPath, JSON.stringify(templatePkg, null, 2), 'utf8');
 
     logRootSuccess(`Template baseline commit updated successfully to ${commit.substring(0, 7)}.`);
   } catch (err) {

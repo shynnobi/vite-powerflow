@@ -177,4 +177,35 @@ export default [
       },
     },
   },
+  // Override: scripts root lint with only root tsconfig
+  {
+    files: ['scripts/**/*.ts'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: { jsx: true },
+        project: ['./tsconfig.json'],
+        projectService: true,
+      },
+      globals: commonGlobals,
+    },
+    plugins: commonPlugins,
+    rules: {
+      ...commonRules,
+      ...tsPlugin.configs.recommended.rules,
+      ...tsPlugin.configs['recommended-type-checked'].rules,
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': tsNoUnusedVarsRule,
+    },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: ['./tsconfig.json'],
+        },
+      },
+    },
+  },
 ];
