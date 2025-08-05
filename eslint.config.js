@@ -1,9 +1,14 @@
+// Root ESLint configuration for the vite-powerflow monorepo
+// This file centralizes all common rules, plugins, and settings for JS/TS/Tests
+
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import tsParser from '@typescript-eslint/parser';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
 import importPlugin from 'eslint-plugin-import';
 import vitest from 'eslint-plugin-vitest';
+import js from '@eslint/js';
 
-// Common settings and plugins
+// Common import resolver settings
 const commonSettings = {
   'import/resolver': {
     node: {
@@ -12,12 +17,15 @@ const commonSettings = {
   },
 };
 
+// Common plugin references
 const commonPlugins = {
   'simple-import-sort': simpleImportSort,
+  '@typescript-eslint': tsPlugin,
   import: importPlugin,
   vitest,
 };
 
+// Common lint rules for all files
 const commonRules = {
   'simple-import-sort/imports': [
     'error',
@@ -43,6 +51,7 @@ const commonRules = {
   'import/no-unresolved': 'error',
 };
 
+// Common global variables
 const commonGlobals = {
   process: 'readonly',
   require: 'readonly',
@@ -52,8 +61,20 @@ const commonGlobals = {
   console: 'readonly',
 };
 
+// DRY: Shared config for unused vars in TS (including tests)
+const tsNoUnusedVarsRule = [
+  'warn',
+  {
+    args: 'after-used',
+    argsIgnorePattern: '^_',
+    varsIgnorePattern: '^_',
+    ignoreRestSiblings: true,
+  },
+];
+
 export default [
   {
+    // Ignore files and folders that should never be linted
     ignores: [
       'node_modules/**',
       '**/dist/**',
@@ -73,7 +94,7 @@ export default [
       'vite.config.ts',
     ],
   },
-  // Configuration for JavaScript files (without TypeScript parser, with Node.js globals)
+  // JavaScript files (no TypeScript parser, Node.js globals)
   {
     files: ['**/*.{js,jsx,cjs,mjs}'],
     languageOptions: {
@@ -83,13 +104,14 @@ export default [
     },
     plugins: commonPlugins,
     rules: {
+      ...js.configs.recommended.rules,
       ...commonRules,
       'no-unused-vars': 'error',
       'no-undef': 'error',
     },
     settings: commonSettings,
   },
-  // Configuration for TypeScript files (avec TypeScript parser)
+  // TypeScript files (with TypeScript parser)
   {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
@@ -103,7 +125,12 @@ export default [
       globals: commonGlobals,
     },
     plugins: commonPlugins,
-    rules: commonRules,
+    rules: {
+      ...commonRules,
+      ...tsPlugin.configs.recommended.rules,
+      'no-unused-vars': 'off', // Disable base rule for TS files
+      '@typescript-eslint/no-unused-vars': tsNoUnusedVarsRule,
+    },
     settings: {
       'import/resolver': {
         typescript: {
@@ -113,15 +140,17 @@ export default [
       },
     },
   },
-  // Configuration for Vitest test files (compatible flat config)
+  // Vitest test files (test-specific rules)
   {
     files: ['**/*.test.ts', '**/*.spec.ts'],
-    plugins: { vitest },
+    plugins: { vitest, '@typescript-eslint': tsPlugin },
     rules: {
       'vitest/no-focused-tests': 'error',
       'vitest/no-disabled-tests': 'warn',
       'vitest/expect-expect': 'warn',
-      'no-unused-vars': ['warn', { args: 'after-used', argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': tsNoUnusedVarsRule,
+      '@typescript-eslint/no-explicit-any': 'off', // Allow any in tests/mocks
+      'no-unused-vars': 'off', // Turn off base rule for TypeScript files
       // Add more Vitest rules here if needed
     },
     languageOptions: {

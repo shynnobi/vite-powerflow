@@ -2,9 +2,8 @@ import rootConfig from '../../eslint.config.js';
 
 export default [
   {
-    ignores: [
-      'template/**', // Ignore the template folder from linting
-    ],
+    // Ignore the template folder from linting
+    ignores: ['template/**'],
   },
   ...rootConfig,
   // Add any CLI-specific overrides below if needed
