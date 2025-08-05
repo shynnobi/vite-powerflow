@@ -9,6 +9,7 @@ import { createProject } from './commands/create.js';
 import { directoryExists } from './utils/fs-utils.js';
 import { promptProjectName } from './utils/prompt-ui.js';
 import { safePackageName } from './utils/safe-package-name.js';
+import type { GitOptions } from '../types/git-options.js';
 
 let currentProjectPath: string | null = null;
 let isCleaningUp = false;
@@ -60,7 +61,7 @@ const program = new Command()
 program.parse(process.argv);
 const cliOptions = program.opts();
 
-function isNonInteractiveMode(opts: any, args: string[]) {
+function isNonInteractiveMode(opts: GitOptions, args: string[]) {
   // If no project directory is provided, force interactive mode
   if (args.length === 0) return false;
 
