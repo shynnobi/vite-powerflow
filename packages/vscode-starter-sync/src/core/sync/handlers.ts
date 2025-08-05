@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 
-import { CheckResult, SyncCheckConfig } from '../../types.js';
+import { CheckResult, PackageLabel, SyncCheckConfig } from '../../types.js';
 import { getPackageInfo } from '../packages.js';
 import { formatBaseline, logMessage } from '../utils.js';
 
@@ -20,7 +20,7 @@ export async function formatBaselineLog(
   const shortBaseline = formatBaseline(baseline);
   let logMessage = `📦 [${config.label}] Checking against baseline (commit/tag ${shortBaseline})`;
 
-  if (config.label === 'Starter') {
+  if (config.label === PackageLabel.Starter) {
     try {
       const templatePackagePath = path.join(workspaceRoot, 'packages/cli/template/package.json');
       const templatePkg = await getPackageInfo(templatePackagePath);

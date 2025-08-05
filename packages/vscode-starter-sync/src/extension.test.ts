@@ -38,7 +38,6 @@ vi.mock('./core/ui/refresh.js', () => ({
   createRefreshStatusBar: vi.fn(),
 }));
 vi.mock('./core/ui/statusbar.js', () => ({
-  handleSyncResults: vi.fn(),
   updateStatusBar: vi.fn(),
 }));
 vi.mock('./core/utils.js', () => ({
@@ -54,7 +53,6 @@ const mockCheckStarterStatus = vi.mocked(await import('./core/sync/checker.js'))
 const mockCreateRefreshStatusBar = vi.mocked(
   await import('./core/ui/refresh.js')
 ).createRefreshStatusBar;
-const mockHandleSyncResults = vi.mocked(await import('./core/ui/statusbar.js')).handleSyncResults;
 const mockUpdateStatusBar = vi.mocked(await import('./core/ui/statusbar.js')).updateStatusBar;
 const mockCreateDebounced = vi.mocked(await import('./core/utils.js')).createDebounced;
 const mockCreateWatcher = vi.mocked(await import('./core/utils.js')).createWatcher;
@@ -229,19 +227,11 @@ describe('extension', () => {
       // THEN: Both packages are checked
       expect(mockCheckStarterStatus).toHaveBeenCalledWith('/workspace', mockOutputChannel);
       expect(mockCheckCliStatus).toHaveBeenCalledWith('/workspace', mockOutputChannel);
-
-      // AND: Status bar shows warning (highest priority) with combined tooltip
+      // AND: Status bar shows generic sync message
       expect(mockUpdateStatusBar).toHaveBeenCalledWith(
         mockStatusBarItem,
         'warning',
-        'Starter: Starter in sync | CLI: CLI has changes'
-      );
-
-      // AND: Results are handled for display
-      expect(mockHandleSyncResults).toHaveBeenCalledWith(
-        starterResult,
-        cliResult,
-        mockOutputChannel
+        'Click to view sync status'
       );
     });
 
@@ -270,7 +260,7 @@ describe('extension', () => {
       expect(mockUpdateStatusBar).toHaveBeenCalledWith(
         mockStatusBarItem,
         'error',
-        'Starter: Starter error | CLI: CLI sync'
+        'Click to view sync status'
       );
     });
 
@@ -299,7 +289,7 @@ describe('extension', () => {
       expect(mockUpdateStatusBar).toHaveBeenCalledWith(
         mockStatusBarItem,
         'pending',
-        'Starter: Starter pending | CLI: CLI pending'
+        'Click to view sync status'
       );
     });
 

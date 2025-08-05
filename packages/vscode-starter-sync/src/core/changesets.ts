@@ -54,7 +54,7 @@ export async function getChangesetStatus(
       'code' in error &&
       (error as { code?: string }).code !== 'ENOENT'
     ) {
-      const message = (error as unknown as Error).message || String(error);
+      const message = error instanceof Error ? error.message : 'Unknown error occurred';
       logMessage(outputChannel, `⚠️ Error reading changeset directory: ${message}`);
     }
     return null;

@@ -1,6 +1,9 @@
 import * as vscode from 'vscode';
 
-export function createRefreshStatusBar(context: vscode.ExtensionContext, onRefresh: () => void) {
+export function createRefreshStatusBar(
+  context: vscode.ExtensionContext,
+  onRefresh: () => void | Promise<void>
+) {
   const refreshItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 98);
   refreshItem.text = '$(refresh)';
   refreshItem.tooltip = 'Refresh Vite Powerflow sync status';
@@ -9,7 +12,7 @@ export function createRefreshStatusBar(context: vscode.ExtensionContext, onRefre
   context.subscriptions.push(refreshItem);
 
   const refreshCommand = vscode.commands.registerCommand('vitePowerflow.refreshSyncCheck', () => {
-    onRefresh();
+    void onRefresh();
   });
   context.subscriptions.push(refreshCommand);
 }

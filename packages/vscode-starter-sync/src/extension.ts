@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
 
+import { formatSyncOutput } from './core/formatting.js';
 import { checkCliStatus, checkStarterStatus } from './core/sync/checker.js';
 import { createRefreshStatusBar } from './core/ui/refresh.js';
-import { handleSyncResults, updateStatusBar } from './core/ui/statusbar.js';
+import { updateStatusBar } from './core/ui/statusbar.js';
 import { createDebounced, createWatcher } from './core/utils.js';
 import { getWorkspaceRoot } from './core/workspace.js';
-import { SyncStatus } from './types.js';
+import { PackageLabel, SyncStatus } from './types.js';
 
 let outputChannel: vscode.OutputChannel;
 let statusBarItem: vscode.StatusBarItem;
@@ -20,7 +21,9 @@ export function activate(context: vscode.ExtensionContext) {
   statusBarItem.tooltip = 'Show sync status and re-run check';
   context.subscriptions.push(statusBarItem);
 
-  createRefreshStatusBar(context, () => runSyncChecks(true));
+  createRefreshStatusBar(context, () => {
+    return runSyncChecks(true);
+  });
 
   const runSyncCheckCommand = vscode.commands.registerCommand(COMMAND_ID, () => {
     // Just show the output channel, don't run a new sync
@@ -33,10 +36,10 @@ export function activate(context: vscode.ExtensionContext) {
   const workspaceRoot = getWorkspaceRoot();
   if (workspaceRoot) {
     const debouncedCheck = createDebounced((_trigger: string) => {
-      runSyncChecks();
+      void runSyncChecks();
     }, 1000);
 
-    debouncedCheck('Activation');
+    void debouncedCheck('Activation');
 
     createWatcher(
       new vscode.RelativePattern(workspaceRoot, '.git/HEAD'),
@@ -129,10 +132,17 @@ async function runSyncChecks(forceRun = false) {
       }
     }
 
-    const tooltip = `Starter: ${starterResult.message} | CLI: ${cliResult.message}`;
-    updateStatusBar(statusBarItem, finalStatus, tooltip);
+    // Simple tooltip - detailed info is in output channel
+    updateStatusBar(statusBarItem, finalStatus, 'Click to view sync status');
 
-    await handleSyncResults(starterResult, cliResult, outputChannel);
+    // Format and display sync output using centralized formatting
+    const syncResults = [
+      { label: PackageLabel.Starter, result: starterResult },
+      { label: PackageLabel.Cli, result: cliResult },
+    ];
+
+    const outputLines = formatSyncOutput(syncResults);
+    outputLines.forEach(line => outputChannel.appendLine(line));
   } catch (error: unknown) {
     const errorLog = `❌ Error during sync checks: ${(error as Error).message || String(error)}`;
     outputChannel.appendLine(errorLog);

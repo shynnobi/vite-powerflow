@@ -29,9 +29,11 @@ export function getTemplateBaselineCommit(
   try {
     const templatePackagePath = path.join(workspaceRoot, 'packages/cli/template/package.json');
     const content = fs.readFileSync(templatePackagePath, 'utf-8');
-    const templatePackage = JSON.parse(content);
+    const templatePackage = JSON.parse(content) as {
+      starterSource?: { commit?: string };
+    };
 
-    if (templatePackage.starterSource && templatePackage.starterSource.commit) {
+    if (templatePackage.starterSource?.commit) {
       return templatePackage.starterSource.commit;
     }
 

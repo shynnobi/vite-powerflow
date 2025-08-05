@@ -2,6 +2,11 @@ import * as vscode from 'vscode';
 
 export type SyncStatus = 'sync' | 'warning' | 'error' | 'pending';
 
+export enum PackageLabel {
+  Starter = 'Starter',
+  Cli = 'CLI',
+}
+
 export interface CheckResult {
   status: SyncStatus;
   message: string;
@@ -16,8 +21,8 @@ export interface CheckResult {
  * Configuration interface for sync status checks
  */
 export interface SyncCheckConfig {
-  label: string;
-  baseline: () => string | Promise<string>;
+  label: PackageLabel;
+  baseline: () => Promise<string>;
   commitPath: string;
   messages: {
     notFound: string;
@@ -44,4 +49,30 @@ export interface ChangesetStatus {
 export interface Logger {
   outputChannel: vscode.OutputChannel;
   outputBuffer: string[];
+}
+
+/**
+ * Custom error class for sync check operations
+ */
+export class SyncCheckError extends Error {
+  constructor(
+    message: string,
+    public readonly cause?: Error
+  ) {
+    super(message);
+    this.name = 'SyncCheckError';
+  }
+}
+
+/**
+ * Central sync result interface
+ */
+export interface SyncResult {
+  status: SyncStatus;
+  message: string;
+  commitCount: number;
+  packageVersion?: string;
+  baselineCommit?: string;
+  currentCommit?: string;
+  changeset?: Changeset;
 }

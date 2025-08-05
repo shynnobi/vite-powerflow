@@ -47,7 +47,7 @@ export function updateStatusBar(
  * @param cliResult - The result of the CLI sync check
  * @param outputChannel - The VS Code output channel for logging
  */
-export async function handleSyncResults(
+export function handleSyncResults(
   starterResult: CheckResult,
   cliResult: CheckResult,
   outputChannel: vscode.OutputChannel

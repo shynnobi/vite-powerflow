@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { createMockOutputChannel } from '../../test-utils.js';
-import { SyncCheckConfig } from '../../types.js';
+import { PackageLabel, SyncCheckConfig } from '../../types.js';
 import { logMessage } from '../utils.js';
 import {
   formatBaselineLog,
@@ -12,11 +12,11 @@ import {
 
 // Mock the packages module
 vi.mock('../packages.js', () => ({
-  getPackageInfo: async (path: string) => {
+  getPackageInfo: (path: string) => {
     if (path.includes('template/package.json')) {
-      return { version: '1.0.0' };
+      return Promise.resolve({ version: '1.0.0' });
     }
-    return null;
+    return Promise.resolve(null);
   },
 }));
 
@@ -24,8 +24,8 @@ describe('sync/handlers', () => {
   const mockOutputChannel = createMockOutputChannel();
 
   const mockConfig: SyncCheckConfig = {
-    label: 'Test',
-    baseline: () => 'test-baseline',
+    label: PackageLabel.Starter,
+    baseline: () => Promise.resolve('test-baseline'),
     commitPath: 'test/',
     messages: {
       notFound: 'Not found',
@@ -43,6 +43,7 @@ describe('sync/handlers', () => {
     it('should log to output channel only', () => {
       logMessage(mockOutputChannel, 'test message');
 
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(mockOutputChannel.appendLine).toHaveBeenCalledWith('test message');
     });
   });
@@ -50,8 +51,8 @@ describe('sync/handlers', () => {
   describe('formatBaselineLog', () => {
     it('should format basic baseline log for non-Starter config', async () => {
       const config: SyncCheckConfig = {
-        label: 'CLI',
-        baseline: () => 'abc123456789',
+        label: PackageLabel.Cli,
+        baseline: () => Promise.resolve('abc123456789'),
         commitPath: 'packages/cli/',
         messages: {
           notFound: '',
@@ -67,8 +68,8 @@ describe('sync/handlers', () => {
 
     it('should format enhanced log for Starter config with version', async () => {
       const config: SyncCheckConfig = {
-        label: 'Starter',
-        baseline: () => 'abc123456789',
+        label: PackageLabel.Starter,
+        baseline: () => Promise.resolve('abc123456789'),
         commitPath: 'apps/starter/',
         messages: {
           notFound: '',

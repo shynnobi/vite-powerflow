@@ -18,7 +18,7 @@ export async function getPackageInfo(
 ): Promise<{ name: string; version: string } | null> {
   try {
     const pkgContent = await fs.promises.readFile(packagePath, 'utf-8');
-    const pkg = JSON.parse(pkgContent);
+    const pkg = JSON.parse(pkgContent) as { name?: string; version?: string };
     if (pkg.name && pkg.version) {
       return { name: pkg.name, version: pkg.version };
     }
@@ -33,13 +33,12 @@ export async function getPackageInfo(
  * Logs a message if the package is not found or not published yet.
  * @param packageName - The name of the npm package
  * @param outputChannel - VS Code output channel for logging
- * @param outputBuffer - Buffer to collect log lines
  * @returns The latest version as a string, or null if not found
  */
-export async function getLatestNpmVersion(
+export function getLatestNpmVersion(
   packageName: string,
   outputChannel: vscode.OutputChannel
-): Promise<string | null> {
+): string | null {
   const cached = npmVersionCache.get(packageName);
   // Cache for 5 minutes to avoid excessive network requests.
   if (cached && Date.now() - cached.timestamp < 5 * 60 * 1000) {

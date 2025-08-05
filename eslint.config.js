@@ -128,6 +128,7 @@ export default [
     rules: {
       ...commonRules,
       ...tsPlugin.configs.recommended.rules,
+      ...tsPlugin.configs['recommended-type-checked'].rules,
       'no-unused-vars': 'off', // Disable base rule for TS files
       '@typescript-eslint/no-unused-vars': tsNoUnusedVarsRule,
     },
@@ -150,6 +151,15 @@ export default [
       'vitest/expect-expect': 'warn',
       '@typescript-eslint/no-unused-vars': tsNoUnusedVarsRule,
       '@typescript-eslint/no-explicit-any': 'off', // Allow any in tests/mocks
+      '@typescript-eslint/no-unsafe-assignment': 'off', // Allow unsafe assignments in tests
+      '@typescript-eslint/no-unsafe-argument': 'off', // Allow unsafe arguments in tests
+      '@typescript-eslint/no-unsafe-call': 'off', // Allow unsafe calls in tests
+      '@typescript-eslint/no-unsafe-member-access': 'off', // Allow unsafe member access in tests
+      '@typescript-eslint/no-unsafe-return': 'off', // Allow unsafe returns in tests
+      '@typescript-eslint/require-await': 'off', // Allow async functions without await in tests
+      '@typescript-eslint/unbound-method': 'off', // Allow unbound methods in tests
+      '@typescript-eslint/await-thenable': 'off', // Allow await of non-promises in tests
+      '@typescript-eslint/no-base-to-string': 'off', // Allow object to string in tests
       'no-unused-vars': 'off', // Turn off base rule for TypeScript files
       // Add more Vitest rules here if needed
     },
