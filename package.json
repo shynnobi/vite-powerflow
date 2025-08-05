@@ -67,6 +67,7 @@
     "cli:sync-build-start": "pnpm sync:starter-to-template && pnpm cli:build && pnpm cli:start",
     "sta:dev": "pnpm -filter @vite-powerflow/starter dev",
     "sta:storybook": "pnpm --filter @vite-powerflow/starter storybook",
+    "extension:test": "pnpm --filter vite-powerflow-starter-sync run test",
     "extension:compile": "pnpm --filter vite-powerflow-starter-sync run compile",
     "extension:package": "pnpm --filter vite-powerflow-starter-sync run package",
     "extension:install": "code --install-extension packages/vscode-starter-sync/vite-powerflow-starter-sync-0.0.1.vsix",

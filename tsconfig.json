@@ -13,7 +13,7 @@
       "path": "packages/utils"
     },
     {
-      "path": "apps/starter"
+      "path": "packages/vscode-starter-sync"
     }
   ]
 }

@@ -15,26 +15,32 @@ export function updateStatusBar(
 ) {
   let icon: string;
   let color: vscode.ThemeColor | undefined;
+  let stateLabel: SyncStatus;
 
   switch (status) {
     case 'sync':
       icon = '$(check)';
-      color = new vscode.ThemeColor('statusBarItem.prominentBackground');
+      color = undefined;
+      stateLabel = 'sync';
       break;
     case 'pending':
-      icon = '$(clock)';
-      color = new vscode.ThemeColor('statusBarItem.debuggingBackground');
+      icon = '$(rocket)';
+      color = undefined;
+      stateLabel = 'pending';
       break;
     case 'warning':
       icon = '$(warning)';
       color = new vscode.ThemeColor('statusBarItem.warningBackground');
+      stateLabel = 'warning';
       break;
     case 'error':
       icon = '$(error)';
       color = new vscode.ThemeColor('statusBarItem.errorBackground');
+      stateLabel = 'error';
       break;
   }
-  statusBarItem.text = `${icon} Vite Powerflow`;
+  const formattedLabel = stateLabel.charAt(0).toUpperCase() + stateLabel.slice(1).toLowerCase();
+  statusBarItem.text = `${icon} Vite Powerflow: ${formattedLabel}`;
   statusBarItem.tooltip = tooltip;
   statusBarItem.backgroundColor = color;
   statusBarItem.show();

@@ -8,10 +8,12 @@
     "allowImportingTsExtensions": false,
     "baseUrl": ".",
     "paths": {
-      "@vite-powerflow/create": ["packages/cli/src/index.ts"],
+      "@vite-powerflow/create": ["packages/cli/src"],
       "@vite-powerflow/create/*": ["packages/cli/src/*"],
-      "@vite-powerflow/utils": ["packages/utils/src/index.ts"],
-      "@vite-powerflow/utils/*": ["packages/utils/src/*"]
+      "@vite-powerflow/utils": ["packages/utils/src"],
+      "@vite-powerflow/utils/*": ["packages/utils/src/*"],
+      "vite-powerflow-starter-sync": ["packages/vscode-starter-sync/src"],
+      "vite-powerflow-starter-sync/*": ["packages/vscode-starter-sync/src/*"]
     }
   }
 }

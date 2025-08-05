@@ -52,17 +52,14 @@ export function formatGlobalStatus(results: Array<{ label: string; result: Check
     return '❌ Some checks failed - fix errors to get accurate status.';
   }
 
-  // No changes at all
-  if (allResults.filter(r => r.commitCount > 0).length === 0) {
-    return '✅ Everything in sync.';
+  // If any package is pending, show pending message
+  if (allResults.some(r => r.status === 'pending')) {
+    return '⏳ Release(s) pending. Merge to main to publish.';
   }
 
-  // Check if ALL packages with changes have changesets
-  const packagesWithChanges = allResults.filter(r => r.commitCount > 0);
-  const allHaveChangesets = packagesWithChanges.every(r => r.status === 'pending');
-
-  if (allHaveChangesets) {
-    return '⏳ Ready for release. Merge to main to publish automatically.';
+  // All in sync
+  if (allResults.every(r => r.status === 'sync')) {
+    return '✅ Everything in sync.';
   }
 
   // Some packages need changesets - detailed breakdown
