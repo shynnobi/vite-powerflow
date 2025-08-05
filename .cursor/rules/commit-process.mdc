@@ -6,9 +6,9 @@ When the user requests to make a commit, the AI must:
 
 1. Automatically analyze all staged changes using `git diff --cached`.
 2. Propose the most relevant commit plan (grouped or atomic) based on the nature and scope of the changes, prioritizing clarity and maintainability.
-3. For each planned commit, present an example with the commit title (header) and body (Conventional Commit format).
-4. Wait for user validation of the proposed commits. If validated, execute the commits as planned without further questions.
-5. Never include unstaged files in a commit unless the user explicitly requests it. Only files that are currently staged will be included in the commit.
+3. For each planned commit, present an example with the commit title (header, 72 chars max) and body (Conventional Commit format, 100 chars per line max) (See Section 2 below).
+4. Wait for user validation of the proposed commits.
+5. Before executing any commit, always run `git reset` to unstage all files, then add only the files relevant to each commit as planned.
 
 ## 2. Commit Message Guidelines (Format & Readability)
 
