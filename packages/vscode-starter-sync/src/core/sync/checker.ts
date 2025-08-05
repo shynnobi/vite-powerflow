@@ -6,12 +6,7 @@ import { getChangesetStatus } from '../changesets.js';
 import { getCommitsSince, getCurrentCommit, getTemplateBaselineCommit } from '../git.js';
 import { getLatestNpmVersion, getPackageInfo } from '../packages.js';
 import { logMessage } from '../utils.js';
-import {
-  formatBaselineLog,
-  handleError,
-  handleInSync,
-  handleUnreleasedCommits,
-} from './handlers.js';
+import { handleError, handleInSync, handleUnreleasedCommits } from './handlers.js';
 
 /**
  * Custom error class for sync check operations
@@ -27,8 +22,11 @@ class SyncCheckError extends Error {
 }
 
 /**
- * Checks the sync status of a workspace folder against a given baseline (commit or tag).
- * Handles logging and returns a CheckResult describing the sync state.
+ * Checks the sync status of a workspace folder against a given baseline
+ * @param config - The sync check configuration
+ * @param outputChannel - VS Code output channel for logging
+ * @param workspaceRoot - The workspace root path
+ * @returns Promise resolving to CheckResult describing the sync state
  */
 async function checkSyncStatus(
   config: SyncCheckConfig,
@@ -129,8 +127,10 @@ async function checkSyncStatus(
 }
 
 /**
- * Checks if the starter app is in sync with the CLI template baseline commit.
- * Logs the result and returns a CheckResult describing the sync state.
+ * Checks if the starter app is in sync with the CLI template baseline commit
+ * @param workspaceRoot - The workspace root path
+ * @param outputChannel - VS Code output channel for logging
+ * @returns Promise resolving to CheckResult describing the sync state
  */
 export async function checkStarterStatus(
   workspaceRoot: string,
@@ -153,8 +153,10 @@ export async function checkStarterStatus(
 }
 
 /**
- * Checks if the CLI package is in sync with the latest published npm version.
- * Logs the result and returns a CheckResult describing the sync state.
+ * Checks if the CLI package is in sync with the latest published npm version
+ * @param workspaceRoot - The workspace root path
+ * @param outputChannel - VS Code output channel for logging
+ * @returns Promise resolving to CheckResult describing the sync state
  */
 export async function checkCliStatus(
   workspaceRoot: string,

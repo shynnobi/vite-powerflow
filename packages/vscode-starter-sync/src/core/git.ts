@@ -37,8 +37,9 @@ export function getTemplateBaselineCommit(
 
     outputChannel.appendLine('⚠️ No "starterSource.commit" found in CLI template package.json');
     return 'unknown';
-  } catch (error: any) {
-    outputChannel.appendLine(`❌ Error reading CLI template package.json: ${error.message}`);
+  } catch (error: unknown) {
+    const message = (error as Error).message || String(error);
+    outputChannel.appendLine(`❌ Error reading CLI template package.json: ${message}`);
     return 'unknown';
   }
 }
@@ -67,7 +68,7 @@ export function getCommitsSince(
       cwd: workspaceRoot,
       stdio: 'ignore', // Suppress output and errors.
     });
-  } catch (error) {
+  } catch {
     // If the base ref does not exist, log a warning and throw an error.
     outputChannel.appendLine(
       `⚠️ The base ref "${baseRef}" was not found in your local git history. Try running "git fetch --all --tags".`
@@ -87,7 +88,7 @@ export function getCommitsSince(
     if (!commits) return [];
     // Otherwise, split the output into individual commit lines.
     return commits.split('\n').filter(line => line.trim());
-  } catch (error: any) {
+  } catch {
     // If the history is diverged (baseRef is not an ancestor), this is not a critical error.
     outputChannel.appendLine(
       `ℹ️ Could not perform a direct log between ${baseRef} and ${headRef}. This may be normal if your branch has diverged. The check will fall back to a simple diff.`
@@ -98,7 +99,7 @@ export function getCommitsSince(
       execSync(diffCommand, { cwd: workspaceRoot, stdio: 'ignore' });
       // Exit code 0: no differences found.
       return [];
-    } catch (diffError) {
+    } catch {
       // Exit code 1: differences found, but we can't list individual commits.
       return ['Changes detected (unable to list individual commits due to diverged history)'];
     }

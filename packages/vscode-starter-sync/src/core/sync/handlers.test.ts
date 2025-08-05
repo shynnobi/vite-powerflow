@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { createMockOutputChannel } from '../../test-utils.js';
 import { SyncCheckConfig } from '../../types.js';
 import { logMessage } from '../utils.js';
 import {
@@ -20,9 +21,7 @@ vi.mock('../packages.js', () => ({
 }));
 
 describe('sync/handlers', () => {
-  const mockOutputChannel = {
-    appendLine: vi.fn(),
-  } as any;
+  const mockOutputChannel = createMockOutputChannel();
 
   const mockConfig: SyncCheckConfig = {
     label: 'Test',

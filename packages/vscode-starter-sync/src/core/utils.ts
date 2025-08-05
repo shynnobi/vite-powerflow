@@ -26,7 +26,7 @@ export function createWatcher(
  * @param delay - The debounce delay in milliseconds
  * @returns A debounced function
  */
-export function createDebounced<T extends any[]>(fn: (...args: T) => void, delay: number) {
+export function createDebounced<T extends unknown[]>(fn: (...args: T) => void, delay: number) {
   let timer: NodeJS.Timeout;
   return (...args: T) => {
     clearTimeout(timer);

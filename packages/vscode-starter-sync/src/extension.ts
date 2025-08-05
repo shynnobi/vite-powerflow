@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   const workspaceRoot = getWorkspaceRoot();
   if (workspaceRoot) {
-    const debouncedCheck = createDebounced((trigger: string) => {
+    const debouncedCheck = createDebounced((_trigger: string) => {
       runSyncChecks();
     }, 1000);
 
@@ -133,8 +133,8 @@ async function runSyncChecks(forceRun = false) {
     updateStatusBar(statusBarItem, finalStatus, tooltip);
 
     await handleSyncResults(starterResult, cliResult, outputChannel);
-  } catch (error: any) {
-    const errorLog = `❌ Error during sync checks: ${error.message}`;
+  } catch (error: unknown) {
+    const errorLog = `❌ Error during sync checks: ${(error as Error).message || String(error)}`;
     outputChannel.appendLine(errorLog);
     updateStatusBar(statusBarItem, 'error', 'Error during sync checks.');
   } finally {

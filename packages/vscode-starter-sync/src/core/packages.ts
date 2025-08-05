@@ -23,7 +23,7 @@ export async function getPackageInfo(
       return { name: pkg.name, version: pkg.version };
     }
     return null;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -54,7 +54,7 @@ export async function getLatestNpmVersion(
     }).trim();
     npmVersionCache.set(packageName, { version, timestamp: Date.now() });
     return version;
-  } catch (error) {
+  } catch {
     outputChannel.appendLine(
       `ℹ️ Could not fetch version for '${packageName}' from npm. It may not be published yet.`
     );

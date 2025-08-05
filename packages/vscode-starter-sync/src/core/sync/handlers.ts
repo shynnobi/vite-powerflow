@@ -7,6 +7,10 @@ import { formatBaseline, logMessage } from '../utils.js';
 
 /**
  * Creates a baseline log message with optional version info for Starter
+ * @param config - The sync check configuration
+ * @param baseline - The baseline commit or tag
+ * @param workspaceRoot - The workspace root path
+ * @returns Promise resolving to formatted log message
  */
 export async function formatBaselineLog(
   config: SyncCheckConfig,
@@ -16,7 +20,6 @@ export async function formatBaselineLog(
   const shortBaseline = formatBaseline(baseline);
   let logMessage = `📦 [${config.label}] Checking against baseline (commit/tag ${shortBaseline})`;
 
-  // Add version info for Starter
   if (config.label === 'Starter') {
     try {
       const templatePackagePath = path.join(workspaceRoot, 'packages/cli/template/package.json');
@@ -34,6 +37,11 @@ export async function formatBaselineLog(
 
 /**
  * Handles the case where unreleased commits are found
+ * @param config - The sync check configuration
+ * @param newCommits - Array of new commits found
+ * @param outputChannel - VS Code output channel for logging
+ * @param additionalInfo - Optional additional information (version, commits)
+ * @returns CheckResult with warning status
  */
 export function handleUnreleasedCommits(
   config: SyncCheckConfig,
@@ -55,6 +63,10 @@ export function handleUnreleasedCommits(
 
 /**
  * Handles the case where everything is in sync
+ * @param config - The sync check configuration
+ * @param outputChannel - VS Code output channel for logging
+ * @param additionalInfo - Optional additional information (version, commits)
+ * @returns CheckResult with sync status
  */
 export function handleInSync(
   config: SyncCheckConfig,
@@ -73,6 +85,10 @@ export function handleInSync(
 
 /**
  * Handles errors during sync check
+ * @param config - The sync check configuration
+ * @param error - The error that occurred
+ * @param outputChannel - VS Code output channel for logging
+ * @returns CheckResult with error status
  */
 export function handleError(
   config: SyncCheckConfig,

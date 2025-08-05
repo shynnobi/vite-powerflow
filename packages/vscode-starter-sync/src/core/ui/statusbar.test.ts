@@ -1,14 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as vscode from 'vscode';
 
+import { createMockOutputChannel, createMockStatusBarItem } from '../../test-utils.js';
 import { handleSyncResults, updateStatusBar } from './statusbar.js';
-
-const createMockStatusBarItem = () => ({
-  text: '',
-  tooltip: '',
-  backgroundColor: undefined,
-  show: vi.fn(),
-});
 
 describe('ui', () => {
   it('should export functions', () => {
@@ -60,10 +54,7 @@ describe('updateStatusBar', () => {
 describe('handleSyncResults', () => {
   let outputChannel: any;
   beforeEach(() => {
-    outputChannel = {
-      show: vi.fn(),
-      appendLine: vi.fn(),
-    };
+    outputChannel = createMockOutputChannel();
   });
   it('shows summary with unreleased changes requiring changeset', async () => {
     await handleSyncResults(

@@ -46,10 +46,16 @@ export async function getChangesetStatus(
         return { status: 'pending', changeset };
       }
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // If the directory doesn't exist, it's not an error, just no changesets.
-    if (error.code !== 'ENOENT') {
-      logMessage(outputChannel, `⚠️ Error reading changeset directory: ${error.message}`);
+    if (
+      error &&
+      typeof error === 'object' &&
+      'code' in error &&
+      (error as { code?: string }).code !== 'ENOENT'
+    ) {
+      const message = (error as unknown as Error).message || String(error);
+      logMessage(outputChannel, `⚠️ Error reading changeset directory: ${message}`);
     }
     return null;
   }

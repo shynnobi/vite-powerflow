@@ -57,9 +57,6 @@ export async function handleSyncResults(
   const packagesWithPendingReleases = [starterResult, cliResult].filter(
     r => r.status === 'pending'
   );
-  const allHaveChangesets =
-    packagesWithUnreleasedChanges.length > 0 &&
-    packagesWithUnreleasedChanges.every(r => r.status === 'pending');
 
   // Package status lines
   const statusLines: string[] = [];
