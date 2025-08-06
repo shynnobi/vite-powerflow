@@ -1,5 +1,6 @@
 ---
 '@vite-powerflow/create': minor
+anchor: ff318853ee15d9aa1b99d71bf8ab48fa387c9dba
 ---
 
 ### Improvements

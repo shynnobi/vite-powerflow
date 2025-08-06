@@ -38,6 +38,8 @@
   "type": "module",
   "packageManager": "pnpm@10.13.1",
   "scripts": {
+    "changeset:augment": "tsx scripts/augment-changeset.ts || node scripts/augment-changeset.ts",
+    "changeset:create": "pnpm changeset && pnpm changeset:augment",
     "build": "npx turbo run build",
     "test": "npx turbo run test",
     "test:e2e": "npx turbo run test:e2e",

@@ -2,8 +2,14 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 
 import { CheckResult, PackageLabel, SyncCheckConfig, SyncCheckError } from '../../types.js';
-import { getChangesetStatus } from '../changesets.js';
-import { getCommitsSince, getCurrentCommit, getTemplateBaselineCommit } from '../git.js';
+import { getLatestChangesetForPackage } from '../changesets.js';
+import {
+  getCommitsSince,
+  getCurrentCommit,
+  getFilesChangedSince,
+  getTemplateBaselineCommit,
+  resolveRefToSha,
+} from '../git.js';
 import { getLatestNpmVersion, getPackageInfo } from '../packages.js';
 import { logMessage } from '../utils.js';
 import { handleError } from './handlers.js';
@@ -22,39 +28,6 @@ export async function getSyncStatus(
   workspaceRoot: string,
   outputChannel: vscode.OutputChannel
 ): Promise<CheckResult> {
-  // Check for an existing changeset first
-  if (config.targetPackage) {
-    const changesetStatus = await getChangesetStatus(
-      workspaceRoot,
-      config.targetPackage,
-      outputChannel
-    );
-    if (changesetStatus) {
-      let packageVersion: string | undefined;
-      try {
-        if (config.label === PackageLabel.Starter) {
-          const templatePackagePath = path.join(
-            workspaceRoot,
-            'packages/cli/template/package.json'
-          );
-          const templatePkg = await getPackageInfo(templatePackagePath);
-          packageVersion = templatePkg?.version;
-        } else if (config.label === PackageLabel.Cli) {
-          const cliPackagePath = path.join(workspaceRoot, 'packages/cli/package.json');
-          const cliPkg = await getPackageInfo(cliPackagePath);
-          packageVersion = cliPkg?.version;
-        }
-      } catch {}
-      return {
-        status: 'pending',
-        message: `Changeset found: ${changesetStatus.changeset.fileName} (${changesetStatus.changeset.bumpType})`,
-        commitCount: 0,
-        changeset: changesetStatus.changeset,
-        packageVersion,
-      };
-    }
-  }
-
   // Get the baseline commit/tag
   const baseline = await config.baseline();
   if (!baseline || baseline === 'unknown') {
@@ -95,15 +68,38 @@ export async function getSyncStatus(
 
   if (newCommits.length > 0) {
     if (config.targetPackage) {
-      const changesetStatus = await getChangesetStatus(
+      // Determine whether there is a changeset and if newer changes exist after it
+      const latestChangeset = await getLatestChangesetForPackage(
         workspaceRoot,
         config.targetPackage,
         outputChannel
       );
-      if (!changesetStatus) {
+
+      // Regardless of commit messages, check if the package path actually changed since baseline
+      const filesChangedSinceBaseline = getFilesChangedSince(
+        workspaceRoot,
+        baseline,
+        config.commitPath,
+        outputChannel
+      );
+
+      if (!latestChangeset) {
+        // If there are no file changes under the package path, don't show a package-level changeset warning
+        if (filesChangedSinceBaseline.length === 0) {
+          return {
+            status: 'pending',
+            message: config.messages.unreleased,
+            commitCount: newCommits.length,
+            packageVersion,
+            baselineCommit: baseline,
+            currentCommit,
+            commits: newCommits,
+          };
+        }
+        // WARNING case 1: package path changed and no changeset exists
         return {
           status: 'warning',
-          message: `Unreleased changes detected in ${config.label} without a changeset! Please add a changeset before release.`,
+          message: `Changeset required for ${config.label}: no changeset found for these changes.`,
           commitCount: newCommits.length,
           packageVersion,
           baselineCommit: baseline,
@@ -111,7 +107,57 @@ export async function getSyncStatus(
           commits: newCommits,
         };
       }
+
+      // If we have a changeset, check whether any files under commitPath changed after the changeset commit
+      const filesChangedAfterChangeset = latestChangeset.lastCommitSha
+        ? getFilesChangedSince(
+            workspaceRoot,
+            latestChangeset.lastCommitSha,
+            config.commitPath,
+            outputChannel
+          )
+        : [];
+
+      if (filesChangedAfterChangeset.length > 0) {
+        // WARNING case 2: additional changes after the latest changeset
+        return {
+          status: 'warning',
+          message: `Changeset update required for ${config.label}: commits after ${latestChangeset.fileName} are not covered. Update the existing changeset or create a new one.`,
+          commitCount: newCommits.length,
+          packageVersion,
+          baselineCommit: baseline,
+          currentCommit,
+          commits: newCommits,
+        };
+      }
+
+      // If the package path did not change since baseline, don't force a package-level changeset message
+      if (filesChangedSinceBaseline.length === 0) {
+        return {
+          status: 'pending',
+          message: config.messages.unreleased,
+          commitCount: newCommits.length,
+          packageVersion,
+          baselineCommit: baseline,
+          currentCommit,
+          commits: newCommits,
+        };
+      }
+
+      // PENDING: changeset exists and no further changes after it
+      return {
+        status: 'pending',
+        message: `Changeset found: ${latestChangeset.fileName} (${latestChangeset.bumpType})`,
+        commitCount: newCommits.length,
+        packageVersion,
+        baselineCommit: baseline,
+        currentCommit,
+        commits: newCommits,
+        changeset: { fileName: latestChangeset.fileName, bumpType: latestChangeset.bumpType },
+      };
     }
+
+    // Default behavior when not targeting a specific package
     return {
       status: 'pending',
       message: config.messages.unreleased,
@@ -199,10 +245,12 @@ export async function checkCliStatus(
     }
 
     const cliNpmTag = `${cliPkg.name}@${latestPublishedVersion}`;
+    // Resolve tag to a commit SHA for robust, unified comparisons (commit..HEAD)
+    const baselineSha = resolveRefToSha(workspaceRoot, cliNpmTag, outputChannel) ?? cliNpmTag;
 
     const config: SyncCheckConfig = {
       label: PackageLabel.Cli,
-      baseline: () => Promise.resolve(cliNpmTag),
+      baseline: () => Promise.resolve(baselineSha),
       commitPath: 'packages/cli/',
       targetPackage: '@vite-powerflow/create',
       messages: {

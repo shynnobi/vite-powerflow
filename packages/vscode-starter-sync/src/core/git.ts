@@ -16,6 +16,48 @@ export function getCurrentCommit(workspaceRoot: string, exec: typeof execSync = 
 }
 
 /**
+ * Resolve a git ref (tag/branch) to a commit SHA.
+ * - Tries `git rev-list -n 1 <ref>`
+ * - If not found, attempts `git fetch --tags` once, then retries
+ * - Returns undefined if it cannot be resolved
+ */
+export function resolveRefToSha(
+  workspaceRoot: string,
+  ref: string,
+  outputChannel: { appendLine: (value: string) => void }
+): string | undefined {
+  const tryResolve = (): string | undefined => {
+    try {
+      const sha = execSync(`git rev-list -n 1 ${ref}`, {
+        encoding: 'utf-8',
+        cwd: workspaceRoot,
+        stdio: 'pipe',
+      }).trim();
+      return sha || undefined;
+    } catch {
+      return undefined;
+    }
+  };
+
+  let sha = tryResolve();
+  if (sha) return sha;
+
+  // Attempt to fetch tags then retry once
+  try {
+    outputChannel.appendLine(`ℹ️ Resolving ref "${ref}" failed. Trying "git fetch --tags"…`);
+    execSync('git fetch --tags', { cwd: workspaceRoot, stdio: 'ignore' });
+  } catch {
+    outputChannel.appendLine('ℹ️ Failed to fetch tags while resolving ref to SHA.');
+  }
+
+  sha = tryResolve();
+  if (!sha) {
+    outputChannel.appendLine(`ℹ️ Could not resolve ref "${ref}" to a SHA. Will fallback to ref.`);
+  }
+  return sha;
+}
+
+/**
  * Reads the CLI template's package.json and returns the baseline commit hash for the starter.
  * Logs a warning and returns 'unknown' if not found or on error.
  * @param workspaceRoot - The root directory of the workspace
@@ -105,5 +147,40 @@ export function getCommitsSince(
       // Exit code 1: differences found, but we can't list individual commits.
       return ['Changes detected (unable to list individual commits due to diverged history)'];
     }
+  }
+}
+
+/**
+ * Returns list of files changed since a given ref/sha restricted to pathspec.
+ * Uses git diff --name-only <ref>...HEAD to include changes on both sides of history.
+ */
+export function getFilesChangedSince(
+  workspaceRoot: string,
+  sinceRef: string,
+  pathspec: string,
+  outputChannel: { appendLine: (value: string) => void }
+): string[] {
+  try {
+    // Validate sinceRef exists; if not, log and return empty for safety
+    execSync(`git cat-file -e ${sinceRef}^{commit}`, {
+      cwd: workspaceRoot,
+      stdio: 'ignore',
+    });
+  } catch {
+    outputChannel.appendLine(
+      `ℹ️ Base ref "${sinceRef}" not found when computing changed files; skipping detailed diff.`
+    );
+    return [];
+  }
+
+  try {
+    const cmd = `git diff --name-only ${sinceRef}...HEAD -- ${pathspec}`;
+    const out = execSync(cmd, { encoding: 'utf-8', cwd: workspaceRoot }).trim();
+    if (!out) return [];
+    return out.split('\n').filter(Boolean);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    outputChannel.appendLine(`ℹ️ Failed to list files changed since ${sinceRef}: ${msg}`);
+    return [];
   }
 }

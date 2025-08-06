@@ -1,5 +1,13 @@
 #!/bin/sh
 
+echo "🔍 Augmenting changesets (anchor/baseline) ..."
+pnpm changeset:augment || {
+  echo "⚠️ Changeset augmentation failed (non-blocking). Continuing..."
+}
+
+# Re-stage potential changes to .changeset/*.md made by the augment script
+git add .changeset/*.md 2>/dev/null || true
+
 echo "🔍 Validating your commit..."
 
 pnpm validate:commit || {
