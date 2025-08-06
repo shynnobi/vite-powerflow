@@ -68,8 +68,9 @@ describe('handleSyncResults', () => {
     );
     expect(outputChannel.appendLine).toHaveBeenCalledWith('[CLI]: Package in sync');
     expect(outputChannel.appendLine).toHaveBeenCalledWith('———');
+    // Global aggregation now prints a generic warning summary line
     expect(outputChannel.appendLine).toHaveBeenCalledWith(
-      '⚠️ Starter package requires a changeset. CLI in sync.'
+      '⚠️ Some packages require changeset updates before release.'
     );
   });
 
@@ -83,8 +84,9 @@ describe('handleSyncResults', () => {
     expect(outputChannel.appendLine).toHaveBeenCalledWith('[Starter]: Package in sync');
     expect(outputChannel.appendLine).toHaveBeenCalledWith('[CLI]: Found 2 unreleased commit(s).');
     expect(outputChannel.appendLine).toHaveBeenCalledWith('———');
+    // Global aggregation now prints a generic warning summary line
     expect(outputChannel.appendLine).toHaveBeenCalledWith(
-      '⚠️ CLI package requires a changeset. Starter in sync.'
+      '⚠️ Some packages require changeset updates before release.'
     );
   });
 

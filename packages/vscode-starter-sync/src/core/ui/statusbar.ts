@@ -3,6 +3,16 @@ import * as vscode from 'vscode';
 import { CheckResult, SyncStatus } from '../../types.js';
 
 /**
+ * Compute global status with priority: error > warning > pending > sync
+ */
+export function getGlobalStatus(statuses: SyncStatus[]): SyncStatus {
+  if (statuses.includes('error')) return 'error';
+  if (statuses.includes('warning')) return 'warning';
+  if (statuses.includes('pending')) return 'pending';
+  return 'sync';
+}
+
+/**
  * Updates the VS Code status bar with the current sync status and tooltip.
  * @param statusBarItem - The status bar item to update
  * @param status - The sync status ('sync', 'warning', 'error', 'pending')
@@ -58,7 +68,8 @@ export function handleSyncResults(
   cliResult: CheckResult,
   outputChannel: vscode.OutputChannel
 ) {
-  const hasErrors = starterResult.status === 'error' || cliResult.status === 'error';
+  const statuses: SyncStatus[] = [starterResult.status, cliResult.status];
+  const globalStatus = getGlobalStatus(statuses);
   const packagesWithUnreleasedChanges = [starterResult, cliResult].filter(r => r.commitCount > 0);
   const packagesWithPendingReleases = [starterResult, cliResult].filter(
     r => r.status === 'pending'
@@ -110,10 +121,12 @@ export function handleSyncResults(
   // Separator
   statusLines.push('———');
 
-  // Final status message
-  if (hasErrors) {
+  // Final status message (global aggregation: error > warning > pending > sync)
+  if (globalStatus === 'error') {
     statusLines.push('❌ Some checks failed - fix errors to get accurate status.');
-  } else if (packagesWithPendingReleases.length > 0) {
+  } else if (globalStatus === 'warning') {
+    statusLines.push('⚠️ Some packages require changeset updates before release.');
+  } else if (globalStatus === 'pending' || packagesWithPendingReleases.length > 0) {
     // If ANY package has a pending release, show pending status
     statusLines.push('⏳ Ready for release. Merge to main to publish automatically.');
   } else if (packagesWithUnreleasedChanges.length === 0) {
