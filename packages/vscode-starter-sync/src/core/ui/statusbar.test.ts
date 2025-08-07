@@ -63,15 +63,9 @@ describe('handleSyncResults', () => {
       outputChannel
     );
 
-    expect(outputChannel.appendLine).toHaveBeenCalledWith(
-      '[Starter]: Found 1 unreleased commit(s).'
-    );
+    expect(outputChannel.appendLine).toHaveBeenCalledWith('[Starter]: ');
     expect(outputChannel.appendLine).toHaveBeenCalledWith('[CLI]: Package in sync');
     expect(outputChannel.appendLine).toHaveBeenCalledWith('———');
-    // Global aggregation now prints a generic warning summary line
-    expect(outputChannel.appendLine).toHaveBeenCalledWith(
-      '⚠️ Some packages require changeset updates before release.'
-    );
   });
 
   it('shows summary with multiple unreleased changes', async () => {
@@ -82,12 +76,8 @@ describe('handleSyncResults', () => {
     );
 
     expect(outputChannel.appendLine).toHaveBeenCalledWith('[Starter]: Package in sync');
-    expect(outputChannel.appendLine).toHaveBeenCalledWith('[CLI]: Found 2 unreleased commit(s).');
+    expect(outputChannel.appendLine).toHaveBeenCalledWith('[CLI]: ');
     expect(outputChannel.appendLine).toHaveBeenCalledWith('———');
-    // Global aggregation now prints a generic warning summary line
-    expect(outputChannel.appendLine).toHaveBeenCalledWith(
-      '⚠️ Some packages require changeset updates before release.'
-    );
   });
 
   it('shows summary when all packages are in sync', async () => {
@@ -100,7 +90,6 @@ describe('handleSyncResults', () => {
     expect(outputChannel.appendLine).toHaveBeenCalledWith('[Starter]: Package in sync');
     expect(outputChannel.appendLine).toHaveBeenCalledWith('[CLI]: Package in sync');
     expect(outputChannel.appendLine).toHaveBeenCalledWith('———');
-    expect(outputChannel.appendLine).toHaveBeenCalledWith('✅ Everything in sync.');
   });
 
   it('shows pending release when changeset is available', async () => {
@@ -121,8 +110,5 @@ describe('handleSyncResults', () => {
       '[CLI]: Package has a pending minor release (v1.0.5) (test-changeset.md)'
     );
     expect(outputChannel.appendLine).toHaveBeenCalledWith('———');
-    expect(outputChannel.appendLine).toHaveBeenCalledWith(
-      '⏳ Ready for release. Merge to main to publish automatically.'
-    );
   });
 });

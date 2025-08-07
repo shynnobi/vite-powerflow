@@ -44,7 +44,6 @@ export function activate(context: vscode.ExtensionContext) {
     createWatcher(
       new vscode.RelativePattern(workspaceRoot, '.git/HEAD'),
       (uri, event) => {
-        outputChannel.appendLine(`🔍 Git HEAD ${event}: ${uri.fsPath}`);
         debouncedCheck('HEAD change');
       },
       context
@@ -52,7 +51,6 @@ export function activate(context: vscode.ExtensionContext) {
     createWatcher(
       new vscode.RelativePattern(workspaceRoot, '.git/refs/heads/**'),
       (uri, event) => {
-        outputChannel.appendLine(`🔍 Git refs ${event}: ${uri.fsPath}`);
         debouncedCheck(event === 'created' ? 'Branch creation' : 'Branch commit');
       },
       context
@@ -60,7 +58,6 @@ export function activate(context: vscode.ExtensionContext) {
     createWatcher(
       new vscode.RelativePattern(workspaceRoot, 'packages/cli/package.json'),
       (uri, event) => {
-        outputChannel.appendLine(`🔍 CLI package.json ${event}: ${uri.fsPath}`);
         debouncedCheck('CLI package.json change');
       },
       context
@@ -68,7 +65,6 @@ export function activate(context: vscode.ExtensionContext) {
     createWatcher(
       new vscode.RelativePattern(workspaceRoot, 'packages/cli/template/package.json'),
       (uri, event) => {
-        outputChannel.appendLine(`🔍 Template package.json ${event}: ${uri.fsPath}`);
         debouncedCheck('Template package.json change');
       },
       context
@@ -89,9 +85,6 @@ async function runSyncChecks(forceRun = false) {
     return;
   }
   isChecking = true;
-  const logLine = `[${new Date().toLocaleTimeString()}] Running sync checks...`;
-  outputChannel.appendLine('---');
-  outputChannel.appendLine(logLine);
 
   try {
     const workspaceRoot = getWorkspaceRoot();

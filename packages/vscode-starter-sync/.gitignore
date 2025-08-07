@@ -3,3 +3,5 @@ node_modules/
 .vscode-test/
 *.vsix
 tsconfig.build.tsbuildinfo
+src/core/__snapshots__/
+src/core/__snapshots__/*.snap

@@ -78,9 +78,13 @@ export function handleSyncResults(
   // Package status lines
   const statusLines: string[] = [];
 
-  // Starter status
+  // Starter status (prefer precise warnings from checker over generic text)
   if (starterResult.status === 'error') {
     statusLines.push(`[Starter]: Check failed - ${starterResult.message}`);
+  } else if (starterResult.status === 'warning') {
+    const versionInfo = starterResult.packageVersion ? ` (v${starterResult.packageVersion})` : '';
+    // Show the detailed warning message produced by checker.ts (e.g., "Changeset update required …")
+    statusLines.push(`[Starter]: ${starterResult.message}${versionInfo}`);
   } else if (starterResult.status === 'pending' && starterResult.changeset) {
     const versionInfo = starterResult.packageVersion ? ` (v${starterResult.packageVersion})` : '';
     statusLines.push(
@@ -99,9 +103,12 @@ export function handleSyncResults(
     statusLines.push(`[Starter]: Package in sync${versionInfo}${commitInfo}`);
   }
 
-  // CLI status
+  // CLI status (same rule: show precise warnings first)
   if (cliResult.status === 'error') {
     statusLines.push(`[CLI]: Check failed - ${cliResult.message}`);
+  } else if (cliResult.status === 'warning') {
+    const versionInfo = cliResult.packageVersion ? ` (v${cliResult.packageVersion})` : '';
+    statusLines.push(`[CLI]: ${cliResult.message}${versionInfo}`);
   } else if (cliResult.status === 'pending' && cliResult.changeset) {
     const versionInfo = cliResult.packageVersion ? ` (v${cliResult.packageVersion})` : '';
     statusLines.push(
@@ -121,42 +128,7 @@ export function handleSyncResults(
   // Separator
   statusLines.push('———');
 
-  // Final status message (global aggregation: error > warning > pending > sync)
-  if (globalStatus === 'error') {
-    statusLines.push('❌ Some checks failed - fix errors to get accurate status.');
-  } else if (globalStatus === 'warning') {
-    statusLines.push('⚠️ Some packages require changeset updates before release.');
-  } else if (globalStatus === 'pending' || packagesWithPendingReleases.length > 0) {
-    // If ANY package has a pending release, show pending status
-    statusLines.push('⏳ Ready for release. Merge to main to publish automatically.');
-  } else if (packagesWithUnreleasedChanges.length === 0) {
-    statusLines.push('✅ Everything in sync.');
-  } else {
-    // Some packages need changesets
-    const needChangesets: string[] = [];
-    const inSync: string[] = [];
-
-    if (starterResult.commitCount > 0 && starterResult.status !== 'pending') {
-      needChangesets.push('Starter');
-    } else if (starterResult.commitCount === 0) {
-      inSync.push('Starter');
-    }
-
-    if (cliResult.commitCount > 0 && cliResult.status !== 'pending') {
-      needChangesets.push('CLI');
-    } else if (cliResult.commitCount === 0) {
-      inSync.push('CLI');
-    }
-
-    let message = '⚠️ ';
-    if (needChangesets.length > 0) {
-      message += `${needChangesets.join(' and ')} package${needChangesets.length > 1 ? 's' : ''} require${needChangesets.length === 1 ? 's' : ''} a changeset.`;
-    }
-    if (inSync.length > 0) {
-      message += ` ${inSync.join(' and ')} in sync.`;
-    }
-    statusLines.push(message);
-  }
+  // Final status message removed per request: keep only package-specific lines above
 
   // Output everything
   statusLines.forEach(line => {

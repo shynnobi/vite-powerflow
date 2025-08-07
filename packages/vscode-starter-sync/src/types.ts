@@ -16,6 +16,9 @@ export interface CheckResult {
   baselineCommit?: string;
   currentCommit?: string;
   commits?: { sha: string; message: string }[];
+  // Commit partition for changeset coverage
+  coveredCommits?: { sha: string; message: string }[];
+  notCoveredCommits?: { sha: string; message: string }[];
 }
 
 /**

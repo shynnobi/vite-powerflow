@@ -1,9 +1,7 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import * as vscode from 'vscode';
 
-import { createMockOutputChannel } from '../test-utils.js';
 import { getChangesetStatus } from './changesets.js';
 
 // Mock dependencies
@@ -22,11 +20,8 @@ const mockParseChangesetFrontmatter = vi.mocked(
 const mockLogMessage = vi.mocked(await import('./utils.js')).logMessage;
 
 describe('changesets', () => {
-  let mockOutputChannel: vscode.OutputChannel;
-
   beforeEach(() => {
     vi.clearAllMocks();
-    mockOutputChannel = createMockOutputChannel();
   });
 
   describe('getChangesetStatus', () => {
@@ -35,11 +30,7 @@ describe('changesets', () => {
       error.code = 'ENOENT';
       mockFs.readdir.mockRejectedValue(error);
 
-      const result = await getChangesetStatus(
-        '/workspace',
-        '@vite-powerflow/create',
-        mockOutputChannel
-      );
+      const result = await getChangesetStatus('/workspace', '@vite-powerflow/create');
 
       expect(result).toBeNull();
       expect(mockLogMessage).not.toHaveBeenCalled();
@@ -48,11 +39,7 @@ describe('changesets', () => {
     it('should return null when no markdown files exist', async () => {
       mockFs.readdir.mockResolvedValue(['README.md', 'config.json'] as any);
 
-      const result = await getChangesetStatus(
-        '/workspace',
-        '@vite-powerflow/create',
-        mockOutputChannel
-      );
+      const result = await getChangesetStatus('/workspace', '@vite-powerflow/create');
 
       expect(result).toBeNull();
     });
@@ -65,11 +52,7 @@ describe('changesets', () => {
       frontmatterMap.set('@other-package/name', 'minor');
       mockParseChangesetFrontmatter.mockReturnValue(frontmatterMap);
 
-      const result = await getChangesetStatus(
-        '/workspace',
-        '@vite-powerflow/create',
-        mockOutputChannel
-      );
+      const result = await getChangesetStatus('/workspace', '@vite-powerflow/create');
 
       expect(result).toBeNull();
     });
@@ -82,11 +65,7 @@ describe('changesets', () => {
       frontmatterMap.set('@vite-powerflow/create', 'minor');
       mockParseChangesetFrontmatter.mockReturnValue(frontmatterMap);
 
-      const result = await getChangesetStatus(
-        '/workspace',
-        '@vite-powerflow/create',
-        mockOutputChannel
-      );
+      const result = await getChangesetStatus('/workspace', '@vite-powerflow/create');
 
       expect(result).toEqual({
         status: 'pending',
@@ -117,11 +96,7 @@ describe('changesets', () => {
         return map;
       });
 
-      const result = await getChangesetStatus(
-        '/workspace',
-        '@vite-powerflow/create',
-        mockOutputChannel
-      );
+      const result = await getChangesetStatus('/workspace', '@vite-powerflow/create');
 
       expect(result).toEqual({
         status: 'pending',
@@ -140,11 +115,7 @@ describe('changesets', () => {
       frontmatterMap.set('@vite-powerflow/create', 'major');
       mockParseChangesetFrontmatter.mockReturnValue(frontmatterMap);
 
-      const result = await getChangesetStatus(
-        '/workspace',
-        '@vite-powerflow/create',
-        mockOutputChannel
-      );
+      const result = await getChangesetStatus('/workspace', '@vite-powerflow/create');
 
       // THEN: Should return the expected changeset status
       expect(result).toEqual({
@@ -170,28 +141,17 @@ describe('changesets', () => {
       error.code = 'EACCES';
       mockFs.readdir.mockRejectedValue(error);
 
-      const result = await getChangesetStatus(
-        '/workspace',
-        '@vite-powerflow/create',
-        mockOutputChannel
-      );
+      const result = await getChangesetStatus('/workspace', '@vite-powerflow/create');
 
       expect(result).toBeNull();
-      expect(mockLogMessage).toHaveBeenCalledWith(
-        mockOutputChannel,
-        '⚠️ Error reading changeset directory: Permission denied'
-      );
+      // Implementation no longer logs, so do not check mockLogMessage
     });
 
     it('should handle file read errors gracefully', async () => {
       mockFs.readdir.mockResolvedValue(['test-changeset.md'] as any);
       mockFs.readFile.mockRejectedValue(new Error('File read error'));
 
-      const result = await getChangesetStatus(
-        '/workspace',
-        '@vite-powerflow/create',
-        mockOutputChannel
-      );
+      const result = await getChangesetStatus('/workspace', '@vite-powerflow/create');
 
       expect(result).toBeNull();
     });

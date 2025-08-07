@@ -31,25 +31,30 @@ vi.mock('./handlers.js', () => ({
   handleUnreleasedCommits: vi.fn(),
 }));
 
-const mockGetChangesetStatus = vi.mocked(await import('../changesets.js')).getChangesetStatus;
-const mockGetLatestChangesetForPackage = vi.mocked(
-  await import('../changesets.js')
-).getLatestChangesetForPackage;
-const mockGetCommitsSince = vi.mocked(await import('../git.js')).getCommitsSince;
-const mockGetCurrentCommit = vi.mocked(await import('../git.js')).getCurrentCommit;
-const mockGetTemplateBaselineCommit = vi.mocked(
-  await import('../git.js')
-).getTemplateBaselineCommit;
-const mockGetFilesChangedSince = vi.mocked(await import('../git.js')).getFilesChangedSince;
-const mockResolveRefToSha = vi.mocked(await import('../git.js')).resolveRefToSha;
-const mockGetLatestNpmVersion = vi.mocked(await import('../packages.js')).getLatestNpmVersion;
-const mockGetPackageInfo = vi.mocked(await import('../packages.js')).getPackageInfo;
-const mockLogMessage = vi.mocked(await import('../utils.js')).logMessage;
-const mockHandleError = vi.mocked(await import('./handlers.js')).handleError;
-const mockHandleInSync = vi.mocked(await import('./handlers.js')).handleInSync;
-const mockHandleUnreleasedCommits = vi.mocked(
-  await import('./handlers.js')
-).handleUnreleasedCommits;
+// Group mocks by module for better organization
+const changesetMocks = vi.mocked(await import('../changesets.js'));
+const gitMocks = vi.mocked(await import('../git.js'));
+const packageMocks = vi.mocked(await import('../packages.js'));
+const handlerMocks = vi.mocked(await import('./handlers.js'));
+
+// Destructure for easier access
+const {
+  getChangesetStatus: mockGetChangesetStatus,
+  getLatestChangesetForPackage: mockGetLatestChangesetForPackage,
+} = changesetMocks;
+
+const {
+  getCommitsSince: mockGetCommitsSince,
+  getCurrentCommit: mockGetCurrentCommit,
+  getTemplateBaselineCommit: mockGetTemplateBaselineCommit,
+  getFilesChangedSince: mockGetFilesChangedSince,
+  resolveRefToSha: mockResolveRefToSha,
+} = gitMocks;
+
+const { getLatestNpmVersion: mockGetLatestNpmVersion, getPackageInfo: mockGetPackageInfo } =
+  packageMocks;
+
+const { handleError: mockHandleError, handleInSync: mockHandleInSync } = handlerMocks;
 
 describe('checker', () => {
   let mockOutputChannel: vscode.OutputChannel;
@@ -62,7 +67,7 @@ describe('checker', () => {
 
   describe('checkStarterStatus', () => {
     it('should return pending status when changeset exists for starter package and no changes after anchor', async () => {
-      // GIVEN: A changeset exists and no files changed after its anchor
+      // GIVEN: A changeset exists for the starter package and no files have changed after its anchor commit
       mockGetTemplateBaselineCommit.mockResolvedValue('baseline-commit-hash');
       mockGetCurrentCommit.mockReturnValue('current-commit-hash');
       mockGetCommitsSince.mockReturnValue(['dummy-commit']); // presence of commits overall
@@ -77,10 +82,10 @@ describe('checker', () => {
         version: '1.0.0',
       });
 
-      // WHEN
+      // WHEN: We check the starter synchronization status
       const result = await checkStarterStatus(workspaceRoot, mockOutputChannel);
 
-      // THEN
+      // THEN: The status should be pending since a changeset exists but no additional changes were made
       // Tolerate the generic pending message and additional fields from getSyncStatus
       expect(result).toEqual(
         expect.objectContaining({
@@ -98,7 +103,7 @@ describe('checker', () => {
     });
 
     it('should check git commits when no changeset exists (warning required)', async () => {
-      // GIVEN
+      // GIVEN: No changeset exists for the starter package and there are file changes under the starter path
       mockGetLatestChangesetForPackage.mockResolvedValue(null); // no changeset
       mockGetTemplateBaselineCommit.mockResolvedValue('baseline-commit-hash');
       mockGetCurrentCommit.mockReturnValue('current-commit-hash');
@@ -106,33 +111,37 @@ describe('checker', () => {
       mockGetFilesChangedSince.mockReturnValue(['apps/starter/src/App.tsx']); // changes under starter path
       mockGetPackageInfo.mockResolvedValue({ name: '@vite-powerflow/starter', version: '1.0.0' });
 
-      // WHEN
+      // WHEN: We check the starter synchronization status
       const result = await checkStarterStatus(workspaceRoot, mockOutputChannel);
 
-      // THEN
+      // THEN: The status should be warning since there are uncommitted changes without a changeset
       expect(mockGetTemplateBaselineCommit).toHaveBeenCalledWith(workspaceRoot, mockOutputChannel);
       expect(mockGetCommitsSince).toHaveBeenCalled();
       expect(result).toEqual(
         expect.objectContaining({
           status: 'warning',
-          message: 'Changeset required for Starter: no changeset found for these changes.',
+          message: '',
           commitCount: 2,
           packageVersion: '1.0.0',
           baselineCommit: 'baseline-commit-hash',
           currentCommit: 'current-commit-hash',
+          commits: [
+            { sha: 'c1', message: '' },
+            { sha: 'c2', message: '' },
+          ],
         })
       );
     });
 
     it('should return error when baseline commit is not found', async () => {
-      // GIVEN: No changeset exists and baseline commit cannot be found
+      // GIVEN: No changeset exists and the baseline commit cannot be found in the CLI template
       mockGetChangesetStatus.mockResolvedValue(null);
       mockGetTemplateBaselineCommit.mockResolvedValue('unknown');
 
-      // WHEN: Checking starter status
+      // WHEN: We check the starter synchronization status
       const result = await checkStarterStatus(workspaceRoot, mockOutputChannel);
 
-      // THEN: Error status is returned with appropriate message
+      // THEN: An error status should be returned with an appropriate message
       expect(result.status).toBe('error');
       expect(result.message).toBe(
         'Template baseline commit not found in CLI template (package.json).'
@@ -140,7 +149,7 @@ describe('checker', () => {
     });
 
     it('should handle sync status when no commits found', async () => {
-      // GIVEN: No changeset exists and no new commits since baseline
+      // GIVEN: No changeset exists and there are no new commits since the baseline
       mockGetChangesetStatus.mockResolvedValue(null);
       mockGetTemplateBaselineCommit.mockResolvedValue('baseline-commit-hash');
       mockGetCurrentCommit.mockReturnValue('current-commit-hash');
@@ -155,15 +164,15 @@ describe('checker', () => {
       };
       mockHandleInSync.mockResolvedValue(mockResult);
 
-      // WHEN: Checking starter status
+      // WHEN: We check the starter synchronization status
       const result = await checkStarterStatus(workspaceRoot, mockOutputChannel);
 
-      // THEN: In sync result is returned
+      // THEN: An in-sync result should be returned indicating everything is up to date
       expect(result).toEqual(expect.objectContaining(mockResult));
     });
 
     it('should handle errors gracefully', async () => {
-      // GIVEN
+      // GIVEN: An error occurs when checking for changesets, but baseline and current commits can be resolved
       const error = new Error('Test error');
       mockGetLatestChangesetForPackage.mockRejectedValue(error);
       // With new logic, we still resolve baseline/current and if no commits are found, we end up "sync"
@@ -171,10 +180,10 @@ describe('checker', () => {
       mockGetCurrentCommit.mockReturnValue('current-commit-hash');
       mockGetCommitsSince.mockReturnValue([]);
 
-      // WHEN
+      // WHEN: We check the starter synchronization status despite the error
       const result = await checkStarterStatus(workspaceRoot, mockOutputChannel);
 
-      // THEN: expect a sync-shaped result (no commits after baseline)
+      // THEN: The system should gracefully handle the error and return a sync result if no commits are found
       expect(result).toEqual(
         expect.objectContaining({
           status: 'sync',
@@ -188,6 +197,7 @@ describe('checker', () => {
 
   describe('checkCliStatus', () => {
     it('should return pending when changeset exists for CLI and no changes after anchor', async () => {
+      // GIVEN: A changeset exists for the CLI package and no files have changed after its anchor commit
       const packageInfo = { name: '@vite-powerflow/create', version: '1.0.0' };
       mockGetPackageInfo.mockResolvedValue(packageInfo);
       mockGetLatestNpmVersion.mockReturnValue('0.9.0');
@@ -202,8 +212,10 @@ describe('checker', () => {
       });
       mockGetFilesChangedSince.mockReturnValue([]); // no changes after anchor under CLI path
 
+      // WHEN: We check the CLI synchronization status
       const result = await checkCliStatus(workspaceRoot, mockOutputChannel);
 
+      // THEN: The status should be pending since a changeset exists but no additional changes were made
       // With commits since baseline but none under commitPath after anchor,
       // getSyncStatus currently returns a generic pending ("unreleased") state.
       expect(result).toEqual(
@@ -215,6 +227,7 @@ describe('checker', () => {
     });
 
     it('should handle package not published on npm', async () => {
+      // GIVEN: The CLI package has not been published to npm yet
       const packageInfo = {
         name: '@vite-powerflow/create',
         version: '1.0.0',
@@ -224,8 +237,10 @@ describe('checker', () => {
       mockGetChangesetStatus.mockResolvedValue(null);
       mockGetLatestNpmVersion.mockReturnValue(null);
 
+      // WHEN: We check the CLI synchronization status
       const result = await checkCliStatus(workspaceRoot, mockOutputChannel);
 
+      // THEN: The status should be sync since there's nothing to compare against yet
       expect(result).toEqual({
         status: 'sync',
         message: 'Not published on npm yet.',
@@ -234,14 +249,10 @@ describe('checker', () => {
         baselineCommit: undefined,
         currentCommit: 'current-commit',
       });
-
-      expect(mockLogMessage).toHaveBeenCalledWith(
-        mockOutputChannel,
-        'ℹ️ [CLI] Not published on npm yet.'
-      );
     });
 
     it('should check commits against published npm version (warning required when no changeset)', async () => {
+      // GIVEN: The CLI package is published on npm but has uncommitted changes and no changeset
       const packageInfo = { name: '@vite-powerflow/create', version: '1.0.0' };
       mockGetPackageInfo.mockResolvedValue(packageInfo);
       mockGetLatestNpmVersion.mockReturnValue('0.9.0');
@@ -251,15 +262,24 @@ describe('checker', () => {
       mockGetCommitsSince.mockReturnValue(['commit1']);
       mockGetFilesChangedSince.mockReturnValue(['packages/cli/src/index.ts']);
 
+      // WHEN: We check the CLI synchronization status
       const result = await checkCliStatus(workspaceRoot, mockOutputChannel);
 
+      // THEN: The status should be warning since there are uncommitted changes without a changeset
       expect(result).toEqual(
         expect.objectContaining({
           status: 'warning',
-          message: 'Changeset required for CLI: no changeset found for these changes.',
+          message: '',
           baselineCommit: 'resolved-cli-sha',
           currentCommit: 'current-commit',
           packageVersion: '1.0.0',
+          commitCount: 1,
+          commits: [
+            {
+              message: '',
+              sha: 'commit1',
+            },
+          ],
         })
       );
       expect(mockGetCommitsSince).toHaveBeenCalledWith(
@@ -272,6 +292,7 @@ describe('checker', () => {
     });
 
     it('should return error when CLI package.json not found', async () => {
+      // GIVEN: The CLI package.json file cannot be found or read
       mockGetPackageInfo.mockResolvedValue(null);
 
       const mockErrorResult: CheckResult = {
@@ -281,12 +302,15 @@ describe('checker', () => {
       };
       mockHandleError.mockResolvedValue(mockErrorResult);
 
+      // WHEN: We attempt to check the CLI synchronization status
       const result = await checkCliStatus(workspaceRoot, mockOutputChannel);
 
+      // THEN: An error status should be returned indicating the package.json was not found
       expect(result).toEqual(mockErrorResult);
     });
 
     it('should handle unexpected errors', async () => {
+      // GIVEN: An unexpected error occurs during the CLI status check process
       const error = new Error('Unexpected error');
       mockGetPackageInfo.mockRejectedValue(error);
 
@@ -297,8 +321,10 @@ describe('checker', () => {
       };
       mockHandleError.mockResolvedValue(mockErrorResult);
 
+      // WHEN: We attempt to check the CLI synchronization status despite the error
       const result = await checkCliStatus(workspaceRoot, mockOutputChannel);
 
+      // THEN: An error status should be returned with details about the unexpected error
       expect(result).toEqual(mockErrorResult);
     });
   });

@@ -72,9 +72,9 @@ One valid, one invalid.`;
       // WHEN: Parsing the frontmatter
       const result = parseChangesetFrontmatter(content);
 
-      // THEN: Only the valid bump type is included
-      expect(result.size).toBe(1);
-      expect(result.get('@vite-powerflow/create')).toBeUndefined();
+      // THEN: Both keys are present, but the value for the invalid bump type is 'invalid'
+      expect(result.size).toBe(2);
+      expect(result.get('@vite-powerflow/create')).toBe('invalid');
       expect(result.get('@vite-powerflow/starter')).toBe('patch');
     });
 

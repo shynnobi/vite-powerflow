@@ -11,7 +11,6 @@ import {
   resolveRefToSha,
 } from '../git.js';
 import { getLatestNpmVersion, getPackageInfo } from '../packages.js';
-import { logMessage } from '../utils.js';
 import { handleError } from './handlers.js';
 
 /**
@@ -71,8 +70,7 @@ export async function getSyncStatus(
       // Determine whether there is a changeset and if newer changes exist after it
       const latestChangeset = await getLatestChangesetForPackage(
         workspaceRoot,
-        config.targetPackage,
-        outputChannel
+        config.targetPackage
       );
 
       // Regardless of commit messages, check if the package path actually changed since baseline
@@ -83,8 +81,49 @@ export async function getSyncStatus(
         outputChannel
       );
 
+      // Partition commits by changeset anchor if changeset exists
+      let anchorForDiff: string | undefined = undefined;
+      let coveredCommits: { sha: string; message: string }[] = [];
+      let outsideCommits: { sha: string; message: string }[] = [];
+      let filesChangedAfterChangeset: string[] = [];
+      if (latestChangeset) {
+        type ChangesetWithOptionalAnchor = typeof latestChangeset & { anchor?: unknown };
+        const { anchor } = latestChangeset as ChangesetWithOptionalAnchor;
+        anchorForDiff =
+          typeof anchor === 'string' && anchor.length > 0 ? anchor : latestChangeset.lastCommitSha;
+        if (anchorForDiff) {
+          const coveredRaw = getCommitsSince(
+            workspaceRoot,
+            baseline,
+            anchorForDiff,
+            config.commitPath,
+            outputChannel
+          );
+          coveredCommits = coveredRaw.map(line => {
+            const [sha, ...msg] = line.split(' ');
+            return { sha: sha?.substring(0, 7) || '', message: msg.join(' ') };
+          });
+          const outsideRaw = getCommitsSince(
+            workspaceRoot,
+            anchorForDiff,
+            currentCommit,
+            config.commitPath,
+            outputChannel
+          );
+          outsideCommits = outsideRaw.map(line => {
+            const [sha, ...msg] = line.split(' ');
+            return { sha: sha?.substring(0, 7) || '', message: msg.join(' ') };
+          });
+          filesChangedAfterChangeset = getFilesChangedSince(
+            workspaceRoot,
+            anchorForDiff,
+            config.commitPath,
+            outputChannel
+          );
+        }
+      }
+
       if (!latestChangeset) {
-        // If there are no file changes under the package path, don't show a package-level changeset warning
         if (filesChangedSinceBaseline.length === 0) {
           return {
             status: 'pending',
@@ -96,39 +135,51 @@ export async function getSyncStatus(
             commits: newCommits,
           };
         }
-        // WARNING case 1: package path changed and no changeset exists
+        // No changeset found, all commits are not covered
         return {
           status: 'warning',
-          message: `Changeset required for ${config.label}: no changeset found for these changes.`,
+          message: '',
           commitCount: newCommits.length,
           packageVersion,
           baselineCommit: baseline,
           currentCommit,
           commits: newCommits,
         };
+      } else {
+        // Use the already calculated partition data from above
       }
+      // If the anchor resolved to a tag or non-SHA ref, normalize to SHA for git diff correctness
+      const normalizedAnchor =
+        anchorForDiff && /^[0-9a-f]{40}$/i.test(anchorForDiff)
+          ? anchorForDiff
+          : anchorForDiff
+            ? resolveRefToSha(workspaceRoot, anchorForDiff, outputChannel)
+            : undefined;
+      const filesChangedAfterNormalizedAnchor = normalizedAnchor
+        ? getFilesChangedSince(workspaceRoot, normalizedAnchor, config.commitPath, outputChannel)
+        : filesChangedAfterChangeset;
 
-      // If we have a changeset, check whether any files under commitPath changed after the changeset commit
-      const filesChangedAfterChangeset = latestChangeset.lastCommitSha
-        ? getFilesChangedSince(
-            workspaceRoot,
-            latestChangeset.lastCommitSha,
-            config.commitPath,
-            outputChannel
-          )
-        : [];
-
-      if (filesChangedAfterChangeset.length > 0) {
+      if (filesChangedAfterNormalizedAnchor.length > 0) {
         // WARNING case 2: additional changes after the latest changeset
         return {
           status: 'warning',
-          message: `Changeset update required for ${config.label}: commits after ${latestChangeset.fileName} are not covered. Update the existing changeset or create a new one.`,
+          message: '',
           commitCount: newCommits.length,
           packageVersion,
           baselineCommit: baseline,
           currentCommit,
           commits: newCommits,
+          changeset: { fileName: latestChangeset.fileName, bumpType: latestChangeset.bumpType },
+          coveredCommits,
+          notCoveredCommits: outsideCommits,
         };
+      }
+      // If we had an anchor but still no file change detected, add an explicit message if commits exist post-changeset
+      if (
+        anchorForDiff &&
+        filesChangedSinceBaseline.length > 0 &&
+        filesChangedAfterNormalizedAnchor.length === 0
+      ) {
       }
 
       // If the package path did not change since baseline, don't force a package-level changeset message
@@ -144,7 +195,7 @@ export async function getSyncStatus(
         };
       }
 
-      // PENDING: changeset exists and no further changes after it
+      // PENDING: changeset exists and use already calculated partition data
       return {
         status: 'pending',
         message: `Changeset found: ${latestChangeset.fileName} (${latestChangeset.bumpType})`,
@@ -154,6 +205,8 @@ export async function getSyncStatus(
         currentCommit,
         commits: newCommits,
         changeset: { fileName: latestChangeset.fileName, bumpType: latestChangeset.bumpType },
+        coveredCommits: coveredCommits,
+        notCoveredCommits: [],
       };
     }
 
@@ -233,7 +286,6 @@ export async function checkCliStatus(
 
     if (!latestPublishedVersion) {
       const message = 'Not published on npm yet.';
-      logMessage(outputChannel, `ℹ️ [CLI] ${message}`);
       return {
         status: 'sync',
         message,

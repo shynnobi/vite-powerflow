@@ -44,7 +44,6 @@ export function resolveRefToSha(
 
   // Attempt to fetch tags then retry once
   try {
-    outputChannel.appendLine(`ℹ️ Resolving ref "${ref}" failed. Trying "git fetch --tags"…`);
     execSync('git fetch --tags', { cwd: workspaceRoot, stdio: 'ignore' });
   } catch {
     outputChannel.appendLine('ℹ️ Failed to fetch tags while resolving ref to SHA.');
