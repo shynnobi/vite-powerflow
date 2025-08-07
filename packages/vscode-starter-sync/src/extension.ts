@@ -26,9 +26,8 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   const runSyncCheckCommand = vscode.commands.registerCommand(COMMAND_ID, () => {
-    // Just show the output channel, don't run a new sync
-    // The refresh button is there for running new syncs
-    outputChannel.show(true);
+    // Ensure we always show the output channel when running the command
+    outputChannel.show();
   });
 
   context.subscriptions.push(runSyncCheckCommand);
@@ -95,8 +94,6 @@ async function runSyncChecks(forceRun = false) {
 
     const starterResult = await checkStarterStatus(workspaceRoot, outputChannel);
     const cliResult = await checkCliStatus(workspaceRoot, outputChannel);
-
-    outputChannel.show(true);
 
     const allResults = [starterResult, cliResult];
 

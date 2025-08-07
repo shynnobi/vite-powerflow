@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as vscode from 'vscode';
 
 import { createMockOutputChannel } from '../../test-utils.js';
@@ -32,10 +32,15 @@ vi.mock('./handlers.js', () => ({
 }));
 
 // Group mocks by module for better organization
-const changesetMocks = vi.mocked(await import('../changesets.js'));
-const gitMocks = vi.mocked(await import('../git.js'));
-const packageMocks = vi.mocked(await import('../packages.js'));
-const handlerMocks = vi.mocked(await import('./handlers.js'));
+import * as changesetModule from '../changesets.js';
+import * as gitModule from '../git.js';
+import * as packageModule from '../packages.js';
+import * as handlerModule from './handlers.js';
+
+const changesetMocks = vi.mocked(changesetModule);
+const gitMocks = vi.mocked(gitModule);
+const packageMocks = vi.mocked(packageModule);
+const handlerMocks = vi.mocked(handlerModule);
 
 // Destructure for easier access
 const {
@@ -63,6 +68,11 @@ describe('checker', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockOutputChannel = createMockOutputChannel();
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2025-08-07T16:00:00Z'));
+  });
+  afterAll(() => {
+    vi.useRealTimers();
   });
 
   describe('checkStarterStatus', () => {

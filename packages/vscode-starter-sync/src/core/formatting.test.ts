@@ -1,7 +1,15 @@
-import { describe, expect, test } from 'vitest';
+import { afterAll, beforeEach, describe, expect, test } from 'vitest';
 
 import { CheckResult, PackageLabel } from '../types.js';
 import { formatSyncOutput } from './formatting.js';
+
+beforeEach(() => {
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date('2025-08-07T16:00:00Z'));
+});
+afterAll(() => {
+  vi.useRealTimers();
+});
 
 describe('formatSyncOutput', () => {
   test('should show all packages as synchronized when there are no pending commits or changesets', () => {
