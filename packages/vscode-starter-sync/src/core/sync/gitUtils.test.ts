@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { getCommitsSince, getCurrentCommit, getTemplateBaselineCommit } from './git.js';
+import { getCommitsSince, getCurrentCommit, getTemplateBaselineCommit } from './gitUtils.js';
 
 describe('git utils', () => {
   it('should export functions', () => {

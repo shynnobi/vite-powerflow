@@ -33,18 +33,3 @@ export function createDebounced<T extends unknown[]>(fn: (...args: T) => void, d
     timer = setTimeout(() => fn(...args), delay);
   };
 }
-
-/**
- * Logs a message to both output channel and buffer
- */
-export function logMessage(outputChannel: vscode.OutputChannel, message: string): void {
-  outputChannel.appendLine(message);
-}
-
-/**
- * Formats a baseline (commit SHA or tag) for display in logs
- */
-export function formatBaseline(baseline: string): string {
-  // If baseline looks like a commit SHA, truncate it; otherwise, display as-is (tag)
-  return /^[a-f0-9]{7,40}$/i.test(baseline) ? baseline.substring(0, 7) : baseline;
-}

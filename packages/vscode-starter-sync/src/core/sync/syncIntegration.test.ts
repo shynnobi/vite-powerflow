@@ -1,17 +1,17 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { createMockOutputChannel } from '../../test-utils.js';
-import { PackageLabel, SyncCheckConfig } from '../../types.js';
-import { logMessage } from '../utils.js';
+import { logMessage } from '../../utils/logMessage.js';
+import { createMockOutputChannel } from '../../utils/testUtils.js';
 import {
   formatBaselineLog,
-  handleError,
   handleInSync,
   handleUnreleasedCommits,
-} from './handlers.js';
+} from '../syncReportFormatter.js';
+import { PackageLabel, SyncCheckConfig } from '../syncTypes.js';
+import { handleError } from './syncErrorHandler.js';
 
 // Mock the packages module
-vi.mock('../packages.js', () => ({
+vi.mock('../packageUtils.js', () => ({
   getPackageInfo: (path: string) => {
     if (path.includes('template/package.json')) {
       return Promise.resolve({ version: '1.0.0' });
@@ -20,7 +20,7 @@ vi.mock('../packages.js', () => ({
   },
 }));
 
-describe('sync/handlers', () => {
+describe('sync integration helpers', () => {
   const mockOutputChannel = createMockOutputChannel();
 
   const mockConfig: SyncCheckConfig = {

@@ -1,7 +1,23 @@
-import { afterAll, beforeEach, describe, expect, test } from 'vitest';
+import { afterAll, beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { CheckResult, PackageLabel } from '../types.js';
-import { formatSyncOutput } from './formatting.js';
+import { createMockOutputChannel } from '../utils/testUtils.js';
+import {
+  formatBaselineLog,
+  formatSyncOutput,
+  handleInSync,
+  handleUnreleasedCommits,
+} from './syncReportFormatter.js';
+import { CheckResult, PackageLabel, SyncCheckConfig } from './syncTypes.js';
+
+// Mock the packages module
+vi.mock('./packageUtils.js', () => ({
+  getPackageInfo: (path: string) => {
+    if (path.includes('template/package.json')) {
+      return Promise.resolve({ version: '1.0.0' });
+    }
+    return Promise.resolve(null);
+  },
+}));
 
 beforeEach(() => {
   vi.useFakeTimers();
@@ -467,5 +483,88 @@ describe('formatSyncOutput', () => {
       },
     ];
     expect(formatSyncOutput(data)).toMatchSnapshot();
+  });
+});
+
+describe('formatBaselineLog', () => {
+  test('should format basic baseline log for non-Starter config', async () => {
+    const config: SyncCheckConfig = {
+      label: PackageLabel.Cli,
+      baseline: () => Promise.resolve('abc123456789'),
+      commitPath: 'packages/cli/',
+      messages: {
+        notFound: '',
+        inSync: '',
+        unreleased: '',
+        errorPrefix: '',
+      },
+    };
+
+    const result = await formatBaselineLog(config, 'abc123456789', '/test/workspace');
+    expect(result).toBe('📦 [CLI] Checking against baseline (commit/tag abc1234)');
+  });
+
+  test('should format enhanced log for Starter config with version', async () => {
+    const config: SyncCheckConfig = {
+      label: PackageLabel.Starter,
+      baseline: () => Promise.resolve('abc123456789'),
+      commitPath: 'apps/starter/',
+      messages: {
+        notFound: '',
+        inSync: '',
+        unreleased: '',
+        errorPrefix: '',
+      },
+    };
+
+    const result = await formatBaselineLog(config, 'abc123456789', '/test/workspace');
+    expect(result).toBe(
+      '📦 [Starter] Checking against CLI template baseline (commit abc1234, version 1.0.0)'
+    );
+  });
+});
+
+describe('sync status handlers', () => {
+  const mockOutputChannel = createMockOutputChannel();
+
+  const mockConfig: SyncCheckConfig = {
+    label: PackageLabel.Starter,
+    baseline: () => Promise.resolve('test-baseline'),
+    commitPath: 'test/',
+    messages: {
+      notFound: 'Not found',
+      inSync: 'In sync',
+      unreleased: 'unreleased changes',
+      errorPrefix: 'Error',
+    },
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  describe('handleUnreleasedCommits', () => {
+    test('should return warning status with commit count', () => {
+      const commits = ['commit1', 'commit2'];
+      const result = handleUnreleasedCommits(mockConfig, commits, mockOutputChannel);
+
+      expect(result).toEqual({
+        status: 'warning',
+        message: '2 unreleased changes',
+        commitCount: 2,
+      });
+    });
+  });
+
+  describe('handleInSync', () => {
+    test('should return sync status with zero commits', () => {
+      const result = handleInSync(mockConfig, mockOutputChannel);
+
+      expect(result).toEqual({
+        status: 'sync',
+        message: 'In sync',
+        commitCount: 0,
+      });
+    });
   });
 });

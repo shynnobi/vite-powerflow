@@ -1,12 +1,13 @@
 import * as vscode from 'vscode';
 
-import { formatSyncOutput } from './core/formatting.js';
-import { checkCliStatus, checkStarterStatus } from './core/sync/checker.js';
-import { createRefreshStatusBar } from './core/ui/refresh.js';
-import { updateStatusBar } from './core/ui/statusbar.js';
-import { createDebounced, createWatcher } from './core/utils.js';
-import { getWorkspaceRoot } from './core/workspace.js';
-import { PackageLabel, SyncStatus } from './types.js';
+import { getWorkspaceRoot } from './core/monorepoUtils.js';
+import { checkCliStatus, checkStarterStatus } from './core/sync/syncStatusChecker.js';
+import { formatSyncOutput } from './core/syncReportFormatter.js';
+import { PackageLabel, SyncStatus } from './core/syncTypes.js';
+import { updateStatusBar } from './ui/statusBarController.js';
+import { createRefreshStatusBar } from './ui/syncCommands.js';
+import { createDebounced, createWatcher } from './utils/extensionUtils.js';
+import { reportSyncOutput } from './utils/outputReporter.js';
 
 let outputChannel: vscode.OutputChannel;
 let statusBarItem: vscode.StatusBarItem;
@@ -132,7 +133,7 @@ async function runSyncChecks(forceRun = false) {
     ];
 
     const outputLines = formatSyncOutput(syncResults);
-    outputLines.forEach(line => outputChannel.appendLine(line));
+    reportSyncOutput(outputChannel, outputLines);
   } catch (error: unknown) {
     const errorLog = `❌ Error during sync checks: ${(error as Error).message || String(error)}`;
     outputChannel.appendLine(errorLog);

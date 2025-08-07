@@ -1,6 +1,6 @@
-import { getWorkspaceRoot } from './workspace.js';
+import { getWorkspaceRoot } from './monorepoUtils.js';
 
-describe('workspace', () => {
+describe('monorepoUtils', () => {
   it('should export getWorkspaceRoot', () => {
     expect(typeof getWorkspaceRoot).toBe('function');
   });

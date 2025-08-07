@@ -2,22 +2,22 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getChangesetStatus } from './changesets.js';
+import { parseChangesetFrontmatter } from '../../core/changesetFrontmatter.js';
+import { logMessage } from '../../utils/logMessage.js';
+import { getChangesetStatus } from './changesetUtils.js';
 
 // Mock dependencies
 vi.mock('fs/promises');
-vi.mock('./changeset-parser.js', () => ({
+vi.mock('../../core/changesetFrontmatter.js', () => ({
   parseChangesetFrontmatter: vi.fn(),
 }));
-vi.mock('./utils.js', () => ({
+vi.mock('../../utils/logMessage.js', () => ({
   logMessage: vi.fn(),
 }));
 
 const mockFs = vi.mocked(fs);
-const mockParseChangesetFrontmatter = vi.mocked(
-  await import('./changeset-parser.js')
-).parseChangesetFrontmatter;
-const mockLogMessage = vi.mocked(await import('./utils.js')).logMessage;
+const mockParseChangesetFrontmatter = vi.mocked(parseChangesetFrontmatter as any);
+const mockLogMessage = vi.mocked(logMessage as any);
 
 describe('changesets', () => {
   beforeEach(() => {
@@ -88,12 +88,12 @@ describe('changesets', () => {
       });
 
       // Mock parser to return matching package for first file only
-      mockParseChangesetFrontmatter.mockImplementation(content => {
+      mockParseChangesetFrontmatter.mockImplementation((content: string) => {
         const map = new Map();
         if (content === 'first content') {
           map.set('@vite-powerflow/create', 'patch');
         }
-        return map;
+        return map as any;
       });
 
       const result = await getChangesetStatus('/workspace', '@vite-powerflow/create');

@@ -16,14 +16,10 @@ export interface CheckResult {
   baselineCommit?: string;
   currentCommit?: string;
   commits?: { sha: string; message: string }[];
-  // Commit partition for changeset coverage
   coveredCommits?: { sha: string; message: string }[];
   notCoveredCommits?: { sha: string; message: string }[];
 }
 
-/**
- * Configuration interface for sync status checks
- */
 export interface SyncCheckConfig {
   label: PackageLabel;
   baseline: () => Promise<string>;
@@ -47,17 +43,11 @@ export interface ChangesetStatus {
   changeset: Changeset;
 }
 
-/**
- * Logger interface to handle output consistently
- */
 export interface Logger {
   outputChannel: vscode.OutputChannel;
   outputBuffer: string[];
 }
 
-/**
- * Custom error class for sync check operations
- */
 export class SyncCheckError extends Error {
   constructor(
     message: string,
@@ -68,9 +58,6 @@ export class SyncCheckError extends Error {
   }
 }
 
-/**
- * Central sync result interface
- */
 export interface SyncResult {
   status: SyncStatus;
   message: string;

@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as vscode from 'vscode';
 
-import { createMockOutputChannel, createMockStatusBarItem } from '../../test-utils.js';
-import { handleSyncResults, updateStatusBar } from './statusbar.js';
+import { createMockOutputChannel, createMockStatusBarItem } from '../utils/testUtils.js';
+import { handleSyncResults, updateStatusBar } from './statusBarController.js';
 
 describe('ui', () => {
   it('should export functions', () => {
@@ -13,37 +13,35 @@ describe('ui', () => {
 
 describe('updateStatusBar', () => {
   beforeEach(() => {
-    // Mock ThemeColor constructor
     (vscode as any).ThemeColor = vi.fn().mockImplementation((id: string) => ({ id }));
   });
   it('sets correct icon, color, and tooltip for sync', () => {
-    const item = createMockStatusBarItem();
-    updateStatusBar(item as any, 'sync', 'All good');
+    const item = createMockStatusBarItem() as any;
+    updateStatusBar(item, 'sync', 'All good');
     expect(item.text).toBe('$(check) Vite Powerflow: Sync');
     expect(item.tooltip).toBe('All good');
     expect(item.backgroundColor).toBeUndefined();
     expect(item.show).toHaveBeenCalled();
   });
   it('sets correct icon, color, and tooltip for warning', () => {
-    const item = createMockStatusBarItem();
-    updateStatusBar(item as any, 'warning', 'Be careful');
+    const item = createMockStatusBarItem() as any;
+    updateStatusBar(item, 'warning', 'Be careful');
     expect(item.text).toBe('$(warning) Vite Powerflow: Warning');
     expect(item.tooltip).toBe('Be careful');
     expect(item.backgroundColor).toEqual({ id: 'statusBarItem.warningBackground' });
     expect(item.show).toHaveBeenCalled();
   });
   it('sets correct icon, color, and tooltip for error', () => {
-    const item = createMockStatusBarItem();
-    updateStatusBar(item as any, 'error', 'Something failed');
+    const item = createMockStatusBarItem() as any;
+    updateStatusBar(item, 'error', 'Something failed');
     expect(item.text).toBe('$(error) Vite Powerflow: Error');
     expect(item.tooltip).toBe('Something failed');
     expect(item.backgroundColor).toEqual({ id: 'statusBarItem.errorBackground' });
     expect(item.show).toHaveBeenCalled();
   });
-
   it('sets correct icon and tooltip for pending', () => {
-    const item = createMockStatusBarItem();
-    updateStatusBar(item as any, 'pending', 'Release pending');
+    const item = createMockStatusBarItem() as any;
+    updateStatusBar(item, 'pending', 'Release pending');
     expect(item.text).toBe('$(rocket) Vite Powerflow: Pending');
     expect(item.tooltip).toBe('Release pending');
     expect(item.backgroundColor).toBeUndefined();

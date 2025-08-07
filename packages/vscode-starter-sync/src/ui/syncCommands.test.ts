@@ -1,8 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as vscode from 'vscode';
 
-import { createMockCommand, createMockContext, createMockStatusBarItem } from '../../test-utils.js';
-import { createRefreshStatusBar } from './refresh.js';
+import {
+  createMockCommand,
+  createMockContext,
+  createMockStatusBarItem,
+} from '../utils/testUtils.js';
+import { createRefreshStatusBar } from './syncCommands.js';
 
 // Mock VS Code API
 vi.mock('vscode', async () => {
@@ -22,7 +26,7 @@ vi.mock('vscode', async () => {
   };
 });
 
-describe('refresh', () => {
+describe('syncCommands', () => {
   let mockContext: vscode.ExtensionContext;
   let mockStatusBarItem: vscode.StatusBarItem;
   let mockCommand: vscode.Disposable;
@@ -30,7 +34,7 @@ describe('refresh', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    mockStatusBarItem = createMockStatusBarItem();
+    mockStatusBarItem = createMockStatusBarItem() as any;
     mockCommand = createMockCommand();
     mockContext = createMockContext();
 
@@ -41,13 +45,10 @@ describe('refresh', () => {
 
   describe('createRefreshStatusBar', () => {
     it('should create and configure refresh status bar item', () => {
-      // GIVEN: A valid extension context and refresh callback
       const onRefresh = vi.fn();
 
-      // WHEN: Creating the refresh status bar
       createRefreshStatusBar(mockContext, onRefresh);
 
-      // THEN: Status bar item is created with correct configuration
       expect(vscode.window.createStatusBarItem).toHaveBeenCalledWith(
         vscode.StatusBarAlignment.Left,
         98
@@ -59,13 +60,8 @@ describe('refresh', () => {
     });
 
     it('should register refresh command', () => {
-      // GIVEN: A valid extension context and refresh callback
       const onRefresh = vi.fn();
-
-      // WHEN: Creating the refresh status bar
       createRefreshStatusBar(mockContext, onRefresh);
-
-      // THEN: Refresh command is registered with VS Code
       expect(vscode.commands.registerCommand).toHaveBeenCalledWith(
         'vitePowerflow.refreshSyncCheck',
         expect.any(Function)
@@ -73,28 +69,18 @@ describe('refresh', () => {
     });
 
     it('should add items to context subscriptions', () => {
-      // GIVEN: A valid extension context and refresh callback
       const onRefresh = vi.fn();
-
-      // WHEN: Creating the refresh status bar
       createRefreshStatusBar(mockContext, onRefresh);
-
-      // THEN: Both status bar item and command are added to subscriptions
       expect(mockContext.subscriptions).toContain(mockStatusBarItem);
       expect(mockContext.subscriptions).toContain(mockCommand);
       expect(mockContext.subscriptions).toHaveLength(2);
     });
 
     it('should call onRefresh when command is executed', () => {
-      // GIVEN: A refresh status bar is created with callback
       const onRefresh = vi.fn();
       createRefreshStatusBar(mockContext, onRefresh);
-
-      // WHEN: The refresh command is executed
       const commandCallback = (vscode.commands.registerCommand as any).mock.calls[0][1];
       commandCallback();
-
-      // THEN: The provided onRefresh callback is invoked
       expect(onRefresh).toHaveBeenCalledOnce();
     });
   });

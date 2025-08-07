@@ -1,46 +1,43 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as vscode from 'vscode';
 
-import { createMockOutputChannel } from '../../test-utils.js';
-import { CheckResult } from '../../types.js';
-import { checkCliStatus, checkStarterStatus } from './checker.js';
+import { createMockOutputChannel } from '../../utils/testUtils.js';
+import { CheckResult } from '../syncTypes.js';
+import { checkCliStatus, checkStarterStatus } from './syncStatusChecker.js';
 
 // Mock dependencies
-vi.mock('../changesets.js', () => ({
+vi.mock('./changesetUtils.js', () => ({
   getChangesetStatus: vi.fn(),
   getLatestChangesetForPackage: vi.fn(),
 }));
-vi.mock('../git.js', () => ({
+vi.mock('./gitUtils.js', () => ({
   getCommitsSince: vi.fn(),
   getCurrentCommit: vi.fn(),
   getTemplateBaselineCommit: vi.fn(),
   getFilesChangedSince: vi.fn(),
   resolveRefToSha: vi.fn(),
 }));
-vi.mock('../packages.js', () => ({
+vi.mock('../packageUtils.js', () => ({
   getLatestNpmVersion: vi.fn(),
-  getPackageInfo: vi.fn(),
+  getPackageInfo: vi.fn(), // <-- for vitest spy compatibility
 }));
-vi.mock('../utils.js', () => ({
+vi.mock('../../utils/logMessage.js', () => ({
   logMessage: vi.fn(),
 }));
-vi.mock('./handlers.js', () => ({
-  formatBaselineLog: vi.fn(),
+vi.mock('./syncErrorHandler.js', () => ({
   handleError: vi.fn(),
-  handleInSync: vi.fn(),
-  handleUnreleasedCommits: vi.fn(),
 }));
 
 // Group mocks by module for better organization
-import * as changesetModule from '../changesets.js';
-import * as gitModule from '../git.js';
-import * as packageModule from '../packages.js';
-import * as handlerModule from './handlers.js';
+import * as packageUtilsModule from '../packageUtils.js';
+import * as changesetModule from './changesetUtils.js';
+import * as gitModule from './gitUtils.js';
+import * as handlerModule from './syncErrorHandler.js';
 
 const changesetMocks = vi.mocked(changesetModule);
 const gitMocks = vi.mocked(gitModule);
-const packageMocks = vi.mocked(packageModule);
 const handlerMocks = vi.mocked(handlerModule);
+const packageUtilsMocks = vi.mocked(packageUtilsModule);
 
 // Destructure for easier access
 const {
@@ -57,9 +54,9 @@ const {
 } = gitMocks;
 
 const { getLatestNpmVersion: mockGetLatestNpmVersion, getPackageInfo: mockGetPackageInfo } =
-  packageMocks;
+  packageUtilsMocks;
 
-const { handleError: mockHandleError, handleInSync: mockHandleInSync } = handlerMocks;
+const { handleError: mockHandleError } = handlerMocks;
 
 describe('checker', () => {
   let mockOutputChannel: vscode.OutputChannel;
@@ -164,6 +161,7 @@ describe('checker', () => {
       mockGetTemplateBaselineCommit.mockResolvedValue('baseline-commit-hash');
       mockGetCurrentCommit.mockReturnValue('current-commit-hash');
       mockGetCommitsSince.mockReturnValue([]);
+      mockGetPackageInfo.mockResolvedValue({ name: '@vite-powerflow/starter', version: '1.0.0' });
       const mockResult: CheckResult = {
         status: 'sync',
         message: 'In sync with the latest CLI template baseline.',
@@ -172,7 +170,6 @@ describe('checker', () => {
         baselineCommit: 'baseline-commit-hash',
         currentCommit: 'current-commit-hash',
       };
-      mockHandleInSync.mockResolvedValue(mockResult);
 
       // WHEN: We check the starter synchronization status
       const result = await checkStarterStatus(workspaceRoot, mockOutputChannel);
@@ -189,6 +186,7 @@ describe('checker', () => {
       mockGetTemplateBaselineCommit.mockResolvedValue('baseline-commit-hash');
       mockGetCurrentCommit.mockReturnValue('current-commit-hash');
       mockGetCommitsSince.mockReturnValue([]);
+      mockGetPackageInfo.mockResolvedValue({ name: '@vite-powerflow/starter', version: '1.0.0' });
 
       // WHEN: We check the starter synchronization status despite the error
       const result = await checkStarterStatus(workspaceRoot, mockOutputChannel);
@@ -210,7 +208,7 @@ describe('checker', () => {
       // GIVEN: A changeset exists for the CLI package and no files have changed after its anchor commit
       const packageInfo = { name: '@vite-powerflow/create', version: '1.0.0' };
       mockGetPackageInfo.mockResolvedValue(packageInfo);
-      mockGetLatestNpmVersion.mockReturnValue('0.9.0');
+      mockGetLatestNpmVersion.mockImplementation(() => '0.9.0');
       mockResolveRefToSha.mockReturnValue('resolved-cli-sha');
       mockGetCurrentCommit.mockReturnValue('current-commit');
       // Simulate commits exist overall but none under CLI path after anchor
@@ -245,7 +243,7 @@ describe('checker', () => {
 
       mockGetPackageInfo.mockResolvedValue(packageInfo);
       mockGetChangesetStatus.mockResolvedValue(null);
-      mockGetLatestNpmVersion.mockReturnValue(null);
+      mockGetLatestNpmVersion.mockImplementation(() => null);
 
       // WHEN: We check the CLI synchronization status
       const result = await checkCliStatus(workspaceRoot, mockOutputChannel);
@@ -263,9 +261,9 @@ describe('checker', () => {
 
     it('should check commits against published npm version (warning required when no changeset)', async () => {
       // GIVEN: The CLI package is published on npm but has uncommitted changes and no changeset
-      const packageInfo = { name: '@vite-powerflow/create', version: '1.0.0' };
+      const packageInfo = { name: '@vite_powerflow/create', version: '1.0.0' };
       mockGetPackageInfo.mockResolvedValue(packageInfo);
-      mockGetLatestNpmVersion.mockReturnValue('0.9.0');
+      mockGetLatestNpmVersion.mockImplementation(() => '0.9.0');
       mockResolveRefToSha.mockReturnValue('resolved-cli-sha'); // baselineCommit unified to SHA
       mockGetLatestChangesetForPackage.mockResolvedValue(null); // no changeset
       mockGetCurrentCommit.mockReturnValue('current-commit');

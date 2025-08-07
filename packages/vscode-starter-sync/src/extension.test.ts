@@ -1,19 +1,22 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as vscode from 'vscode';
 
-import { checkCliStatus, checkStarterStatus } from './core/sync/checker.js';
-import { createRefreshStatusBar } from './core/ui/refresh.js';
-import { updateStatusBar } from './core/ui/statusbar.js';
-import { createDebounced, createWatcher } from './core/utils.js';
-import { getWorkspaceRoot } from './core/workspace.js';
+import { getWorkspaceRoot } from './core/monorepoUtils.js';
+import { checkCliStatus, checkStarterStatus } from './core/sync/syncStatusChecker.js';
+import { updateStatusBar } from './ui/statusBarController.js';
+import { createRefreshStatusBar } from './ui/syncCommands.js';
+import { createDebounced, createWatcher } from './utils/extensionUtils.js';
+import { setupExtensionTestScenario, setupWorkspaceScenario } from './utils/testUtils.js';
 import { activate, deactivate } from './extension.js';
-import { setupExtensionTestScenario, setupWorkspaceScenario } from './test-utils.js';
 
 // Mock VS Code API
 vi.mock('vscode', async () => {
   const actual = await vi.importActual('vscode');
   return {
     ...actual,
+    ThemeColor: class {
+      constructor(public id: string) {}
+    },
     StatusBarAlignment: {
       Left: 1,
       Right: 2,
@@ -35,21 +38,21 @@ vi.mock('vscode', async () => {
 });
 
 // Mock dependencies
-vi.mock('./core/sync/checker.js', () => ({
+vi.mock('./core/sync/syncStatusChecker.js', () => ({
   checkCliStatus: vi.fn(),
   checkStarterStatus: vi.fn(),
 }));
-vi.mock('./core/ui/refresh.js', () => ({
+vi.mock('./ui/syncCommands.js', () => ({
   createRefreshStatusBar: vi.fn(),
 }));
-vi.mock('./core/ui/statusbar.js', () => ({
+vi.mock('./ui/statusBarController.js', () => ({
   updateStatusBar: vi.fn(),
 }));
-vi.mock('./core/utils.js', () => ({
+vi.mock('./utils/extensionUtils.js', () => ({
   createDebounced: vi.fn(),
   createWatcher: vi.fn(),
 }));
-vi.mock('./core/workspace.js', () => ({
+vi.mock('./core/monorepoUtils.js', () => ({
   getWorkspaceRoot: vi.fn(),
 }));
 

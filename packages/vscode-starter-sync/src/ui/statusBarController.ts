@@ -1,10 +1,7 @@
 import * as vscode from 'vscode';
 
-import { CheckResult, SyncStatus } from '../../types.js';
+import { CheckResult, SyncStatus } from '../core/syncTypes.js';
 
-/**
- * Compute global status with priority: error > warning > pending > sync
- */
 export function getGlobalStatus(statuses: SyncStatus[]): SyncStatus {
   if (statuses.includes('error')) return 'error';
   if (statuses.includes('warning')) return 'warning';
@@ -12,12 +9,6 @@ export function getGlobalStatus(statuses: SyncStatus[]): SyncStatus {
   return 'sync';
 }
 
-/**
- * Updates the VS Code status bar with the current sync status and tooltip.
- * @param statusBarItem - The status bar item to update
- * @param status - The sync status ('sync', 'warning', 'error', 'pending')
- * @param tooltip - Tooltip text to display
- */
 export function updateStatusBar(
   statusBarItem: vscode.StatusBarItem,
   status: SyncStatus,
@@ -56,13 +47,6 @@ export function updateStatusBar(
   statusBarItem.show();
 }
 
-/**
- * Handles the result of sync checks and prompts the user for actions if needed.
- * Shows a warning message if unreleased changes are detected and offers to create a changeset.
- * @param starterResult - The result of the starter sync check
- * @param cliResult - The result of the CLI sync check
- * @param outputChannel - The VS Code output channel for logging
- */
 export function handleSyncResults(
   starterResult: CheckResult,
   cliResult: CheckResult,
@@ -75,15 +59,12 @@ export function handleSyncResults(
     r => r.status === 'pending'
   );
 
-  // Package status lines
   const statusLines: string[] = [];
 
-  // Starter status (prefer precise warnings from checker over generic text)
   if (starterResult.status === 'error') {
     statusLines.push(`[Starter]: Check failed - ${starterResult.message}`);
   } else if (starterResult.status === 'warning') {
     const versionInfo = starterResult.packageVersion ? ` (v${starterResult.packageVersion})` : '';
-    // Show the detailed warning message produced by checker.ts (e.g., "Changeset update required …")
     statusLines.push(`[Starter]: ${starterResult.message}${versionInfo}`);
   } else if (starterResult.status === 'pending' && starterResult.changeset) {
     const versionInfo = starterResult.packageVersion ? ` (v${starterResult.packageVersion})` : '';
@@ -103,7 +84,6 @@ export function handleSyncResults(
     statusLines.push(`[Starter]: Package in sync${versionInfo}${commitInfo}`);
   }
 
-  // CLI status (same rule: show precise warnings first)
   if (cliResult.status === 'error') {
     statusLines.push(`[CLI]: Check failed - ${cliResult.message}`);
   } else if (cliResult.status === 'warning') {
@@ -125,12 +105,8 @@ export function handleSyncResults(
     statusLines.push(`[CLI]: Package in sync${versionInfo}${commitInfo}`);
   }
 
-  // Separator
   statusLines.push('———');
 
-  // Final status message removed per request: keep only package-specific lines above
-
-  // Output everything
   statusLines.forEach(line => {
     outputChannel.appendLine(line);
   });

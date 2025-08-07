@@ -1,17 +1,13 @@
-import { CheckResult, PackageLabel } from '../types.js';
+import * as path from 'path';
 
-/**
- * Formats a single package sync result into a human-readable status line.
- *
- * @param label - The display label for the package (e.g. "Starter", "CLI")
- * @param result - The CheckResult object for the package
- * @returns A formatted string describing the sync status for the package
- */
+import { formatBaseline } from './formatBaseline.js';
+import { getPackageInfo } from './packageUtils.js';
+import { CheckResult, PackageLabel, SyncCheckConfig } from './syncTypes.js';
+
 export function formatPackageStatus(label: PackageLabel, result: CheckResult): string {
   const versionInfo = result.packageVersion ? ` (v${result.packageVersion})` : '';
   let lines: string[] = [];
 
-  // Package header
   lines.push(`📦 [${label}]${versionInfo}`);
 
   if (result.status === 'error') {
@@ -27,12 +23,10 @@ export function formatPackageStatus(label: PackageLabel, result: CheckResult): s
     return lines.join('\n');
   }
 
-  // Handle changeset info
   if (result.changeset) {
     lines.push(`   📄 Changeset: ${result.changeset.fileName} (${result.changeset.bumpType})`);
 
     if (result.commits && result.commits.length > 0) {
-      // Use actual partition data from CheckResult
       const coveredCommits = result.coveredCommits || [];
       const notCoveredCommits = result.notCoveredCommits || [];
       const totalCommits = result.commits.length;
@@ -50,7 +44,6 @@ export function formatPackageStatus(label: PackageLabel, result: CheckResult): s
         lines.push(`   ⚠️ Require changeset update`);
       }
     } else {
-      // If there are no commits, still need a final status
       lines.push(`   🎯 Ready for release`);
     }
   } else {
@@ -75,18 +68,11 @@ export function formatPackageStatus(label: PackageLabel, result: CheckResult): s
   return lines.join('\n');
 }
 
-/**
- * Formats a global summary line for the sync status of all packages.
- *
- * @param results - Array of { label, result } for each package
- * @returns A formatted string summarizing the global sync state
- */
 export function formatGlobalStatus(
   results: Array<{ label: PackageLabel; result: CheckResult }>
 ): string {
   if (results.length === 0) return '';
 
-  // Count status types
   let syncCount = 0;
   let pendingCount = 0;
   let warningCount = 0;
@@ -98,12 +84,11 @@ export function formatGlobalStatus(
     } else if (result.commitCount === 0) {
       syncCount++;
     } else if (result.changeset) {
-      // Check if changeset fully covers commits
       const notCoveredCommits = result.notCoveredCommits || [];
       if (notCoveredCommits.length > 0) {
-        warningCount++; // Partial coverage = warning
+        warningCount++;
       } else {
-        pendingCount++; // Full coverage = pending
+        pendingCount++;
       }
     } else {
       warningCount++;
@@ -113,7 +98,6 @@ export function formatGlobalStatus(
   const totalPackages = results.length;
   const packageWord = totalPackages > 1 ? 'packages' : 'package';
 
-  // Determine global status with priority: ERROR > WARNING > PENDING > SYNC
   let globalStatus = '';
   let globalEmoji = '';
 
@@ -131,10 +115,8 @@ export function formatGlobalStatus(
     globalEmoji = '🟢';
   }
 
-  // Line 1: Global status
   let result = `🔄 Status: ${globalEmoji} ${globalStatus}`;
 
-  // Line 2: Summary counts
   let summary = '';
   if (errorCount + warningCount === 0) {
     summary = `📋 Summary: All ${totalPackages} ${packageWord} ready`;
@@ -149,7 +131,6 @@ export function formatGlobalStatus(
   }
   result += `\n${summary}`;
 
-  // Line 3: Multi-package changesets
   const changesetMap = new Map<string, Array<{ label: PackageLabel; bumpType: string }>>();
 
   for (const { label, result: pkgResult } of results) {
@@ -162,7 +143,6 @@ export function formatGlobalStatus(
     }
   }
 
-  // Filter to only multi-package changesets
   const multiPackageChangesets = Array.from(changesetMap.entries()).filter(
     ([_, packages]) => packages.length > 1
   );
@@ -179,44 +159,89 @@ export function formatGlobalStatus(
   return result;
 }
 
-/**
- * Formats the complete sync output for display (multi-line, per package + global summary).
- *
- * @param results - Array of { label, result } for each package
- * @returns Array of formatted lines (one per package, separator, then global summary)
- */
 export function formatSyncOutput(
   results: Array<{ label: PackageLabel; result: CheckResult }>
 ): string[] {
   const lines: string[] = [];
 
-  // Timestamp for the report
   const now = new Date();
   const pad = (n: number) => n.toString().padStart(2, '0');
-  const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(
+    now.getHours()
+  )}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
 
-  // Header
   lines.push(`🔄 Sync Status Report - [${timestamp}]`);
   lines.push('═══════════════════════════════════════════════════════════');
   lines.push('');
 
-  // Package status lines
   for (const { label, result } of results) {
     const statusLines = formatPackageStatus(label, result).split('\n');
     lines.push(...statusLines);
-    lines.push(''); // Empty line between packages
+    lines.push('');
   }
 
-  // Footer separator and summary
   lines.push('═══════════════════════════════════════════════════════════');
   const summary = formatGlobalStatus(results);
   if (summary) {
     lines.push(summary);
   }
 
-  // Final empty lines for spacing
   lines.push('');
   lines.push('');
 
   return lines;
+}
+
+// Helpers migrated from legacy handlers
+export async function formatBaselineLog(
+  config: SyncCheckConfig,
+  baseline: string,
+  workspaceRoot: string
+): Promise<string> {
+  const shortBaseline = formatBaseline(baseline);
+  let message = `📦 [${config.label}] Checking against baseline (commit/tag ${shortBaseline})`;
+
+  if (config.label === PackageLabel.Starter) {
+    try {
+      const templatePackagePath = path.join(workspaceRoot, 'packages/cli/template/package.json');
+      const templatePkg = await getPackageInfo(templatePackagePath);
+      if (templatePkg?.version) {
+        message = `📦 [Starter] Checking against CLI template baseline (commit ${shortBaseline}, version ${templatePkg.version})`;
+      }
+    } catch {}
+  }
+
+  return message;
+}
+
+export function handleUnreleasedCommits(
+  config: SyncCheckConfig,
+  newCommits: string[],
+  _outputChannel: { appendLine: (v: string) => void },
+  additionalInfo?: { packageVersion?: string; baselineCommit?: string; currentCommit?: string }
+): CheckResult {
+  const commitCount = newCommits.length;
+  return {
+    status: 'warning',
+    message: `${commitCount} ${config.messages.unreleased}`,
+    commitCount,
+    packageVersion: additionalInfo?.packageVersion,
+    baselineCommit: additionalInfo?.baselineCommit,
+    currentCommit: additionalInfo?.currentCommit,
+  };
+}
+
+export function handleInSync(
+  config: SyncCheckConfig,
+  _outputChannel: { appendLine: (v: string) => void },
+  additionalInfo?: { packageVersion?: string; baselineCommit?: string; currentCommit?: string }
+): CheckResult {
+  return {
+    status: 'sync',
+    message: config.messages.inSync,
+    commitCount: 0,
+    packageVersion: additionalInfo?.packageVersion,
+    baselineCommit: additionalInfo?.baselineCommit,
+    currentCommit: additionalInfo?.currentCommit,
+  };
 }

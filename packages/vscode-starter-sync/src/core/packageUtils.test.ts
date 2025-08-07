@@ -1,6 +1,6 @@
-import { getLatestNpmVersion, getPackageInfo } from './packages.js';
+import { getLatestNpmVersion, getPackageInfo } from './packageUtils.js';
 
-describe('packages utils', () => {
+describe('packageUtils', () => {
   it('should export functions', () => {
     expect(typeof getPackageInfo).toBe('function');
     expect(typeof getLatestNpmVersion).toBe('function');
