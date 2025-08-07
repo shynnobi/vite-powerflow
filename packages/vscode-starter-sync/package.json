@@ -42,8 +42,8 @@
     ]
   },
   "scripts": {
-    "build": "tsc -p ./tsconfig.json",
-    "dev": "tsc -watch -p ./tsconfig.json",
+    "build": "tsx scripts/bundle-extension.ts",
+    "dev": "tsx scripts/bundle-extension.ts --watch",
     "test": "vitest run",
     "lint": "eslint . --ext ts,tsx,js,jsx",
     "lint:fix": "eslint . --ext ts,tsx,js,jsx --fix",
@@ -51,9 +51,9 @@
     "format:fix": "prettier --write .",
     "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix",
     "type-check": "tsc --noEmit",
-    "compile": "tsc -p ./tsconfig.build.json",
-    "watch": "tsc -p ./tsconfig.build.json --watch",
-    "vscode:prepublish": "pnpm run compile",
+    "compile": "tsx scripts/bundle-extension.ts",
+    "watch": "tsx scripts/bundle-extension.ts --watch",
+    "vscode:prepublish": "tsx scripts/bundle-extension.ts",
     "package": "vsce package"
   },
   "devDependencies": {
@@ -63,6 +63,5 @@
     "typescript": "^5.0.0",
     "vitest": "^3.2.4",
     "vsce": "^2.15.0"
-  },
-  "type": "module"
+  }
 }

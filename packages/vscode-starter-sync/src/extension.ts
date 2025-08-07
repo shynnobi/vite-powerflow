@@ -43,28 +43,28 @@ export function activate(context: vscode.ExtensionContext) {
 
     createWatcher(
       new vscode.RelativePattern(workspaceRoot, '.git/HEAD'),
-      (uri, event) => {
+      (_uri, _event) => {
         debouncedCheck('HEAD change');
       },
       context
     );
     createWatcher(
       new vscode.RelativePattern(workspaceRoot, '.git/refs/heads/**'),
-      (uri, event) => {
+      (_uri, event) => {
         debouncedCheck(event === 'created' ? 'Branch creation' : 'Branch commit');
       },
       context
     );
     createWatcher(
       new vscode.RelativePattern(workspaceRoot, 'packages/cli/package.json'),
-      (uri, event) => {
+      (_uri, _event) => {
         debouncedCheck('CLI package.json change');
       },
       context
     );
     createWatcher(
       new vscode.RelativePattern(workspaceRoot, 'packages/cli/template/package.json'),
-      (uri, event) => {
+      (_uri, _event) => {
         debouncedCheck('Template package.json change');
       },
       context
