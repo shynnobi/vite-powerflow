@@ -4,6 +4,7 @@
   "description": "Monitor sync status between Vite Powerflow starter app and CLI template. Detect when changeset is needed or template sync is required.",
   "version": "0.0.1",
   "publisher": "vite-powerflow",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/shynnobi/vite-powerflow.git",
