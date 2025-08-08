@@ -1,4 +1,4 @@
-import { afterAll, beforeEach, describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import { formatBaselineLog, formatSyncOutput } from './syncReporter.js';
 import { CheckResult, PackageLabel, SyncCheckConfig } from './types.js';
@@ -13,13 +13,16 @@ vi.mock('./packageReader.js', () => ({
   },
 }));
 
-beforeEach(() => {
-  vi.useFakeTimers();
-  vi.setSystemTime(new Date('2025-08-07T16:00:00Z'));
-});
-afterAll(() => {
-  vi.useRealTimers();
-});
+// Utility to normalize time header in reports for stable snapshots
+const normalizeReport = (lines: string[]): string[] => {
+  const out = lines.slice();
+  if (out.length > 0) {
+    out[0] = out[0].replace(/\[[^\]]*\]/, '[TIME]');
+  }
+  return out;
+};
+
+// No fake timers needed; tests normalize timestamp in snapshots
 
 describe('formatSyncOutput', () => {
   test('should show all packages as synchronized when there are no pending commits or changesets', () => {
@@ -45,7 +48,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(formatSyncOutput(data)).toMatchSnapshot();
+    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
   });
 
   test('should warn when there are commits without a corresponding changeset', () => {
@@ -75,7 +78,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(formatSyncOutput(data)).toMatchSnapshot();
+    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
   });
 
   test('should display a pending changeset when commits are present and a changeset is detected', () => {
@@ -111,7 +114,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(formatSyncOutput(data)).toMatchSnapshot();
+    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
   });
 
   test('should display error messages when check errors occur for one or more packages', () => {
@@ -135,7 +138,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(formatSyncOutput(data)).toMatchSnapshot();
+    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
   });
 
   test('should handle a complex mixed situation with pending changesets and warnings', () => {
@@ -176,7 +179,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(formatSyncOutput(data)).toMatchSnapshot();
+    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
   });
 
   test('should display a warning when there are many commits without a changeset (limit case)', () => {
@@ -215,7 +218,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(formatSyncOutput(data)).toMatchSnapshot();
+    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
   });
 
   test('should show a pending changeset when only part of the commits are covered (partial changeset)', () => {
@@ -256,7 +259,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(formatSyncOutput(data)).toMatchSnapshot();
+    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
   });
 
   test('should warn when a package has commits but no version (no packageVersion field)', () => {
@@ -282,7 +285,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(formatSyncOutput(data)).toMatchSnapshot();
+    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
   });
 
   test('should group packages by the same changeset file for multi-package changesets', () => {
@@ -319,7 +322,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(formatSyncOutput(data)).toMatchSnapshot();
+    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
   });
 
   test('should handle multiple multi-package changesets and group them correctly', () => {
@@ -388,7 +391,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(formatSyncOutput(data)).toMatchSnapshot();
+    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
   });
 
   test('should prioritize ERROR status over other statuses when present', () => {
@@ -420,7 +423,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(formatSyncOutput(data)).toMatchSnapshot();
+    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
   });
 
   test('should prioritize WARNING status over SYNC when no errors are present', () => {
@@ -450,7 +453,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(formatSyncOutput(data)).toMatchSnapshot();
+    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
   });
 
   test('should show all packages as synchronized when all statuses are SYNC', () => {
@@ -476,7 +479,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(formatSyncOutput(data)).toMatchSnapshot();
+    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
   });
 });
 

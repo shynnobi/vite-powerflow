@@ -166,6 +166,7 @@ export function formatSyncOutput(
 
   const now = new Date();
   const pad = (n: number) => n.toString().padStart(2, '0');
+  // Use local time for user-facing output; tests normalize this line for snapshots
   const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(
     now.getHours()
   )}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
