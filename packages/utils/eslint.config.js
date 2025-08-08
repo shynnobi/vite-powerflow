@@ -4,7 +4,7 @@ const localSettings = {
   'import/resolver': {
     typescript: {
       alwaysTryTypes: true,
-      project: ['./tsconfig.json'],
+      project: ['./tsconfig.eslint.json'],
     },
     node: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
