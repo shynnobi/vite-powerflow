@@ -2,7 +2,7 @@
 '@vite-powerflow/create': minor
 ---
 
-anchor: f420026163b9bea69faba11749e8d4ded8f4d18b
+anchor: 2c9a134e20d36c367ecea4c1cfa8b0ec272681ca
 
 ### Refactor & Improvements
 
