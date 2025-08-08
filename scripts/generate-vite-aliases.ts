@@ -67,16 +67,20 @@ void (() => {
   const tsconfig = JSON.parse(tsconfigRaw) as {
     compilerOptions?: { paths?: Record<string, string[]> };
   };
-  if (!tsconfig.compilerOptions) tsconfig.compilerOptions = {};
-  if (!tsconfig.compilerOptions.paths) tsconfig.compilerOptions.paths = {};
+  if (!tsconfig.compilerOptions) {
+    tsconfig.compilerOptions = {};
+  }
+  if (!tsconfig.compilerOptions.paths) {
+    tsconfig.compilerOptions.paths = {};
+  }
 
   // 3.1. Remove old path aliases for all internal packages and apps
-  Object.keys(tsconfig.compilerOptions.paths).forEach((key: string) => {
-    const paths = tsconfig.compilerOptions.paths[key];
+  Object.keys(tsconfig.compilerOptions?.paths ?? {}).forEach((key: string) => {
+    const paths = tsconfig.compilerOptions?.paths?.[key];
     if (Array.isArray(paths) && paths.length > 0) {
       const firstPath = paths[0];
       if (firstPath.startsWith('packages/') || firstPath.startsWith('apps/')) {
-        delete tsconfig.compilerOptions.paths[key];
+        delete tsconfig.compilerOptions?.paths?.[key];
       }
     }
   });
@@ -114,7 +118,17 @@ void (() => {
     ),
   ];
   const projectsList = allProjects.map(p => `      ${JSON.stringify(p)}`).join(',\n');
-  const vitestConfig = `// AUTO-GENERATED FILE. DO NOT EDIT MANUALLY.\nimport { defineConfig } from 'vitest/config';\n\nexport default defineConfig({\n  test: {\n    projects: [\n${projectsList}\n    ],\n  },\n});\n`;
+  const vitestConfig = `// AUTO-GENERATED FILE. DO NOT EDIT MANUALLY.
+  import { defineConfig } from 'vitest/config';
+
+  export default defineConfig({
+    test: {
+      projects: [
+  ${projectsList}
+      ],
+    },
+  });
+  `;
   fs.writeFileSync(vitestConfigPath, vitestConfig);
   logRootSuccess('Vitest config generated in vitest.config.ts');
 
@@ -132,7 +146,7 @@ void (() => {
   } catch (err) {
     logRootError('Prettier formatting failed.');
     if (err && (err as { stderr?: Buffer }).stderr) {
-      console.error((err as { stderr?: Buffer }).stderr.toString());
+      console.error((err as { stderr?: Buffer }).stderr?.toString());
     }
   }
   // 7. End of main async function

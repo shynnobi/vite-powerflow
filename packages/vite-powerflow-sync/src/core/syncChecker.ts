@@ -121,7 +121,6 @@ export async function checkSyncStatus(
           currentCommit,
           commits: newCommits,
         };
-      } else {
       }
       const normalizedAnchor =
         anchorForDiff && /^[0-9a-f]{40}$/i.test(anchorForDiff)
@@ -146,13 +145,6 @@ export async function checkSyncStatus(
           coveredCommits,
           notCoveredCommits: outsideCommits,
         };
-      }
-
-      if (
-        anchorForDiff &&
-        filesChangedSinceBaseline.length > 0 &&
-        filesChangedAfterNormalizedAnchor.length === 0
-      ) {
       }
 
       if (filesChangedSinceBaseline.length === 0) {

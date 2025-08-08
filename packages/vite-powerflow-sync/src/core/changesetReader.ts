@@ -42,8 +42,9 @@ export async function readChangesetStatus(
       'code' in error &&
       (error as { code?: string }).code !== 'ENOENT'
     ) {
+      console.error(`Error reading changeset status: ${(error as Error).message}`);
+      return null;
     }
-    return null;
   }
 
   return null;
