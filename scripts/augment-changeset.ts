@@ -6,7 +6,7 @@ import path from 'path';
 import {
   extractMetadataAfterFrontmatter,
   parseChangesetFrontmatter,
-} from '../packages/vite-powerflow-sync/dist/core/changesetParser.js';
+} from '../packages/vite-powerflow-sync/src/core/changesetParser.ts';
 
 interface ConsoleOutput {
   appendLine(v: string): void;
