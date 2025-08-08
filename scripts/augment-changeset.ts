@@ -3,78 +3,26 @@ import fs from 'fs';
 import fsp from 'fs/promises';
 import path from 'path';
 
-type Output = { appendLine: (v: string) => void };
-const consoleChannel: Output = { appendLine: (v: string) => console.log(v) };
+import {
+  extractMetadataAfterFrontmatter,
+  parseChangesetFrontmatter,
+} from '../packages/vscode-starter-sync/dist/core/changesetParser.js';
 
+interface ConsoleOutput {
+  appendLine(v: string): void;
+}
+
+const consoleChannel: ConsoleOutput = { appendLine: (v: string) => console.log(v) };
 const CHANGESET_DIR = '.changeset';
 const STARTER_PACKAGE = '@vite-powerflow/starter';
 
-// Minimal YAML frontmatter parser/serializer for our specific format.
-// We expect a frontmatter block like:
-// ---
-// '@vite-powerflow/starter': patch
-// '@vite-powerflow/create': minor
-// anchor: <sha>
-// baseline: <sha>
-// ---
-//
-// We will parse simple key: value pairs, where package keys may be quoted.
-// Values for packages are strings (patch/minor/major). anchor/baseline are strings.
-function parseFrontmatter(md: string): { map: Map<string, string>; start: number; end: number } {
-  const start = md.indexOf('---');
-  if (start !== 0) {
-    return { map: new Map(), start: -1, end: -1 };
-  }
-  const end = md.indexOf('---', 3);
-  if (end === -1) {
-    return { map: new Map(), start: -1, end: -1 };
-  }
-  const fmContent = md.substring(3, end).trim();
-  const map = new Map<string, string>();
-  const lines = fmContent
-    .split('\n')
-    .map(l => l.trim())
-    .filter(Boolean);
-
-  for (const line of lines) {
-    // Support quoted keys and unquoted keys
-    // e.g. '@vite-powerflow/starter': patch
-    // or anchor: abcdef
-    const match = line.match(/^('?"?)([^'":]+(?:\/[^'":]+)?)\1\s*:\s*(.+)$/);
-    if (match) {
-      const keyRaw = match[2].trim();
-      let value = match[3].trim();
-      // Remove trailing comments or quotes
-      value = value.replace(/^['"](.*)['"]$/, '$1').trim();
-      map.set(keyRaw, value);
-    } else {
-      // Also try to match keys with quotes including @-prefixed scoped names
-      const m2 = line.match(/^['"]([^'"]+)['"]\s*:\s*(.+)$/);
-      if (m2) {
-        const key = m2[1].trim();
-        let value = m2[2].trim();
-        value = value.replace(/^['"](.*)['"]$/, '$1').trim();
-        map.set(key, value);
-      }
-    }
-  }
-  return { map, start: 0, end: end + 3 };
-}
-
-function serializeFrontmatter(map: Map<string, string>): string {
-  // Keep packages first (sorted), then anchor/baseline keys for readability.
-  const entries = Array.from(map.entries());
+function serializeFrontmatter(packageMap: Map<string, string>): string {
+  const entries = Array.from(packageMap.entries());
   const pkgEntries = entries.filter(([k]) => k.startsWith('@'));
   pkgEntries.sort(([a], [b]) => a.localeCompare(b));
-  const metaEntries = entries.filter(([k]) => !k.startsWith('@'));
-
   const lines: string[] = [];
   for (const [k, v] of pkgEntries) {
-    // Quote package keys to be safe
     lines.push(`'${k}': ${v}`);
-  }
-  for (const [k, v] of metaEntries) {
-    lines.push(`${k}: ${v}`);
   }
   return ['---', ...lines, '---'].join('\n') + '\n';
 }
@@ -100,7 +48,7 @@ function gitLogLastShaForFile(repoRoot: string, filePath: string): string | unde
   }
 }
 
-function readStarterBaseline(repoRoot: string, out: Output): string | undefined {
+function readStarterBaseline(repoRoot: string, out: ConsoleOutput): string | undefined {
   try {
     const templatePkgPath = path.join(repoRoot, 'packages/cli/template/package.json');
     const content = fs.readFileSync(templatePkgPath, 'utf-8');
@@ -116,52 +64,52 @@ function readStarterBaseline(repoRoot: string, out: Output): string | undefined 
   }
 }
 
-async function processFile(repoRoot: string, filePath: string, out: Output) {
+async function augmentChangesetFile(repoRoot: string, filePath: string, out: ConsoleOutput) {
   const raw = await fsp.readFile(filePath, 'utf-8');
 
-  const { map, start, end } = parseFrontmatter(raw);
-  if (start !== 0 || end <= 0) {
-    out.appendLine(`ℹ️ augment-changeset: skipping (no frontmatter): ${path.basename(filePath)}`);
+  // Use extension functions to parse frontmatter
+  const packageMap = parseChangesetFrontmatter(raw);
+  if (packageMap.size === 0) {
+    out.appendLine(`ℹ️ augment-changeset: skipping (no packages): ${path.basename(filePath)}`);
     return;
   }
 
-  const hadAnchor = map.has('anchor');
-  const hadBaseline = map.has('baseline');
+  // Extract existing metadata
+  const { anchor: existingAnchor, baseline: existingBaseline } =
+    extractMetadataAfterFrontmatter(raw);
 
-  if (!hadAnchor) {
+  // Calculate anchor if necessary
+  let anchor = existingAnchor;
+  if (!anchor) {
     const sha = gitLogLastShaForFile(repoRoot, filePath);
-    if (sha) {
-      map.set('anchor', sha);
-    } else {
-      out.appendLine(
-        `ℹ️ augment-changeset: could not resolve anchor for ${path.basename(filePath)} (will skip anchor).`
-      );
-    }
+    if (sha) anchor = sha;
   }
 
-  // If the changeset concerns the Starter, add baseline from template metadata
-  const concernsStarter = map.has(STARTER_PACKAGE);
-  if (concernsStarter && !hadBaseline) {
-    const baseline = readStarterBaseline(repoRoot, out);
-    if (baseline) {
-      map.set('baseline', baseline);
-    }
+  // Check if the changeset concerns the starter package
+  const concernsStarter = packageMap.has(STARTER_PACKAGE);
+  let baseline = existingBaseline;
+  if (concernsStarter && !baseline) {
+    baseline = readStarterBaseline(repoRoot, out);
   }
 
-  // If nothing to change, return
-  if (hadAnchor && (hadBaseline || !concernsStarter)) {
-    out.appendLine(`✓ augment-changeset: no changes needed for ${path.basename(filePath)}`);
-    return;
-  }
+  // Serialize frontmatter
+  const frontmatter = serializeFrontmatter(packageMap);
+  let metadata = '';
+  if (anchor) metadata += `anchor: ${anchor}\n`;
+  if (concernsStarter && baseline) metadata += `baseline: ${baseline}\n`;
 
-  // Rebuild file
-  const fm = serializeFrontmatter(map);
-  const body = raw.substring(end);
-  const next = fm + body;
-  await fsp.writeFile(filePath, next, 'utf-8');
-  out.appendLine(
-    `✓ augment-changeset: updated ${path.basename(filePath)}${hadAnchor ? '' : ' (anchor)'}${concernsStarter && !hadBaseline ? ' (baseline)' : ''}`
-  );
+  // Reconstruct the file
+  const frontmatterEnd = raw.indexOf('---', 3) + 3;
+  let body = raw.substring(frontmatterEnd);
+
+  // Remove existing anchor and baseline metadata
+  body = body.replace(/^anchor:.*\n?/gm, '');
+  body = body.replace(/^baseline:.*\n?/gm, '');
+
+  const newContent = frontmatter + metadata + body;
+  await fsp.writeFile(filePath, newContent, 'utf-8');
+
+  out.appendLine(`✓ augment-changeset: updated ${path.basename(filePath)}`);
 }
 
 async function main() {
@@ -172,7 +120,7 @@ async function main() {
     return;
   }
   for (const file of files) {
-    await processFile(repoRoot, file, consoleChannel);
+    await augmentChangesetFile(repoRoot, file, consoleChannel);
   }
 }
 

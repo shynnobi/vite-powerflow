@@ -34,3 +34,48 @@ export function parseChangesetFrontmatter(content: string): Map<string, string> 
 
   return frontmatter;
 }
+
+/**
+ * Extracts anchor and baseline metadata placed immediately after the frontmatter.
+ * @param content - The content of the changeset file.
+ * @returns An object containing anchor and baseline if found.
+ */
+export function extractMetadataAfterFrontmatter(content: string): {
+  anchor?: string;
+  baseline?: string;
+} {
+  const start = content.indexOf('---');
+  if (start !== 0) return {};
+
+  const end = content.indexOf('---', 3);
+  if (end === -1) return {};
+
+  // Extract the content after the frontmatter block
+  const afterFrontmatter = content.substring(end + 3);
+  const lines = afterFrontmatter.split('\n');
+
+  let anchor: string | undefined;
+  let baseline: string | undefined;
+
+  // Only scan the first lines after the frontmatter for metadata
+  for (const line of lines) {
+    const trimmed = line.trim();
+
+    // Stop scanning if we reach an empty line or markdown content
+    if (trimmed === '' || trimmed.startsWith('#')) {
+      break;
+    }
+
+    // Extract anchor metadata
+    if (trimmed.startsWith('anchor:')) {
+      anchor = trimmed.replace('anchor:', '').trim();
+    }
+
+    // Extract baseline metadata
+    if (trimmed.startsWith('baseline:')) {
+      baseline = trimmed.replace('baseline:', '').trim();
+    }
+  }
+
+  return { anchor, baseline };
+}

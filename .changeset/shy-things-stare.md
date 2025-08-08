@@ -1,11 +1,17 @@
 ---
 '@vite-powerflow/create': minor
-anchor: ff318853ee15d9aa1b99d71bf8ab48fa387c9dba
 ---
 
-### Improvements
+anchor: 7d2df271dd2fc57cf562aeb34c955d6c3cb1f4cb
 
-- **Enhanced Template Version Tracking**: To improve internal maintenance, the CLI now temporarily uses `starterSource` metadata to track the template version during project creation. This metadata is automatically removed from the final `package.json`, ensuring a clean and streamlined project for end-users.
+### Refactor & Improvements
+
+- Refactor and reorganize CLI core modules and tests for clarity and maintainability
+- Update ESLint configs for monorepo and CLI, add local overrides
+- Refactor CLI build and project creation logic for robustness and type safety
+- Update package scripts and naming conventions for CLI workflow
+- Add and update unit tests for CLI modules, remove obsolete tests
+- Ensure all CLI changes are compatible and all tests pass
 
 ### Internal Changes
 

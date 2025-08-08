@@ -3,7 +3,10 @@
     "jsx": "react-jsx",
     "types": ["vitest"],
     "module": "es2022",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "strictNullChecks": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   },
   "references": [
     {

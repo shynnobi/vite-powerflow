@@ -2,7 +2,7 @@ import { execSync } from 'child_process';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 
-import { parseChangesetFrontmatter } from './changesetParser.js';
+import { extractMetadataAfterFrontmatter, parseChangesetFrontmatter } from './changesetParser.js';
 import { Changeset, ChangesetStatus } from './types.js';
 
 export async function readChangesetStatus(
@@ -26,12 +26,9 @@ export async function readChangesetStatus(
       if (frontmatter.has(targetPackage)) {
         const bumpType = frontmatter.get(targetPackage)!;
 
-        try {
-          const anchorLine = content.split('\n').find(l => /^anchor\s*:/.test(l.trim()));
-          if (anchorLine) {
-            // anchor present; handled downstream
-          }
-        } catch {}
+        // Check if anchor is present (for compatibility)
+        const { anchor: _anchor } = extractMetadataAfterFrontmatter(content);
+
         const changeset: Changeset = {
           fileName: file,
           bumpType: bumpType as 'minor' | 'patch' | 'major',
@@ -97,17 +94,12 @@ export async function readLatestChangeset(
 
       const bumpType = frontmatter.get(targetPackage)!;
 
-      const anchorMeta = frontmatter.get('anchor');
-      const baselineMeta = frontmatter.get('baseline');
+      // Use the new function to extract anchor and baseline
+      const { anchor: anchorFromMeta, baseline: baselineFromMeta } =
+        extractMetadataAfterFrontmatter(content);
 
-      let anchor: string | undefined =
-        typeof anchorMeta === 'string' && anchorMeta.trim().length > 0
-          ? anchorMeta.trim()
-          : undefined;
-      const baseline: string | undefined =
-        typeof baselineMeta === 'string' && baselineMeta.trim().length > 0
-          ? baselineMeta.trim()
-          : undefined;
+      let anchor: string | undefined = anchorFromMeta;
+      const baseline: string | undefined = baselineFromMeta;
 
       if (anchor && /^[0-9a-f]{7,39}$/i.test(anchor)) {
         try {

@@ -1,8 +1,17 @@
 ---
 '@vite-powerflow/starter': patch
-anchor: ff318853ee15d9aa1b99d71bf8ab48fa387c9dba
-baseline: 668ab2e8f19ec5a066bfdba3e5f2713f29078ff5
 ---
+
+anchor: 7d2df271dd2fc57cf562aeb34c955d6c3cb1f4cb
+baseline: 668ab2e8f19ec5a066bfdba3e5f2713f29078ff5
+
+### Refactor & Improvements
+
+- Refactor and reorganize Starter modules and tests for clarity and maintainability
+- Update ESLint configs for monorepo and Starter, add local overrides
+- Update package scripts and naming conventions for Starter workflow
+- Add and update unit tests for Starter modules, remove obsolete tests
+- Ensure all Starter changes are compatible and all tests pass
 
 docs(rules): simplify and clarify commit process automation
 
