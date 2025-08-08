@@ -96,7 +96,7 @@ describe('extension', () => {
       activate(mockContext);
 
       // THEN: VS Code resources are created with correct configuration
-      expect(vscode.window.createOutputChannel).toHaveBeenCalledWith('Vite Powerflow');
+      expect(vscode.window.createOutputChannel).toHaveBeenCalledWith('Vite Powerflow Sync');
       expect(vscode.window.createStatusBarItem).toHaveBeenCalledWith(
         vscode.StatusBarAlignment.Left,
         100

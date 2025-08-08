@@ -16,7 +16,7 @@ let isChecking = false;
 const COMMAND_ID = 'vitePowerflow.runSyncCheck';
 
 export function activate(context: vscode.ExtensionContext) {
-  outputChannel = vscode.window.createOutputChannel('Vite Powerflow');
+  outputChannel = vscode.window.createOutputChannel('Vite Powerflow Sync');
   statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
   statusBarItem.command = COMMAND_ID;
   statusBarItem.tooltip = 'Show sync status and re-run check';

@@ -1,19 +1,25 @@
 # Vite Powerflow Sync
 
-VS Code extension that monitors sync between `apps/starter` and `packages/cli/template`.
+VS Code extension that monitors sync between the main monorepo packages (currently starter and CLI) and their templates/changesets.
 
-## Installation
+## Installation & Build
 
 ```bash
-pnpm extension:deploy
+pnpm ext:build      # Compile the extension (from root)
+pnpm ext:pack       # Package the extension as .vsix (from root)
+pnpm ext:install    # Install the extension in VS Code (from root)
+pnpm ext:ship       # Build, package, and install in one step (from root)
+
+# Test
+pnpm ext:test       # Run extension tests (from root)
 ```
 
-## Status Bar & Status Logic
+## Status Bar
 
 The extension adds two status bar buttons:
 
 - **Main status:**
-  - `✅ Vite Powerflow: Sync` — No unpublished changes (everything synchronized)
+  - `✅ Vite Powerflow: Sync` — All packages synchronized
   - `⚠️ Vite Powerflow: Warning` — Unpublished changes found, changeset required
   - `🚀 Vite Powerflow: Pending` — All changes have changesets, ready for publish
   - `❌ Vite Powerflow: Error` — Git/config issue or missing baseline
@@ -27,29 +33,38 @@ The extension adds two status bar buttons:
 
 Automatically monitors:
 
-- `.git/HEAD` and `.git/refs/heads/**` (Git commits)
-- `packages/cli/package.json` (CLI version)
-- `packages/cli/template/package.json` (template metadata)
+- Git commits and refs for all packages
+- Each package's `package.json` (version, baseline)
+- Changeset files and sync status for all packages
 
-**Starter App:** Compares with baseline commit in `packages/cli/template/package.json`
-**CLI Package:** Compares with latest npm version of `@vite-powerflow/create`
+## Output Example
 
-## Development
+The output is available in the VS Code output channel under "Vite Powerflow Sync". Here's an example of what it looks like:
 
-```bash
-pnpm extension:test
-pnpm extension:compile
-pnpm extension:package
-pnpm extension:build    # compile + package
-pnpm extension:deploy   # compile + package + install
+```
+🔄 Sync Status Report - [2025-08-08 16:08:44]
+═══════════════════════════════════════════════════════════
+
+📦 [Starter] (v1.0.0)
+   📄 Changeset: strong-garlics-grab.md (patch)
+   📊 Coverage: 2/2 commits covered
+   🎯 Ready for release
+
+📦 [CLI] (v1.0.5)
+   📄 Changeset: shy-things-stare.md (minor)
+   📊 Coverage: 5/5 commits covered
+   🎯 Ready for release
+
+═══════════════════════════════════════════════════════════
+🔄 Status: 🟡 PENDING
+📋 Summary: All 2 packages ready
 ```
 
-## Requirements
+## Multi-package Monitoring
 
-- VS Code 1.102.0+
-- Vite Powerflow monorepo with `pnpm-workspace.yaml`
-- `apps/starter/` and `packages/cli/` directories
-- Initialized Git repository
+- Detects desyncs and pending changesets for starter and CLI
+- Displays warnings and sync status for these packages
+- Helps maintain release integrity across the monorepo
 
 ---
 
