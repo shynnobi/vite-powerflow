@@ -18,6 +18,7 @@ services:
       # Provide sensible defaults if not set in .env (though usually set by features/scripts)
       - SWC_PLATFORM_ARCH=${SWC_PLATFORM_ARCH:-linux-x64-gnu}
       - npm_config_arch=${npm_config_arch:-x64}
+      - TZ=Europe/Paris
 
     # Keep the container alive indefinitely.
     # Dev Containers will handle executing commands inside.

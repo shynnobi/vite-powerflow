@@ -1,9 +1,10 @@
 import * as esbuild from 'esbuild';
-import { logInfo, logSuccess, logError } from './lib/logger';
 
-(async () => {
+import { logError, logInfo, logSuccess } from './lib/logger';
+
+(() => {
   logInfo('Building @vite-powerflow/utils...');
-  await esbuild
+  void esbuild
     .build({
       entryPoints: ['src/index.ts'],
       bundle: true,

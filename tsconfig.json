@@ -3,7 +3,10 @@
     "jsx": "react-jsx",
     "types": ["vitest"],
     "module": "es2022",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "strictNullChecks": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   },
   "references": [
     {
@@ -13,7 +16,7 @@
       "path": "packages/utils"
     },
     {
-      "path": "apps/starter"
+      "path": "packages/vite-powerflow-sync"
     }
   ]
 }

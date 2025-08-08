@@ -9,6 +9,7 @@ import { createProject } from './commands/create.js';
 import { directoryExists } from './utils/fs-utils.js';
 import { promptProjectName } from './utils/prompt-ui.js';
 import { safePackageName } from './utils/safe-package-name.js';
+import type { GitOptions } from '../types/git-options.js';
 
 let currentProjectPath: string | null = null;
 let isCleaningUp = false;
@@ -37,7 +38,7 @@ async function cleanup() {
 // Handle Ctrl+C
 process.stdin.on('keypress', (_: string, key: { ctrl: boolean; name: string }) => {
   if (key.ctrl && key.name === 'c') {
-    cleanup();
+    void cleanup();
   }
 });
 
@@ -58,9 +59,9 @@ const program = new Command()
   );
 
 program.parse(process.argv);
-const cliOptions = program.opts();
+const cliOptions = program.opts<GitOptions>();
 
-function isNonInteractiveMode(opts: any, args: string[]) {
+function isNonInteractiveMode(opts: GitOptions, args: string[]) {
   // If no project directory is provided, force interactive mode
   if (args.length === 0) return false;
 
@@ -108,7 +109,7 @@ async function init() {
     currentProjectPath = projectPath;
 
     // Commander: use git option if provided, otherwise prompt
-    let git = await (await import('./utils/prompt-ui.js')).promptGit(cliOptions.git);
+    const git = await (await import('./utils/prompt-ui.js')).promptGit(cliOptions.git);
 
     let gitUserName: string | undefined = cliOptions.gitUserName;
     let gitUserEmail: string | undefined = cliOptions.gitUserEmail;
@@ -141,4 +142,4 @@ async function init() {
   }
 }
 
-init();
+void init();

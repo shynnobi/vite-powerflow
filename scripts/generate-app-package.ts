@@ -5,6 +5,8 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import { LogFn } from './types/log';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -73,7 +75,6 @@ function walkFiles(dir: string, cb: (file: string) => void) {
   }
 }
 
-type LogFn = (msg: string) => void;
 const log: LogFn = msg => console.log(`\x1b[36m[generate:${type}]\x1b[0m ${msg}`);
 
 log(`Copying template to ${type === 'app' ? 'apps' : 'packages'}/${name}...`);
@@ -84,7 +85,8 @@ walkFiles(destDir, file => replaceInFile(file, templateName, name));
 
 const pkgJsonPath = path.join(destDir, 'package.json');
 if (fs.existsSync(pkgJsonPath)) {
-  const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf-8'));
+  const pkgRaw = fs.readFileSync(pkgJsonPath, 'utf-8');
+  const pkg = JSON.parse(pkgRaw) as { name: string; [key: string]: unknown };
   pkg.name = scopedName;
   fs.writeFileSync(pkgJsonPath, JSON.stringify(pkg, null, 2));
   log('Updated package.json name field.');

@@ -88,7 +88,8 @@ function generateBarrelsForPackage(packagePath: string) {
       }
 
       // 4.3. Generate the barrel if needed
-      const { success, fileCount } = generateBarrel(subdirPath);
+      const result = generateBarrel(subdirPath);
+      const { success, fileCount } = result;
 
       if (success) {
         logRootSuccess(`Generated barrel for ${subdir} (${fileCount} files)`);
@@ -98,8 +99,9 @@ function generateBarrelsForPackage(packagePath: string) {
         logRootInfo(`No files to export in ${subdir}`);
       }
     }
-  } catch (error: any) {
-    logRootError(`Error generating barrels for ${packageName}: ${error.message}`);
+  } catch (error) {
+    const err = error as { message?: string };
+    logRootError(`Error generating barrels for ${packageName}: ${err.message ?? String(error)}`);
     process.exit(1);
   }
 

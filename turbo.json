@@ -20,7 +20,9 @@
     "fix": {},
     "format": {},
     "lint:fix": {},
-    "lint": {},
+    "lint": {
+      "dependsOn": ["^build"]
+    },
     "test:coverage:report": {},
     "test:coverage": {},
     "test:e2e": {},

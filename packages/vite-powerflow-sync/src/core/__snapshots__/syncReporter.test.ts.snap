@@ -1,0 +1,313 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`formatSyncOutput > should display a pending changeset when commits are present and a changeset is detected 1`] = `
+[
+  "🔄 Sync Status Report - [TIME]",
+  "═══════════════════════════════════════════════════════════",
+  "",
+  "📦 [Starter] (v1.2.0)",
+  "   📄 Changeset: fantastic-dogs-dance.md (minor)",
+  "   📊 Coverage: 0/2 commits covered",
+  "   🎯 Ready for release",
+  "",
+  "📦 [CLI] (v0.8.1)",
+  "   ❌ No changeset found",
+  "   📋 2 unreleased commits need changeset:",
+  "      • 3j4k5l6 feat: improve CLI performance",
+  "      • 7m8n9o0 fix: handle edge case in parsing",
+  "   ⚠️ Require changeset (2 unreleased commits)",
+  "",
+  "═══════════════════════════════════════════════════════════",
+  "🔄 Status: 🟠 WARNING",
+  "📋 Summary: 1 package ready, 1 package need attention",
+  "",
+  "",
+]
+`;
+
+exports[`formatSyncOutput > should display a warning when there are many commits without a changeset (limit case) 1`] = `
+[
+  "🔄 Sync Status Report - [TIME]",
+  "═══════════════════════════════════════════════════════════",
+  "",
+  "📦 [Starter] (v1.2.0)",
+  "   ❌ No changeset found",
+  "   📋 12 unreleased commits need changeset:",
+  "      • 1e2f3g4 feat: major refactoring of core system",
+  "      • 5h6i7j8 feat: add advanced routing capabilities",
+  "      • 9k0l1m2 fix: critical security vulnerability",
+  "      • 3n4o5p6 fix: performance issues in large datasets",
+  "      • 7q8r9s0 feat: implement new authentication flow",
+  "      • ... and 7 more",
+  "   ⚠️ Require changeset (12 unreleased commits)",
+  "",
+  "📦 [CLI] (v0.8.1)",
+  "   ✅ Package in sync - baseline d4e5f6g",
+  "",
+  "═══════════════════════════════════════════════════════════",
+  "🔄 Status: 🟠 WARNING",
+  "📋 Summary: 1 package ready, 1 package need attention",
+  "",
+  "",
+]
+`;
+
+exports[`formatSyncOutput > should display error messages when check errors occur for one or more packages 1`] = `
+[
+  "🔄 Sync Status Report - [TIME]",
+  "═══════════════════════════════════════════════════════════",
+  "",
+  "📦 [Starter] (v1.2.0)",
+  "   ❌ Check failed - Unable to find baseline commit in git history",
+  "",
+  "📦 [CLI] (v0.8.1)",
+  "   ❌ Check failed - Git repository not found or corrupted",
+  "",
+  "═══════════════════════════════════════════════════════════",
+  "🔄 Status: 🔴 ERROR",
+  "📋 Summary: All 2 packages need attention",
+  "",
+  "",
+]
+`;
+
+exports[`formatSyncOutput > should group packages by the same changeset file for multi-package changesets 1`] = `
+[
+  "🔄 Sync Status Report - [TIME]",
+  "═══════════════════════════════════════════════════════════",
+  "",
+  "📦 [Starter] (v1.0.0)",
+  "   📄 Changeset: auth-system.md (minor)",
+  "   📊 Coverage: 0/2 commits covered",
+  "   🎯 Ready for release",
+  "",
+  "📦 [CLI] (v0.8.1)",
+  "   📄 Changeset: auth-system.md (patch)",
+  "   📊 Coverage: 0/1 commits covered",
+  "   🎯 Ready for release",
+  "",
+  "═══════════════════════════════════════════════════════════",
+  "🔄 Status: 🟡 PENDING",
+  "📋 Summary: All 2 packages ready",
+  "🔗 auth-system.md: Starter (minor), CLI (patch)",
+  "",
+  "",
+]
+`;
+
+exports[`formatSyncOutput > should handle a complex mixed situation with pending changesets and warnings 1`] = `
+[
+  "🔄 Sync Status Report - [TIME]",
+  "═══════════════════════════════════════════════════════════",
+  "",
+  "📦 [Starter] (v1.2.0)",
+  "   📄 Changeset: amazing-cats-jump.md (patch)",
+  "   📊 Coverage: 0/1 commits covered",
+  "   🎯 Ready for release",
+  "",
+  "📦 [CLI] (v0.8.1)",
+  "   ❌ No changeset found",
+  "   📋 8 unreleased commits need changeset:",
+  "      • 1p2q3r4 feat: add new validation system",
+  "      • 5s6t7u8 fix: memory leak in file watcher",
+  "      • 9v0w1x2 refactor: simplify config handling",
+  "      • 3y4z5a6 test: add comprehensive integration tests",
+  "      • 7b8c9d0 docs: update API documentation",
+  "      • ... and 3 more",
+  "   ⚠️ Require changeset (8 unreleased commits)",
+  "",
+  "═══════════════════════════════════════════════════════════",
+  "🔄 Status: 🟠 WARNING",
+  "📋 Summary: 1 package ready, 1 package need attention",
+  "",
+  "",
+]
+`;
+
+exports[`formatSyncOutput > should handle multiple multi-package changesets and group them correctly 1`] = `
+[
+  "🔄 Sync Status Report - [TIME]",
+  "═══════════════════════════════════════════════════════════",
+  "",
+  "📦 [Starter] (v1.0.0)",
+  "   📄 Changeset: auth-system.md (minor)",
+  "   📊 Coverage: 0/2 commits covered",
+  "   🎯 Ready for release",
+  "",
+  "📦 [CLI] (v0.8.1)",
+  "   📄 Changeset: shared-helpers.md (patch)",
+  "   📊 Coverage: 0/3 commits covered",
+  "   🎯 Ready for release",
+  "",
+  "📦 [Utils] (v0.3.2)",
+  "   📄 Changeset: auth-system.md (patch)",
+  "   📊 Coverage: 0/1 commits covered",
+  "   🎯 Ready for release",
+  "",
+  "📦 [Types] (v1.1.0)",
+  "   📄 Changeset: shared-helpers.md (minor)",
+  "   📊 Coverage: 0/1 commits covered",
+  "   🎯 Ready for release",
+  "",
+  "═══════════════════════════════════════════════════════════",
+  "🔄 Status: 🟡 PENDING",
+  "📋 Summary: All 4 packages ready",
+  "🔗 auth-system.md: Starter (minor), Utils (patch)",
+  "🔗 shared-helpers.md: CLI (patch), Types (minor)",
+  "",
+  "",
+]
+`;
+
+exports[`formatSyncOutput > should prioritize ERROR status over other statuses when present 1`] = `
+[
+  "🔄 Sync Status Report - [TIME]",
+  "═══════════════════════════════════════════════════════════",
+  "",
+  "📦 [Starter] (v1.0.0)",
+  "   ❌ Check failed - Git repository not found",
+  "",
+  "📦 [CLI] (v0.8.1)",
+  "   📄 Changeset: awesome-fix.md (patch)",
+  "   📊 Coverage: 0/2 commits covered",
+  "   🎯 Ready for release",
+  "",
+  "═══════════════════════════════════════════════════════════",
+  "🔄 Status: 🔴 ERROR",
+  "📋 Summary: 1 package ready, 1 package need attention",
+  "",
+  "",
+]
+`;
+
+exports[`formatSyncOutput > should prioritize WARNING status over SYNC when no errors are present 1`] = `
+[
+  "🔄 Sync Status Report - [TIME]",
+  "═══════════════════════════════════════════════════════════",
+  "",
+  "📦 [Starter] (v1.0.0)",
+  "   ✅ Package in sync - baseline a1b2c3d",
+  "",
+  "📦 [CLI] (v0.8.1)",
+  "   ❌ No changeset found",
+  "   📋 3 unreleased commits need changeset:",
+  "      • 1a2b3c4 feat: needs changeset",
+  "      • 5d6e7f8 fix: needs changeset",
+  "      • 9g0h1i2 docs: needs changeset",
+  "   ⚠️ Require changeset (3 unreleased commits)",
+  "",
+  "═══════════════════════════════════════════════════════════",
+  "🔄 Status: 🟠 WARNING",
+  "📋 Summary: 1 package ready, 1 package need attention",
+  "",
+  "",
+]
+`;
+
+exports[`formatSyncOutput > should show a pending changeset when only part of the commits are covered (partial changeset) 1`] = `
+[
+  "🔄 Sync Status Report - [TIME]",
+  "═══════════════════════════════════════════════════════════",
+  "",
+  "📦 [Starter] (v1.2.0)",
+  "   📄 Changeset: strong-garlics-grab.md (minor)",
+  "   📊 Coverage: 0/4 commits covered",
+  "   🎯 Ready for release",
+  "",
+  "📦 [CLI] (v0.8.1)",
+  "   📄 Changeset: shy-things-stare.md (patch)",
+  "   📊 Coverage: 0/1 commits covered",
+  "   🎯 Ready for release",
+  "",
+  "═══════════════════════════════════════════════════════════",
+  "🔄 Status: 🟡 PENDING",
+  "📋 Summary: All 2 packages ready",
+  "",
+  "",
+]
+`;
+
+exports[`formatSyncOutput > should show all packages as synchronized when all statuses are SYNC 1`] = `
+[
+  "🔄 Sync Status Report - [TIME]",
+  "═══════════════════════════════════════════════════════════",
+  "",
+  "📦 [Starter] (v1.0.0)",
+  "   ✅ Package in sync - baseline a1b2c3d",
+  "",
+  "📦 [CLI] (v0.8.1)",
+  "   ✅ Package in sync - baseline d4e5f6g",
+  "",
+  "═══════════════════════════════════════════════════════════",
+  "🔄 Status: 🟢 SYNC",
+  "📋 Summary: All 2 packages ready",
+  "",
+  "",
+]
+`;
+
+exports[`formatSyncOutput > should show all packages as synchronized when there are no pending commits or changesets 1`] = `
+[
+  "🔄 Sync Status Report - [TIME]",
+  "═══════════════════════════════════════════════════════════",
+  "",
+  "📦 [Starter] (v1.2.0)",
+  "   ✅ Package in sync - baseline a1b2c3d",
+  "",
+  "📦 [CLI] (v0.8.1)",
+  "   ✅ Package in sync - baseline d4e5f6g",
+  "",
+  "═══════════════════════════════════════════════════════════",
+  "🔄 Status: 🟢 SYNC",
+  "📋 Summary: All 2 packages ready",
+  "",
+  "",
+]
+`;
+
+exports[`formatSyncOutput > should warn when a package has commits but no version (no packageVersion field) 1`] = `
+[
+  "🔄 Sync Status Report - [TIME]",
+  "═══════════════════════════════════════════════════════════",
+  "",
+  "📦 [Starter]",
+  "   ❌ No changeset found",
+  "   📋 2 unreleased commits need changeset:",
+  "      • 1a2b3c4 feat: initial project setup",
+  "      • 5d6e7f8 docs: add initial README",
+  "   ⚠️ Require changeset (2 unreleased commits)",
+  "",
+  "📦 [CLI]",
+  "   ✅ Package in sync",
+  "",
+  "═══════════════════════════════════════════════════════════",
+  "🔄 Status: 🟠 WARNING",
+  "📋 Summary: 1 package ready, 1 package need attention",
+  "",
+  "",
+]
+`;
+
+exports[`formatSyncOutput > should warn when there are commits without a corresponding changeset 1`] = `
+[
+  "🔄 Sync Status Report - [TIME]",
+  "═══════════════════════════════════════════════════════════",
+  "",
+  "📦 [Starter] (v1.2.0)",
+  "   ❌ No changeset found",
+  "   📋 3 unreleased commits need changeset:",
+  "      • 1a2b3c4 feat: add new component system",
+  "      • 5d6e7f8 fix: resolve navigation bug",
+  "      • 9g0h1i2 docs: update README examples",
+  "   ⚠️ Require changeset (3 unreleased commits)",
+  "",
+  "📦 [CLI] (v0.8.1)",
+  "   ✅ Package in sync - baseline d4e5f6g",
+  "",
+  "═══════════════════════════════════════════════════════════",
+  "🔄 Status: 🟠 WARNING",
+  "📋 Summary: 1 package ready, 1 package need attention",
+  "",
+  "",
+]
+`;

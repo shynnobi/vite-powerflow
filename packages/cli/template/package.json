@@ -139,5 +139,10 @@
     "workerDirectory": [
       "public"
     ]
+  },
+  "starterSource": {
+    "version": "1.0.0",
+    "commit": "668ab2e8f19ec5a066bfdba3e5f2713f29078ff5",
+    "syncedAt": "2025-07-29T12:00:00.000Z"
   }
 }
