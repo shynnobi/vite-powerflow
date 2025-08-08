@@ -8,13 +8,13 @@
     "generate:barrels": "tsx ../../scripts/generate-barrels.ts",
     "prebuild": "pnpm run generate:barrels",
     "build": "pnpm run prebuild && tsx src/build.ts && tsc --emitDeclarationOnly --outDir dist",
-    "lint": "eslint . --ext ts,tsx,js,jsx",
-    "lint:fix": "eslint . --ext ts,tsx,js,jsx --fix",
+    "lint": "eslint src/**/*.{ts,tsx,js,jsx}",
+    "lint:fix": "eslint src/**/*.{ts,tsx,js,jsx} --fix",
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
     "type-check": "tsc --noEmit",
     "test": "vitest run",
-    "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix",
+    "fix": "prettier --write . && eslint src/**/*.ts src/**/*.tsx --fix",
     "sync:starter-to-template": "tsx ../../scripts/sync-starter-to-template.ts"
   },
   "keywords": [

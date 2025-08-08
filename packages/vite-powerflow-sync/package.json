@@ -1,0 +1,68 @@
+{
+  "name": "vite-powerflow-sync",
+  "displayName": "Vite Powerflow - Sync Monitor",
+  "description": "Monitor sync status between Vite Powerflow starter app and CLI template. Detect when changeset is needed or template sync is required.",
+  "version": "0.0.1",
+  "publisher": "vite-powerflow",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shynnobi/vite-powerflow.git",
+    "directory": "packages/vite-powerflow-sync"
+  },
+  "engines": {
+    "vscode": "^1.102.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "vite-powerflow",
+    "starter",
+    "cli",
+    "template",
+    "sync",
+    "changeset",
+    "monorepo"
+  ],
+  "activationEvents": [
+    "onStartup",
+    "workspaceContains:pnpm-workspace.yaml"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "vitePowerflow.runSyncCheck",
+        "title": "Vite Powerflow: Show Starter Sync Status"
+      },
+      {
+        "command": "vitePowerflow.refreshSyncCheck",
+        "title": "Vite Powerflow: Refresh Sync Status"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "tsx scripts/bundle-extension.ts",
+    "dev": "tsx scripts/bundle-extension.ts --watch",
+    "test": "vitest run",
+    "lint": "eslint . --ext ts,tsx,js,jsx",
+    "lint:fix": "eslint . --ext ts,tsx,js,jsx --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix",
+    "type-check": "tsc --noEmit",
+    "compile": "tsx scripts/bundle-extension.ts",
+    "watch": "tsx scripts/bundle-extension.ts --watch",
+    "vscode:prepublish": "tsx scripts/bundle-extension.ts",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.15",
+    "@types/vscode": "^1.102.0",
+    "jest-mock-vscode": "^4.6.0",
+    "typescript": "^5.0.0",
+    "vitest": "^3.2.4",
+    "vsce": "^2.15.0"
+  }
+}

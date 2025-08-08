@@ -1,5 +1,21 @@
 #!/bin/sh
 
+# Skip hooks in CI environments (e.g., Changesets GitHub Action)
+if [ "$CI" = "true" ]; then
+  echo "CI detected: skipping pre-commit hooks."
+  exit 0
+fi
+
+echo "🔍 Augmenting changesets (anchor/baseline) ..."
+pnpm changeset:augment
+if [ $? -ne 0 ]; then
+  echo "❌ Changeset augmentation failed. Commit aborted to ensure sync integrity."
+  exit 1
+fi
+
+# Re-stage potential changes to .changeset/*.md made by the augment script
+git add .changeset/*.md 2>/dev/null || true
+
 echo "🔍 Validating your commit..."
 
 pnpm validate:commit || {
