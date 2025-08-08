@@ -2,7 +2,7 @@
 '@vite-powerflow/starter': patch
 ---
 
-anchor: 7d2df271dd2fc57cf562aeb34c955d6c3cb1f4cb
+anchor: 9145037dbe1b262967614c37c49163049c280862
 baseline: 668ab2e8f19ec5a066bfdba3e5f2713f29078ff5
 
 ### Refactor & Improvements
