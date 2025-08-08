@@ -1,13 +1,13 @@
 {
-  "name": "vite-powerflow-starter-sync",
-  "displayName": "Vite Powerflow - Starter Sync Monitor",
+  "name": "vite-powerflow-sync",
+  "displayName": "Vite Powerflow - Sync Monitor",
   "description": "Monitor sync status between Vite Powerflow starter app and CLI template. Detect when changeset is needed or template sync is required.",
   "version": "0.0.1",
   "publisher": "vite-powerflow",
   "repository": {
     "type": "git",
     "url": "https://github.com/shynnobi/vite-powerflow.git",
-    "directory": "packages/vscode-starter-sync"
+    "directory": "packages/vite-powerflow-sync"
   },
   "engines": {
     "vscode": "^1.102.0"

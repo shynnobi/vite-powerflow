@@ -12,8 +12,8 @@
       "@vite-powerflow/create/*": ["packages/cli/src/*"],
       "@vite-powerflow/utils": ["packages/utils/src"],
       "@vite-powerflow/utils/*": ["packages/utils/src/*"],
-      "vite-powerflow-starter-sync": ["packages/vscode-starter-sync/src"],
-      "vite-powerflow-starter-sync/*": ["packages/vscode-starter-sync/src/*"]
+      "vite-powerflow-sync": ["packages/vite-powerflow-sync/src"],
+      "vite-powerflow-sync/*": ["packages/vite-powerflow-sync/src/*"]
     }
   }
 }

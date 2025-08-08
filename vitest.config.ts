@@ -6,7 +6,7 @@ export default defineConfig({
     projects: [
       './packages/cli',
       './packages/utils',
-      './packages/vscode-starter-sync',
+      './packages/vite-powerflow-sync',
       './apps/starter',
     ],
   },

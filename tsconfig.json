@@ -16,7 +16,7 @@
       "path": "packages/utils"
     },
     {
-      "path": "packages/vscode-starter-sync"
+      "path": "packages/vite-powerflow-sync"
     }
   ]
 }

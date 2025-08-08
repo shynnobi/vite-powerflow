@@ -1,4 +1,4 @@
-# Vite Powerflow Starter Sync
+# Vite Powerflow Sync
 
 VS Code extension that monitors sync between `apps/starter` and `packages/cli/template`.
 
