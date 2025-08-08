@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# Skip hooks in CI environments (e.g., Changesets GitHub Action)
+if [ "$CI" = "true" ]; then
+  echo "CI detected: skipping pre-commit hooks."
+  exit 0
+fi
+
 echo "🔍 Augmenting changesets (anchor/baseline) ..."
 pnpm changeset:augment
 if [ $? -ne 0 ]; then

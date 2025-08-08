@@ -3,10 +3,64 @@ import fs from 'fs';
 import fsp from 'fs/promises';
 import path from 'path';
 
-import {
-  extractMetadataAfterFrontmatter,
-  parseChangesetFrontmatter,
-} from '../packages/vite-powerflow-sync/src/core/changesetParser.ts';
+// Use the compiled JS from the extension package to ensure CI/runtime compatibility
+// Self-contained parsing utilities to avoid build/runtime coupling in CI
+const CHANGESET_REGEX = /^---\s*\n([\s\S]*?)\n---/;
+
+function parseChangesetFrontmatter(content: string): Map<string, string> {
+  const match = CHANGESET_REGEX.exec(content);
+  const frontmatter = new Map<string, string>();
+
+  if (match?.[1]) {
+    const frontmatterStr = match[1];
+    frontmatterStr.split('\n').forEach(line => {
+      const trimmedLine = line.trim();
+      if (trimmedLine.includes(':')) {
+        const colonIndex = trimmedLine.indexOf(':');
+        const key = trimmedLine.substring(0, colonIndex).trim().replace(/'/g, '').replace(/"/g, '');
+        const value = trimmedLine
+          .substring(colonIndex + 1)
+          .trim()
+          .replace(/'/g, '')
+          .replace(/"/g, '');
+        if (key && value) {
+          frontmatter.set(key, value);
+        }
+      }
+    });
+  }
+
+  return frontmatter;
+}
+
+function extractMetadataAfterFrontmatter(content: string): { anchor?: string; baseline?: string } {
+  const start = content.indexOf('---');
+  if (start !== 0) return {};
+
+  const end = content.indexOf('---', 3);
+  if (end === -1) return {};
+
+  const afterFrontmatter = content.substring(end + 3);
+  const lines = afterFrontmatter.split('\n');
+
+  let anchor: string | undefined;
+  let baseline: string | undefined;
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed === '' || trimmed.startsWith('#')) {
+      break;
+    }
+    if (trimmed.startsWith('anchor:')) {
+      anchor = trimmed.replace('anchor:', '').trim();
+    }
+    if (trimmed.startsWith('baseline:')) {
+      baseline = trimmed.replace('baseline:', '').trim();
+    }
+  }
+
+  return { anchor, baseline };
+}
 
 interface ConsoleOutput {
   appendLine(v: string): void;
