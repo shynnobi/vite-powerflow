@@ -1,8 +1,8 @@
 ---
-description:
-globs:
-alwaysApply: true
+description: Pull request conventions for templates, titles, and commit messages.
+alwaysApply: false
 ---
+
 - Always use the PR template when creating pull requests
 - When using GitHub CLI to create PRs, include the PR template with: `--body "$(cat .github/pull_request_template.md)"`
 - Always generate a temporary file from the PR template, pre-fill it, and then use the `--body-file` option when creating the PR with GitHub CLI.
