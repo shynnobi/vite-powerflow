@@ -67,12 +67,8 @@ void (() => {
   const tsconfig = JSON.parse(tsconfigRaw) as {
     compilerOptions?: { paths?: Record<string, string[]> };
   };
-  if (!tsconfig.compilerOptions) {
-    tsconfig.compilerOptions = {};
-  }
-  if (!tsconfig.compilerOptions.paths) {
-    tsconfig.compilerOptions.paths = {};
-  }
+  tsconfig.compilerOptions ??= {};
+  tsconfig.compilerOptions.paths ??= {};
 
   // 3.1. Remove old path aliases for all internal packages and apps
   Object.keys(tsconfig.compilerOptions?.paths ?? {}).forEach((key: string) => {
@@ -89,8 +85,8 @@ void (() => {
   pkgs.forEach(pkg => {
     // Use srcPath for TypeScript path aliases
     const relSrc = path.relative(root, pkg.srcPath).replace(/\\/g, '/');
-    tsconfig.compilerOptions.paths[pkg.name] = [relSrc];
-    tsconfig.compilerOptions.paths[`${pkg.name}/*`] = [`${relSrc}/*`];
+    tsconfig.compilerOptions!.paths![pkg.name] = [relSrc];
+    tsconfig.compilerOptions!.paths![`${pkg.name}/*`] = [`${relSrc}/*`];
   });
   fs.writeFileSync(tsconfigPath, JSON.stringify(tsconfig, null, 2));
   logRootSuccess(`TypeScript paths updated in tsconfig.base.json`);
