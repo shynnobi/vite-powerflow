@@ -16,7 +16,8 @@ export async function directoryExists(path: string): Promise<boolean> {
 export async function updateDevcontainerWorkspaceFolder(projectDir: string): Promise<void> {
   const devcontainerPath = path.join(projectDir, '.devcontainer', 'devcontainer.json');
   await fs.access(devcontainerPath);
-  const devcontainer = JSON.parse(await fs.readFile(devcontainerPath, 'utf8'));
+  const devcontainerRaw = await fs.readFile(devcontainerPath, 'utf8');
+  const devcontainer = JSON.parse(devcontainerRaw) as { workspaceFolder?: string };
   const projectName = path.basename(projectDir);
   devcontainer.workspaceFolder = `/workspaces/${projectName}`;
   await fs.writeFile(devcontainerPath, JSON.stringify(devcontainer, null, 2));

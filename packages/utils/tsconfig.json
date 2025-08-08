@@ -10,15 +10,9 @@
     "noEmit": false,
     "resolveJsonModule": true,
     "module": "ES2022",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "baseUrl": "src"
   },
-  "include": ["src/**/*"],
-  "exclude": [
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts",
-    "src/build.ts",
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "node_modules"
-  ]
+  "include": ["src/**/*", "src/**/*.test.ts", "src/**/*.spec.ts", "src/build.ts"],
+  "exclude": ["node_modules"]
 }

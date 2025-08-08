@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest';
 import path from 'path';
+import { describe, expect, it } from 'vitest';
+
 import { getMonorepoRoot } from './getMonorepoRoot';
 
 describe('getMonorepoRoot', () => {

@@ -1,23 +1,34 @@
+// Root ESLint configuration for the vite-powerflow monorepo
+// This file centralizes all common rules, plugins, and settings for JS/TS/Tests
+
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import tsParser from '@typescript-eslint/parser';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
 import importPlugin from 'eslint-plugin-import';
 import vitest from 'eslint-plugin-vitest';
+import js from '@eslint/js';
 
-// Common settings and plugins
+// Common import resolver settings
 const commonSettings = {
   'import/resolver': {
+    typescript: {
+      alwaysTryTypes: true,
+    },
     node: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.svg', '.png', '.jpg'],
     },
   },
 };
 
+// Common plugin references
 const commonPlugins = {
   'simple-import-sort': simpleImportSort,
+  '@typescript-eslint': tsPlugin,
   import: importPlugin,
   vitest,
 };
 
+// Common lint rules for all files
 const commonRules = {
   'simple-import-sort/imports': [
     'error',
@@ -43,6 +54,7 @@ const commonRules = {
   'import/no-unresolved': 'error',
 };
 
+// Common global variables
 const commonGlobals = {
   process: 'readonly',
   require: 'readonly',
@@ -52,8 +64,20 @@ const commonGlobals = {
   console: 'readonly',
 };
 
+// DRY: Shared config for unused vars in TS (including tests)
+const tsNoUnusedVarsRule = [
+  'warn',
+  {
+    args: 'after-used',
+    argsIgnorePattern: '^_',
+    varsIgnorePattern: '^_',
+    ignoreRestSiblings: true,
+  },
+];
+
 export default [
   {
+    // Ignore files and folders that should never be linted
     ignores: [
       'node_modules/**',
       '**/dist/**',
@@ -73,7 +97,7 @@ export default [
       'vite.config.ts',
     ],
   },
-  // Configuration for JavaScript files (without TypeScript parser, with Node.js globals)
+  // JavaScript files (no TypeScript parser, Node.js globals)
   {
     files: ['**/*.{js,jsx,cjs,mjs}'],
     languageOptions: {
@@ -83,13 +107,14 @@ export default [
     },
     plugins: commonPlugins,
     rules: {
+      ...js.configs.recommended.rules,
       ...commonRules,
       'no-unused-vars': 'error',
       'no-undef': 'error',
     },
     settings: commonSettings,
   },
-  // Configuration for TypeScript files (avec TypeScript parser)
+  // TypeScript files (parser, recommended rules, import plugin)
   {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
@@ -103,24 +128,35 @@ export default [
       globals: commonGlobals,
     },
     plugins: commonPlugins,
-    rules: commonRules,
-    settings: {
-      'import/resolver': {
-        typescript: {
-          alwaysTryTypes: true,
-          project: ['./tsconfig.json', './packages/*/tsconfig.json', './apps/*/tsconfig.json'],
-        },
-      },
+    rules: {
+      ...commonRules,
+      ...tsPlugin.configs.recommended.rules,
+      ...tsPlugin.configs['recommended-type-checked'].rules,
+      ...tsPlugin.configs['stylistic-type-checked'].rules,
+      '@typescript-eslint/no-unused-vars': tsNoUnusedVarsRule,
     },
   },
-  // Configuration for Vitest test files (compatible flat config)
+  // Vitest test files (specific rules and globals)
   {
-    files: ['**/*.test.ts', '**/*.spec.ts'],
-    plugins: { vitest },
+    files: ['**/*.test.{ts,tsx,js,jsx}'],
+    settings: commonSettings,
+    plugins: { vitest, '@typescript-eslint': tsPlugin },
     rules: {
       'vitest/no-focused-tests': 'error',
       'vitest/no-disabled-tests': 'warn',
       'vitest/expect-expect': 'warn',
+      '@typescript-eslint/no-unused-vars': tsNoUnusedVarsRule,
+      '@typescript-eslint/no-explicit-any': 'off', // Allow any in tests/mocks
+      '@typescript-eslint/no-unsafe-assignment': 'off', // Allow unsafe assignments in tests
+      '@typescript-eslint/no-unsafe-argument': 'off', // Allow unsafe arguments in tests
+      '@typescript-eslint/no-unsafe-call': 'off', // Allow unsafe calls in tests
+      '@typescript-eslint/no-unsafe-member-access': 'off', // Allow unsafe member access in tests
+      '@typescript-eslint/no-unsafe-return': 'off', // Allow unsafe returns in tests
+      '@typescript-eslint/require-await': 'off', // Allow async functions without await in tests
+      '@typescript-eslint/unbound-method': 'off', // Allow unbound methods in tests
+      '@typescript-eslint/await-thenable': 'off', // Allow await of non-promises in tests
+      '@typescript-eslint/no-base-to-string': 'off', // Allow object to string in tests
+      'no-unused-vars': 'off', // Turn off base rule for TypeScript files
       // Add more Vitest rules here if needed
     },
     languageOptions: {
@@ -134,6 +170,37 @@ export default [
       globals: {
         ...commonGlobals,
         // Vitest globals are added by the plugin
+      },
+    },
+  },
+  // Override: scripts root lint with only root tsconfig
+  {
+    files: ['scripts/**/*.ts'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: { jsx: true },
+        project: ['./tsconfig.json'],
+        projectService: true,
+      },
+      globals: commonGlobals,
+    },
+    plugins: commonPlugins,
+    rules: {
+      ...commonRules,
+      ...tsPlugin.configs.recommended.rules,
+      ...tsPlugin.configs['recommended-type-checked'].rules,
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': tsNoUnusedVarsRule,
+    },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: ['./tsconfig.json'],
+        },
       },
     },
   },

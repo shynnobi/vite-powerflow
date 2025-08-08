@@ -41,9 +41,9 @@ async function copyTemplate(): Promise<void> {
       }
     }
 
-    // Copy .vscode as vscode to avoid npm ignoring it
+    // Copy .vscode as _vscode to avoid npm ignoring it
     const vscodeSource = path.join(templatePath, '.vscode');
-    const vscodeDest = path.join(distTemplatePath, 'vscode');
+    const vscodeDest = path.join(distTemplatePath, '_vscode');
     if (await fs.pathExists(vscodeSource)) {
       await fs.copy(vscodeSource, vscodeDest);
       // Remove the original .vscode from dist to avoid duplication
@@ -56,12 +56,16 @@ async function copyTemplate(): Promise<void> {
     logSuccess('Template copied successfully!');
   } catch (err) {
     logError('Template copy failed');
-    logError(err instanceof Error ? err.message : String(err));
+    if (err instanceof Error) {
+      logError(err.message);
+    } else {
+      logError(String(err));
+    }
     throw err;
   }
 }
 
-(async () => {
+void (async () => {
   const templatePath = path.join(__dirname, 'template');
 
   try {
@@ -74,7 +78,10 @@ async function copyTemplate(): Promise<void> {
       process.exit(1);
     }
 
-    // 2. Build CLI with esbuild
+    // 2. Copy template to dist
+    await copyTemplate();
+
+    // 3. Build the CLI
     await esbuild.build({
       entryPoints: ['src/index.ts'],
       bundle: true,
@@ -95,15 +102,17 @@ async function copyTemplate(): Promise<void> {
       ],
       sourcemap: true,
       minify: false,
+      logLevel: 'info',
     });
 
-    // 3. Copy template to dist
-    await copyTemplate();
-
-    logSuccess('CLI built successfully!');
+    logSuccess('CLI tool built successfully!');
   } catch (err) {
-    logError('CLI build failed');
-    logError(err instanceof Error ? err.message : String(err));
+    logError('Build failed');
+    if (err instanceof Error) {
+      logError(err.message);
+    } else {
+      logError(String(err));
+    }
     process.exit(1);
   }
 })();

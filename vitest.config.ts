@@ -3,6 +3,11 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    projects: ['./packages/cli', './packages/utils', './apps/starter'],
+    projects: [
+      './packages/cli',
+      './packages/utils',
+      './packages/vite-powerflow-sync',
+      './apps/starter',
+    ],
   },
 });
