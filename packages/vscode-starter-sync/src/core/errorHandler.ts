@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 
-import { logMessage } from '../../utils/logMessage.js';
-import { CheckResult, SyncCheckConfig } from '../syncTypes.js';
+import { logMessage } from '../utils/logMessage.js';
+import { CheckResult, SyncCheckConfig } from './types.js';
 
-export function handleError(
+export function handleSyncError(
   config: SyncCheckConfig,
   error: Error,
   _outputChannel: vscode.OutputChannel

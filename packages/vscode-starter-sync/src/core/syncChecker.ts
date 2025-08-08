@@ -1,19 +1,14 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 
-import { getLatestNpmVersion, getPackageInfo } from '../packageUtils.js';
-import { CheckResult, PackageLabel, SyncCheckConfig, SyncCheckError } from '../syncTypes.js';
-import { getLatestChangesetForPackage } from './changesetUtils.js';
-import {
-  getCommitsSince,
-  getCurrentCommit,
-  getFilesChangedSince,
-  getTemplateBaselineCommit,
-  resolveRefToSha,
-} from './gitUtils.js';
-import { handleError } from './syncErrorHandler.js';
+import { readLatestChangeset } from './changesetReader.js';
+import { handleSyncError } from './errorHandler.js';
+import { getCommitsSince, getCurrentCommit, getFilesChangedSince } from './gitCommands.js';
+import { getTemplateBaseline, resolveRefToSha } from './gitStatus.js';
+import { readLatestNpmVersion, readPackageInfo } from './packageReader.js';
+import { CheckResult, PackageLabel, SyncCheckConfig, SyncCheckError } from './types.js';
 
-export async function getSyncStatus(
+export async function checkSyncStatus(
   config: SyncCheckConfig,
   workspaceRoot: string,
   outputChannel: vscode.OutputChannel
@@ -44,21 +39,18 @@ export async function getSyncStatus(
   try {
     if (config.label === PackageLabel.Starter) {
       const templatePackagePath = path.join(workspaceRoot, 'packages/cli/template/package.json');
-      const templatePkg = await getPackageInfo(templatePackagePath);
+      const templatePkg = await readPackageInfo(templatePackagePath);
       packageVersion = templatePkg?.version;
     } else if (config.label === PackageLabel.Cli) {
       const cliPackagePath = path.join(workspaceRoot, 'packages/cli/package.json');
-      const cliPkg = await getPackageInfo(cliPackagePath);
+      const cliPkg = await readPackageInfo(cliPackagePath);
       packageVersion = cliPkg?.version;
     }
   } catch {}
 
   if (newCommits.length > 0) {
     if (config.targetPackage) {
-      const latestChangeset = await getLatestChangesetForPackage(
-        workspaceRoot,
-        config.targetPackage
-      );
+      const latestChangeset = await readLatestChangeset(workspaceRoot, config.targetPackage);
 
       const filesChangedSinceBaseline = getFilesChangedSince(
         workspaceRoot,
@@ -209,13 +201,13 @@ export async function getSyncStatus(
   };
 }
 
-export async function checkStarterStatus(
+export async function checkStarterSync(
   workspaceRoot: string,
   outputChannel: vscode.OutputChannel
 ): Promise<CheckResult> {
   const config: SyncCheckConfig = {
     label: PackageLabel.Starter,
-    baseline: () => Promise.resolve(getTemplateBaselineCommit(workspaceRoot, outputChannel)),
+    baseline: () => Promise.resolve(getTemplateBaseline(workspaceRoot, outputChannel)),
     commitPath: 'apps/starter/',
     targetPackage: '@vite-powerflow/starter',
     messages: {
@@ -227,26 +219,26 @@ export async function checkStarterStatus(
   };
 
   try {
-    return await getSyncStatus(config, workspaceRoot, outputChannel);
+    return await checkSyncStatus(config, workspaceRoot, outputChannel);
   } catch (error) {
     const syncError = error instanceof Error ? error : new Error(String(error));
-    return handleError(config, syncError, outputChannel);
+    return handleSyncError(config, syncError, outputChannel);
   }
 }
 
-export async function checkCliStatus(
+export async function checkCliSync(
   workspaceRoot: string,
   outputChannel: vscode.OutputChannel
 ): Promise<CheckResult> {
   try {
     const cliPackagePath = path.join(workspaceRoot, 'packages/cli/package.json');
-    const cliPkg = await getPackageInfo(cliPackagePath);
+    const cliPkg = await readPackageInfo(cliPackagePath);
 
     if (!cliPkg) {
       throw new SyncCheckError('CLI package.json not found.');
     }
 
-    const latestPublishedVersion = getLatestNpmVersion(cliPkg.name, outputChannel);
+    const latestPublishedVersion = readLatestNpmVersion(cliPkg.name, outputChannel);
 
     if (!latestPublishedVersion) {
       const message = 'Not published on npm yet.';
@@ -276,10 +268,10 @@ export async function checkCliStatus(
       },
     };
 
-    return await getSyncStatus(config, workspaceRoot, outputChannel);
+    return await checkSyncStatus(config, workspaceRoot, outputChannel);
   } catch (error) {
     const syncError = error instanceof Error ? error : new Error(String(error));
-    return handleError(
+    return handleSyncError(
       {
         label: PackageLabel.Cli,
         baseline: () => Promise.resolve(''),

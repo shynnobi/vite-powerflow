@@ -1,8 +1,8 @@
 import * as path from 'path';
 
-import { formatBaseline } from './formatBaseline.js';
-import { getPackageInfo } from './packageUtils.js';
-import { CheckResult, PackageLabel, SyncCheckConfig } from './syncTypes.js';
+import { formatBaseline } from './baselineFormatter.js';
+import { readPackageInfo } from './packageReader.js';
+import { CheckResult, PackageLabel, SyncCheckConfig } from './types.js';
 
 export function formatPackageStatus(label: PackageLabel, result: CheckResult): string {
   const versionInfo = result.packageVersion ? ` (v${result.packageVersion})` : '';
@@ -27,8 +27,8 @@ export function formatPackageStatus(label: PackageLabel, result: CheckResult): s
     lines.push(`   📄 Changeset: ${result.changeset.fileName} (${result.changeset.bumpType})`);
 
     if (result.commits && result.commits.length > 0) {
-      const coveredCommits = result.coveredCommits || [];
-      const notCoveredCommits = result.notCoveredCommits || [];
+      const coveredCommits = result.coveredCommits ?? [];
+      const notCoveredCommits = result.notCoveredCommits ?? [];
       const totalCommits = result.commits.length;
 
       lines.push(`   📊 Coverage: ${coveredCommits.length}/${totalCommits} commits covered`);
@@ -69,9 +69,9 @@ export function formatPackageStatus(label: PackageLabel, result: CheckResult): s
 }
 
 export function formatGlobalStatus(
-  results: Array<{ label: PackageLabel; result: CheckResult }>
-): string {
-  if (results.length === 0) return '';
+  results: { label: PackageLabel; result: CheckResult }[]
+): string[] {
+  if (results.length === 0) return [];
 
   let syncCount = 0;
   let pendingCount = 0;
@@ -84,7 +84,7 @@ export function formatGlobalStatus(
     } else if (result.commitCount === 0) {
       syncCount++;
     } else if (result.changeset) {
-      const notCoveredCommits = result.notCoveredCommits || [];
+      const notCoveredCommits = result.notCoveredCommits ?? [];
       if (notCoveredCommits.length > 0) {
         warningCount++;
       } else {
@@ -115,7 +115,7 @@ export function formatGlobalStatus(
     globalEmoji = '🟢';
   }
 
-  let result = `🔄 Status: ${globalEmoji} ${globalStatus}`;
+  const result = [`🔄 Status: ${globalEmoji} ${globalStatus}`];
 
   let summary = '';
   if (errorCount + warningCount === 0) {
@@ -129,9 +129,9 @@ export function formatGlobalStatus(
     const needAttentionWord = needAttentionCount > 1 ? 'packages' : 'package';
     summary = `📋 Summary: ${readyCount} ${readyWord} ready, ${needAttentionCount} ${needAttentionWord} need attention`;
   }
-  result += `\n${summary}`;
+  result.push(summary);
 
-  const changesetMap = new Map<string, Array<{ label: PackageLabel; bumpType: string }>>();
+  const changesetMap = new Map<string, { label: PackageLabel; bumpType: string }[]>();
 
   for (const { label, result: pkgResult } of results) {
     if (pkgResult.changeset) {
@@ -144,7 +144,7 @@ export function formatGlobalStatus(
   }
 
   const multiPackageChangesets = Array.from(changesetMap.entries()).filter(
-    ([_, packages]) => packages.length > 1
+    ([, packages]) => packages.length > 1
   );
 
   if (multiPackageChangesets.length > 0) {
@@ -152,7 +152,7 @@ export function formatGlobalStatus(
       const packageList = packages
         .map(({ label, bumpType }) => `${label} (${bumpType})`)
         .join(', ');
-      result += `\n🔗 ${fileName}: ${packageList}`;
+      result.push(`🔗 ${fileName}: ${packageList}`);
     }
   }
 
@@ -160,7 +160,7 @@ export function formatGlobalStatus(
 }
 
 export function formatSyncOutput(
-  results: Array<{ label: PackageLabel; result: CheckResult }>
+  results: { label: PackageLabel; result: CheckResult }[]
 ): string[] {
   const lines: string[] = [];
 
@@ -181,9 +181,9 @@ export function formatSyncOutput(
   }
 
   lines.push('═══════════════════════════════════════════════════════════');
-  const summary = formatGlobalStatus(results);
-  if (summary) {
-    lines.push(summary);
+  const summaryLines = formatGlobalStatus(results);
+  if (summaryLines.length > 0) {
+    lines.push(...summaryLines);
   }
 
   lines.push('');
@@ -192,7 +192,6 @@ export function formatSyncOutput(
   return lines;
 }
 
-// Helpers migrated from legacy handlers
 export async function formatBaselineLog(
   config: SyncCheckConfig,
   baseline: string,
@@ -204,7 +203,7 @@ export async function formatBaselineLog(
   if (config.label === PackageLabel.Starter) {
     try {
       const templatePackagePath = path.join(workspaceRoot, 'packages/cli/template/package.json');
-      const templatePkg = await getPackageInfo(templatePackagePath);
+      const templatePkg = await readPackageInfo(templatePackagePath);
       if (templatePkg?.version) {
         message = `📦 [Starter] Checking against CLI template baseline (commit ${shortBaseline}, version ${templatePkg.version})`;
       }
@@ -212,36 +211,4 @@ export async function formatBaselineLog(
   }
 
   return message;
-}
-
-export function handleUnreleasedCommits(
-  config: SyncCheckConfig,
-  newCommits: string[],
-  _outputChannel: { appendLine: (v: string) => void },
-  additionalInfo?: { packageVersion?: string; baselineCommit?: string; currentCommit?: string }
-): CheckResult {
-  const commitCount = newCommits.length;
-  return {
-    status: 'warning',
-    message: `${commitCount} ${config.messages.unreleased}`,
-    commitCount,
-    packageVersion: additionalInfo?.packageVersion,
-    baselineCommit: additionalInfo?.baselineCommit,
-    currentCommit: additionalInfo?.currentCommit,
-  };
-}
-
-export function handleInSync(
-  config: SyncCheckConfig,
-  _outputChannel: { appendLine: (v: string) => void },
-  additionalInfo?: { packageVersion?: string; baselineCommit?: string; currentCommit?: string }
-): CheckResult {
-  return {
-    status: 'sync',
-    message: config.messages.inSync,
-    commitCount: 0,
-    packageVersion: additionalInfo?.packageVersion,
-    baselineCommit: additionalInfo?.baselineCommit,
-    currentCommit: additionalInfo?.currentCommit,
-  };
 }

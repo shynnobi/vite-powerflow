@@ -2,10 +2,10 @@ import { execSync } from 'child_process';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 
-import { parseChangesetFrontmatter } from '../changesetFrontmatter.js';
-import { Changeset, ChangesetStatus } from '../syncTypes.js';
+import { parseChangesetFrontmatter } from './changesetParser.js';
+import { Changeset, ChangesetStatus } from './types.js';
 
-export async function getChangesetStatus(
+export async function readChangesetStatus(
   workspaceRoot: string,
   targetPackage: string
 ): Promise<ChangesetStatus | null> {
@@ -41,8 +41,7 @@ export async function getChangesetStatus(
     }
   } catch (error: unknown) {
     if (
-      error &&
-      typeof error === 'object' &&
+      error instanceof Error &&
       'code' in error &&
       (error as { code?: string }).code !== 'ENOENT'
     ) {
@@ -53,7 +52,7 @@ export async function getChangesetStatus(
   return null;
 }
 
-export async function getLatestChangesetForPackage(
+export async function readLatestChangeset(
   workspaceRoot: string,
   targetPackage: string
 ): Promise<(Changeset & { lastCommitSha: string; anchor?: string; baseline?: string }) | null> {
@@ -145,9 +144,7 @@ export async function getLatestChangesetForPackage(
           latest = { changeset, lastCommitSha: sha, commitTime: ts, anchor, baseline };
         }
       } catch {
-        if (!latest) {
-          latest = { changeset, lastCommitSha: '', commitTime: 0, anchor, baseline };
-        }
+        latest ??= { changeset, lastCommitSha: '', commitTime: 0, anchor, baseline };
       }
     }
 
@@ -159,8 +156,7 @@ export async function getLatestChangesetForPackage(
     return { ...latest.changeset, lastCommitSha: latest.lastCommitSha, anchor, baseline };
   } catch (error: unknown) {
     if (
-      error &&
-      typeof error === 'object' &&
+      error instanceof Error &&
       'code' in error &&
       (error as { code?: string }).code !== 'ENOENT'
     ) {

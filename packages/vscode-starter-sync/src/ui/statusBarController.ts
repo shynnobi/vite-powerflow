@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { CheckResult, SyncStatus } from '../core/syncTypes.js';
+import { CheckResult, SyncStatus } from '../core/types.js';
 
 export function getGlobalStatus(statuses: SyncStatus[]): SyncStatus {
   if (statuses.includes('error')) return 'error';
@@ -52,13 +52,6 @@ export function handleSyncResults(
   cliResult: CheckResult,
   outputChannel: vscode.OutputChannel
 ) {
-  const statuses: SyncStatus[] = [starterResult.status, cliResult.status];
-  const globalStatus = getGlobalStatus(statuses);
-  const packagesWithUnreleasedChanges = [starterResult, cliResult].filter(r => r.commitCount > 0);
-  const packagesWithPendingReleases = [starterResult, cliResult].filter(
-    r => r.status === 'pending'
-  );
-
   const statusLines: string[] = [];
 
   if (starterResult.status === 'error') {

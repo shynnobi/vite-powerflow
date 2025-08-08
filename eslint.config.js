@@ -11,6 +11,9 @@ import js from '@eslint/js';
 // Common import resolver settings
 const commonSettings = {
   'import/resolver': {
+    typescript: {
+      alwaysTryTypes: true,
+    },
     node: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.svg', '.png', '.jpg'],
     },
@@ -111,7 +114,7 @@ export default [
     },
     settings: commonSettings,
   },
-  // TypeScript files (with TypeScript parser)
+  // TypeScript files (parser, recommended rules, import plugin)
   {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
@@ -129,21 +132,14 @@ export default [
       ...commonRules,
       ...tsPlugin.configs.recommended.rules,
       ...tsPlugin.configs['recommended-type-checked'].rules,
-      'no-unused-vars': 'off', // Disable base rule for TS files
+      ...tsPlugin.configs['stylistic-type-checked'].rules,
       '@typescript-eslint/no-unused-vars': tsNoUnusedVarsRule,
     },
-    settings: {
-      'import/resolver': {
-        typescript: {
-          alwaysTryTypes: true,
-          project: ['./tsconfig.json', './packages/*/tsconfig.json', './apps/*/tsconfig.json'],
-        },
-      },
-    },
   },
-  // Vitest test files (test-specific rules)
+  // Vitest test files (specific rules and globals)
   {
-    files: ['**/*.test.ts', '**/*.spec.ts'],
+    files: ['**/*.test.{ts,tsx,js,jsx}'],
+    settings: commonSettings,
     plugins: { vitest, '@typescript-eslint': tsPlugin },
     rules: {
       'vitest/no-focused-tests': 'error',

@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 
-import { getWorkspaceRoot } from './core/monorepoUtils.js';
-import { checkCliStatus, checkStarterStatus } from './core/sync/syncStatusChecker.js';
-import { formatSyncOutput } from './core/syncReportFormatter.js';
-import { PackageLabel, SyncStatus } from './core/syncTypes.js';
+import { checkCliSync, checkStarterSync } from './core/syncChecker.js';
+import { formatSyncOutput } from './core/syncReporter.js';
+import { PackageLabel, SyncStatus } from './core/types.js';
+import { detectWorkspaceRoot } from './core/workspaceDetector.js';
 import { updateStatusBar } from './ui/statusBarController.js';
 import { createRefreshStatusBar } from './ui/syncCommands.js';
 import { createDebounced, createWatcher } from './utils/extensionUtils.js';
@@ -33,7 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(runSyncCheckCommand);
 
-  const workspaceRoot = getWorkspaceRoot();
+  const workspaceRoot = detectWorkspaceRoot();
   if (workspaceRoot) {
     const debouncedCheck = createDebounced((_trigger: string) => {
       void runSyncChecks();
@@ -87,14 +87,14 @@ async function runSyncChecks(forceRun = false) {
   isChecking = true;
 
   try {
-    const workspaceRoot = getWorkspaceRoot();
+    const workspaceRoot = detectWorkspaceRoot();
     if (!workspaceRoot) {
       updateStatusBar(statusBarItem, 'error', 'Not in a Vite Powerflow workspace.');
       return;
     }
 
-    const starterResult = await checkStarterStatus(workspaceRoot, outputChannel);
-    const cliResult = await checkCliStatus(workspaceRoot, outputChannel);
+    const starterResult = await checkStarterSync(workspaceRoot, outputChannel);
+    const cliResult = await checkCliSync(workspaceRoot, outputChannel);
 
     const allResults = [starterResult, cliResult];
 

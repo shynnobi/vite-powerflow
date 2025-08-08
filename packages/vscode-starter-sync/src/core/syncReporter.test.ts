@@ -1,17 +1,11 @@
 import { afterAll, beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { createMockOutputChannel } from '../utils/testUtils.js';
-import {
-  formatBaselineLog,
-  formatSyncOutput,
-  handleInSync,
-  handleUnreleasedCommits,
-} from './syncReportFormatter.js';
-import { CheckResult, PackageLabel, SyncCheckConfig } from './syncTypes.js';
+import { formatBaselineLog, formatSyncOutput } from './syncReporter.js';
+import { CheckResult, PackageLabel, SyncCheckConfig } from './types.js';
 
 // Mock the packages module
-vi.mock('./packageUtils.js', () => ({
-  getPackageInfo: (path: string) => {
+vi.mock('./packageReader.js', () => ({
+  readPackageInfo: (path: string) => {
     if (path.includes('template/package.json')) {
       return Promise.resolve({ version: '1.0.0' });
     }
@@ -521,50 +515,5 @@ describe('formatBaselineLog', () => {
     expect(result).toBe(
       '📦 [Starter] Checking against CLI template baseline (commit abc1234, version 1.0.0)'
     );
-  });
-});
-
-describe('sync status handlers', () => {
-  const mockOutputChannel = createMockOutputChannel();
-
-  const mockConfig: SyncCheckConfig = {
-    label: PackageLabel.Starter,
-    baseline: () => Promise.resolve('test-baseline'),
-    commitPath: 'test/',
-    messages: {
-      notFound: 'Not found',
-      inSync: 'In sync',
-      unreleased: 'unreleased changes',
-      errorPrefix: 'Error',
-    },
-  };
-
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  describe('handleUnreleasedCommits', () => {
-    test('should return warning status with commit count', () => {
-      const commits = ['commit1', 'commit2'];
-      const result = handleUnreleasedCommits(mockConfig, commits, mockOutputChannel);
-
-      expect(result).toEqual({
-        status: 'warning',
-        message: '2 unreleased changes',
-        commitCount: 2,
-      });
-    });
-  });
-
-  describe('handleInSync', () => {
-    test('should return sync status with zero commits', () => {
-      const result = handleInSync(mockConfig, mockOutputChannel);
-
-      expect(result).toEqual({
-        status: 'sync',
-        message: 'In sync',
-        commitCount: 0,
-      });
-    });
   });
 });

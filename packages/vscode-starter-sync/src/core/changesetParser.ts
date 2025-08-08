@@ -10,14 +10,14 @@ const CHANGESET_REGEX = /^---\s*\n([\s\S]*?)\n---/;
  * @returns A map of package names to bump types and metadata fields.
  */
 export function parseChangesetFrontmatter(content: string): Map<string, string> {
-  const match = content.match(CHANGESET_REGEX);
+  const match = CHANGESET_REGEX.exec(content);
   const frontmatter = new Map<string, string>();
 
-  if (match) {
+  if (match?.[1]) {
     const frontmatterStr = match[1];
     frontmatterStr.split('\n').forEach(line => {
       const trimmedLine = line.trim();
-      if (trimmedLine && trimmedLine.includes(':')) {
+      if (trimmedLine.includes(':')) {
         const colonIndex = trimmedLine.indexOf(':');
         const key = trimmedLine.substring(0, colonIndex).trim().replace(/'/g, '').replace(/"/g, '');
         const value = trimmedLine

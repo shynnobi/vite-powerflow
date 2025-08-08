@@ -7,7 +7,7 @@ import * as vscode from 'vscode';
  * Checks for pnpm-workspace.yaml and apps/starter to confirm.
  * @returns The workspace root path as a string, or null if not found or invalid
  */
-export function getWorkspaceRoot(): string | null {
+export function detectWorkspaceRoot(): string | null {
   const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
   if (!workspaceFolder) return null;
 

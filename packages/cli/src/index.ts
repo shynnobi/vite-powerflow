@@ -38,7 +38,7 @@ async function cleanup() {
 // Handle Ctrl+C
 process.stdin.on('keypress', (_: string, key: { ctrl: boolean; name: string }) => {
   if (key.ctrl && key.name === 'c') {
-    cleanup();
+    void cleanup();
   }
 });
 
@@ -59,7 +59,7 @@ const program = new Command()
   );
 
 program.parse(process.argv);
-const cliOptions = program.opts();
+const cliOptions = program.opts<GitOptions>();
 
 function isNonInteractiveMode(opts: GitOptions, args: string[]) {
   // If no project directory is provided, force interactive mode
@@ -109,7 +109,7 @@ async function init() {
     currentProjectPath = projectPath;
 
     // Commander: use git option if provided, otherwise prompt
-    let git = await (await import('./utils/prompt-ui.js')).promptGit(cliOptions.git);
+    const git = await (await import('./utils/prompt-ui.js')).promptGit(cliOptions.git);
 
     let gitUserName: string | undefined = cliOptions.gitUserName;
     let gitUserEmail: string | undefined = cliOptions.gitUserEmail;
@@ -142,4 +142,4 @@ async function init() {
   }
 }
 
-init();
+void init();

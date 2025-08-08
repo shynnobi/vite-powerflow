@@ -16,6 +16,12 @@ interface ProjectOptions {
   gitUserEmail?: string;
 }
 
+interface PackageJson {
+  name: string;
+  starterSource?: unknown;
+  [key: string]: unknown;
+}
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export async function createProject(options: ProjectOptions): Promise<void> {
@@ -97,7 +103,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
     try {
       if (await fsExtra.pathExists(packageJsonPath)) {
         const packageJsonRaw = await fs.readFile(packageJsonPath, 'utf-8');
-        const packageJson = JSON.parse(packageJsonRaw);
+        const packageJson = JSON.parse(packageJsonRaw) as PackageJson;
         packageJson.name = options.packageName;
 
         // Remove the starterSource property as it's not needed by the end user.
@@ -170,8 +176,10 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       try {
         const projectGit = simpleGit(projectPath);
         await projectGit.init();
-        if (options.gitUserName && options.gitUserEmail) {
+        if (options.gitUserName) {
           await projectGit.addConfig('user.name', options.gitUserName, false, 'local');
+        }
+        if (options.gitUserEmail) {
           await projectGit.addConfig('user.email', options.gitUserEmail, false, 'local');
         }
         await projectGit.add('.');

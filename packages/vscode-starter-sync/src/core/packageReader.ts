@@ -13,7 +13,7 @@ const npmVersionCache = new Map<string, { version: string; timestamp: number }>(
  * @param packagePath - The absolute path to the package.json file
  * @returns An object with name and version, or null if not found or invalid
  */
-export async function getPackageInfo(
+export async function readPackageInfo(
   packagePath: string
 ): Promise<{ name: string; version: string } | null> {
   try {
@@ -35,7 +35,7 @@ export async function getPackageInfo(
  * @param outputChannel - VS Code output channel for logging
  * @returns The latest version as a string, or null if not found
  */
-export function getLatestNpmVersion(
+export function readLatestNpmVersion(
   packageName: string,
   outputChannel: vscode.OutputChannel
 ): string | null {
