@@ -96,7 +96,7 @@ void (async () => {
     // Add/update scripts
     pkg.scripts = {
       ...pkg.scripts,
-      format: pkg.scripts?.format || 'prettier --check .',
+      format: pkg.scripts?.format ?? 'prettier --check .',
       'validate:static': 'run-p format lint type-check',
       'validate:quick': 'run-s validate:static test',
       'validate:full': 'run-s validate:static test test:e2e',

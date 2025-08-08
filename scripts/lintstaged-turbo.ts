@@ -21,7 +21,7 @@ function getWorkspaces(): string[] {
   const wsPath = path.resolve(process.cwd(), 'pnpm-workspace.yaml');
   if (fs.existsSync(wsPath)) {
     const wsYaml = yaml.load(fs.readFileSync(wsPath, 'utf8')) as { packages?: string[] };
-    const globs: string[] = wsYaml.packages || [];
+    const globs: string[] = wsYaml.packages ?? [];
     // 2.2. Expand globs to actual folders
     let workspaces: string[] = [];
     for (const g of globs) {
@@ -35,7 +35,7 @@ function getWorkspaces(): string[] {
   if (fs.existsSync(turboPath)) {
     const turboRaw = fs.readFileSync(turboPath, 'utf8');
     const turbo = JSON.parse(turboRaw) as { pipeline?: Record<string, unknown> };
-    if (turbo && turbo.pipeline && typeof turbo.pipeline === 'object') {
+    if (typeof turbo?.pipeline === 'object') {
       // 2.5. Try to infer workspaces from pipeline keys
       return Object.keys(turbo.pipeline)
         .map(name => path.resolve('packages', name))
@@ -46,7 +46,7 @@ function getWorkspaces(): string[] {
 }
 
 const workspaces = getWorkspaces();
-const workspaceRoots = workspaces.map(ws => path.relative(process.cwd(), ws));
+const workspaceRoots = workspaces?.map(ws => path.relative(process.cwd(), ws));
 
 // 3. Map each file to a workspace
 function findWorkspaceForFile(file: string): string | null {

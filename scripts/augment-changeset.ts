@@ -57,9 +57,11 @@ function readStarterBaseline(repoRoot: string, out: ConsoleOutput): string | und
     out.appendLine('ℹ️ augment-changeset: starterSource.commit not found (baseline omitted).');
     return undefined;
   } catch (e) {
-    out.appendLine(
-      `ℹ️ augment-changeset: could not read starter baseline: ${(e as Error).message}`
-    );
+    if (e instanceof Error) {
+      out.appendLine(`ℹ️ augment-changeset: could not read starter baseline: ${e.message}`);
+    } else {
+      out.appendLine('ℹ️ augment-changeset: could not read starter baseline: Unknown error');
+    }
     return undefined;
   }
 }
@@ -125,6 +127,10 @@ async function main() {
 }
 
 main().catch(err => {
-  console.error('augment-changeset failed:', err);
+  if (err instanceof Error) {
+    console.error('augment-changeset failed:', err.message);
+  } else {
+    console.error('augment-changeset failed:', err);
+  }
   process.exitCode = 1;
 });
