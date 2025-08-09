@@ -1,0 +1,22 @@
+---
+alwaysApply: true
+---
+
+## Language Policy
+- All commit messages, code comments, documentation, and UI/marketing text must be written in English
+- All variable names, function names, and other identifiers must be in English
+- User-AI conversations can use any language preferred by the user for effective communication
+
+## Ecosystem Conventions
+- Follow ecosystem-specific conventions over custom configurations
+- Respect tool-specific naming patterns and best practices
+- Maintain consistency with official documentation and community standards
+- Prefer widely adopted patterns over custom solutions
+
+## Documentation Versioning
+- Package.json/dependencies files: Use precise semver versions (^6.2.6)
+- CHANGELOG.md: Use precise versions (6.2.6) with detailed changelog entries
+- Technical documentation: Use major or minor versions only (Vite 6.x) for installation guides
+- UI/Marketing text: Use major versions only (Vite 6) to minimize maintenance
+- Maintain consistency across similar components in the documentation
+- When updating dependencies for security, only update relevant version references

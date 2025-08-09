@@ -8,6 +8,7 @@ export default defineConfig({
       './packages/utils',
       './packages/vite-powerflow-sync',
       './apps/starter',
+      './apps/website',
     ],
   },
 });

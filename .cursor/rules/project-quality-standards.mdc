@@ -1,0 +1,42 @@
+---
+alwaysApply: true
+---
+
+## Performance Standards
+- Profile code before optimizing to identify actual bottlenecks
+- Prefer readability over micro-optimizations unless performance is critical
+- Consider algorithmic complexity in recommendations (O notation)
+- Evaluate memory usage patterns, especially for large datasets
+- Suggest caching strategies when appropriate
+- Recommend lazy loading for non-critical resources
+
+## Security Guidelines
+- Never commit sensitive data (API keys, passwords, tokens)
+- Validate user inputs and sanitize outputs
+- Use HTTPS for all external communications
+- Follow principle of least privilege for access controls
+- Suggest security headers for web applications
+- Review dependencies for known vulnerabilities
+- Implement proper error handling that doesn't leak sensitive information
+
+## Error Handling Standards
+- Always provide clear error messages with actionable solutions
+- Include context about what operation failed and why
+- Suggest specific debugging steps when errors occur
+- Never suppress errors without explicit user approval
+- Log errors appropriately for debugging purposes
+
+## Refactoring Guidelines
+- Clearly define the scope and goals before starting refactoring
+- Maintain backward compatibility unless explicitly approved to break it
+- Provide before/after comparisons for significant structural changes
+- Ensure all tests pass after refactoring
+- Update documentation to reflect architectural changes
+- Break large refactoring into smaller, reviewable chunks
+
+## Merge Conflict Resolution
+- Analyze conflicts thoroughly before proposing resolutions
+- Explain the implications of each conflicting change
+- Propose resolution strategies that preserve intent from both sides
+- Always test the resolution before finalizing
+- Document the reasoning behind conflict resolution choices

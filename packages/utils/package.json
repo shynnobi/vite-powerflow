@@ -14,7 +14,7 @@
     "format:fix": "prettier --write .",
     "type-check": "tsc --noEmit",
     "test": "vitest run",
-    "fix": "prettier --write . && eslint src/**/*.ts src/**/*.tsx --fix",
+    "fix": "prettier --write . && eslint src/**/*.{ts,tsx,js,jsx} --fix",
     "sync:starter-to-template": "tsx ../../scripts/sync-starter-to-template.ts"
   },
   "keywords": [
