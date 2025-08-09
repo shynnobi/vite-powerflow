@@ -53,15 +53,7 @@ void (async () => {
       process.exit(1);
     }
 
-    // 4. Rename .vscode to _vscode in the template (for npm compatibility)
-    const vscodeSrc = path.join(templateDest, '.vscode');
-    const vscodeDest = path.join(templateDest, '_vscode');
-    if (await fs.pathExists(vscodeSrc)) {
-      await fs.move(vscodeSrc, vscodeDest, { overwrite: true });
-      logRootInfo('Renamed .vscode to _vscode in template');
-    }
-
-    // 5. Patch package.json scripts and add starterSource metadata
+    // 4. Patch package.json scripts and add starterSource metadata
     logRootInfo('Patching package.json validate scripts and adding starterSource metadata');
     const pkgPath = path.join(templateDest, 'package.json');
     const pkgRaw = await fs.readFile(pkgPath, 'utf8');
@@ -101,7 +93,7 @@ void (async () => {
 
     await fs.writeFile(pkgPath, JSON.stringify(pkg, null, 2), 'utf8');
 
-    // 6. Clean tsconfig.json by removing 'extends' for standalone usage
+    // 5. Clean tsconfig.json by removing 'extends' for standalone usage
     logRootInfo("Cleaning tsconfig.json (removing 'extends')...");
     const tsconfigPath = path.join(templateDest, 'tsconfig.json');
     if (await fs.pathExists(tsconfigPath)) {

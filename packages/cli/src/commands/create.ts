@@ -29,26 +29,32 @@ export async function createProject(options: ProjectOptions): Promise<void> {
   let projectPath = path.join(process.cwd(), packageName);
 
   try {
-    // Copy template
+    // 1. Copy template files to the new project directory
     const templatePath = path.join(__dirname, 'template');
     await fsExtra.copy(templatePath, projectPath);
-    // logSuccess('Template copied successfully');
 
-    // Rename gitignore to .gitignore if it exists
+    // 2. Rename gitignore to .gitignore for proper Git tracking
     const gitignorePath = path.join(projectPath, 'gitignore');
     const dotGitignorePath = path.join(projectPath, '.gitignore');
     if (await fsExtra.pathExists(gitignorePath)) {
       await fsExtra.move(gitignorePath, dotGitignorePath);
     }
 
-    // Rename _vscode to .vscode if it exists
+    // 3. Convert _vscode to .vscode for VS Code compatibility, then clean up _vscode
     const underscoreVscodePath = path.join(projectPath, '_vscode');
     const dotVscodePath = path.join(projectPath, '.vscode');
     if (await fsExtra.pathExists(underscoreVscodePath)) {
-      await fsExtra.move(underscoreVscodePath, dotVscodePath);
+      if (await fsExtra.pathExists(dotVscodePath)) {
+        await fsExtra.remove(dotVscodePath);
+      }
+      await fsExtra.move(underscoreVscodePath, dotVscodePath, { overwrite: true });
+      // Remove _vscode if it still exists (edge case)
+      if (await fsExtra.pathExists(underscoreVscodePath)) {
+        await fsExtra.remove(underscoreVscodePath);
+      }
     }
 
-    // Fix permissions for shell scripts in scripts/, .devcontainer/scripts/ and hooks in .husky/
+    // 4. Fix permissions for shell scripts and husky hooks
     async function fixPermissions(targetDir: string) {
       const fsSync = await import('fs');
       const pathMod = await import('path');
@@ -89,30 +95,24 @@ export async function createProject(options: ProjectOptions): Promise<void> {
     }
     await fixPermissions(projectPath);
 
-    // Files to update
+    // 5. Update devcontainer and docker-compose configs for the new project
+    await updateDevcontainerWorkspaceFolder(projectPath);
+    await updateDockerComposeVolume(projectPath);
+
+    // 6. Update package.json with the new project name and clean metadata
     const packageJsonPath = path.join(projectPath, 'package.json');
     const tsconfigPath = path.join(projectPath, 'tsconfig.json');
     const readmePath = path.join(projectPath, 'README.md');
-
-    // Update devcontainer and docker-compose configs
-    await updateDevcontainerWorkspaceFolder(projectPath);
-    await updateDockerComposeVolume(projectPath);
-    // logSuccess('Devcontainer and docker-compose configs updated.');
-
-    // Update package.json with the new project name
     try {
       if (await fsExtra.pathExists(packageJsonPath)) {
         const packageJsonRaw = await fs.readFile(packageJsonPath, 'utf-8');
         const packageJson = JSON.parse(packageJsonRaw) as PackageJson;
         packageJson.name = options.packageName;
-
         // Remove the starterSource property as it's not needed by the end user.
         if (packageJson.starterSource) {
           delete packageJson.starterSource;
         }
-
         await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
-        // logSuccess('package.json updated.');
       }
     } catch (packageJsonError) {
       logError('Failed to update package.json');
@@ -122,13 +122,12 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       throw packageJsonError;
     }
 
-    // Update README.md placeholder for project name
+    // 7. Update README.md placeholder for project name
     try {
       if ((await directoryExists(projectPath)) && (await fsExtra.pathExists(readmePath))) {
         let readmeContent = await fs.readFile(readmePath, 'utf-8');
         readmeContent = readmeContent.replace(/{{projectName}}/g, options.projectName);
         await fs.writeFile(readmePath, readmeContent);
-        // logSuccess('README.md updated.');
       }
     } catch (readmeError) {
       logError('Failed to update README.md');
@@ -136,7 +135,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       throw readmeError;
     }
 
-    // Files to format
+    // 8. Format config files with Prettier for consistency
     const filesToFormat: string[] = [];
     if (await fsExtra.pathExists(packageJsonPath)) filesToFormat.push(packageJsonPath);
     if (await fsExtra.pathExists(tsconfigPath)) filesToFormat.push(tsconfigPath);
@@ -144,8 +143,6 @@ export async function createProject(options: ProjectOptions): Promise<void> {
     if (await fsExtra.pathExists(devcontainerJsonPath)) filesToFormat.push(devcontainerJsonPath);
     const dockerComposePath = path.join(projectPath, 'docker-compose.yml');
     if (await fsExtra.pathExists(dockerComposePath)) filesToFormat.push(dockerComposePath);
-
-    // Format files with Prettier
     try {
       if (filesToFormat.length > 0) {
         const { exec } = await import('child_process');
@@ -171,7 +168,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       throw formatError;
     }
 
-    // Initialize Git if requested (no prompts)
+    // 9. Initialize Git repository and create initial commit if requested
     if (options.git) {
       try {
         const projectGit = simpleGit(projectPath);
@@ -192,9 +189,11 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       }
     }
 
+    // 10. Final success log
     logSuccess(`Project created at: ${projectPath}`);
   } catch (error) {
     logError('Failed to create project');
+    console.error(error); // Print full error details for debugging
     // Don't show "dest already exists" error as it's often a false positive
     if (!(error instanceof Error) || !error.message?.includes('dest already exists')) {
       logError(error instanceof Error ? error.message : String(error));
