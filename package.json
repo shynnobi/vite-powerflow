@@ -84,8 +84,8 @@
     "web:storybook": "pnpm -filter @vite-powerflow/website storybook",
     "sync:starter-to-template": "tsx scripts/sync-starter-to-template.ts",
     "set-cli-template-baseline": "tsx scripts/set-cli-template-baseline.ts",
-    "version:ci": "pnpm sync:starter-to-template && pnpm set-cli-template-baseline && changeset version",
-    "release": "pnpm build && changeset publish",
+    "release:prepare": "changeset version && pnpm sync:starter-to-template && pnpm set-cli-template-baseline",
+    "release:publish": "pnpm build && changeset publish",
     "ci:local": "git clean -fdx && pnpm install --frozen-lockfile && CI=true ./scripts/ci.sh"
   },
   "dependencies": {

@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
-import { StarterPkgJson, TemplatePkgJson, TsConfigJson } from './types/package-json';
+import { TemplatePkgJson, TsConfigJson } from './types/package-json';
 import { logRootError, logRootInfo, logRootSuccess } from './monorepo-logger';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -53,15 +53,7 @@ void (async () => {
       process.exit(1);
     }
 
-    // 4. Rename .vscode to _vscode in the template (for npm compatibility)
-    const vscodeSrc = path.join(templateDest, '.vscode');
-    const vscodeDest = path.join(templateDest, '_vscode');
-    if (await fs.pathExists(vscodeSrc)) {
-      await fs.move(vscodeSrc, vscodeDest, { overwrite: true });
-      logRootInfo('Renamed .vscode to _vscode in template');
-    }
-
-    // 5. Patch package.json scripts and add starterSource metadata
+    // 4. Patch package.json scripts and add starterSource metadata
     logRootInfo('Patching package.json validate scripts and adding starterSource metadata');
     const pkgPath = path.join(templateDest, 'package.json');
     const pkgRaw = await fs.readFile(pkgPath, 'utf8');
@@ -70,21 +62,17 @@ void (async () => {
     // Add CLI template baseline commit metadata
     try {
       const currentCommit = execSync('git rev-parse HEAD', { encoding: 'utf-8' }).trim();
-      const starterPkgRaw = await fs.readFile(path.join(starterSrc, 'package.json'), 'utf8');
-      const starterPkg = JSON.parse(starterPkgRaw) as StarterPkgJson;
 
       // PATCH: initialize starterSource with historic commit if missing
       const HISTORIC_COMMIT = '668ab2e8f19ec5a066bfdba3e5f2713f29078ff5';
       if (!pkg.starterSource) {
         pkg.starterSource = {
-          version: starterPkg.version,
           commit: HISTORIC_COMMIT,
           syncedAt: new Date().toISOString(),
         };
         logRootInfo('starterSource initialized with historic commit');
       } else {
         pkg.starterSource = {
-          version: starterPkg.version,
           commit: currentCommit,
           syncedAt: new Date().toISOString(),
         };
@@ -105,7 +93,7 @@ void (async () => {
 
     await fs.writeFile(pkgPath, JSON.stringify(pkg, null, 2), 'utf8');
 
-    // 6. Clean tsconfig.json by removing 'extends' for standalone usage
+    // 5. Clean tsconfig.json by removing 'extends' for standalone usage
     logRootInfo("Cleaning tsconfig.json (removing 'extends')...");
     const tsconfigPath = path.join(templateDest, 'tsconfig.json');
     if (await fs.pathExists(tsconfigPath)) {

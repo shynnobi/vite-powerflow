@@ -21,12 +21,8 @@ dist-ssr
 my-vite-powerflow-app
 
 # Editor directories and files
-!.vscode/extensions.json
-!.vscode/settings.json
-!.vscode/tailwind.json
 .DS_Store
 .idea
-.vscode/*
 *.njsproj
 *.ntvs*
 *.sln
@@ -72,6 +68,3 @@ test-results/
 # CLI test artifacts
 *.tgz
 vite-powerflow-create-*.tgz
-
-
-

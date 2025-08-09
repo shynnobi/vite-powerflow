@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
-import { StarterPkgJson, TemplatePkgJson } from './types/package-json';
+import { TemplatePkgJson } from './types/package-json';
 import { logRootError, logRootInfo, logRootSuccess } from './monorepo-logger';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -35,14 +35,11 @@ void (async () => {
     }
 
     // Read the necessary package.json files.
-    const starterPkgRaw = await fs.readFile(starterPkgPath, 'utf8');
     const templatePkgRaw = await fs.readFile(templatePkgPath, 'utf8');
-    const starterPkg = JSON.parse(starterPkgRaw) as StarterPkgJson;
     const templatePkg = JSON.parse(templatePkgRaw) as TemplatePkgJson;
 
     // Create or update the starterSource object.
     templatePkg.starterSource = {
-      version: starterPkg.version,
       commit,
       syncedAt: new Date().toISOString(),
     };

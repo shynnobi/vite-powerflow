@@ -6,9 +6,16 @@ import { CheckResult, PackageLabel, SyncCheckConfig } from './types.js';
 
 export function formatPackageStatus(label: PackageLabel, result: CheckResult): string {
   const versionInfo = result.packageVersion ? ` (v${result.packageVersion})` : '';
-  let lines: string[] = [];
+  let title = `📦 [${label}]${versionInfo}`;
 
-  lines.push(`📦 [${label}]${versionInfo}`);
+  // For Starter, if both baselineCommit and releaseCommit are present, show both
+  if (result.baselineCommit && result.releaseCommit) {
+    title += ` - baseline ${result.baselineCommit.substring(0, 7)} (npm) + release commit ${result.releaseCommit.substring(0, 7)}`;
+  } else if (result.baselineCommit) {
+    title += ` - baseline ${result.baselineCommit.substring(0, 7)}`;
+  }
+  let lines: string[] = [];
+  lines.push(title);
 
   if (result.status === 'error') {
     lines.push(`   ❌ Check failed - ${result.message}`);
@@ -16,10 +23,7 @@ export function formatPackageStatus(label: PackageLabel, result: CheckResult): s
   }
 
   if (result.commitCount === 0) {
-    const commitInfo = result.baselineCommit
-      ? ` - baseline ${result.baselineCommit.substring(0, 7)}`
-      : '';
-    lines.push(`   ✅ Package in sync${commitInfo}`);
+    lines.push(`   ✅ Package in sync`);
     return lines.join('\n');
   }
 
