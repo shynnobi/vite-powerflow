@@ -14,6 +14,7 @@ export interface CheckResult {
   changeset?: Changeset;
   packageVersion?: string;
   baselineCommit?: string;
+  releaseCommit?: string;
   currentCommit?: string;
   commits?: { sha: string; message: string }[];
   coveredCommits?: { sha: string; message: string }[];

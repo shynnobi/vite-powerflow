@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
-import { StarterPkgJson, TemplatePkgJson, TsConfigJson } from './types/package-json';
+import { TemplatePkgJson, TsConfigJson } from './types/package-json';
 import { logRootError, logRootInfo, logRootSuccess } from './monorepo-logger';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -70,21 +70,17 @@ void (async () => {
     // Add CLI template baseline commit metadata
     try {
       const currentCommit = execSync('git rev-parse HEAD', { encoding: 'utf-8' }).trim();
-      const starterPkgRaw = await fs.readFile(path.join(starterSrc, 'package.json'), 'utf8');
-      const starterPkg = JSON.parse(starterPkgRaw) as StarterPkgJson;
 
       // PATCH: initialize starterSource with historic commit if missing
       const HISTORIC_COMMIT = '668ab2e8f19ec5a066bfdba3e5f2713f29078ff5';
       if (!pkg.starterSource) {
         pkg.starterSource = {
-          version: starterPkg.version,
           commit: HISTORIC_COMMIT,
           syncedAt: new Date().toISOString(),
         };
         logRootInfo('starterSource initialized with historic commit');
       } else {
         pkg.starterSource = {
-          version: starterPkg.version,
           commit: currentCommit,
           syncedAt: new Date().toISOString(),
         };

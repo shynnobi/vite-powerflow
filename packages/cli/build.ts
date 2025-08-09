@@ -41,16 +41,20 @@ async function copyTemplate(): Promise<void> {
       }
     }
 
-    // Copy .vscode as _vscode to avoid npm ignoring it
+    // Ensure .vscode exists in template before copying
     const vscodeSource = path.join(templatePath, '.vscode');
     const vscodeDest = path.join(distTemplatePath, '_vscode');
-    if (await fs.pathExists(vscodeSource)) {
-      await fs.copy(vscodeSource, vscodeDest);
-      // Remove the original .vscode from dist to avoid duplication
-      const originalVscodeInDist = path.join(distTemplatePath, '.vscode');
-      if (await fs.pathExists(originalVscodeInDist)) {
-        await fs.remove(originalVscodeInDist);
-      }
+    if (!(await fs.pathExists(vscodeSource))) {
+      logError(
+        'The .vscode folder is missing in the template! The build will fail if this folder is required.'
+      );
+      process.exit(1);
+    }
+    await fs.copy(vscodeSource, vscodeDest);
+    // Remove the original .vscode from dist to avoid duplication
+    const originalVscodeInDist = path.join(distTemplatePath, '.vscode');
+    if (await fs.pathExists(originalVscodeInDist)) {
+      await fs.remove(originalVscodeInDist);
     }
 
     logSuccess('Template copied successfully!');
