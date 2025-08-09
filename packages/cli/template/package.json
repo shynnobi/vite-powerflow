@@ -1,7 +1,7 @@
 {
   "name": "@vite-powerflow/starter",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "author": "",
   "license": "MIT",
@@ -141,7 +141,6 @@
     ]
   },
   "starterSource": {
-    "version": "1.0.1",
     "commit": "fc360bba4cbfcc9b0bb78cd2cfa1e102e3591cdc",
     "syncedAt": "2025-08-09T00:18:39.305Z"
   }

@@ -8,11 +8,22 @@ import { getTemplateBaseline, resolveRefToSha } from './gitStatus.js';
 import { readLatestNpmVersion, readPackageInfo } from './packageReader.js';
 import { CheckResult, PackageLabel, SyncCheckConfig, SyncCheckError } from './types.js';
 
+/**
+ * Checks the sync status of a package against its baseline (commit/tag).
+ * Handles detection of unreleased commits, changeset coverage, and auto-release commits.
+ * Returns a CheckResult describing the sync state, unreleased commits, and changeset coverage.
+ *
+ * @param config - SyncCheckConfig describing the package, baseline logic, and messages
+ * @param workspaceRoot - Absolute path to the workspace root
+ * @param outputChannel - VS Code output channel for logging
+ * @returns Promise<CheckResult> describing sync status and details
+ */
 export async function checkSyncStatus(
   config: SyncCheckConfig,
   workspaceRoot: string,
   outputChannel: vscode.OutputChannel
 ): Promise<CheckResult> {
+  // Resolve baseline commit/tag for comparison
   const baseline = await config.baseline();
   if (!baseline || baseline === 'unknown') {
     return {
@@ -23,18 +34,20 @@ export async function checkSyncStatus(
   }
 
   const currentCommit = getCurrentCommit(workspaceRoot);
-  const newCommitsRaw = getCommitsSince(
+  // Get all commits since baseline (full SHA)
+  const allCommitsRaw = getCommitsSince(
     workspaceRoot,
     baseline,
     currentCommit,
     config.commitPath,
     outputChannel
   );
-  const newCommits = newCommitsRaw.map(line => {
+  const allCommits = allCommitsRaw.map(line => {
     const [sha, ...msgParts] = line.split(' ');
-    return { sha: sha?.substring(0, 7) || '', message: msgParts.join(' ') };
+    return { sha: sha?.substring(0, 40) || '', message: msgParts.join(' ') };
   });
 
+  // Read package version for reporting (Starter/CLI)
   let packageVersion: string | undefined;
   try {
     if (config.label === PackageLabel.Starter) {
@@ -48,10 +61,57 @@ export async function checkSyncStatus(
     }
   } catch {}
 
-  if (newCommits.length > 0) {
+  // Main sync logic: detect auto-release commit, unreleased commits, and changeset coverage
+  if (allCommits.length > 0) {
+    // Find the last changeset release commit (auto-release) in the commit list
+    const releaseCommitIndex = allCommits.findLastIndex(c =>
+      /chore: release new versions|Version Packages/i.test(c.message)
+    );
+    // Get SHA of last release commit (if any)
+    const lastReleaseCommitSha =
+      releaseCommitIndex >= 0 ? allCommits[releaseCommitIndex].sha : undefined;
+    // Use the newer of baseline and last release commit as the anchor for unreleased commit detection
+    let anchorSha = baseline;
+    if (lastReleaseCommitSha) {
+      // Find index of lastReleaseCommitSha in allCommits
+      const anchorIndex = allCommits.findIndex(c => c.sha === lastReleaseCommitSha);
+      if (anchorIndex >= 0) {
+        anchorSha = allCommits[anchorIndex].sha;
+      }
+    }
+    // Get unreleased commits after anchorSha
+    const unreleasedRaw = getCommitsSince(
+      workspaceRoot,
+      anchorSha,
+      currentCommit,
+      config.commitPath,
+      outputChannel
+    );
+    const unreleasedCommits = unreleasedRaw.map(line => {
+      const [sha, ...msgParts] = line.split(' ');
+      return { sha: sha?.substring(0, 7) || '', message: msgParts.join(' ') };
+    });
+
+    // CORRECTION: Check if there are unreleased commits affecting this package path
+    // Instead of just checking if the last global commit is a release commit
+    if (unreleasedCommits.length === 0) {
+      return {
+        status: 'sync',
+        message: config.messages.inSync,
+        commitCount: 0,
+        packageVersion,
+        baselineCommit: baseline,
+        releaseCommit: lastReleaseCommitSha,
+        currentCommit,
+        commits: [],
+      };
+    }
+
+    // If targetPackage is set, check changeset coverage and file changes
     if (config.targetPackage) {
       const latestChangeset = await readLatestChangeset(workspaceRoot, config.targetPackage);
 
+      // Get files changed since baseline
       const filesChangedSinceBaseline = getFilesChangedSince(
         workspaceRoot,
         baseline,
@@ -64,14 +124,16 @@ export async function checkSyncStatus(
       let outsideCommits: { sha: string; message: string }[] = [];
       let filesChangedAfterChangeset: string[] = [];
       if (latestChangeset) {
+        // Use anchor from changeset if present, else lastCommitSha
         type ChangesetWithOptionalAnchor = typeof latestChangeset & { anchor?: unknown };
         const { anchor } = latestChangeset as ChangesetWithOptionalAnchor;
         anchorForDiff =
           typeof anchor === 'string' && anchor.length > 0 ? anchor : latestChangeset.lastCommitSha;
         if (anchorForDiff) {
+          // Get commits covered by changeset (anchorSha..anchor)
           const coveredRaw = getCommitsSince(
             workspaceRoot,
-            baseline,
+            anchorSha,
             anchorForDiff,
             config.commitPath,
             outputChannel
@@ -80,6 +142,7 @@ export async function checkSyncStatus(
             const [sha, ...msg] = line.split(' ');
             return { sha: sha?.substring(0, 7) || '', message: msg.join(' ') };
           });
+          // Get commits not covered by changeset (anchor..current)
           const outsideRaw = getCommitsSince(
             workspaceRoot,
             anchorForDiff,
@@ -91,6 +154,7 @@ export async function checkSyncStatus(
             const [sha, ...msg] = line.split(' ');
             return { sha: sha?.substring(0, 7) || '', message: msg.join(' ') };
           });
+          // Get files changed after changeset anchor
           filesChangedAfterChangeset = getFilesChangedSince(
             workspaceRoot,
             anchorForDiff,
@@ -100,28 +164,32 @@ export async function checkSyncStatus(
         }
       }
 
+      // If no changeset found, report pending/warning based on file changes
       if (!latestChangeset) {
         if (filesChangedSinceBaseline.length === 0) {
           return {
             status: 'pending',
             message: config.messages.unreleased,
-            commitCount: newCommits.length,
+            commitCount: unreleasedCommits.length,
             packageVersion,
             baselineCommit: baseline,
             currentCommit,
-            commits: newCommits,
+            commits: unreleasedCommits,
           };
         }
         return {
           status: 'warning',
           message: '',
-          commitCount: newCommits.length,
+          commitCount: unreleasedCommits.length,
           packageVersion,
           baselineCommit: baseline,
+          releaseCommit: lastReleaseCommitSha,
           currentCommit,
-          commits: newCommits,
+          commits: unreleasedCommits,
         };
       }
+
+      // Normalize anchor SHA for diffing
       const normalizedAnchor =
         anchorForDiff && /^[0-9a-f]{40}$/i.test(anchorForDiff)
           ? anchorForDiff
@@ -132,57 +200,66 @@ export async function checkSyncStatus(
         ? getFilesChangedSince(workspaceRoot, normalizedAnchor, config.commitPath, outputChannel)
         : filesChangedAfterChangeset;
 
+      // If files changed after changeset, report warning
       if (filesChangedAfterNormalizedAnchor.length > 0) {
         return {
           status: 'warning',
           message: '',
-          commitCount: newCommits.length,
+          commitCount: unreleasedCommits.length,
           packageVersion,
           baselineCommit: baseline,
+          releaseCommit: lastReleaseCommitSha,
           currentCommit,
-          commits: newCommits,
+          commits: unreleasedCommits,
           changeset: { fileName: latestChangeset.fileName, bumpType: latestChangeset.bumpType },
           coveredCommits,
           notCoveredCommits: outsideCommits,
         };
       }
 
+      // If no files changed since baseline, report pending
       if (filesChangedSinceBaseline.length === 0) {
         return {
           status: 'pending',
           message: config.messages.unreleased,
-          commitCount: newCommits.length,
+          commitCount: unreleasedCommits.length,
           packageVersion,
           baselineCommit: baseline,
+          releaseCommit: lastReleaseCommitSha,
           currentCommit,
-          commits: newCommits,
+          commits: unreleasedCommits,
         };
       }
 
+      // Otherwise, changeset found and all files covered
       return {
         status: 'pending',
         message: `Changeset found: ${latestChangeset.fileName} (${latestChangeset.bumpType})`,
-        commitCount: newCommits.length,
+        commitCount: unreleasedCommits.length,
         packageVersion,
         baselineCommit: baseline,
+        releaseCommit: lastReleaseCommitSha,
         currentCommit,
-        commits: newCommits,
+        commits: unreleasedCommits,
         changeset: { fileName: latestChangeset.fileName, bumpType: latestChangeset.bumpType },
         coveredCommits: coveredCommits,
         notCoveredCommits: [],
       };
     }
 
+    // No changeset logic: report pending with unreleased commits
     return {
       status: 'pending',
       message: config.messages.unreleased,
-      commitCount: newCommits.length,
+      commitCount: unreleasedCommits.length,
       packageVersion,
       baselineCommit: baseline,
+      releaseCommit: lastReleaseCommitSha,
       currentCommit,
-      commits: newCommits,
+      commits: unreleasedCommits,
     };
   }
+  // No commits since baseline: package is in sync
   return {
     status: 'sync',
     message: config.messages.inSync,
@@ -193,6 +270,14 @@ export async function checkSyncStatus(
   };
 }
 
+/**
+ * Checks sync status for the Starter package against the CLI template baseline.
+ * Returns a CheckResult describing sync state and unreleased changes.
+ *
+ * @param workspaceRoot - Absolute path to workspace root
+ * @param outputChannel - VS Code output channel for logging
+ * @returns Promise<CheckResult> describing sync status
+ */
 export async function checkStarterSync(
   workspaceRoot: string,
   outputChannel: vscode.OutputChannel
@@ -218,6 +303,14 @@ export async function checkStarterSync(
   }
 }
 
+/**
+ * Checks sync status for the CLI package against the latest published npm version/tag.
+ * Returns a CheckResult describing sync state and unreleased changes.
+ *
+ * @param workspaceRoot - Absolute path to workspace root
+ * @param outputChannel - VS Code output channel for logging
+ * @returns Promise<CheckResult> describing sync status
+ */
 export async function checkCliSync(
   workspaceRoot: string,
   outputChannel: vscode.OutputChannel
@@ -230,6 +323,7 @@ export async function checkCliSync(
       throw new SyncCheckError('CLI package.json not found.');
     }
 
+    // Get latest published npm version for CLI
     const latestPublishedVersion = readLatestNpmVersion(cliPkg.name, outputChannel);
 
     if (!latestPublishedVersion) {
@@ -244,6 +338,7 @@ export async function checkCliSync(
       };
     }
 
+    // Resolve baseline SHA from npm tag
     const cliNpmTag = `${cliPkg.name}@${latestPublishedVersion}`;
     const baselineSha = resolveRefToSha(workspaceRoot, cliNpmTag, outputChannel) ?? cliNpmTag;
 
