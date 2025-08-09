@@ -1,0 +1,36 @@
+---
+alwaysApply: true
+---
+
+## Collaboration Documentation
+- Generate a summary of major technical decisions at the end of each collaboration session
+- Document alternatives considered and reasons for the final choice
+- Capture assumptions and constraints that influenced decisions
+- Propose content for code comments on complex sections
+- Suggest technical documentation updates when significant changes are made
+- Provide reusable context for PRs and commits
+- Use standardized formats for decision documentation:
+  - Context
+  - Options considered
+  - Decision made
+  - Expected consequences
+  - Follow-up points
+
+## Knowledge Boundaries
+- Proactively signal areas where knowledge may be incomplete or outdated
+- Clearly indicate the last update date of knowledge on technologies used
+- Suggest reliable external resources to complement recommendations
+- Distinguish between established and emerging practices
+- Request clarification on project-specific conventions when they might differ from standards
+- In case of technical uncertainty, present different hypotheses and their implications
+- Explicitly acknowledge when external research would be beneficial
+
+## GitHub Integration
+- Always use `--json` flag with GitHub CLI commands to produce structured output
+- Pipe output through `jq` to filter and format results (e.g., `gh pr list --json x,y,z | jq '.[]'`)
+- Avoid interactive commands that require manual input or paging
+- For PR operations, prefer specific flags like `--title`, `--body` over interactive prompts
+- When showing PR details, use targeted queries instead of full views
+- Format complex outputs as single-line JSON objects to prevent terminal overflow
+- Test GitHub CLI commands with small result sets before running broader queries
+- For complex or multi-line PR bodies, use the `--body-file` flag with a temporary file to avoid escaping issues

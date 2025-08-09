@@ -1,5 +1,4 @@
 #!/usr/bin/env tsx
-
 import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
@@ -36,6 +35,7 @@ function getScopedPackageName(name: string): string {
   }
   return name;
 }
+
 const scopedName = getScopedPackageName(name);
 
 if (fs.existsSync(destDir)) {
@@ -95,10 +95,10 @@ if (fs.existsSync(pkgJsonPath)) {
 log('Running pnpm generate:aliases...');
 execSync('pnpm generate:aliases', { stdio: 'inherit', cwd: root });
 
+log('Running pnpm install...');
+execSync('pnpm install', { stdio: 'inherit', cwd: root });
+
 log(`Running pnpm --filter ${name}... build...`);
 execSync(`pnpm --filter ${name}... build`, { stdio: 'inherit', cwd: root });
 
 log(`${type.charAt(0).toUpperCase() + type.slice(1)} ${name} generated successfully!`);
-
-log('Running pnpm install...');
-execSync('pnpm install', { stdio: 'inherit', cwd: root });

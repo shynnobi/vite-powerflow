@@ -1,8 +1,7 @@
 ---
-description: 
-globs: 
 alwaysApply: true
 ---
+
 - Adapt architecture to project requirements rather than forcing specific technologies
 - Follow domain-driven design where appropriate
 - Maintain clear separation of concerns (UI, business logic, data access)
