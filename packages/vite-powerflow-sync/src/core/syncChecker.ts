@@ -130,10 +130,10 @@ export async function checkSyncStatus(
         anchorForDiff =
           typeof anchor === 'string' && anchor.length > 0 ? anchor : latestChangeset.lastCommitSha;
         if (anchorForDiff) {
-          // Get commits covered by changeset (baseline..anchor)
+          // Get commits covered by changeset (anchorSha..anchor)
           const coveredRaw = getCommitsSince(
             workspaceRoot,
-            baseline,
+            anchorSha,
             anchorForDiff,
             config.commitPath,
             outputChannel
@@ -183,6 +183,7 @@ export async function checkSyncStatus(
           commitCount: unreleasedCommits.length,
           packageVersion,
           baselineCommit: baseline,
+          releaseCommit: lastReleaseCommitSha,
           currentCommit,
           commits: unreleasedCommits,
         };
@@ -207,6 +208,7 @@ export async function checkSyncStatus(
           commitCount: unreleasedCommits.length,
           packageVersion,
           baselineCommit: baseline,
+          releaseCommit: lastReleaseCommitSha,
           currentCommit,
           commits: unreleasedCommits,
           changeset: { fileName: latestChangeset.fileName, bumpType: latestChangeset.bumpType },
@@ -223,6 +225,7 @@ export async function checkSyncStatus(
           commitCount: unreleasedCommits.length,
           packageVersion,
           baselineCommit: baseline,
+          releaseCommit: lastReleaseCommitSha,
           currentCommit,
           commits: unreleasedCommits,
         };
@@ -235,6 +238,7 @@ export async function checkSyncStatus(
         commitCount: unreleasedCommits.length,
         packageVersion,
         baselineCommit: baseline,
+        releaseCommit: lastReleaseCommitSha,
         currentCommit,
         commits: unreleasedCommits,
         changeset: { fileName: latestChangeset.fileName, bumpType: latestChangeset.bumpType },
@@ -250,6 +254,7 @@ export async function checkSyncStatus(
       commitCount: unreleasedCommits.length,
       packageVersion,
       baselineCommit: baseline,
+      releaseCommit: lastReleaseCommitSha,
       currentCommit,
       commits: unreleasedCommits,
     };

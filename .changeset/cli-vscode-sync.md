@@ -2,6 +2,8 @@
 '@vite-powerflow/create': patch
 ---
 
+anchor: 0136ed3db1d4e7f5d3f67a95d841a258a175413a
+
 - Refactor CLI build and create logic for robust \_vscode to .vscode handling and cleanup
 - Enforce .vscode folder presence in CLI template during build
 - Remove unused starterSource.version from scripts, types, and template package.json
