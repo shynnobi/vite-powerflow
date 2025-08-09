@@ -22,12 +22,8 @@ html
 packages/cli/template
 
 # Editor directories and files
-!.vscode/extensions.json
-!.vscode/settings.json
-!.vscode/tailwind.json
 .DS_Store
 .idea
-.vscode/*
 *.njsproj
 *.ntvs*
 *.sln
@@ -69,4 +65,3 @@ test-results/
 
 # Ignore temporary commit message file
 /temp_commit_msg.txt
-
