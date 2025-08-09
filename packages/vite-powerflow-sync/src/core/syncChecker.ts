@@ -91,13 +91,13 @@ export async function checkSyncStatus(
       const [sha, ...msgParts] = line.split(' ');
       return { sha: sha?.substring(0, 7) || '', message: msgParts.join(' ') };
     });
-    const lastCommit = allCommits[allCommits.length - 1];
 
-    // If last commit is the auto-release commit, package is in sync
-    if (lastReleaseCommitSha && lastCommit && lastCommit.sha === lastReleaseCommitSha) {
+    // CORRECTION: Check if there are unreleased commits affecting this package path
+    // Instead of just checking if the last global commit is a release commit
+    if (unreleasedCommits.length === 0) {
       return {
         status: 'sync',
-        message: '',
+        message: config.messages.inSync,
         commitCount: 0,
         packageVersion,
         baselineCommit: baseline,
