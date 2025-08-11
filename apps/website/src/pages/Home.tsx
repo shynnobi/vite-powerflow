@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import { FaGithub } from 'react-icons/fa';
 
+import { EditableSection } from '../components/EditableSection';
 import { Counter } from '../components/examples/Counter.js';
 
 import { ThemeToggle } from '@/components/themeToggle/ThemeToggle';
@@ -31,6 +32,18 @@ export default function Home(): ReactElement {
         </p>
 
         <Counter />
+
+        {/* Section editable via Decap CMS */}
+        <EditableSection />
+
+        <a
+          href="/admin/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline text-blue-500 hover:text-blue-700 mt-4"
+        >
+          Go to Decap CMS Admin
+        </a>
       </div>
     </div>
   );

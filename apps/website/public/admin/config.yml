@@ -1,0 +1,22 @@
+backend:
+  name: git-gateway
+  branch: dev
+
+media_folder: 'public/uploads'
+public_folder: '/uploads'
+
+publish_mode: editorial_workflow
+site_url: https://vite-powerflow.netlify.app
+preview_url: https://vite-powerflow.netlify.app/
+
+collections:
+  - name: 'homepage'
+    label: 'Homepage Content'
+    files:
+      - file: 'content/homepage.md'
+        label: 'Homepage Section'
+        name: 'section'
+        preview_path: /
+        fields:
+          - { label: 'Title', name: 'title', widget: 'string' }
+          - { label: 'Body', name: 'body', widget: 'markdown' }
