@@ -1,0 +1,36 @@
+## Direct GitHub backend (REQUIRED for Sveltia CMS)
+backend:
+  name: github
+  repo: shynnobi/vite-powerflow
+  branch: dev
+
+## Media configuration
+media_folder: 'public/uploads'
+public_folder: '/uploads'
+
+## Site URL (optional)
+site_url: https://vite-powerflow.netlify.app
+
+## Collections
+collections:
+  - name: 'homepage'
+    label: 'Homepage Content'
+    files:
+      - file: 'apps/website/content/homepage.md'
+        label: 'Homepage Section'
+        name: 'section'
+        preview_path: /
+        fields:
+          - { label: 'Title', name: 'title', widget: 'string' }
+          - { label: 'Body', name: 'body', widget: 'markdown' }
+
+  ## Example collection for blog posts (optional)
+  - name: 'posts'
+    label: 'Blog Posts'
+    folder: 'apps/website/content/posts'
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - { label: 'Title', name: 'title', widget: 'string' }
+      - { label: 'Date', name: 'date', widget: 'datetime' }
+      - { label: 'Body', name: 'body', widget: 'markdown' }

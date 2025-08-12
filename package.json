@@ -80,6 +80,7 @@
     "generate:app": "tsx scripts/generate-app-package.ts app",
     "generate:package": "tsx scripts/generate-app-package.ts package",
     "lintstaged:dry": "HUSKY=0 lint-staged --allow-empty && pnpm test",
+    "web:build": "pnpm -filter @vite-powerflow/website build",
     "web:dev": "pnpm -filter @vite-powerflow/website dev",
     "web:storybook": "pnpm -filter @vite-powerflow/website storybook",
     "sync:starter-to-template": "tsx scripts/sync-starter-to-template.ts",

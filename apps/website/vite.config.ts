@@ -12,6 +12,11 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
   },
+  preview: {
+    headers: {
+      'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+    },
+  },
   test: {
     globals: true,
     environment: 'jsdom',
