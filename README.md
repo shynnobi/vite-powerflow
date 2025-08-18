@@ -1,6 +1,6 @@
 # Vite PowerFlow ⚡
 
-![Monorepo](https://img.shields.io/badge/monorepo-pnpm%20workspaces-blue) ![License](https://img.shields.io/github/license/shynnobi/vite-powerflow?color=yellow&label=License) [![CI](https://github.com/shynnobi/vite-powerflow/actions/workflows/execute-ci-pipeline.yml/badge.svg)](https://github.com/shynnobi/vite-powerflow/actions)
+![Monorepo](https://img.shields.io/badge/monorepo-pnpm%20workspaces-blue) ![License](https://img.shields.io/github/license/shynnobi/vite-powerflow?color=yellow&label=License) [![CI](https://github.com/shynnobi/vite-powerflow/actions/workflows/monorepo-ci.yml/badge.svg)](https://github.com/shynnobi/vite-powerflow/actions)
 
 A React + Vite starter, fully containerized for reproducible and collaborative development, with strict code quality tooling. Includes comprehensive testing, linting, and CI/CD configurations following industry best practices.
 
