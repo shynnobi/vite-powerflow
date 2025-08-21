@@ -1,14 +1,15 @@
-import { FaGithub } from 'react-icons/fa';
+import { FaArrowDown, FaGithub } from 'react-icons/fa';
 
 import { Button } from '@/components/ui/button';
 import { ButtonVite } from '@/components/ui/button-vite';
+import { H1, H2 } from '@/components/ui/heading';
 import { ShimmeringText } from '@/components/ui/shadcn-io/shimmering-text';
 
 export function HeroSection() {
   return (
-    <section className="relative md:pt-20" id="hero">
+    <section className="relative pt-10 md:pt-16" id="hero">
       <div className="relative container mx-auto max-w-screen-xl px-6 text-center">
-        <h1 className="text-4xl md:text-6xl font-extrabold font-heading mb-6 tracking-tighter">
+        <H1 className="mb-2 md:mb-6 tracking-tighter">
           <ShimmeringText
             text="Vite Powerflow"
             duration={2}
@@ -17,14 +18,17 @@ export function HeroSection() {
             className="mr-2"
           />
           <span className="text-yellow-500"> ⚡</span>
-        </h1>
-        <h2 className="mb-10 max-w-3xl mx-auto font-semibold text-2xl text-neutral-500 dark:text-white">
+        </H1>
+        <H2 className="mb-4 md:mb-8 max-w-2xl mx-auto text-center text-base">
           Skip days of setup and ship your React app fast. This starter kit includes TypeScript,
-          testing, CI/CD, and development environment all configured with industry best practices.
-        </h2>
+          testing, CI/CD workflows, and containerized development - all configured with industry
+          best practices.
+        </H2>
+
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <ButtonVite href="#getting-started" size="lg">
             Get Started
+            <FaArrowDown className="translate-y-0" />
           </ButtonVite>
           <Button variant="outline" size="lg" asChild>
             <a
@@ -33,8 +37,8 @@ export function HeroSection() {
               rel="noopener noreferrer"
               className="flex items-center"
             >
-              <FaGithub className="mr-2 h-5 w-5" />
               View on GitHub
+              <FaGithub className="text-gray-800 translate-y-0 dark:text-white" />
             </a>
           </Button>
         </div>

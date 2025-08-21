@@ -1,6 +1,15 @@
+/* Simple CSS Reset for consistent scaling across browsers */
 html {
   scroll-behavior: smooth;
+  font-size: 20px; /* Standard size that works */
 }
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import './styles/terminal.css';
@@ -22,7 +31,6 @@ html {
 
     /* Base styles */
     font-family: var(--font-body);
-    font-size: 18px;
     color-scheme: light dark;
     font-synthesis: none;
     text-rendering: optimizeLegibility;

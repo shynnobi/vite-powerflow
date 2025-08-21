@@ -43,25 +43,27 @@ export function FAQSection() {
     <section className="relative py-20" id="faq">
       <div className="container mx-auto max-w-screen-xl px-6">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl mb-4">Frequently Asked Questions</h2>
-          <p className="text-lg text-muted-foreground">
+          <h2 className="text-3xl md:text-4xl mb-4 flex items-center justify-center gap-3">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-lg font-medium max-w-2xl mx-auto text-gray-500 dark:text-white">
             Everything you need to know about Vite PowerFlow and how it streamlines your project
             setup
           </p>
         </div>
 
         <div className="max-w-3xl mx-auto">
-          <Accordion type="single" collapsible className="space-y-4">
+          <Accordion type="single" collapsible className="space-y-2">
             {faqData.map((faq, index) => (
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
-                className="border rounded-lg px-6 bg-white dark:bg-neutral-800/50 hover:bg-card/80 transition-colors"
+                className="border rounded-lg px-6 bg-white dark:bg-gray-800/50 hover:bg-gray-50 hover:dark:bg-gray-800 transition-colors"
               >
-                <AccordionTrigger className="text-left text-lg py-4 hover:no-underline font-bold cursor-pointer">
+                <AccordionTrigger className="text-left text-lg py-4 hover:no-underline font-bold cursor-pointer text-gray-700 dark:text-white">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground pb-4 leading-relaxed text-base">
+                <AccordionContent className="dark:text-white pb-4 leading-relaxed">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
