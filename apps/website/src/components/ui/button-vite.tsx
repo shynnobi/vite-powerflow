@@ -13,7 +13,7 @@ const ButtonVite = React.forwardRef<HTMLButtonElement, ButtonViteProps>(
   ({ className, children, href, size = 'default', ...props }, ref) => {
     const buttonClasses = cn(
       // Base styles
-      'relative inline-flex items-center justify-center gap-2',
+      'w-full relative inline-flex items-center justify-center gap-2',
       'rounded-full border-0 cursor-pointer',
       'font-inter font-semibold text-white',
       'transition-transform duration-300 ease-out',

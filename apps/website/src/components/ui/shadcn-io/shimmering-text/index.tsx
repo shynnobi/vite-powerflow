@@ -20,8 +20,8 @@ function ShimmeringText({
   transition,
   wave = false,
   className,
-  color = 'var(--color-neutral-500)',
-  shimmeringColor = 'var(--color-neutral-300)',
+  color = 'var(--color-gray-500)',
+  shimmeringColor = 'var(--color-gray-300)',
   ...props
 }: ShimmeringTextProps) {
   return (
