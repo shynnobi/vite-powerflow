@@ -1,9 +1,11 @@
+import { Paragraph } from '@/components/typography/Paragraph';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { Heading } from '@/components/ui/heading';
 
 const faqData = [
   {
@@ -12,44 +14,45 @@ const faqData = [
       "Vite PowerFlow is a production-ready React starter that solves the harmony problem between development tools. It's perfect for solo developers tired of setup hell, small teams wanting a solid foundation, and large teams needing consistent environments for all developers.",
   },
   {
+    question: 'How fast can I get started with Vite PowerFlow?',
+    answer:
+      "Ridiculously fast! With Docker and VS Code/Cursor installed, run 'npx @vite-powerflow/create my-app' and you'll be coding almost instantly. The Dev Container handles all setup automatically—no more waiting for dependencies to install or fighting with environment issues.",
+  },
+  {
     question: "How does Vite PowerFlow solve the 'works on my machine' problem?",
     answer:
-      "Through Dev Containers that provide identical environments across all machines. Whether you're solo or in a team of 50, everyone gets the exact same Node version, dependencies, and system tools. New team members go from clone to productive coding in 10 minutes.",
-  },
-  {
-    question: 'Can I customize the configuration or am I locked in?',
-    answer:
-      "Zero lock-in! Don't like our TypeScript config? Replace it. Prefer Jest over Vitest? Swap it out. Want different linting rules? Modify them. The foundation stays solid, but every choice is yours to change. It's MIT licensed and fully transparent.",
-  },
-  {
-    question: "What's included in the starter template?",
-    answer:
-      'React 18 + TypeScript with strict config, Vite build system, Tailwind CSS + shadcn/ui, complete testing stack (Vitest + Playwright), ESLint + Prettier + Husky working in harmony, Dev Containers, GitHub Actions CI/CD, Storybook, and AI development rules for Cursor.',
-  },
-  {
-    question: 'Do I need Docker experience to use Dev Containers?',
-    answer:
-      "Not at all! The Dev Container setup is completely automated. Just run the command, accept 'Reopen in Container' when prompted, and everything installs automatically. The container builds with the exact Node version, dependencies, and development tools you need.",
+      "Through Dev Containers that provide identical environments across all machines. Whether you're solo or in a team of 50, everyone gets the exact same Node version, dependencies, and system tools. New team members go from clone to productive coding in no time.",
   },
   {
     question: 'How does Vite PowerFlow ensure code quality?',
     answer:
-      'Built-in testing, linting, and formatting run automatically. Pre-commit hooks catch issues before they reach your repository, so you always ship clean, tested code. Our validation scripts ensure consistency between local development and production environments.',
+      'Quality is built-in from day one with ESLint, Prettier, Vitest, and Playwright. Automatic testing, linting, and formatting run on every change. Husky pre-commit and pre-push hooks catch issues locally before they reach your repository, and CI checks validate everything remotely—so you always ship clean, tested code.',
+  },
+  {
+    question: 'What makes Vite PowerFlow special for AI-assisted development?',
+    answer:
+      'Vite PowerFlow includes pre-configured .cursor/rules that enhance AI code assistance in Cursor IDE. These rules help the AI understand your project context, coding standards, and architectural decisions, making AI suggestions more accurate and aligned with best practices.',
+  },
+  {
+    question: 'How do I use and customize the included CI/CD workflows?',
+    answer:
+      "Vite PowerFlow ships with preconfigured GitHub Actions workflows, Husky hooks, and recommended branch protection rules. Feel free to adapt, modify, or even delete any workflows, hooks, or protections to fit your team's needs. For details and examples, see the documentation: [See CI/CD Workflow Docs](#ci-cd-workflow-docs).",
+  },
+  {
+    question: 'Is Vite PowerFlow suitable for production projects?',
+    answer:
+      'Absolutely! Vite PowerFlow is designed for production from the ground up. It includes testing, CI/CD setup, deployment configurations, and follows industry best practices. Start coding, ship to production with confidence.',
   },
 ];
 
 export function FAQSection() {
   return (
-    <section className="relative py-20" id="faq">
+    <section className="relative pb:10 md:pb-20" id="faq">
       <div className="container mx-auto max-w-screen-xl px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl mb-4 flex items-center justify-center gap-3">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-lg font-medium max-w-2xl mx-auto text-gray-500 dark:text-white">
-            Everything you need to know about Vite PowerFlow and how it streamlines your project
-            setup
-          </p>
+        <div className="text-center">
+          <Heading as="h2" className="mb-6">
+            FAQ
+          </Heading>
         </div>
 
         <div className="max-w-2xl mx-auto">
@@ -58,13 +61,15 @@ export function FAQSection() {
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
-                className="border rounded-lg px-6 bg-white dark:bg-gray-800/50 hover:bg-gray-50 hover:dark:bg-gray-800 transition-colors"
+                className="border rounded-lg px-6 dark:bg-gray-800/50 bg-white hover:dark:bg-gray-800 transition-colors"
               >
-                <AccordionTrigger className="text-left text-lg py-4 hover:no-underline font-bold cursor-pointer text-gray-700 dark:text-white">
-                  {faq.question}
+                <AccordionTrigger className="text-left text-lg py-4 hover:no-underline font-semibold cursor-pointer text-gray-700 dark:text-white">
+                  <Paragraph size="lg" className="font-semibold">
+                    {faq.question}
+                  </Paragraph>
                 </AccordionTrigger>
-                <AccordionContent className="dark:text-white pb-4 leading-relaxed">
-                  {faq.answer}
+                <AccordionContent className="text-gray-700 dark:text-white pb-4 leading-relaxed lg:pr-4">
+                  <Paragraph size="md">{faq.answer}</Paragraph>
                 </AccordionContent>
               </AccordionItem>
             ))}

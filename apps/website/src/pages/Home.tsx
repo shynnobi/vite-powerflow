@@ -3,7 +3,7 @@ import type { ReactElement } from 'react';
 import { FAQSection } from './Home/FAQSection';
 import { FeaturesSection } from './Home/FeaturesSection';
 import { Footer } from './Home/Footer';
-import { GettingStartedSection } from './Home/GettingStartedSection';
+import { GetStartedSection } from './Home/GetStartedSection';
 import { Header } from './Home/Header';
 import { HeroSection } from './Home/HeroSection';
 
@@ -18,7 +18,7 @@ export default function Home(): ReactElement {
       <main className="flex-1">
         <HeroSection />
         <FeaturesSection />
-        <GettingStartedSection />
+        <GetStartedSection />
         <FAQSection />
       </main>
       <Footer />

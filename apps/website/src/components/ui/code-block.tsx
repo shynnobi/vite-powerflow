@@ -44,7 +44,7 @@ export function CodeBlock({ className }: CodeBlockProps) {
   const activeCommand = packageManagers.find(pm => pm.id === activeTab)?.command || '';
 
   return (
-    <div className={cn('w-full', className)}>
+    <div className={cn('w-full max-w-lg mx-auto', className)}>
       {/* Code block with tabs - Inverted theme */}
       <div className="bg-gray-900 dark:bg-white rounded-lg">
         {/* Package manager tabs */}

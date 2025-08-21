@@ -1,7 +1,8 @@
 import type { ReactElement } from 'react';
 
+import { Paragraph } from '@/components/typography/Paragraph';
 import { Badge } from '@/components/ui/badge';
-import { H3 } from '@/components/ui/heading';
+import { Heading } from '@/components/ui/heading';
 
 function FeatureCard({
   title,
@@ -21,10 +22,12 @@ function FeatureCard({
       <div className="flex items-center justify-center w-16 h-16 relative bottom-4 transition-transform duration-300 ease-out group-hover:scale-110">
         {icon}
       </div>
-      <H3 className="text-xl font-heading mb-3 text-gray-700 dark:text-white">{title}</H3>
-      <p className="text-muted-foreground font-medium text-sm leading-relaxed flex-1 mb-4">
+      <Heading as="h3" size="h4" className="mb-3">
+        {title}
+      </Heading>
+      <Paragraph size="sm" className="flex-1 mb-4">
         {desc}
-      </p>
+      </Paragraph>
       <div className="flex flex-wrap gap-1.5 justify-center">
         {tags.map((tag, index) => (
           <Badge key={index} variant={colorVariant}>
@@ -39,7 +42,7 @@ function FeatureCard({
 const features = [
   {
     title: 'Core Stack',
-    desc: 'React 19 + Vite + TypeScript perfectly integrated with strict linting and path aliases configured',
+    desc: 'React 19 and TypeScript, supercharged by Vite for lightning-fast builds and instant HMR.',
     image: '/images/3d-icons/3dicons-rocket-dynamic-color.png',
     alt: 'Core Stack',
     tags: ['React 19', 'TypeScript', 'Vite'],
@@ -58,7 +61,7 @@ const features = [
     desc: 'Efficient state management with Zustand and powerful data fetching with TanStack Query',
     image: '/images/3d-icons/3dicons-folder-dynamic-color.png',
     alt: 'State & Data',
-    tags: ['Zustand', 'TanStack Query', 'React Hook Form'],
+    tags: ['Zustand', 'TanStack Query'],
     colorVariant: 'orange' as const,
   },
   {
@@ -79,7 +82,7 @@ const features = [
   },
   {
     title: 'Containerized Dev',
-    desc: 'Containerized development ensuring "works on my machine" works everywhere',
+    desc: "A consistent dev environment for the whole team. Solves the 'works on my machine' problem for good.",
     image: '/images/3d-icons/3dicons-cube-dynamic-color.png',
     alt: 'Containerized Dev',
     tags: ['Dev Containers', 'Docker', 'VS Code Settings'],
@@ -90,6 +93,9 @@ export function FeaturesSection() {
   return (
     <section className="relative py-20" id="features">
       <div className="container mx-auto max-w-screen-xl px-6">
+        <div className="text-center mb-12">
+          <Heading as="h2">A Complete, Production-Ready Stack</Heading>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {features.map((feature, index) => (
             <FeatureCard

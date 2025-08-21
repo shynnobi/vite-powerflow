@@ -1,27 +1,22 @@
 /* Simple CSS Reset for consistent scaling across browsers */
 html {
   scroll-behavior: smooth;
-  font-size: 20px; /* Standard size that works */
-}
-
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+  font-size: 20px;
 }
 
 @import 'tailwindcss';
 @import 'tw-animate-css';
-@import './styles/terminal.css';
+/* @import './styles/terminal.css'; */
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    /* border: 1px solid red; */
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-gray-700 dark:text-white;
   }
 
   :root {
@@ -180,4 +175,21 @@ body {
 ::-moz-selection {
   background-color: var(--brand-primary);
   color: white;
+}
+
+/* Animation bounce subtile pour l’icône flèche du HeroSection */
+.bounce-arrow {
+  animation: bounceArrow 1.5s ease-in-out infinite;
+}
+
+@keyframes bounceArrow {
+  0% {
+    transform: translateY(-3px);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+  100% {
+    transform: translateY(-3px);
+  }
 }
