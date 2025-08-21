@@ -32,9 +32,9 @@ const faqData = [
       "Not at all! The Dev Container setup is completely automated. Just run the command, accept 'Reopen in Container' when prompted, and everything installs automatically. The container builds with the exact Node version, dependencies, and development tools you need.",
   },
   {
-    question: 'How do the local scripts match CI/CD exactly?',
+    question: 'How does Vite PowerFlow ensure code quality?',
     answer:
-      "Our validation scripts run identically in both environments. 'pnpm validate:quick' for fast feedback (30 seconds) and 'pnpm validate:full' for complete testing (3 minutes) - the same commands that run in GitHub Actions. Pre-commit hooks catch issues before they reach the repository.",
+      'Built-in testing, linting, and formatting run automatically. Pre-commit hooks catch issues before they reach your repository, so you always ship clean, tested code. Our validation scripts ensure consistency between local development and production environments.',
   },
 ];
 
@@ -52,7 +52,7 @@ export function FAQSection() {
           </p>
         </div>
 
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-2xl mx-auto">
           <Accordion type="single" collapsible className="space-y-2">
             {faqData.map((faq, index) => (
               <AccordionItem
