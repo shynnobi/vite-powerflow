@@ -17,9 +17,9 @@ export function Header() {
         </div>
         <div className="flex items-center gap-6">
           <nav className="hidden md:flex gap-5 text-sm font-semibold text-gray-700 dark:text-white">
-            <a href="#hero" className="">
+            {/* <a href="#hero" className="">
               Docs
-            </a>
+            </a> */}
           </nav>
           <div className="flex items-center gap-4">
             <a

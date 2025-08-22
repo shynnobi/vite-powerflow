@@ -37,7 +37,7 @@ const faqData = [
   {
     question: 'How do I use and customize the included CI/CD workflows?',
     answer:
-      "Vite PowerFlow ships with preconfigured GitHub Actions workflows, Husky hooks, and recommended branch protection rules. Feel free to adapt, modify, or even delete any workflows, hooks, or protections to fit your team's needs. For details and examples, see the documentation: [See CI/CD Workflow Docs](#ci-cd-workflow-docs).",
+      "Vite PowerFlow ships with preconfigured GitHub Actions workflows, Husky hooks, and recommended branch protection rules. Feel free to adapt, modify, or even delete any workflows, hooks, or protections to fit your team's needs. The documentation with details and examples is coming soon.",
   },
   {
     question: 'Is Vite PowerFlow suitable for production projects?',

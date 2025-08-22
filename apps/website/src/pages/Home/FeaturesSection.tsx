@@ -95,8 +95,8 @@ export function FeaturesSection() {
     <Container id="features">
       <div className="mx-auto max-w-screen-xl">
         <div className="text-center">
-          <Heading as="h2" className="mb-6 md:mb-8">
-            A Complete, Production-Ready Stack 🛠
+          <Heading as="h2" className="mb-6 md:mb-8 lg:mb-10">
+            A complete, production-ready stack 🛠
           </Heading>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">

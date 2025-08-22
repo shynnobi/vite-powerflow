@@ -16,7 +16,7 @@ export function GetStartedSection() {
             as="h2"
             // className="bg-gradient-to-r from-blue-600 to-blue-300 bg-clip-text text-transparent"
           >
-            Ready to Start? 🚀
+            Ready to start? 🚀
           </Heading>
           <Paragraph
             size="lg"
@@ -29,7 +29,7 @@ export function GetStartedSection() {
         </div>
 
         {/* Quick Start Command */}
-        <div className="mb-6 md:mb-10">
+        <div className="">
           <div className="max-w-2xl mx-auto">
             <CodeBlock />
             <Paragraph size="sm" className="font-medium text-center mt-2">
@@ -39,10 +39,10 @@ export function GetStartedSection() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <ButtonVite href="#getting-started" size="lg">
+          {/* <ButtonVite href="#getting-started" size="lg">
             Read the docs
             <FaBook className="translate-y-0" />
-          </ButtonVite>
+          </ButtonVite> */}
         </div>
       </div>
     </Container>
