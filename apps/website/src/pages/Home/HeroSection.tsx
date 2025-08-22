@@ -2,27 +2,27 @@ import { FaArrowDown, FaGithub } from 'react-icons/fa';
 
 import { Button } from '@/components/ui/button';
 import { ButtonVite } from '@/components/ui/button-vite';
+import { Container } from '@/components/ui/container';
 import { Heading } from '@/components/ui/heading';
 import { ShimmeringText } from '@/components/ui/shadcn-io/shimmering-text';
 
 export function HeroSection() {
   return (
-    <section className="relative pt-10 md:pt-16" id="hero">
-      <div className="relative container mx-auto max-w-screen-xl px-6 text-center">
-        <Heading as="h1" className="mb-2 md:mb-5 tracking-tighter">
+    <Container className="pt-12 md:pt-20 lg:pt-24" id="hero">
+      <div className="mx-auto max-w-screen-xl">
+        <Heading as="h1" className="mb-2 md:mb-5 tracking-tight text-left md:text-center italic">
           <ShimmeringText
             text="Vite PowerFlow"
             duration={2}
             color="var(--brand-primary)"
             shimmeringColor="var(--brand-primary-alt)"
-            className="mr-2"
           />
           <span className="text-yellow-500"> ⚡</span>
         </Heading>
         <Heading
           as="h2"
           size="h4"
-          className="mb-4 md:mb-8 max-w-2xl mx-auto text-center font-semibold text-gray-600 dark:text-white"
+          className="mb-4 md:mb-8 max-w-2xl mx-auto text-left md:text-center font-medium md:font-semibold leading-snug text-gray-600 dark:text-white"
         >
           <span className="font-bold text-gray-700 dark:text-white">
             Skip days of setup and ship your React app fast.
@@ -49,6 +49,6 @@ export function HeroSection() {
           </Button>
         </div>
       </div>
-    </section>
+    </Container>
   );
 }

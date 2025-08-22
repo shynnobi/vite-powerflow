@@ -8,14 +8,14 @@ export const Paragraph = ({ children, className = '', size = 'md', ...props }: P
   let sizeClass = '';
   switch (size) {
     case 'sm':
-      sizeClass = 'text-sm';
+      sizeClass = 'text-sm md:text-medium';
       break;
     case 'lg':
-      sizeClass = 'text-lg font-medium';
+      sizeClass = 'text-base md:text-lg';
       break;
-    case 'md':
+    // Default is md
     default:
-      sizeClass = 'text-base';
+      sizeClass = 'text-medium md:text-base lg:text-md';
       break;
   }
   return (

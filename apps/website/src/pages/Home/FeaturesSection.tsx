@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 
 import { Paragraph } from '@/components/typography/Paragraph';
 import { Badge } from '@/components/ui/badge';
+import { Container } from '@/components/ui/container';
 import { Heading } from '@/components/ui/heading';
 
 function FeatureCard({
@@ -22,7 +23,7 @@ function FeatureCard({
       <div className="flex items-center justify-center w-16 h-16 relative bottom-4 transition-transform duration-300 ease-out group-hover:scale-110">
         {icon}
       </div>
-      <Heading as="h3" size="h4" className="mb-3">
+      <Heading as="h3" size="h4" className="mb-1 md:mb-3">
         {title}
       </Heading>
       <Paragraph size="sm" className="flex-1 mb-4">
@@ -57,20 +58,20 @@ const features = [
     colorVariant: 'rose' as const,
   },
   {
-    title: 'State & Data',
-    desc: 'Efficient state management with Zustand and powerful data fetching with TanStack Query',
-    image: '/images/3d-icons/3dicons-folder-dynamic-color.png',
-    alt: 'State & Data',
-    tags: ['Zustand', 'TanStack Query'],
-    colorVariant: 'orange' as const,
-  },
-  {
     title: 'Testing & Quality',
     desc: 'Comprehensive testing with Vitest and Playwright, plus automated code quality with ESLint and Prettier',
     image: '/images/3d-icons/3dicons-lab-dynamic-color.png',
     alt: 'Testing & Quality',
     tags: ['Vitest', 'Playwright', 'ESLint'],
     colorVariant: 'green' as const,
+  },
+  {
+    title: 'State & Data',
+    desc: 'Efficient state management with Zustand and powerful data fetching with TanStack Query',
+    image: '/images/3d-icons/3dicons-folder-dynamic-color.png',
+    alt: 'State & Data',
+    tags: ['Zustand', 'TanStack Query'],
+    colorVariant: 'orange' as const,
   },
   {
     title: 'Development Workflow',
@@ -91,10 +92,12 @@ const features = [
 ];
 export function FeaturesSection() {
   return (
-    <section className="relative py-20" id="features">
-      <div className="container mx-auto max-w-screen-xl px-6">
-        <div className="text-center mb-12">
-          <Heading as="h2">A Complete, Production-Ready Stack</Heading>
+    <Container id="features">
+      <div className="mx-auto max-w-screen-xl">
+        <div className="text-center">
+          <Heading as="h2" className="mb-6 md:mb-8">
+            A Complete, Production-Ready Stack 🛠
+          </Heading>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {features.map((feature, index) => (
@@ -109,6 +112,6 @@ export function FeaturesSection() {
           ))}
         </div>
       </div>
-    </section>
+    </Container>
   );
 }

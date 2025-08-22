@@ -22,7 +22,7 @@ html {
   :root {
     /* Font stacks */
     --font-heading: 'Figtree', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    --font-body: 'Instrument Sans', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    --font-body: 'Figtree', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 
     /* Base styles */
     font-family: var(--font-body);

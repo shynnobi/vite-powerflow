@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { Container } from '@/components/ui/container';
 import { Heading } from '@/components/ui/heading';
 
 const faqData = [
@@ -47,13 +48,11 @@ const faqData = [
 
 export function FAQSection() {
   return (
-    <section className="relative pb:10 md:pb-20" id="faq">
-      <div className="container mx-auto max-w-screen-xl px-6">
-        <div className="text-center">
-          <Heading as="h2" className="mb-6">
-            FAQ
-          </Heading>
-        </div>
+    <Container id="faq">
+      <div>
+        <Heading as="h2" className="mb-6 text-center">
+          Frequently Asked Questions 📚
+        </Heading>
 
         <div className="max-w-2xl mx-auto">
           <Accordion type="single" collapsible className="space-y-2">
@@ -61,21 +60,21 @@ export function FAQSection() {
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
-                className="border rounded-lg px-6 dark:bg-gray-800/50 bg-white hover:dark:bg-gray-800 transition-colors"
+                className="border rounded-lg px-5 md:px-6 dark:bg-gray-800/50 bg-white hover:dark:bg-gray-800 transition-colors"
               >
-                <AccordionTrigger className="text-left text-lg py-4 hover:no-underline font-semibold cursor-pointer text-gray-700 dark:text-white">
-                  <Paragraph size="lg" className="font-semibold">
+                <AccordionTrigger className="text-left py-3 md:py-4 hover:no-underline cursor-pointer">
+                  <Paragraph size="lg" className="font-semibold leading-snug">
                     {faq.question}
                   </Paragraph>
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-700 dark:text-white pb-4 leading-relaxed lg:pr-4">
-                  <Paragraph size="md">{faq.answer}</Paragraph>
+                <AccordionContent className="pb-4 lg:pr-4">
+                  <Paragraph>{faq.answer}</Paragraph>
                 </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
         </div>
       </div>
-    </section>
+    </Container>
   );
 }

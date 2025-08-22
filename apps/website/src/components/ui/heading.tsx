@@ -7,9 +7,9 @@ const commonHeadingStyles = 'font-heading text-gray-700 dark:text-white';
 
 // Level-specific styles for each heading
 const headingStyles = {
-  h1: 'text-4xl md:text-6xl font-extrabold',
-  h2: 'text-3xl md:text-4xl font-medium mb-4',
-  h3: 'text-2xl md:text-3xl font-bold',
+  h1: 'text-3xl md:text-5xl font-extrabold',
+  h2: 'text-2xl md:text-3xl font-medium mb-4 md:mb-6',
+  h3: 'text-xl md:text-2xl font-bold',
   h4: 'text-lg md:text-xl font-bold',
   h5: 'text-base md:text-lg font-semibold',
   h6: 'text-sm md:text-base font-medium',
