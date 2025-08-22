@@ -1,7 +1,4 @@
-import { FaBook } from 'react-icons/fa';
-
 import { Paragraph } from '../../components/typography/Paragraph';
-import { ButtonVite } from '../../components/ui/button-vite';
 
 import { CodeBlock } from '@/components/ui/code-block';
 import { Container } from '@/components/ui/container';
@@ -36,13 +33,6 @@ export function GetStartedSection() {
               Copy the command in your terminal and follow the CLI instructions.
             </Paragraph>
           </div>
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          {/* <ButtonVite href="#getting-started" size="lg">
-            Read the docs
-            <FaBook className="translate-y-0" />
-          </ButtonVite> */}
         </div>
       </div>
     </Container>
