@@ -1,37 +1,27 @@
 import type { ReactElement } from 'react';
-import { FaGithub } from 'react-icons/fa';
 
-import { Counter } from '../components/examples/Counter.js';
-
-import { ThemeToggle } from '@/components/themeToggle/ThemeToggle';
-import { Button } from '@/components/ui/button';
+import { FAQSection } from './Home/FAQSection';
+import { FeaturesSection } from './Home/FeaturesSection';
+import { Footer } from './Home/Footer';
+import { GetStartedSection } from './Home/GetStartedSection';
+import { Header } from './Home/Header';
+import { HeroSection } from './Home/HeroSection';
 
 export default function Home(): ReactElement {
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-6">
-      <nav className="absolute top-4 right-4 flex gap-2 items-center">
-        <Button asChild variant="outline" className="text-lg">
-          <a
-            href="https://github.com/shynnobi/vite-powerflow"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <FaGithub aria-hidden="true" />
-            <span className="sr-only">GitHub</span>
-          </a>
-        </Button>
-        <ThemeToggle />
-      </nav>
-
-      <div className="flex flex-col items-center max-w-[760px] text-center gap-6">
-        <h1 className="text-4xl font-bold text-blue-500 dark:text-yellow-200">Vite PowerFlow ⚡</h1>
-        <p>
-          A modern React + Vite website with strict code quality tools and AI-powered workflow.
-          Includes comprehensive testing, linting, and CI/CD for a robust development experience.
-        </p>
-
-        <Counter />
+    <div className="relative flex flex-col min-h-screen">
+      <div className="absolute h-full w-full bg-gray-50 dark:bg-gray-900">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#c7c7c72e_1px,transparent_1px),linear-gradient(to_bottom,#d3d3d32e_1px,transparent_1px)] bg-[size:50px_50px] dark:bg-[linear-gradient(to_right,#23272f2e_1px,transparent_1px),linear-gradient(to_bottom,#23272f2e_1px,transparent_1px)]"></div>
       </div>
+
+      <Header />
+      <main className="flex-1">
+        <HeroSection />
+        <FeaturesSection />
+        <GetStartedSection />
+        <FAQSection />
+      </main>
+      <Footer />
     </div>
   );
 }

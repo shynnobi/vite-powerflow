@@ -1,29 +1,43 @@
+/* Simple CSS Reset for consistent scaling across browsers */
+html {
+  scroll-behavior: smooth;
+  font-size: 20px;
+}
+
 @import 'tailwindcss';
 @import 'tw-animate-css';
+/* @import './styles/terminal.css'; */
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    /* border: 1px solid red; */
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-gray-700 dark:text-white;
   }
 
   :root {
     /* Font stacks */
-    --font-heading: 'Fragment Mono', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    --font-body: 'Fragment Mono', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    --font-heading: 'Figtree', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    --font-body: 'Figtree', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 
     /* Base styles */
     font-family: var(--font-body);
-    font-size: 16px;
     color-scheme: light dark;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    /* Brand colors - Single Source of Truth */
+    --brand-primary: #3b82f6; /* Blue-500 */
+    --brand-primary-alt: #60a5fa; /* Blue-400 */
+    --brand-primary-light: #93c5fd; /* Blue-300 */
+    --brand-primary-lighter: #bfdbfe; /* Blue-200 */
+    --brand-primary-dark: #1d4ed8; /* Blue-700 */
 
     /* Design tokens */
     --radius: 0.625rem;
@@ -94,6 +108,12 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* Brand colors - Dark mode */
+  --brand-primary: #60a5fa; /* Blue-400 - lighter for dark mode */
+  --brand-primary-alt: #93c5fd; /* Blue-300 - lighter for dark mode */
+  --brand-primary-light: #bfdbfe; /* Blue-200 - lighter for dark mode */
+  --brand-primary-dark: #3b82f6; /* Blue-500 - darker for dark mode */
 }
 
 @theme inline {
@@ -142,5 +162,34 @@
   .font-body {
     font-family: var(--font-body);
     font-optical-sizing: auto;
+  }
+}
+
+/* Custom text selection colors - using our brand primary color */
+::selection {
+  background-color: var(--brand-primary);
+  color: white;
+}
+
+/* Firefox support */
+::-moz-selection {
+  background-color: var(--brand-primary);
+  color: white;
+}
+
+/* Animation bounce subtile pour l’icône flèche du HeroSection */
+.bounce-arrow {
+  animation: bounceArrow 1.5s ease-in-out infinite;
+}
+
+@keyframes bounceArrow {
+  0% {
+    transform: translateY(-3px);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+  100% {
+    transform: translateY(-3px);
   }
 }

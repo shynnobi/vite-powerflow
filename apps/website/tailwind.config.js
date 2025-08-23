@@ -7,7 +7,20 @@ export default {
       colors: {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
-        // Add other custom colors if needed
+        // Brand colors - using CSS variables from index.css
+        primary: {
+          DEFAULT: 'var(--brand-primary)',
+          alt: 'var(--brand-primary-alt)',
+          light: 'var(--brand-primary-light)',
+          dark: 'var(--brand-primary-dark)',
+        },
+      },
+      scale: {
+        98: '0.98',
+        105: '1.05',
+      },
+      fontFamily: {
+        inter: ['Inter', 'sans-serif'],
       },
     },
   },
