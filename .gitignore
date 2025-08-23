@@ -68,3 +68,6 @@ test-results/
 # CLI test artifacts
 *.tgz
 vite-powerflow-create-*.tgz
+
+# MSW (Mock Service Worker) - Generated automatically
+**/mockServiceWorker.js
