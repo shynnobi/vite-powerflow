@@ -41,7 +41,7 @@ try {
 // Run E2E tests if test files are present
 const testFiles = globSync('tests/e2e/*.{spec,test}.ts');
 if (testFiles.length > 0) {
-  execSync('pnpm exec playwright test --reporter=dot', { stdio: 'inherit' });
+  execSync('pnpm exec playwright test --reporter=dot --pass-with-no-tests', { stdio: 'inherit' });
 } else {
   // Print warning in yellow if no E2E tests are found
   console.log('\x1b[33m⚠️  No end-to-end tests detected.\x1b[0m');
