@@ -4,6 +4,7 @@
     "src/**/*",
     "tests/**/*",
     "scripts/**/*",
+    "plugins/**/*",
     ".storybook/**/*",
     ".storybook/*.ts",
     "*.config.ts",

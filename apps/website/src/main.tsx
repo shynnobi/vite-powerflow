@@ -1,5 +1,5 @@
-import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 
 // Safari font-size adjustment using utility functions
@@ -24,11 +24,11 @@ if (!rootElement) {
 }
 
 createRoot(rootElement).render(
-  <StrictMode>
+  <HelmetProvider>
     <BrowserRouter>
       <ThemeProvider storageKey="vite-ui-theme">
         <App />
       </ThemeProvider>
     </BrowserRouter>
-  </StrictMode>
+  </HelmetProvider>
 );

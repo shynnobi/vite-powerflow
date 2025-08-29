@@ -59,6 +59,20 @@ test-results
 # Build visualizer
 stats.html
 
+# Lighthouse and audit reports
+lighthouse-reports/
+*.html
+*.json
+audit-report.txt
+
+# DevTools and trace files
+*.devtoolslog.json
+*.trace.json
+pageLoadError-*.json
+
+# Snapshots
+snapshot/
+
 # Binary files
 bin/
 
