@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
 
-import { checkCliSync, checkStarterSync } from './core/syncChecker.js';
+import { MONITORED_NPM_PACKAGES } from './config/monitoredPackages.js';
+import { runAllSyncChecks } from './core/syncChecker.js';
 import { formatSyncOutput } from './core/syncReporter.js';
-import { PackageLabel, SyncStatus } from './core/types.js';
+import { CheckResult, LabeledCheckResult, SyncStatus } from './core/types.js';
 import { detectWorkspaceRoot } from './core/workspaceDetector.js';
 import { updateStatusBar } from './ui/statusBarController.js';
 import { createRefreshStatusBar } from './ui/syncCommands.js';
@@ -33,44 +34,52 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(runSyncCheckCommand);
 
-  const workspaceRoot = detectWorkspaceRoot();
-  if (workspaceRoot) {
-    const debouncedCheck = createDebounced((_trigger: string) => {
-      void runSyncChecks();
-    }, 1000);
+  try {
+    const workspaceRoot = detectWorkspaceRoot();
+    if (workspaceRoot) {
+      const debouncedCheck = createDebounced((_trigger: string) => {
+        void runSyncChecks();
+      }, 1000);
 
-    void debouncedCheck('Activation');
+      void debouncedCheck('Activation');
 
-    createWatcher(
-      new vscode.RelativePattern(workspaceRoot, '.git/HEAD'),
-      (_uri, _event) => {
-        debouncedCheck('HEAD change');
-      },
-      context
-    );
-    createWatcher(
-      new vscode.RelativePattern(workspaceRoot, '.git/refs/heads/**'),
-      (_uri, event) => {
-        debouncedCheck(event === 'created' ? 'Branch creation' : 'Branch commit');
-      },
-      context
-    );
-    createWatcher(
-      new vscode.RelativePattern(workspaceRoot, 'packages/cli/package.json'),
-      (_uri, _event) => {
-        debouncedCheck('CLI package.json change');
-      },
-      context
-    );
-    createWatcher(
-      new vscode.RelativePattern(workspaceRoot, 'packages/cli/template/package.json'),
-      (_uri, _event) => {
-        debouncedCheck('Template package.json change');
-      },
-      context
-    );
-  } else {
-    updateStatusBar(statusBarItem, 'error', 'Not in a Vite Powerflow workspace.');
+      // Create watchers based on the centralized configuration
+      [
+        ...MONITORED_NPM_PACKAGES.map(p => p.pkgPath),
+        'packages/cli/template/package.json', // Special case for template
+      ].forEach(pkgPath => {
+        createWatcher(
+          new vscode.RelativePattern(workspaceRoot, pkgPath),
+          (_uri, _event) => {
+            debouncedCheck(`${pkgPath} change`);
+          },
+          context
+        );
+      });
+
+      // Standard git watchers
+      createWatcher(
+        new vscode.RelativePattern(workspaceRoot, '.git/HEAD'),
+        (_uri, _event) => {
+          debouncedCheck('HEAD change');
+        },
+        context
+      );
+      createWatcher(
+        new vscode.RelativePattern(workspaceRoot, '.git/refs/heads/**'),
+        (_uri, event) => {
+          debouncedCheck(event === 'created' ? 'Branch creation' : 'Branch commit');
+        },
+        context
+      );
+    } else {
+      updateStatusBar(statusBarItem, 'error', 'Not in a Vite Powerflow workspace.');
+    }
+  } catch (error) {
+    // Handle potential errors during activation, e.g., config loading
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    updateStatusBar(statusBarItem, 'error', `Activation Error: ${errorMessage}`);
+    outputChannel.appendLine(`Activation failed: ${errorMessage}`);
   }
 }
 
@@ -93,10 +102,11 @@ async function runSyncChecks(forceRun = false) {
       return;
     }
 
-    const starterResult = await checkStarterSync(workspaceRoot, outputChannel);
-    const cliResult = await checkCliSync(workspaceRoot, outputChannel);
-
-    const allResults = [starterResult, cliResult];
+    const labeledResults: LabeledCheckResult[] = await runAllSyncChecks(
+      workspaceRoot,
+      outputChannel
+    );
+    const allResults: CheckResult[] = labeledResults.map(item => item.result);
 
     // Determine final status with proper logic:
     // - error: if any package has an error
@@ -127,12 +137,7 @@ async function runSyncChecks(forceRun = false) {
     updateStatusBar(statusBarItem, finalStatus, 'Click to view sync status');
 
     // Format and display sync output using centralized formatting
-    const syncResults = [
-      { label: PackageLabel.Starter, result: starterResult },
-      { label: PackageLabel.Cli, result: cliResult },
-    ];
-
-    const outputLines = formatSyncOutput(syncResults);
+    const outputLines = formatSyncOutput(labeledResults);
     reportSyncOutput(outputChannel, outputLines);
   } catch (error: unknown) {
     const errorLog = `❌ Error during sync checks: ${(error as Error).message || String(error)}`;

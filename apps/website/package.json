@@ -38,6 +38,7 @@
     "validate:full": "pnpm validate:static && pnpm test && pnpm test:e2e"
   },
   "devDependencies": {
+    "@vite-powerflow/utils": "workspace:^",
     "@axe-core/playwright": "^4.10.2",
     "@chromatic-com/storybook": "^4.0.1",
     "@commitlint/cli": "^19.8.1",

@@ -5,6 +5,7 @@ export type SyncStatus = 'sync' | 'warning' | 'error' | 'pending';
 export enum PackageLabel {
   Starter = 'Starter',
   Cli = 'CLI',
+  Utils = 'Utils',
 }
 
 export interface CheckResult {
@@ -67,4 +68,9 @@ export interface SyncResult {
   baselineCommit?: string;
   currentCommit?: string;
   changeset?: Changeset;
+}
+
+export interface LabeledCheckResult {
+  label: PackageLabel;
+  result: CheckResult;
 }

@@ -41,8 +41,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'pnpm build && pnpm preview --port 4175',
+    command: 'pnpm preview --port 4175',
     url: 'http://localhost:4175',
     reuseExistingServer: false,
+    timeout: 120 * 1000, // 2 minutes timeout
   },
 });
