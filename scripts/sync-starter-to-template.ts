@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
-import { TemplatePkgJson, TsConfigJson } from './types/package-json';
+import { TemplatePkgJson } from './types/package-json';
 import { logRootError, logRootInfo, logRootSuccess } from './monorepo-logger';
 
 const __filename = fileURLToPath(import.meta.url);
