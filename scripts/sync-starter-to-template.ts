@@ -161,10 +161,6 @@ void (async () => {
       }
     }
 
-    // Ensure all generated files are formatted
-    logRootInfo(`Formatting the entire template directory...`);
-    execSync(`prettier --write "${templateDest}"`, { stdio: 'ignore' });
-
     logRootSuccess('Template synchronized successfully!');
   } catch (err) {
     logRootError('Template synchronization failed!');
