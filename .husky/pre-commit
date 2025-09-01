@@ -1,8 +1,9 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-# Augment changesets before commit
+# Augment changesets before commit and add them to the commit
 pnpm changeset:augment
+git add .changeset/
 
 # Always sync starter to template before commit to ensure consistency.
 echo "🔄 Synchronizing apps/starter with CLI template..."
