@@ -1,9 +1,8 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-# Augment changesets before commit and add them to the commit
+# Augment changesets before commit
 pnpm changeset:augment
-git add .changeset/
 
 # Always sync starter to template before commit to ensure consistency.
 echo "🔄 Synchronizing apps/starter with CLI template..."
@@ -12,8 +11,9 @@ if [ $? -ne 0 ]; then
   echo "❌ Template synchronization failed. Commit aborted."
   exit 1
 fi
-# Add any files modified by the sync script to the commit.
-git add packages/cli/template
+
+# Add all changes made by the hook's scripts to the commit.
+git add .
 
 # Run lint-staged sequentially to prevent memory issues
 pnpm lint-staged --concurrent false
