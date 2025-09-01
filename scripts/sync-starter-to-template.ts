@@ -154,10 +154,10 @@ void (async () => {
     const tsconfigPath = path.join(templateDest, 'tsconfig.json');
     if (await fs.pathExists(tsconfigPath)) {
       const tsconfigRaw = await fs.readFile(tsconfigPath, 'utf-8');
-      const tsconfig = JSON.parse(tsconfigRaw) as TsConfigJson;
-      if (tsconfig.extends) {
-        delete tsconfig.extends;
-        await fs.writeFile(tsconfigPath, JSON.stringify(tsconfig, null, 2), 'utf8');
+      if (tsconfigRaw.includes('"extends"')) {
+        // Remove extends line while preserving exact formatting
+        const cleanedTsconfig = tsconfigRaw.replace(/^\s*"extends":\s*"[^"]+",?\s*\n/gm, '');
+        await fs.writeFile(tsconfigPath, cleanedTsconfig, 'utf8');
       }
     }
 

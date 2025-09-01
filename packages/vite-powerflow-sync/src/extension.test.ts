@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as vscode from 'vscode';
 
-import { checkCliSync, checkStarterSync } from './core/syncChecker.js';
+import { runAllSyncChecks } from './core/syncChecker.js';
+import { PackageLabel } from './core/types.js';
 import { detectWorkspaceRoot } from './core/workspaceDetector.js';
 import { updateStatusBar } from './ui/statusBarController.js';
 import { createRefreshStatusBar } from './ui/syncCommands.js';
@@ -39,8 +40,7 @@ vi.mock('vscode', async () => {
 
 // Mock dependencies
 vi.mock('./core/syncChecker.js', () => ({
-  checkCliSync: vi.fn(),
-  checkStarterSync: vi.fn(),
+  runAllSyncChecks: vi.fn(),
 }));
 vi.mock('./ui/syncCommands.js', () => ({
   createRefreshStatusBar: vi.fn(),
@@ -56,8 +56,7 @@ vi.mock('./core/workspaceDetector.js', () => ({
   detectWorkspaceRoot: vi.fn(),
 }));
 
-const mockCheckCliSync = vi.mocked(checkCliSync);
-const mockCheckStarterSync = vi.mocked(checkStarterSync);
+const mockRunAllSyncChecks = vi.mocked(runAllSyncChecks);
 const mockCreateRefreshStatusBar = vi.mocked(createRefreshStatusBar);
 const mockUpdateStatusBar = vi.mocked(updateStatusBar);
 const mockCreateDebounced = vi.mocked(createDebounced);
@@ -161,7 +160,7 @@ describe('extension', () => {
       expect(mockDebouncedFn).toHaveBeenCalledWith('Activation');
 
       // AND: File watchers are created for all monitored paths
-      expect(mockCreateWatcher).toHaveBeenCalledTimes(4);
+      expect(mockCreateWatcher).toHaveBeenCalledTimes(5);
       const watcherCalls = mockCreateWatcher.mock.calls;
       watcherCalls.forEach(call => {
         expect(call[0]).toBeInstanceOf(vscode.RelativePattern);
@@ -222,28 +221,34 @@ describe('extension', () => {
     it('should handle successful sync checks with different statuses', async () => {
       // GIVEN: Starter is in sync but CLI has changes
       mockDetectWorkspaceRoot.mockReturnValue('/workspace');
-      const starterResult = {
-        status: 'sync' as const,
-        message: 'Starter in sync',
-        commitCount: 0,
-      };
-      const cliResult = {
-        status: 'warning' as const,
-        message: 'CLI has changes',
-        commitCount: 1,
-      };
-      mockCheckStarterSync.mockResolvedValue(starterResult);
-      mockCheckCliSync.mockResolvedValue(cliResult);
+      const results = [
+        {
+          label: PackageLabel.Starter,
+          result: {
+            status: 'sync' as const,
+            message: 'Starter in sync',
+            commitCount: 0,
+          },
+        },
+        {
+          label: PackageLabel.Cli,
+          result: {
+            status: 'warning' as const,
+            message: 'CLI has changes',
+            commitCount: 1,
+          },
+        },
+      ];
+      mockRunAllSyncChecks.mockResolvedValue(results);
       activate(mockContext);
 
       // WHEN: Sync check is triggered via refresh
       const refreshFunction = mockCreateRefreshStatusBar.mock.calls[0][1];
       await refreshFunction();
 
-      // THEN: Both packages are checked
-      expect(mockCheckStarterSync).toHaveBeenCalledWith('/workspace', mockOutputChannel);
-      expect(mockCheckCliSync).toHaveBeenCalledWith('/workspace', mockOutputChannel);
-      // AND: Status bar shows generic sync message
+      // THEN: All packages are checked
+      expect(mockRunAllSyncChecks).toHaveBeenCalledWith('/workspace', mockOutputChannel);
+      // AND: Status bar shows generic sync message with the highest priority status (warning > sync)
       expect(mockUpdateStatusBar).toHaveBeenCalledWith(
         mockStatusBarItem,
         'warning',
@@ -254,18 +259,25 @@ describe('extension', () => {
     it('should prioritize error status', async () => {
       // GIVEN: Starter has error while CLI is in sync
       mockDetectWorkspaceRoot.mockReturnValue('/workspace');
-      const starterResult = {
-        status: 'error' as const,
-        message: 'Starter error',
-        commitCount: 0,
-      };
-      const cliResult = {
-        status: 'sync' as const,
-        message: 'CLI sync',
-        commitCount: 0,
-      };
-      mockCheckStarterSync.mockResolvedValue(starterResult);
-      mockCheckCliSync.mockResolvedValue(cliResult);
+      const results = [
+        {
+          label: PackageLabel.Starter,
+          result: {
+            status: 'error' as const,
+            message: 'Starter error',
+            commitCount: 0,
+          },
+        },
+        {
+          label: PackageLabel.Cli,
+          result: {
+            status: 'sync' as const,
+            message: 'CLI sync',
+            commitCount: 0,
+          },
+        },
+      ];
+      mockRunAllSyncChecks.mockResolvedValue(results);
       activate(mockContext);
 
       // WHEN: Sync check is performed
@@ -283,18 +295,25 @@ describe('extension', () => {
     it('should handle pending status when all packages with changes have changesets', async () => {
       // GIVEN: Both packages have pending changesets
       mockDetectWorkspaceRoot.mockReturnValue('/workspace');
-      const starterResult = {
-        status: 'pending' as const,
-        message: 'Starter pending',
-        commitCount: 0,
-      };
-      const cliResult = {
-        status: 'pending' as const,
-        message: 'CLI pending',
-        commitCount: 0,
-      };
-      mockCheckStarterSync.mockResolvedValue(starterResult);
-      mockCheckCliSync.mockResolvedValue(cliResult);
+      const results = [
+        {
+          label: PackageLabel.Starter,
+          result: {
+            status: 'pending' as const,
+            message: 'Starter pending',
+            commitCount: 0,
+          },
+        },
+        {
+          label: PackageLabel.Cli,
+          result: {
+            status: 'pending' as const,
+            message: 'CLI pending',
+            commitCount: 0,
+          },
+        },
+      ];
+      mockRunAllSyncChecks.mockResolvedValue(results);
       activate(mockContext);
 
       // WHEN: Sync check is performed
@@ -312,7 +331,7 @@ describe('extension', () => {
     it('should handle sync check errors gracefully', async () => {
       // GIVEN: Extension is activated but sync check will fail
       mockDetectWorkspaceRoot.mockReturnValue('/workspace');
-      mockCheckStarterSync.mockRejectedValue(new Error('Check failed'));
+      mockRunAllSyncChecks.mockRejectedValue(new Error('Check failed'));
       activate(mockContext);
 
       // WHEN: Sync check is performed and fails
