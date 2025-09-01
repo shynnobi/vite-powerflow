@@ -9,6 +9,23 @@ import { logRootError, logRootInfo, logRootSuccess } from './monorepo-logger';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Helper to read a package's version from the monorepo
+async function getPackageVersion(packageName: string): Promise<string> {
+  const packagePath = path.join(
+    __dirname,
+    '..',
+    'packages',
+    packageName.replace('@vite-powerflow/', ''),
+    'package.json'
+  );
+  if (await fs.pathExists(packagePath)) {
+    const pkgRaw = await fs.readFile(packagePath, 'utf8');
+    const pkg = JSON.parse(pkgRaw) as { version: string };
+    return pkg.version;
+  }
+  throw new Error(`Could not find package.json for ${packageName}`);
+}
+
 void (async () => {
   // 1. Setup source and destination paths
   const root = path.resolve(__dirname, '..');
@@ -53,11 +70,50 @@ void (async () => {
       process.exit(1);
     }
 
-    // 4. Patch package.json scripts and add starterSource metadata
-    logRootInfo('Patching package.json validate scripts and adding starterSource metadata');
+    // 4. Patch package.json: update scripts, add metadata, and replace workspace deps
+    logRootInfo(
+      'Patching package.json: scripts, metadata, and replacing workspace dependencies...'
+    );
     const pkgPath = path.join(templateDest, 'package.json');
     const pkgRaw = await fs.readFile(pkgPath, 'utf8');
     const pkg = JSON.parse(pkgRaw) as TemplatePkgJson;
+
+    // Replace workspace dependencies with concrete versions from the monorepo
+    try {
+      const depsToReplace: Record<string, string> = {};
+      const allDeps = {
+        ...(pkg.dependencies ?? {}),
+        ...(pkg.devDependencies ?? {}),
+      };
+
+      for (const [name, version] of Object.entries(allDeps)) {
+        if (typeof version === 'string' && version.startsWith('workspace:')) {
+          const localVersion = await getPackageVersion(name);
+          depsToReplace[name] = `^${localVersion}`;
+        }
+      }
+
+      const replaceWorkspaceDeps = (deps: Record<string, string> | undefined) => {
+        if (!deps) return;
+        for (const key in deps) {
+          if (deps[key].startsWith('workspace:')) {
+            if (depsToReplace[key]) {
+              deps[key] = depsToReplace[key];
+              logRootInfo(`  - Replaced ${key} with version ${depsToReplace[key]}`);
+            } else {
+              logRootInfo(`  - Warning: workspace dependency ${key} not found in replacement map.`);
+            }
+          }
+        }
+      };
+
+      replaceWorkspaceDeps(pkg.dependencies as Record<string, string> | undefined);
+      replaceWorkspaceDeps(pkg.devDependencies as Record<string, string> | undefined);
+    } catch (versionError) {
+      logRootError('Failed to replace workspace dependencies.');
+      logRootError(versionError instanceof Error ? versionError.message : String(versionError));
+      process.exit(1);
+    }
 
     // Add CLI template baseline commit metadata
     try {
@@ -104,6 +160,10 @@ void (async () => {
         await fs.writeFile(tsconfigPath, JSON.stringify(tsconfig, null, 2), 'utf8');
       }
     }
+
+    // Ensure all generated files are formatted
+    logRootInfo(`Formatting the entire template directory...`);
+    execSync(`prettier --write "${templateDest}"`, { stdio: 'ignore' });
 
     logRootSuccess('Template synchronized successfully!');
   } catch (err) {

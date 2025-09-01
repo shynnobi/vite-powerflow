@@ -1,26 +1,18 @@
 #!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
 
-# Skip hooks in CI environments (e.g., Changesets GitHub Action)
-if [ "$CI" = "true" ]; then
-  echo "CI detected: skipping pre-commit hooks."
-  exit 0
-fi
-
-echo "🔍 Augmenting changesets (anchor/baseline) ..."
+# Augment changesets before commit
 pnpm changeset:augment
+
+# Always sync starter to template before commit to ensure consistency.
+echo "🔄 Synchronizing apps/starter with CLI template..."
+pnpm sync:starter-to-template
 if [ $? -ne 0 ]; then
-  echo "❌ Changeset augmentation failed. Commit aborted to ensure sync integrity."
+  echo "❌ Template synchronization failed. Commit aborted."
   exit 1
 fi
+# Add any files modified by the sync script to the commit.
+git add packages/cli/template
 
-# Re-stage potential changes to .changeset/*.md made by the augment script
-git add .changeset/*.md 2>/dev/null || true
-
-echo "🔍 Validating your commit..."
-
-pnpm validate:commit || {
-  echo "❌ Validation failed. Please fix the issues above."
-  exit 1
-}
-
-echo "✅ All checks passed! Committing..."
+# Run lint-staged sequentially to prevent memory issues
+pnpm lint-staged --concurrent false
