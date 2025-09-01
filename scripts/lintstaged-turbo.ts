@@ -57,8 +57,10 @@ function findWorkspaceForFile(file: string): string | null {
       // 3.2. Return the package name, not the path
       const packageJsonPath = path.join(ws, 'package.json');
       if (fs.existsSync(packageJsonPath)) {
-        const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-        return packageJson.name || path.basename(ws);
+        const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8')) as {
+          name?: string;
+        };
+        return packageJson.name ?? path.basename(ws);
       }
       return path.basename(ws);
     }
