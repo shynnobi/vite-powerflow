@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.2.0
+
+### Minor Changes
+
+- e125dce: anchor: 94a482f1de9ba500d119c5fc4143f37de38fe26a
+
+  Hardens the project scaffolding process. The CLI now dynamically replaces internal `workspace:*` dependencies with their correct local package versions in the generated `package.json`. This crucial change ensures that new projects are immediately installable and functional outside the monorepo, fixing `pnpm install` failures.
+
+### Patch Changes
+
+- Updated dependencies [e125dce]
+  - @vite-powerflow/utils@0.0.2
+
 ## 1.1.2
 
 ### Patch Changes
