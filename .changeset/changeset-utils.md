@@ -2,6 +2,6 @@
 '@vite-powerflow/utils': patch
 ---
 
-anchor: 46c56531f7b6da4481dc05ad369855db46ce091f
+anchor: 94a482f1de9ba500d119c5fc4143f37de38fe26a
 
 Refactors internal tooling by migrating scripts from a legacy 'tools' package. This change improves the project's internal structure and testability for shared utilities.

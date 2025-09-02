@@ -88,8 +88,15 @@ void (async () => {
 
       for (const [name, version] of Object.entries(allDeps)) {
         if (typeof version === 'string' && version.startsWith('workspace:')) {
-          const localVersion = await getPackageVersion(name);
-          depsToReplace[name] = `^${localVersion}`;
+          try {
+            const localVersion = await getPackageVersion(name);
+            depsToReplace[name] = `^${localVersion}`;
+          } catch (error) {
+            logRootError(
+              `Failed to get version for ${name}: ${error instanceof Error ? error.message : String(error)}`
+            );
+            process.exit(1);
+          }
         }
       }
 
