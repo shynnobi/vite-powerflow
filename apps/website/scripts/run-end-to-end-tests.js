@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 import { execSync } from 'child_process';
-import console from 'console';
-import { existsSync, mkdirSync, readdirSync } from 'fs';
+import { existsSync, mkdirSync } from 'fs';
 import { globSync } from 'glob';
 import { homedir } from 'os';
 import path from 'path';
 import process from 'process';
+
+import { logInfo, logSuccess, logError } from '@vite-powerflow/utils';
 
 // Playwright cache directory (persistent volume recommended)
 const PLAYWRIGHT_CACHE_DIR = path.join(homedir(), '.cache', 'ms-playwright');
@@ -17,32 +18,54 @@ if (!existsSync(PLAYWRIGHT_CACHE_DIR)) {
 }
 
 // Fix permissions if needed (useful in container environments)
-try {
-  const user = process.env.USER;
-  if (user) {
-    execSync(`chown -R ${user}:${user} "${PLAYWRIGHT_CACHE_DIR}"`, { stdio: 'ignore' });
+const isContainer =
+  process.env.CONTAINER === 'true' ||
+  existsSync('/.dockerenv') ||
+  process.env.KUBERNETES_SERVICE_HOST;
+if (isContainer) {
+  try {
+    const user = process.env.USER;
+    if (user) {
+      execSync(`chown -R ${user}:${user} "${PLAYWRIGHT_CACHE_DIR}"`, { stdio: 'ignore' });
+    }
+  } catch {
+    // Ignore errors
   }
-} catch {
-  // Ignore errors (e.g., not running as root)
 }
 
-// Install Playwright browsers if the cache directory is empty
+// Install Playwright browsers if needed
 try {
-  const files = readdirSync(PLAYWRIGHT_CACHE_DIR);
-  if (!files || files.length === 0) {
-    console.log(`Installing Playwright browsers in ${PLAYWRIGHT_CACHE_DIR}...`);
-    execSync('pnpm exec playwright install --with-deps', { stdio: 'inherit' });
-  }
-} catch {
-  console.error('Playwright install failed');
+  execSync('pnpm exec playwright install --with-deps', { stdio: 'pipe' });
+} catch (error) {
+  const errorMessage = error instanceof Error ? error.message : String(error);
+  logError(`Playwright install failed: ${errorMessage}`);
   process.exit(1);
 }
 
-// Run E2E tests if test files are present
+// Build the application before running tests
+logInfo('Building application...');
+try {
+  execSync('pnpm build', { stdio: 'pipe' });
+  logSuccess('Build completed');
+} catch (error) {
+  const errorMessage = error instanceof Error ? error.message : String(error);
+  logError(`Application build failed: ${errorMessage}`);
+  process.exit(1);
+}
+
+// Run E2E tests
 const testFiles = globSync('tests/e2e/*.{spec,test}.ts');
 if (testFiles.length > 0) {
-  execSync('pnpm exec playwright test --reporter=dot', { stdio: 'inherit' });
+  const startTime = Date.now();
+  try {
+    execSync('pnpm exec playwright test --reporter=dot', { stdio: 'inherit' });
+    const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+    logSuccess(`E2E tests completed (${testFiles.length} files, ${duration}s)`);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    logError(`E2E tests failed: ${errorMessage}`);
+    process.exit(1);
+  }
 } else {
-  // Print warning in yellow if no E2E tests are found
-  console.log('\x1b[33m⚠️  No end-to-end tests detected.\x1b[0m');
+  logInfo('No end-to-end tests detected.');
 }

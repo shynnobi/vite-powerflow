@@ -10,7 +10,7 @@ test.describe('User journeys', () => {
     await page.goto('/');
 
     // Then: The main heading is visible
-    await expect(page.getByRole('heading', { name: /Vite PowerFlow/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Vite PowerFlow/i, level: 1 })).toBeVisible();
 
     // When: The user toggles the theme
     const themeSwitcher = page.getByTestId('theme-switcher');

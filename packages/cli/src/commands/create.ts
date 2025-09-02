@@ -18,6 +18,7 @@ interface ProjectOptions {
 
 interface PackageJson {
   name: string;
+  author?: string | { name: string; email?: string; url?: string };
   starterSource?: unknown;
   [key: string]: unknown;
 }
@@ -107,11 +108,31 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       if (await fsExtra.pathExists(packageJsonPath)) {
         const packageJsonRaw = await fs.readFile(packageJsonPath, 'utf-8');
         const packageJson = JSON.parse(packageJsonRaw) as PackageJson;
+
+        // Set project name and reset version
         packageJson.name = options.packageName;
-        // Remove the starterSource property as it's not needed by the end user.
-        if (packageJson.starterSource) {
-          delete packageJson.starterSource;
+        packageJson.version = '0.0.1';
+        packageJson.description = '';
+
+        // Set author based on Git user info if available
+        if (options.gitUserName) {
+          const author: { name: string; email?: string } = { name: options.gitUserName };
+          if (options.gitUserEmail) {
+            author.email = options.gitUserEmail;
+          }
+          packageJson.author = author;
+        } else {
+          // Otherwise, set to an empty string as a placeholder
+          packageJson.author = '';
         }
+
+        // Clean up metadata inherited from the monorepo starter
+        delete packageJson.repository;
+        delete packageJson.homepage;
+        delete packageJson.bugs;
+        delete packageJson.keywords;
+        delete packageJson.starterSource; // This is a custom field for our monorepo
+
         await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
       }
     } catch (packageJsonError) {

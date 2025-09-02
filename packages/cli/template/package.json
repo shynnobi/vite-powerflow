@@ -124,6 +124,7 @@
     "@rollup/rollup-darwin-arm64": "^4.45.1",
     "@tanstack/react-query": "^5.83.0",
     "@tanstack/react-query-devtools": "^5.83.0",
+    "@vite-powerflow/utils": "^0.0.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.525.0",
@@ -141,7 +142,7 @@
     ]
   },
   "starterSource": {
-    "commit": "045813eec688aab0cfa729805d37aac5cd945fcb",
-    "syncedAt": "2025-08-09T17:50:32.070Z"
+    "commit": "668ab2e8f19ec5a066bfdba3e5f2713f29078ff5",
+    "syncedAt": "2025-09-02T12:47:13.769Z"
   }
 }

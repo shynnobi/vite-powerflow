@@ -7,6 +7,9 @@ import tsPlugin from '@typescript-eslint/eslint-plugin';
 import importPlugin from 'eslint-plugin-import';
 import vitest from 'eslint-plugin-vitest';
 import js from '@eslint/js';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
 
 // Common import resolver settings
 const commonSettings = {
@@ -26,6 +29,9 @@ const commonPlugins = {
   '@typescript-eslint': tsPlugin,
   import: importPlugin,
   vitest,
+  react,
+  'react-hooks': reactHooks,
+  'jsx-a11y': jsxA11y,
 };
 
 // Common lint rules for all files
@@ -134,6 +140,26 @@ export default [
       ...tsPlugin.configs['recommended-type-checked'].rules,
       ...tsPlugin.configs['stylistic-type-checked'].rules,
       '@typescript-eslint/no-unused-vars': tsNoUnusedVarsRule,
+    },
+  },
+  // React specific configuration for TSX files
+  {
+    files: ['**/*.tsx'],
+    plugins: {
+      react,
+      'react-hooks': reactHooks,
+      'jsx-a11y': jsxA11y,
+    },
+    rules: {
+      ...react.configs.recommended.rules,
+      ...reactHooks.configs.recommended.rules,
+      ...jsxA11y.configs.recommended.rules,
+      'react/react-in-jsx-scope': 'off', // Not needed with Vite/React 17+
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
     },
   },
   // Vitest test files (specific rules and globals)

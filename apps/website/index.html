@@ -1,22 +1,37 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Essential meta tags - do not modify -->
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Viewport and mobile optimization -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Theme and PWA -->
     <meta name="theme-color" content="#111828" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#111828" media="(prefers-color-scheme: dark)" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <title>Vite PowerFlow</title>
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap"
       rel="stylesheet"
     />
+
+    <!-- All other meta tags are managed by react-helmet-async in pages -->
+    <title><%= VITE_APP_TITLE %></title>
+
+    <!-- Main script -->
+    <script type="module" crossorigin src="/src/main.tsx"></script>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
