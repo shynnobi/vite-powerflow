@@ -7,12 +7,14 @@ import { describe, expect, it } from 'vitest';
 // Helper: Wait for a file or directory to exist (polling)
 async function waitForPath(targetPath: string, timeout = 20000) {
   const start = Date.now();
-  console.log(`Waiting for path to exist: ${targetPath}`);
+  const isVerbose = process.env.E2E_VERBOSE === 'true';
+
+  if (isVerbose) console.log(`Waiting for path to exist: ${targetPath}`);
   let attempts = 0;
 
   while (!fs.existsSync(targetPath)) {
     attempts++;
-    if (attempts % 10 === 0) {
+    if (isVerbose && attempts % 10 === 0) {
       console.log(`Still waiting for ${targetPath}... (${Date.now() - start}ms elapsed)`);
     }
 
@@ -25,7 +27,7 @@ async function waitForPath(targetPath: string, timeout = 20000) {
     }
     await new Promise(r => setTimeout(r, 100));
   }
-  console.log(`Path found after ${Date.now() - start}ms: ${targetPath}`);
+  if (isVerbose) console.log(`Path found after ${Date.now() - start}ms: ${targetPath}`);
 }
 
 describe('CLI E2E: project generation (non-interactive)', () => {

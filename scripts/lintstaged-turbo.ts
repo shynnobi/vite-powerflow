@@ -54,7 +54,15 @@ function findWorkspaceForFile(file: string): string | null {
   const normFile = path.normalize(file);
   for (const ws of workspaceRoots) {
     if (normFile === ws || normFile.startsWith(ws + path.sep)) {
-      return ws;
+      // 3.2. Return the package name, not the path
+      const packageJsonPath = path.join(ws, 'package.json');
+      if (fs.existsSync(packageJsonPath)) {
+        const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8')) as {
+          name?: string;
+        };
+        return packageJson.name ?? path.basename(ws);
+      }
+      return path.basename(ws);
     }
   }
   return null;
@@ -77,12 +85,18 @@ let hasError = false;
 const impactedWorkspaces = Object.keys(wsToFiles);
 if (impactedWorkspaces.length) {
   logRootInfo(`[lintstaged-turbo] Impacted workspaces: ${impactedWorkspaces.join(', ')}`);
-  const turboArgs = ['run', 'lint', 'format'];
+  const turboArgs = ['run', 'lint', 'format', '--force']; // Force execution, ignore cache
   for (const ws of impactedWorkspaces) {
     const filterArg = `--filter=${ws}`;
+    logRootInfo(`[lintstaged-turbo] Running: turbo ${turboArgs.join(' ')} ${filterArg}`);
     const result = spawnSync('npx', ['turbo', ...turboArgs, filterArg], { stdio: 'inherit' });
     if (result.status !== 0) {
+      logRootError(
+        `[lintstaged-turbo] ❌ Failed for workspace: ${ws} (exit code: ${result.status})`
+      );
       hasError = true;
+    } else {
+      logRootInfo(`[lintstaged-turbo] ✅ Passed for workspace: ${ws}`);
     }
   }
 }

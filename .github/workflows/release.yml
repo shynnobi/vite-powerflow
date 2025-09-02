@@ -10,6 +10,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: npm-publish # ← Uses the secure environment
     permissions:
       contents: write
       pull-requests: write
@@ -21,7 +22,8 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org' # Explicit registry URL
       - name: Install pnpm
         uses: pnpm/action-setup@v4
 
@@ -53,5 +55,5 @@ jobs:
           title: 'Version Packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # ← Uses the secret from npm-publish environment
           CI: true

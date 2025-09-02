@@ -9,7 +9,8 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:5173',
+    // Use a non-conflicting port for the website E2E tests
+    baseURL: 'http://localhost:4174',
     trace: 'on-first-retry',
     headless: true,
   },
@@ -41,8 +42,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'pnpm dev',
-    port: 5173,
-    reuseExistingServer: !process.env.CI,
+    // Use a non-conflicting port for the website E2E tests
+    command: 'pnpm build && pnpm preview --port 4174',
+    url: 'http://localhost:4174',
+    reuseExistingServer: false,
   },
 });
