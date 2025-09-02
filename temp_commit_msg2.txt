@@ -1,8 +1,0 @@
-feat(auth): add GitHub CLI authentication script
-
-Introduce a new script `init-gh-auth.sh` to streamline the authentication process for GitHub CLI.
-
-- The script checks for a `.env` file and retrieves the GitHub Personal Access Token (GH_PAT)
-- It provides user feedback for missing or empty tokens, enhancing the setup experience
-- This addresses the missing authentication script referenced in the documentation
-- Enables automated GitHub CLI authentication in containerized environments
