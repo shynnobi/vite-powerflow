@@ -37,7 +37,8 @@ if (isContainer) {
 try {
   execSync('pnpm exec playwright install --with-deps', { stdio: 'pipe' });
 } catch (error) {
-  logError(`Playwright install failed: ${error.message}`);
+  const errorMessage = error instanceof Error ? error.message : String(error);
+  logError(`Playwright install failed: ${errorMessage}`);
   process.exit(1);
 }
 
@@ -47,7 +48,8 @@ try {
   execSync('pnpm build', { stdio: 'pipe' });
   logSuccess('Build completed');
 } catch (error) {
-  logError(`Application build failed: ${error.message}`);
+  const errorMessage = error instanceof Error ? error.message : String(error);
+  logError(`Application build failed: ${errorMessage}`);
   process.exit(1);
 }
 
@@ -59,7 +61,9 @@ if (testFiles.length > 0) {
     execSync('pnpm exec playwright test --reporter=dot', { stdio: 'inherit' });
     const duration = ((Date.now() - startTime) / 1000).toFixed(1);
     logSuccess(`E2E tests completed (${testFiles.length} files, ${duration}s)`);
-  } catch {
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    logError(`E2E tests failed: ${errorMessage}`);
     process.exit(1);
   }
 } else {
