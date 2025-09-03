@@ -1,7 +1,7 @@
 {
   "name": "@vite-powerflow/starter",
   "private": true,
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "author": "",
   "license": "MIT",
@@ -124,7 +124,7 @@
     "@rollup/rollup-darwin-arm64": "^4.45.1",
     "@tanstack/react-query": "^5.83.0",
     "@tanstack/react-query-devtools": "^5.83.0",
-    "@vite-powerflow/utils": "^0.0.1",
+    "@vite-powerflow/utils": "^0.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.525.0",
@@ -143,6 +143,6 @@
   },
   "starterSource": {
     "commit": "668ab2e8f19ec5a066bfdba3e5f2713f29078ff5",
-    "syncedAt": "2025-09-03T13:25:57.965Z"
+    "syncedAt": "2025-09-03T13:35:27.332Z"
   }
 }
