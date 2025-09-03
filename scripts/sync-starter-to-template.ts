@@ -1,9 +1,9 @@
-import { execSync } from 'child_process';
 import fs from 'fs-extra';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
 import { TemplatePkgJson } from './types/package-json';
+import { getLatestReleaseCommitWithShort } from './git-utils';
 import { logRootError, logRootInfo, logRootSuccess } from './monorepo-logger';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -117,22 +117,15 @@ void (async () => {
 
     // Add CLI template baseline commit metadata
     try {
-      const currentCommit = execSync('git rev-parse HEAD', { encoding: 'utf-8' }).trim();
+      // Get the latest release commit hash using shared utility
+      const { full, short } = getLatestReleaseCommitWithShort(root);
 
-      // PATCH: initialize starterSource with historic commit if missing
-      const HISTORIC_COMMIT = '668ab2e8f19ec5a066bfdba3e5f2713f29078ff5';
-      if (!pkg.starterSource) {
-        pkg.starterSource = {
-          commit: HISTORIC_COMMIT,
-          syncedAt: new Date().toISOString(),
-        };
-        logRootInfo('starterSource initialized with historic commit');
-      } else {
-        pkg.starterSource = {
-          commit: currentCommit,
-          syncedAt: new Date().toISOString(),
-        };
-      }
+      // Always update starterSource with the latest release commit
+      pkg.starterSource = {
+        commit: full,
+        syncedAt: new Date().toISOString(),
+      };
+      logRootInfo(`starterSource updated with commit: ${short}`);
     } catch {
       logRootInfo('Warning: Could not add CLI template baseline commit metadata');
     }
