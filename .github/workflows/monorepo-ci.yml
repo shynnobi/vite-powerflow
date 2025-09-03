@@ -39,7 +39,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          if [[ "${{ github.ref }}" == refs/heads/changeset-release/* ]]; then
+          if [[ "${{ github.ref }}" == refs/heads/changeset-release/* ]] || [[ "${{ github.ref }}" == refs/heads/main ]]; then
             pnpm install --no-frozen-lockfile
           else
             pnpm install --frozen-lockfile
