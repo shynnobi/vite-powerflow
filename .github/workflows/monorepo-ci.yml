@@ -38,7 +38,12 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: |
+          if [[ "${{ github.ref }}" == refs/heads/changeset-release/* ]]; then
+            pnpm install --no-frozen-lockfile
+          else
+            pnpm install --frozen-lockfile
+          fi
 
       - name: Run CI script
         run: ./scripts/ci.sh
