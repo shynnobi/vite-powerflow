@@ -38,6 +38,34 @@ jobs:
       - name: Build packages
         run: pnpm build
 
+      - name: Test NPM Token
+        run: |
+          echo "Testing NPM authentication..."
+          if [ -z "$NPM_TOKEN" ]; then
+            echo "❌ NPM_TOKEN is empty or not set"
+            exit 1
+          else
+            echo "✅ NPM_TOKEN is set (length: ${#NPM_TOKEN})"
+          fi
+
+          echo "Testing npm whoami..."
+          if npm whoami; then
+            echo "✅ Successfully authenticated with npm"
+            echo "User: $(npm whoami)"
+          else
+            echo "❌ Failed to authenticate with npm"
+            exit 1
+          fi
+
+          echo "Testing access to @vite-powerflow scope..."
+          if npm access ls-packages @vite-powerflow 2>/dev/null; then
+            echo "✅ Has access to @vite-powerflow organization"
+          else
+            echo "⚠️  No packages found or no access to @vite-powerflow organization"
+          fi
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
