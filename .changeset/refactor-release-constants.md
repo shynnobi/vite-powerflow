@@ -1,8 +1,8 @@
 ---
-'@vite-powerflow/cli': patch
+'@vite-powerflow/create': patch
 ---
 
-anchor: 8b618105af9f26a0134a098ea84c0d0edd071710
+anchor: dfd3414b4c48c23517bbf4643831da78d0aa8e46
 
 refactor: centralize release constants and improve DRY compliance
 
