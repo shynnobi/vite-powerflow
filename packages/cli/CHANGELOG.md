@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.2.0
+
+### Minor Changes
+
+- e125dce: anchor: 898125a4aadd3baeeab70d8ed4a08f0446677b64
+
+  Hardens the project scaffolding process. The CLI now dynamically replaces internal `workspace:*` dependencies with their correct local package versions in the generated `package.json`. This crucial change ensures that new projects are immediately installable and functional outside the monorepo, fixing `pnpm install` failures.
+
+### Patch Changes
+
+- 8dc5f14: fix: prevent race condition in release workflow and add validation
+
+  This release includes critical fixes to the release process:
+  - Reordered operations to prevent race condition between sync and publish
+  - Added validation script to ensure all @vite-powerflow packages are published
+  - Improved error handling in sync-starter-to-template script
+  - Fixed release workflow to be more robust and reliable
+
+- Updated dependencies [e125dce]
+  - @vite-powerflow/utils@0.0.2
+
 ## 1.1.2
 
 ### Patch Changes
