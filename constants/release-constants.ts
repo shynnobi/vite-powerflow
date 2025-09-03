@@ -9,13 +9,9 @@ export const RELEASE_CONSTANTS = {
 // Export JSON when called directly (for GitHub Actions)
 if (import.meta.url === `file://${process.argv[1]}` && process.argv.includes('--export-json')) {
   console.log(
-    JSON.stringify(
-      {
-        COMMIT_MESSAGE: RELEASE_CONSTANTS.COMMIT_MESSAGE,
-        PR_TITLE: RELEASE_CONSTANTS.PR_TITLE,
-      },
-      null,
-      2
-    )
+    JSON.stringify({
+      COMMIT_MESSAGE: RELEASE_CONSTANTS.COMMIT_MESSAGE,
+      PR_TITLE: RELEASE_CONSTANTS.PR_TITLE,
+    })
   );
 }
