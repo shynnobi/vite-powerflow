@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.1
+
+### Patch Changes
+
+- 5575558: chore: update CLI template to sync with starter changes
+
 ## 1.2.0
 
 ### Minor Changes
