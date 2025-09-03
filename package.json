@@ -85,7 +85,7 @@
     "sync:starter-to-template": "tsx scripts/sync-starter-to-template.ts",
     "set-cli-template-baseline": "tsx scripts/set-cli-template-baseline.ts",
     "release:validate-versions": "tsx scripts/validate-published-versions.ts",
-    "release:prepare": "changeset version",
+    "release:prepare": "changeset version && pnpm install --offline",
     "release:publish": "pnpm build && changeset publish && pnpm sync:starter-to-template && pnpm set-cli-template-baseline && pnpm release:validate-versions",
     "ci:local": "git clean -fdx && pnpm install --frozen-lockfile && CI=true ./scripts/ci.sh"
   },
