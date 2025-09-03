@@ -2,6 +2,8 @@
 '@vite-powerflow/cli': patch
 ---
 
+anchor: 8b618105af9f26a0134a098ea84c0d0edd071710
+
 refactor: centralize release constants and improve DRY compliance
 
 - Create constants/release-constants.ts as single source of truth for release commit messages and PR titles
