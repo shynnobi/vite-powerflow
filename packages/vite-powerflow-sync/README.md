@@ -5,13 +5,13 @@ VS Code extension that monitors sync between the main monorepo packages (current
 ## Installation & Build
 
 ```bash
-pnpm ext:build      # Compile the extension (from root)
-pnpm ext:pack       # Package the extension as .vsix (from root)
-pnpm ext:install    # Install the extension in VS Code (from root)
-pnpm ext:ship       # Build, package, and install in one step (from root)
+pnpm extension:build      # Compile the extension (from root)
+pnpm extension:pack       # Package the extension as .vsix (from root)
+pnpm extension:install    # Install the extension in VS Code (from root)
+pnpm extension:ship       # Build, package, and install in one step (from root)
 
 # Test
-pnpm ext:test       # Run extension tests (from root)
+pnpm extension:test       # Run extension tests (from root)
 ```
 
 ## Status Bar

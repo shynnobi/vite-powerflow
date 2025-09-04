@@ -27,5 +27,19 @@
   },
   "devDependencies": {
     "esbuild": "^0.25.6"
-  }
+  },
+  "author": {
+    "name": "Shynn",
+    "url": "http://github.com/shynnobi"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shynnobi/vite-powerflow.git"
+  },
+  "homepage": "https://vite-powerflow.netlify.app",
+  "bugs": {
+    "url": "https://github.com/shynnobi/vite-powerflow/issues"
+  },
+  "license": "MIT",
+  "packageManager": "pnpm@10.13.1"
 }

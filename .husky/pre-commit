@@ -4,16 +4,8 @@
 # Augment changesets before commit
 pnpm changeset:augment
 
-# Always sync starter to template before commit to ensure consistency.
-echo "🔄 Synchronizing apps/starter with CLI template..."
-pnpm sync:starter-to-template
-if [ $? -ne 0 ]; then
-  echo "❌ Template synchronization failed. Commit aborted."
-  exit 1
-fi
-
-# Add all changes made by the hook's scripts to the commit.
-git add .
+# Stage any changeset modifications made by augment script
+git add .changeset/
 
 # Run lint-staged sequentially to prevent memory issues
 pnpm lint-staged --concurrent false
