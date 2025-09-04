@@ -4,5 +4,8 @@
 # Augment changesets before commit
 pnpm changeset:augment
 
+# Stage any changeset modifications made by augment script
+git add .changeset/
+
 # Run lint-staged sequentially to prevent memory issues
 pnpm lint-staged --concurrent false

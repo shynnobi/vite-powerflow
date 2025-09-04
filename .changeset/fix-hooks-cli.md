@@ -2,6 +2,8 @@
 '@vite-powerflow/create': patch
 ---
 
+anchor: b2fb387894273b25af332af13f3f4cf24ccaaa6e
+
 Improve development workflow and package metadata
 
 - Remove automatic template sync from pre-commit hook to enable atomic commits
