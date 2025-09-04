@@ -68,6 +68,15 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Get Release Constants
+        id: constants
+        run: |
+          echo "Reading release constants..."
+          CONSTANTS=$(npx tsx constants/release-constants.ts --export-json)
+          echo "constants=$CONSTANTS" >> $GITHUB_OUTPUT
+          echo "COMMIT_MESSAGE=$(echo "$CONSTANTS" | jq -r '.COMMIT_MESSAGE')" >> $GITHUB_OUTPUT
+          echo "PR_TITLE=$(echo "$CONSTANTS" | jq -r '.PR_TITLE')" >> $GITHUB_OUTPUT
+
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
@@ -77,12 +86,12 @@ jobs:
           publish: pnpm run release:publish
           # This command will be run to create the PR.
           version: pnpm run release:prepare
-          # IMPORTANT: The following values are also used in syncChecker.ts and syncReporter.ts
+          # IMPORTANT: The following values are read from scripts/release-constants.ts
           # To ensure correct sync status detection across the project, keep these values in sync
           # vite-powerflow-sync/src/core/syncReporter.ts
           # vite-powerflow-sync/src/core/syncChecker.ts
-          commit: 'chore: release new versions'
-          title: 'Version Packages'
+          commit: ${{ steps.constants.outputs.COMMIT_MESSAGE }}
+          title: ${{ steps.constants.outputs.PR_TITLE }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # ← Uses the secret from npm-publish environment

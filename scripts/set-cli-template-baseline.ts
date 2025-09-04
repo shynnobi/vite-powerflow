@@ -1,9 +1,9 @@
-import { execSync } from 'child_process';
 import fs from 'fs-extra';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
 import { TemplatePkgJson } from './types/package-json';
+import { getLatestReleaseCommitWithShort } from './git-utils';
 import { logRootError, logRootInfo, logRootSuccess } from './monorepo-logger';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -27,10 +27,15 @@ void (async () => {
       process.exit(1);
     }
 
-    // Get the current git commit hash. This is the new baseline commit.
-    const commit = execSync('git rev-parse HEAD', { encoding: 'utf-8' }).trim();
-    if (!commit) {
-      logRootError('Could not get current git commit hash.');
+    // Get the latest release commit hash using shared utility
+    let commit: string;
+    try {
+      const { full, short } = getLatestReleaseCommitWithShort(root);
+      commit = full;
+      logRootInfo(`Using latest release commit: ${short}`);
+    } catch (error) {
+      logRootError('Could not get git commit hash.');
+      logRootError(error instanceof Error ? error.message : String(error));
       process.exit(1);
     }
 
