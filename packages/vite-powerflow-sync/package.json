@@ -1,10 +1,19 @@
 {
   "name": "vite-powerflow-sync",
+  "private": true,
+  "version": "0.0.1",
   "displayName": "Vite Powerflow - Sync Monitor",
   "description": "Monitor sync status between Vite Powerflow starter app and CLI template. Detect when changeset is needed or template sync is required.",
-  "version": "0.0.1",
   "publisher": "vite-powerflow",
-  "private": true,
+  "author": {
+    "name": "Shynn",
+    "url": "http://github.com/shynnobi"
+  },
+  "homepage": "https://vite-powerflow.netlify.app",
+  "bugs": {
+    "url": "https://github.com/shynnobi/vite-powerflow/issues"
+  },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/shynnobi/vite-powerflow.git",
@@ -64,5 +73,6 @@
     "typescript": "^5.0.0",
     "vitest": "^3.2.4",
     "vsce": "^2.15.0"
-  }
+  },
+  "packageManager": "pnpm@10.13.1"
 }

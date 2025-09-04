@@ -10,7 +10,7 @@
   "license": "MIT",
   "keywords": [],
   "type": "module",
-  "packageManager": "pnpm@10.6.5",
+  "packageManager": "pnpm@10.13.1",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -135,5 +135,13 @@
     "workerDirectory": [
       "public"
     ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shynnobi/vite-powerflow.git"
+  },
+  "homepage": "https://vite-powerflow.netlify.app",
+  "bugs": {
+    "url": "https://github.com/shynnobi/vite-powerflow/issues"
   }
 }

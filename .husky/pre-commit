@@ -4,26 +4,5 @@
 # Augment changesets before commit
 pnpm changeset:augment
 
-# Always sync starter to template before commit to ensure consistency.
-echo "🔄 Synchronizing apps/starter with CLI template..."
-
-# Capture template state BEFORE sync (vs HEAD, not index)
-git diff --quiet HEAD packages/cli/template/
-TEMPLATE_CLEAN_BEFORE=$?
-
-pnpm sync:starter-to-template
-if [ $? -ne 0 ]; then
-  echo "❌ Template synchronization failed. Commit aborted."
-  exit 1
-fi
-
-# Only add template files if they were clean before AND changed after sync
-if [ $TEMPLATE_CLEAN_BEFORE -eq 0 ] && ! git diff --quiet packages/cli/template/; then
-  echo "✅ Template synchronized, adding changes"
-  git add packages/cli/template/
-else
-  echo "ℹ️  Template had pre-existing changes, not adding to commit"
-fi
-
 # Run lint-staged sequentially to prevent memory issues
 pnpm lint-staged --concurrent false
