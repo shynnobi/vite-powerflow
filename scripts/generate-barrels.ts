@@ -17,7 +17,7 @@ function generateBarrelContent(files: string[]): string {
  * Warning: Never export test or dev files here!
  */
 
-${files.map(file => `export * from './${file}';`).join('\n')}
+${files.map(file => `export * from './${file}.js';`).join('\n')}
 // DO NOT export .test.ts or dev files here!
 `;
 }
