@@ -1,9 +1,12 @@
 {
   "name": "@vite-powerflow/starter",
   "private": true,
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
-  "author": "",
+  "author": {
+    "name": "Shynn",
+    "url": "http://github.com/shynnobi"
+  },
   "license": "MIT",
   "keywords": [
     "vite",
@@ -27,7 +30,7 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "packageManager": "pnpm@10.6.5",
+  "packageManager": "pnpm@10.13.1",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -124,7 +127,7 @@
     "@rollup/rollup-darwin-arm64": "^4.45.1",
     "@tanstack/react-query": "^5.83.0",
     "@tanstack/react-query-devtools": "^5.83.0",
-    "@vite-powerflow/utils": "^0.0.2",
+    "@vite-powerflow/utils": "^0.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.525.0",
@@ -141,8 +144,16 @@
       "public"
     ]
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shynnobi/vite-powerflow.git"
+  },
+  "homepage": "https://vite-powerflow.netlify.app",
+  "bugs": {
+    "url": "https://github.com/shynnobi/vite-powerflow/issues"
+  },
   "starterSource": {
-    "commit": "3c3c5f60743cbc51faf55504c35e61d8002817b5",
-    "syncedAt": "2025-09-04T00:51:24.854Z"
+    "commit": "e93f4cd6c6241f7b4a1241bf9faa567869f5518d",
+    "syncedAt": "2025-09-04T17:00:04.715Z"
   }
 }
