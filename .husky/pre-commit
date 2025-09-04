@@ -7,8 +7,8 @@ pnpm changeset:augment
 # Always sync starter to template before commit to ensure consistency.
 echo "🔄 Synchronizing apps/starter with CLI template..."
 
-# Capture template state BEFORE sync
-git diff --quiet packages/cli/template/
+# Capture template state BEFORE sync (vs HEAD, not index)
+git diff --quiet HEAD packages/cli/template/
 TEMPLATE_CLEAN_BEFORE=$?
 
 pnpm sync:starter-to-template
