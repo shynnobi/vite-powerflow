@@ -3,7 +3,10 @@
   "private": true,
   "version": "1.0.4",
   "description": "",
-  "author": "",
+  "author": {
+    "name": "Shynn",
+    "url": "http://github.com/shynnobi"
+  },
   "license": "MIT",
   "keywords": [
     "vite",
@@ -27,7 +30,7 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "packageManager": "pnpm@10.6.5",
+  "packageManager": "pnpm@10.13.1",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -140,5 +143,13 @@
     "workerDirectory": [
       "public"
     ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shynnobi/vite-powerflow.git"
+  },
+  "homepage": "https://vite-powerflow.netlify.app",
+  "bugs": {
+    "url": "https://github.com/shynnobi/vite-powerflow/issues"
   }
 }

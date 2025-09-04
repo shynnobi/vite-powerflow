@@ -1,29 +1,22 @@
 {
   "name": "@vite-powerflow/create",
   "private": false,
-  "publishConfig": {
-    "access": "public"
-  },
   "version": "1.2.2",
   "description": "Create modern React + Vite apps with production-ready tooling, testing, and best practices. Includes TypeScript, Tailwind CSS, shadcn/ui, Zustand, TanStack Query, and more.",
-  "type": "module",
-  "bin": {
-    "vite-powerflow-create": "dist/index.js"
+  "author": {
+    "name": "Shynn",
+    "url": "http://github.com/shynnobi"
   },
-  "scripts": {
-    "build": "tsx build.ts",
-    "dev": "tsc -w",
-    "start": "node dist/index.js",
-    "test": "vitest run src/**/*.test.ts __tests__/unit/**/*.test.ts __tests__/integration/**/*.test.ts",
-    "test:e2e": "vitest run __tests__/e2e/",
-    "lint": "eslint . --ext ts,tsx,js,jsx",
-    "lint:fix": "eslint . --ext ts,tsx,js,jsx --fix",
-    "format": "prettier --check .",
-    "format:fix": "prettier --write .",
-    "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix",
-    "type-check": "tsc --noEmit",
-    "smoke:test": "npm run build && TARBALL=$(npm pack | tail -1) && TARBALL_PATH=$(pwd)/$TARBALL && rm -rf /tmp/cli-smoke-test && mkdir -p /tmp/cli-smoke-test && cd /tmp/cli-smoke-test && npm init -y && npm install $TARBALL_PATH && npx vite-powerflow-create --help"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shynnobi/vite-powerflow.git",
+    "directory": "packages/cli"
   },
+  "homepage": "https://vite-powerflow.netlify.app",
+  "bugs": {
+    "url": "https://github.com/shynnobi/vite-powerflow/issues"
+  },
+  "license": "MIT",
   "keywords": [
     "create",
     "cli",
@@ -45,21 +38,33 @@
     "storybook",
     "monorepo"
   ],
-  "author": {
-    "name": "Shynn",
-    "url": "http://github.com/shynnobi"
+  "type": "module",
+  "packageManager": "pnpm@10.13.1",
+  "bin": {
+    "vite-powerflow-create": "dist/index.js"
   },
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/shynnobi/vite-powerflow.git",
-    "directory": "packages/cli"
+  "publishConfig": {
+    "access": "public"
   },
-  "homepage": "https://github.com/shynnobi/vite-powerflow#readme",
-  "bugs": {
-    "url": "https://github.com/shynnobi/vite-powerflow/issues"
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "tsx build.ts",
+    "dev": "tsc -w",
+    "start": "node dist/index.js",
+    "test": "vitest run src/**/*.test.ts __tests__/unit/**/*.test.ts __tests__/integration/**/*.test.ts",
+    "test:e2e": "vitest run __tests__/e2e/",
+    "lint": "eslint . --ext ts,tsx,js,jsx",
+    "lint:fix": "eslint . --ext ts,tsx,js,jsx --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "fix": "prettier --write . && eslint . --ext ts,tsx,js,jsx --fix",
+    "type-check": "tsc --noEmit",
+    "smoke:test": "npm run build && TARBALL=$(npm pack | tail -1) && TARBALL_PATH=$(pwd)/$TARBALL && rm -rf /tmp/cli-smoke-test && mkdir -p /tmp/cli-smoke-test && cd /tmp/cli-smoke-test && npm init -y && npm install $TARBALL_PATH && npx vite-powerflow-create --help"
   },
-  "packageManager": "pnpm@10.6.5",
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
@@ -81,10 +86,5 @@
     "tsconfig-paths": "^4.2.0",
     "validator": "^13.15.15",
     "fs-extra": "^11.3.0"
-  },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist/"
-  ]
+  }
 }

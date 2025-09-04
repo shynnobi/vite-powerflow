@@ -33,19 +33,41 @@ if (isContainer) {
   }
 }
 
+// Check if browsers are already installed
+const checkBrowsersInstalled = () => {
+  try {
+    // Check if the main browser directories exist
+    const browsers = ['chromium', 'firefox', 'webkit'];
+    const browserDirs = browsers.map(
+      browser => globSync(`${PLAYWRIGHT_CACHE_DIR}/${browser}-*`).length > 0
+    );
+    return browserDirs.every(exists => exists);
+  } catch {
+    return false;
+  }
+};
+
 // Install Playwright browsers if needed
-try {
-  execSync('pnpm exec playwright install --with-deps', { stdio: 'pipe' });
-} catch (error) {
-  const errorMessage = error instanceof Error ? error.message : String(error);
-  logError(`Playwright install failed: ${errorMessage}`);
-  process.exit(1);
+const browsersInstalled = checkBrowsersInstalled();
+if (!browsersInstalled) {
+  logInfo('Installing Playwright browsers...');
+  try {
+    // Show the installation process for visual feedback
+    execSync('pnpm exec playwright install --with-deps', { stdio: 'inherit' });
+    logSuccess('Playwright browsers installed successfully.');
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    logError(`Playwright install failed: ${errorMessage}`);
+    process.exit(1);
+  }
+} else {
+  logInfo('Playwright browsers are already installed.');
 }
 
 // Build the application before running tests
 logInfo('Building application...');
 try {
-  execSync('pnpm build', { stdio: 'pipe' });
+  execSync('pnpm build', { stdio: 'inherit' });
   logSuccess('Build completed');
 } catch (error) {
   const errorMessage = error instanceof Error ? error.message : String(error);
