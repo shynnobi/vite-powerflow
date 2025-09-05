@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as vscode from 'vscode';
 
-import { createMockOutputChannel } from '../utils/testUtils.js';
-import { checkSyncStatus } from './syncEngine.js';
-import { CheckResult, SyncCheckConfig } from './types.js';
+import { createMockOutputChannel } from '../utils/testUtils';
+import { checkSyncStatus } from './syncEngine';
+import { CheckResult, SyncCheckConfig } from './types';
 
 // Mock dependencies - adapted to new refactored structure
 vi.mock('./changesetReader.js', () => ({

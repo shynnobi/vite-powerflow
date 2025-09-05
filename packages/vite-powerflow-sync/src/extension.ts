@@ -1,14 +1,14 @@
 import * as vscode from 'vscode';
 
-import { MONITORED_NPM_PACKAGES } from './config/monitoredPackages.js';
-import { runAllSyncChecks } from './core/syncChecker.js';
-import { formatSyncOutput } from './core/syncReporter.js';
-import { CheckResult, LabeledCheckResult, SyncStatus } from './core/types.js';
-import { detectWorkspaceRoot } from './core/workspaceDetector.js';
-import { updateStatusBar } from './ui/statusBarController.js';
-import { createRefreshStatusBar } from './ui/syncCommands.js';
-import { createDebounced, createWatcher } from './utils/extensionUtils.js';
-import { reportSyncOutput } from './utils/outputReporter.js';
+import { MONITORED_NPM_PACKAGES } from './config/monitoredPackages';
+import { runAllSyncChecks } from './core/syncChecker';
+import { formatSyncOutput } from './core/syncReporter';
+import { CheckResult, LabeledCheckResult, SyncStatus } from './core/types';
+import { detectWorkspaceRoot } from './core/workspaceDetector';
+import { updateStatusBar } from './ui/statusBarController';
+import { createRefreshStatusBar } from './ui/syncCommands';
+import { createDebounced, createWatcher } from './utils/extensionUtils';
+import { reportSyncOutput } from './utils/outputReporter';
 
 let outputChannel: vscode.OutputChannel;
 let statusBarItem: vscode.StatusBarItem;
@@ -120,15 +120,17 @@ async function runSyncChecks(forceRun = false) {
     } else {
       // Check if we have any packages with unreleased changes
       const packagesWithChanges = allResults.filter(
-        r => r.commitCount > 0 || r.status === 'pending'
+        r => r.commitCount > 0 || r.status === 'pending' || r.status === 'dependency-pending'
       );
 
       if (packagesWithChanges.length === 0) {
         // No changes at all
         finalStatus = 'sync';
       } else {
-        // We have changes, check if ALL have changesets
-        const allHaveChangesets = packagesWithChanges.every(r => r.status === 'pending');
+        // We have changes, check if ALL have changesets or will be updated by dependency
+        const allHaveChangesets = packagesWithChanges.every(
+          r => r.status === 'pending' || r.status === 'dependency-pending'
+        );
         finalStatus = allHaveChangesets ? 'pending' : 'warning';
       }
     }

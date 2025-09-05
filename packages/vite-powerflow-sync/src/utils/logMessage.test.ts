@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { logMessage } from './logMessage.js';
-import { createMockOutputChannel } from './testUtils.js';
+import { logMessage } from './logMessage';
+import { createMockOutputChannel } from './testUtils';
 
 describe('logMessage', () => {
   it('should log to output channel only', () => {

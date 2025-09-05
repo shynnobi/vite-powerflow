@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { formatBaseline } from './baselineFormatter.js';
+import { formatBaseline } from './baselineFormatter';
 
 describe('baselineFormatter', () => {
   describe('formatBaseline', () => {

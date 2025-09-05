@@ -1,13 +1,13 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 
-import { MONITORED_NPM_PACKAGES, SPECIAL_PACKAGE_CONFIGS } from '../config/monitoredPackages.js';
-import { handleSyncError } from './errorHandler.js';
-import { getCurrentCommit } from './gitCommands.js';
-import { resolveRefToSha } from './gitStatus.js';
-import { readLatestNpmVersion, readPackageInfo } from './packageReader.js';
-import { checkSyncStatus } from './syncEngine.js';
-import { CheckResult, LabeledCheckResult, SyncCheckConfig, SyncCheckError } from './types.js';
+import { MONITORED_NPM_PACKAGES, SPECIAL_PACKAGE_CONFIGS } from '../config/monitoredPackages';
+import { handleSyncError } from './errorHandler';
+import { getCurrentCommit } from './gitCommands';
+import { resolveRefToSha } from './gitStatus';
+import { readLatestNpmVersion, readPackageInfo } from './packageReader';
+import { checkSyncStatus } from './syncEngine';
+import { CheckResult, LabeledCheckResult, SyncCheckConfig, SyncCheckError } from './types';
 
 /**
  * Generic sync check for packages published on npm.
@@ -100,6 +100,27 @@ async function checkStarter(
 }
 
 /**
+ * Check extension sync status using special configuration
+ */
+async function checkExtension(
+  workspaceRoot: string,
+  outputChannel: vscode.OutputChannel
+): Promise<CheckResult> {
+  const config: SyncCheckConfig = {
+    ...SPECIAL_PACKAGE_CONFIGS.extension,
+    baseline: () =>
+      Promise.resolve(SPECIAL_PACKAGE_CONFIGS.extension.baseline(workspaceRoot, outputChannel)),
+  };
+
+  try {
+    return await checkSyncStatus(config, workspaceRoot, outputChannel);
+  } catch (error) {
+    const syncError = error instanceof Error ? error : new Error(String(error));
+    return handleSyncError(config, syncError, outputChannel);
+  }
+}
+
+/**
  * Runs all configured sync checks in parallel.
  * This is the main entry point for the sync logic.
  * @param workspaceRoot - Absolute path to workspace root.
@@ -115,6 +136,11 @@ export async function runAllSyncChecks(
     result,
   }));
 
+  const extensionCheck = checkExtension(workspaceRoot, outputChannel).then(result => ({
+    label: SPECIAL_PACKAGE_CONFIGS.extension.label,
+    result,
+  }));
+
   const npmPackageChecks = MONITORED_NPM_PACKAGES.map(config =>
     checkNpmPackageSync(config, workspaceRoot, outputChannel).then(result => ({
       label: config.label,
@@ -122,7 +148,7 @@ export async function runAllSyncChecks(
     }))
   );
 
-  const allChecks = [starterCheck, ...npmPackageChecks];
+  const allChecks = [starterCheck, ...npmPackageChecks, extensionCheck];
 
   return Promise.all(allChecks);
 }

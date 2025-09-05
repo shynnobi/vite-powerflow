@@ -2,7 +2,7 @@ import { execSync as execSyncRaw } from 'child_process';
 import type { Mock } from 'vitest';
 import { vi } from 'vitest';
 
-import { getCommitsSince, getCurrentCommit, getFilesChangedSince } from './gitCommands.js';
+import { getCommitsSince, getCurrentCommit, getFilesChangedSince } from './gitCommands';
 
 vi.mock('child_process', () => ({
   execSync: vi.fn(),
