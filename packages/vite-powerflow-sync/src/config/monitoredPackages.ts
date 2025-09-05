@@ -1,4 +1,4 @@
-import { getTemplateBaseline } from '../core/gitStatus';
+import { getTemplateBaseline, getExtensionBaseline } from '../core/gitStatus';
 import { PackageLabel } from '../core/types';
 
 // Configuration for standard npm-published packages
@@ -36,6 +36,18 @@ export const SPECIAL_PACKAGE_CONFIGS = {
       inSync: 'In sync with the latest CLI template baseline.',
       unreleased: 'unreleased change(s).',
       errorPrefix: 'Error during sync check',
+    },
+  },
+  extension: {
+    label: PackageLabel.Extension,
+    baseline: getExtensionBaseline,
+    commitPath: 'packages/vite-powerflow-sync/',
+    targetPackage: 'vite-powerflow-sync',
+    messages: {
+      notFound: 'Extension baseline commit not found.',
+      inSync: 'Extension in sync with latest commit.',
+      unreleased: 'unreleased change(s).',
+      errorPrefix: 'Error during extension sync check',
     },
   },
 };

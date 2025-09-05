@@ -120,15 +120,17 @@ async function runSyncChecks(forceRun = false) {
     } else {
       // Check if we have any packages with unreleased changes
       const packagesWithChanges = allResults.filter(
-        r => r.commitCount > 0 || r.status === 'pending'
+        r => r.commitCount > 0 || r.status === 'pending' || r.status === 'dependency-pending'
       );
 
       if (packagesWithChanges.length === 0) {
         // No changes at all
         finalStatus = 'sync';
       } else {
-        // We have changes, check if ALL have changesets
-        const allHaveChangesets = packagesWithChanges.every(r => r.status === 'pending');
+        // We have changes, check if ALL have changesets or will be updated by dependency
+        const allHaveChangesets = packagesWithChanges.every(
+          r => r.status === 'pending' || r.status === 'dependency-pending'
+        );
         finalStatus = allHaveChangesets ? 'pending' : 'warning';
       }
     }

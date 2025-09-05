@@ -5,7 +5,11 @@ import { readPackageInfo } from './packageReader.js';
 import { CheckResult, PackageLabel, SyncCheckConfig } from './types.js';
 
 export function formatPackageStatus(label: PackageLabel, result: CheckResult): string {
-  const versionInfo = result.packageVersion ? ` (v${result.packageVersion})` : '';
+  let versionInfo = '';
+  if (result.packageVersion) {
+    versionInfo = ` (v${result.packageVersion})`;
+  }
+
   let title = `📦 [${label}]${versionInfo}`;
 
   // For Starter, if both baselineCommit and releaseCommit are present, show both
@@ -27,6 +31,22 @@ export function formatPackageStatus(label: PackageLabel, result: CheckResult): s
     return lines.join('\n');
   }
 
+  if (result.status === 'dependency-pending') {
+    lines.push(`   🔄 ${result.message}`);
+    if (result.commits && result.commits.length > 0) {
+      const plural = result.commits.length > 1 ? 'commits' : 'commit';
+      lines.push(
+        `   📋 ${result.commits.length} ${plural} will be covered by dependency changeset:`
+      );
+      result.commits.forEach(commit => {
+        lines.push(`      • ${commit.sha} ${commit.message}`);
+      });
+    }
+    const futureVersionText = result.futureVersion ? ` → v${result.futureVersion}` : '';
+    lines.push(`   🎯 Ready for release${futureVersionText}`);
+    return lines.join('\n');
+  }
+
   if (result.changeset) {
     lines.push(`   📄 Changeset: ${result.changeset.fileName} (${result.changeset.bumpType})`);
 
@@ -38,7 +58,8 @@ export function formatPackageStatus(label: PackageLabel, result: CheckResult): s
       lines.push(`   📊 Coverage: ${coveredCommits.length}/${totalCommits} commits covered`);
 
       if (notCoveredCommits.length === 0) {
-        lines.push(`   🎯 Ready for release`);
+        const futureVersionText = result.futureVersion ? ` → v${result.futureVersion}` : '';
+        lines.push(`   🎯 Ready for release${futureVersionText}`);
       } else {
         const plural = notCoveredCommits.length > 1 ? 'commits' : 'commit';
         lines.push(`   ⚠️  ${notCoveredCommits.length} ${plural} NOT covered by changeset:`);
@@ -48,7 +69,8 @@ export function formatPackageStatus(label: PackageLabel, result: CheckResult): s
         lines.push(`   ⚠️ Require changeset update`);
       }
     } else {
-      lines.push(`   🎯 Ready for release`);
+      const futureVersionText = result.futureVersion ? ` → v${result.futureVersion}` : '';
+      lines.push(`   🎯 Ready for release${futureVersionText}`);
     }
   } else {
     lines.push(`   ❌ No changeset found`);
@@ -87,6 +109,9 @@ export function formatGlobalStatus(
       errorCount++;
     } else if (result.commitCount === 0) {
       syncCount++;
+    } else if (result.status === 'dependency-pending') {
+      // dependency-pending is treated as pending (ready for release)
+      pendingCount++;
     } else if (result.changeset) {
       const notCoveredCommits = result.notCoveredCommits ?? [];
       if (notCoveredCommits.length > 0) {

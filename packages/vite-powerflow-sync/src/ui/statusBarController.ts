@@ -5,7 +5,7 @@ import { CheckResult, SyncStatus } from '../core/types.js';
 export function getGlobalStatus(statuses: SyncStatus[]): SyncStatus {
   if (statuses.includes('error')) return 'error';
   if (statuses.includes('warning')) return 'warning';
-  if (statuses.includes('pending')) return 'pending';
+  if (statuses.includes('pending') || statuses.includes('dependency-pending')) return 'pending';
   return 'sync';
 }
 
