@@ -1,5 +1,5 @@
 import { build } from 'esbuild';
-import { resolve, dirname } from 'path';
+import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 // Use relative path from scripts folder (ES module compatible)
