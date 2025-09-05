@@ -2,7 +2,7 @@
 '@vite-powerflow/utils': none
 ---
 
-anchor: d6a30a705570d1baf57c8363c6d7f970537f4265
+anchor: cb74a647d6c1aaebec78b668e6b67adeffe6f78c
 
 Manual publication v0.0.3 - no version bump needed
 
