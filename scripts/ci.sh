@@ -3,7 +3,7 @@ set -e
 
 pnpm format
 pnpm lint
-pnpm run validate:root-scripts
+pnpm run root-scripts:static
 pnpm build
 pnpm type-check
 pnpm test

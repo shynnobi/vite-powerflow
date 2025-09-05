@@ -1,4 +1,4 @@
-import { readLatestNpmVersion, readPackageInfo } from './packageReader.js';
+import { readLatestNpmVersion, readPackageInfo } from './packageReader';
 
 describe('packageReader', () => {
   it('should export functions', () => {

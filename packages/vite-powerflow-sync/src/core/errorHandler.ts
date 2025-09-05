@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
-import { logMessage } from '../utils/logMessage.js';
-import { CheckResult, SyncCheckConfig } from './types.js';
+import { logMessage } from '../utils/logMessage';
+import { CheckResult, SyncCheckConfig } from './types';
 
 export function handleSyncError(
   config: SyncCheckConfig,
