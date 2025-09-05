@@ -1,4 +1,4 @@
-import { CheckResult, SyncCheckConfig } from './types.js';
+import { CheckResult, SyncCheckConfig } from './types';
 
 export function handleUnreleasedCommits(
   config: SyncCheckConfig,

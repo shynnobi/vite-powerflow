@@ -1,11 +1,8 @@
 import { build } from 'esbuild';
-import { dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
+import { resolve } from 'path';
 
-// Use relative path from scripts folder (ES module compatible)
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const projectRoot = resolve(__dirname, '..');
+// Use relative path from project root
+const projectRoot = resolve(process.cwd());
 
 build({
   entryPoints: [resolve(projectRoot, 'src/extension.ts')],

@@ -1,5 +1,5 @@
-import { getExtensionBaseline, getTemplateBaseline } from '../core/gitStatus.js';
-import { PackageLabel } from '../core/types.js';
+import { getExtensionBaseline, getTemplateBaseline } from '../core/gitStatus';
+import { PackageLabel } from '../core/types';
 
 // Configuration for standard npm-published packages
 export interface NpmPackageConfig {

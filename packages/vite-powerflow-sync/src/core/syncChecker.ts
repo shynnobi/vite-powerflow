@@ -1,13 +1,13 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 
-import { MONITORED_NPM_PACKAGES, SPECIAL_PACKAGE_CONFIGS } from '../config/monitoredPackages.js';
-import { handleSyncError } from './errorHandler.js';
-import { getCurrentCommit } from './gitCommands.js';
-import { resolveRefToSha } from './gitStatus.js';
-import { readLatestNpmVersion, readPackageInfo } from './packageReader.js';
-import { checkSyncStatus } from './syncEngine.js';
-import { CheckResult, LabeledCheckResult, SyncCheckConfig, SyncCheckError } from './types.js';
+import { MONITORED_NPM_PACKAGES, SPECIAL_PACKAGE_CONFIGS } from '../config/monitoredPackages';
+import { handleSyncError } from './errorHandler';
+import { getCurrentCommit } from './gitCommands';
+import { resolveRefToSha } from './gitStatus';
+import { readLatestNpmVersion, readPackageInfo } from './packageReader';
+import { checkSyncStatus } from './syncEngine';
+import { CheckResult, LabeledCheckResult, SyncCheckConfig, SyncCheckError } from './types';
 
 /**
  * Generic sync check for packages published on npm.

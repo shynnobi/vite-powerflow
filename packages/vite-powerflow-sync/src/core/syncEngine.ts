@@ -1,12 +1,12 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 
-import { checkWillBeUpdatedByChangeset, getPackageNameFromConfig } from './changesetChecker.js';
-import { readLatestChangeset } from './changesetReader.js';
-import { getCommitsSince, getCurrentCommit, getFilesChangedSince } from './gitCommands.js';
-import { resolveRefToSha } from './gitStatus.js';
-import { readPackageInfo } from './packageReader.js';
-import { CheckResult, PackageLabel, SyncCheckConfig } from './types.js';
+import { checkWillBeUpdatedByChangeset, getPackageNameFromConfig } from './changesetChecker';
+import { readLatestChangeset } from './changesetReader';
+import { getCommitsSince, getCurrentCommit, getFilesChangedSince } from './gitCommands';
+import { resolveRefToSha } from './gitStatus';
+import { readPackageInfo } from './packageReader';
+import { CheckResult, PackageLabel, SyncCheckConfig } from './types';
 
 /**
  * Checks the sync status of a package against its baseline (commit/tag).

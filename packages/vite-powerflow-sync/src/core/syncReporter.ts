@@ -1,8 +1,8 @@
 import * as path from 'path';
 
-import { formatBaseline } from './baselineFormatter.js';
-import { readPackageInfo } from './packageReader.js';
-import { CheckResult, PackageLabel, SyncCheckConfig } from './types.js';
+import { formatBaseline } from './baselineFormatter';
+import { readPackageInfo } from './packageReader';
+import { CheckResult, PackageLabel, SyncCheckConfig } from './types';
 
 export function formatPackageStatus(label: PackageLabel, result: CheckResult): string {
   let versionInfo = '';

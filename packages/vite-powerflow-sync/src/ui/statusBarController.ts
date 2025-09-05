@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { CheckResult, SyncStatus } from '../core/types.js';
+import { CheckResult, SyncStatus } from '../core/types';
 
 export function getGlobalStatus(statuses: SyncStatus[]): SyncStatus {
   if (statuses.includes('error')) return 'error';
