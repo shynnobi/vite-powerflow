@@ -85,7 +85,7 @@
     "changeset:augment": "tsx scripts/augment-changeset.ts",
     "changeset:create": "pnpm changeset && pnpm changeset:augment",
     "release:prepare": "changeset version && pnpm sync:starter-to-template && pnpm set-cli-template-baseline",
-    "release:publish": "pnpm build && changeset publish",
+    "release:publish-ordered": "pnpm build && tsx scripts/publish-topological.ts",
     "ci:local": "git clean -fdx && pnpm install --frozen-lockfile && CI=true ./scripts/ci.sh"
   },
   "dependencies": {
