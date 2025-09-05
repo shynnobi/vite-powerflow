@@ -25,6 +25,7 @@ export function updateStatusBar(
       stateLabel = 'sync';
       break;
     case 'pending':
+    case 'dependency-pending':
       icon = '$(rocket)';
       color = undefined;
       stateLabel = 'pending';
@@ -38,6 +39,11 @@ export function updateStatusBar(
       icon = '$(error)';
       color = new vscode.ThemeColor('statusBarItem.errorBackground');
       stateLabel = 'error';
+      break;
+    default:
+      icon = '$(question)';
+      color = new vscode.ThemeColor('statusBarItem.warningBackground');
+      stateLabel = 'sync'; // Default to a safe state
       break;
   }
   const formattedLabel = stateLabel.charAt(0).toUpperCase() + stateLabel.slice(1).toLowerCase();
