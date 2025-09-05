@@ -2,7 +2,7 @@
 'vite-powerflow-sync': patch
 ---
 
-anchor: feef76c4e4dd575b5d31bd9b303f1515fbb4b46e
+anchor: 764072419965b93dd2f515b976a3d3ea3212d9e6
 
 feat(extension): enhance sync monitoring with dependency tracking
 
