@@ -22,7 +22,7 @@ done
 changed_scripts=$(git diff --cached --name-only | grep '^scripts/.*\.ts$' || true)
 if [ -n "$changed_scripts" ]; then
   echo "🔎 Checking root scripts quality before push..."
-  pnpm run validate:root-scripts || {
+  pnpm run root-scripts:static || {
     echo "❌ Scripts quality check failed."
     exit 1
   }
