@@ -2,7 +2,7 @@
 '@vite-powerflow/utils': patch
 ---
 
-anchor: 4e419c5d76c4cf9ab890b9a22ae35b712c592480
+anchor: 72f4f9d3fa4c8fdf8fbc8c41c6cc618773224ff4
 
 Update Utils package documentation
 
