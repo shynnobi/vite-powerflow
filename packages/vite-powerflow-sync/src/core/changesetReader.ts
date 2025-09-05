@@ -2,8 +2,8 @@ import { execSync } from 'child_process';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 
-import { extractMetadataAfterFrontmatter, parseChangesetFrontmatter } from './changesetParser.js';
-import { Changeset, ChangesetStatus } from './types.js';
+import { extractMetadataAfterFrontmatter, parseChangesetFrontmatter } from './changesetParser';
+import { Changeset, ChangesetStatus } from './types';
 
 export async function readChangesetStatus(
   workspaceRoot: string,

@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from 'vitest';
 
-import { formatBaselineLog, formatSyncOutput } from './syncReporter.js';
-import { CheckResult, PackageLabel, SyncCheckConfig } from './types.js';
+import { formatBaselineLog, formatSyncOutput } from './syncReporter';
+import { CheckResult, PackageLabel, SyncCheckConfig } from './types';
 
 // Mock the packages module
 vi.mock('./packageReader.js', () => ({
