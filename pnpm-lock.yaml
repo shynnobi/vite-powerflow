@@ -681,8 +681,8 @@ importers:
         specifier: ^2.2.1
         version: 2.2.1
       '@vite-powerflow/utils':
-        specifier: ^0.0.2
-        version: 0.0.2
+        specifier: ^0.0.3
+        version: 0.0.3
       chalk:
         specifier: ^5.4.1
         version: 5.4.1
@@ -731,7 +731,7 @@ importers:
         version: 3.0.3
       vitest:
         specifier: ^1.6.1
-        version: 1.6.1(@types/node@24.0.15)(@vitest/browser@3.2.4(msw@2.10.4(@types/node@24.0.15)(typescript@5.8.3))(playwright@1.54.1)(vite@7.0.5(@types/node@24.0.15)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0))(vitest@3.2.4))(@vitest/ui@3.2.4(vitest@3.2.4))(jsdom@26.1.0)(lightningcss@1.30.1)(terser@5.43.1)
+        version: 1.6.1(@types/node@24.0.15)(@vitest/browser@3.2.4)(@vitest/ui@3.2.4)(jsdom@26.1.0)(lightningcss@1.30.1)(terser@5.43.1)
 
   packages/utils:
     dependencies:
@@ -774,7 +774,7 @@ importers:
         version: 3.0.3
       vitest:
         specifier: ^1.6.1
-        version: 1.6.1(@types/node@24.0.15)(@vitest/browser@3.2.4(msw@2.10.4(@types/node@24.0.15)(typescript@5.8.3))(playwright@1.54.1)(vite@7.0.5(@types/node@24.0.15)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0))(vitest@3.2.4))(@vitest/ui@3.2.4(vitest@3.2.4))(jsdom@26.1.0)(lightningcss@1.30.1)(terser@5.43.1)
+        version: 1.6.1(@types/node@24.0.15)(@vitest/browser@3.2.4)(@vitest/ui@3.2.4)(jsdom@26.1.0)(lightningcss@1.30.1)(terser@5.43.1)
 
   packages/vite-powerflow-sync:
     devDependencies:
@@ -3930,8 +3930,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@vite-powerflow/utils@0.0.2':
-    resolution: {integrity: sha512-8hz3k2k7Iew3/O5J+SaYAoeI1AziIo0CDNCoYTy7FTWzzqOX6gq0EHryDe0ka6r/DbsnyY6Xo5f5nltgh0PsRQ==}
+  '@vite-powerflow/utils@0.0.3':
+    resolution: {integrity: sha512-reqpX25I37BZrqGXCDpsCQ67JwoQFOPW+BaI8Z7ec4OuA+lL0ZgPj/Q4vsIWrwbYNutoX9d3vMDHmqGj63hyUw==}
 
   '@vitejs/plugin-react-swc@3.10.2':
     resolution: {integrity: sha512-xD3Rdvrt5LgANug7WekBn1KhcvLn1H3jNBfJRL3reeOIua/WnZOEV5qi5qIBq5T8R0jUDmRtxuvk4bPhzGHDWw==}
@@ -12592,7 +12592,7 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.11.1':
     optional: true
 
-  '@vite-powerflow/utils@0.0.2':
+  '@vite-powerflow/utils@0.0.3':
     dependencies:
       chalk: 5.4.1
       find-up: 7.0.0
@@ -18090,7 +18090,7 @@ snapshots:
       tsx: 4.20.3
       yaml: 2.8.0
 
-  vitest@1.6.1(@types/node@24.0.15)(@vitest/browser@3.2.4(msw@2.10.4(@types/node@24.0.15)(typescript@5.8.3))(playwright@1.54.1)(vite@7.0.5(@types/node@24.0.15)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0))(vitest@3.2.4))(@vitest/ui@3.2.4(vitest@3.2.4))(jsdom@26.1.0)(lightningcss@1.30.1)(terser@5.43.1):
+  vitest@1.6.1(@types/node@24.0.15)(@vitest/browser@3.2.4)(@vitest/ui@3.2.4)(jsdom@26.1.0)(lightningcss@1.30.1)(terser@5.43.1):
     dependencies:
       '@vitest/expect': 1.6.1
       '@vitest/runner': 1.6.1
