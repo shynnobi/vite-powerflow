@@ -1,11 +1,11 @@
 ---
-'@vite-powerflow/utils': none
+'@vite-powerflow/utils': patch
 ---
 
-anchor: cb74a647d6c1aaebec78b668e6b67adeffe6f78c
+anchor: e9cdb6f26a3f4a6e630b5eb6874075a0be2937de
 
-Manual publication v0.0.3 - no version bump needed
+Update Utils package documentation
 
-- Utils v0.0.3 was published manually to resolve dependency conflicts
-- This changeset updates the baseline without bumping the version
-- Enables proper sync status detection in VS Code extension
+- Added README content for internal package
+- Added description and internal use note
+- Added links to website and repository
