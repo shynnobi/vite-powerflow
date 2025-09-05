@@ -67,7 +67,7 @@ function parseChangesetStatus(output: string): PackageBump[] {
 export function checkWillBeUpdatedByChangeset(
   workspaceRoot: string,
   packageName: string,
-  outputChannel?: vscode.OutputChannel
+  _outputChannel?: vscode.OutputChannel
 ): ChangesetStatusResult {
   try {
     const output = execSync('pnpm changeset status --verbose', {
@@ -98,7 +98,7 @@ export function checkWillBeUpdatedByChangeset(
     }
 
     return { willBeUpdated: false };
-  } catch (error) {
+  } catch {
     // Fallback: assume not updated if command fails
     return {
       willBeUpdated: false,
