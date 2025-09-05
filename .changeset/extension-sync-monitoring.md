@@ -1,6 +1,8 @@
 ---
 ---
 
+anchor: af5496c756b7bf8033588507ddff900c33e413e3
+
 feat(extension): enhance sync monitoring with dependency tracking
 
 - Add dependency-pending status for packages updated via internal deps
