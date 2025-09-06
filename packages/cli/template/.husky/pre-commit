@@ -1,5 +1,3 @@
-#!/bin/sh
-
 echo "🔍 Validating your commit..."
 
 pnpm validate:commit || {
