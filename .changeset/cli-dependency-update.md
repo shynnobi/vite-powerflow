@@ -3,7 +3,7 @@
 '@vite-powerflow/starter': patch
 ---
 
-anchor: 397bb23a734f4b978a26bae7728f1114adcc8a3e
+anchor: cc01d0f288103b1961ab4d150afe1f93644eb9ca
 baseline: e93f4cd6c6241f7b4a1241bf9faa567869f5518d
 
 Update CLI dependency on @vite-powerflow/utils
