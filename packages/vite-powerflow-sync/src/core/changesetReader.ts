@@ -31,7 +31,7 @@ export async function readChangesetStatus(
 
         const changeset: Changeset = {
           fileName: file,
-          bumpType: bumpType as 'minor' | 'patch' | 'major',
+          bumpType: bumpType as 'minor' | 'patch' | 'major' | 'none',
         };
         return { status: 'pending', changeset };
       }
@@ -117,7 +117,7 @@ export async function readLatestChangeset(
 
       const changeset: Changeset = {
         fileName: file,
-        bumpType: bumpType as 'minor' | 'patch' | 'major',
+        bumpType: bumpType as 'minor' | 'patch' | 'major' | 'none',
       };
 
       try {
