@@ -76,7 +76,7 @@
   },
   "dependencies": {
     "@sindresorhus/slugify": "^2.2.1",
-    "@vite-powerflow/utils": "^0.0.3",
+    "@vite-powerflow/utils": "^0.0.4",
     "chalk": "^5.4.1",
     "commander": "^14.0.0",
     "enquirer": "^2.4.1",
