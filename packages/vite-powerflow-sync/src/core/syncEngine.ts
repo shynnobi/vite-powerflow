@@ -262,18 +262,16 @@ export async function checkSyncStatus(
       }
 
       // Otherwise, changeset found and all files covered
-      // Get future version from changeset status for Utils and Extension
+      // Get future version from changeset status for all packages
       let futureVersion: string | undefined;
-      if (config.label === PackageLabel.Utils || config.label === PackageLabel.Extension) {
-        const packageName = getPackageNameFromConfig(config);
-        if (packageName) {
-          const dependencyCheck = checkWillBeUpdatedByChangeset(
-            workspaceRoot,
-            packageName,
-            outputChannel
-          );
-          futureVersion = dependencyCheck.newVersion;
-        }
+      const packageName = getPackageNameFromConfig(config);
+      if (packageName) {
+        const dependencyCheck = checkWillBeUpdatedByChangeset(
+          workspaceRoot,
+          packageName,
+          outputChannel
+        );
+        futureVersion = dependencyCheck.newVersion;
       }
 
       return {
