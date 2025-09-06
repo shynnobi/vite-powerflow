@@ -130,11 +130,10 @@ export async function checkSyncStatus(
       let outsideCommits: { sha: string; message: string }[] = [];
       let filesChangedAfterChangeset: string[] = [];
       if (latestChangeset) {
-        // Use anchor from changeset if present, else lastCommitSha
-        type ChangesetWithOptionalAnchor = typeof latestChangeset & { anchor?: unknown };
-        const { anchor } = latestChangeset as ChangesetWithOptionalAnchor;
         anchorForDiff =
-          typeof anchor === 'string' && anchor.length > 0 ? anchor : latestChangeset.lastCommitSha;
+          latestChangeset.anchor && latestChangeset.anchor.length > 0
+            ? latestChangeset.anchor
+            : latestChangeset.lastCommitSha;
         if (anchorForDiff) {
           // Get commits covered by changeset (anchorSha..anchor)
           const coveredRaw = getCommitsSince(
@@ -160,6 +159,7 @@ export async function checkSyncStatus(
             const [sha, ...msg] = line.split(' ');
             return { sha: sha?.substring(0, 7) || '', message: msg.join(' ') };
           });
+
           // Get files changed after changeset anchor
           filesChangedAfterChangeset = getFilesChangedSince(
             workspaceRoot,
@@ -286,7 +286,7 @@ export async function checkSyncStatus(
         commits: unreleasedCommits,
         changeset: { fileName: latestChangeset.fileName, bumpType: latestChangeset.bumpType },
         coveredCommits: coveredCommits,
-        notCoveredCommits: [],
+        notCoveredCommits: outsideCommits,
       };
     }
 
