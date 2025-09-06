@@ -2,7 +2,7 @@
 'vite-powerflow-sync': patch
 ---
 
-anchor: 498c149fbd56a1e7e2ef9b9cbdbf47998fdbaab6
+anchor: b8aafb79aa2bf43917174d555bb3f21da5e64074
 
 feat(extension): enhance sync monitoring with dependency tracking
 
@@ -12,3 +12,6 @@ feat(extension): enhance sync monitoring with dependency tracking
 - Improve status messages with future versions and trigger packages
 - Reorder package display: Starter → CLI → Utils → Extension
 - Remove extension from npm package monitoring (IDE extension only)
+- Fix changeset anchor extraction to skip empty lines after frontmatter
+- Fix commit coverage detection to use changeset anchor instead of lastCommitSha
+- Fix notCoveredCommits calculation to return actual uncovered commits

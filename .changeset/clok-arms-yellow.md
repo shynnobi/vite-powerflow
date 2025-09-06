@@ -2,7 +2,7 @@
 '@vite-powerflow/utils': none
 ---
 
-anchor: 498c149fbd56a1e7e2ef9b9cbdbf47998fdbaab6
+anchor: b8aafb79aa2bf43917174d555bb3f21da5e64074
 
 Update Utils package documentation
 
