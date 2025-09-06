@@ -59,3 +59,31 @@ export function getTemplateBaseline(
     return 'unknown';
   }
 }
+
+export function getExtensionBaseline(
+  workspaceRoot: string,
+  outputChannel: { appendLine: (value: string) => void }
+): string {
+  try {
+    // Read baseline from extension package.json
+    const extensionPackagePath = path.join(
+      workspaceRoot,
+      'packages/vite-powerflow-sync/package.json'
+    );
+    const content = fs.readFileSync(extensionPackagePath, 'utf-8');
+    const extensionPackage = JSON.parse(content) as {
+      extensionBaseline?: string;
+    };
+
+    if (extensionPackage.extensionBaseline) {
+      return extensionPackage.extensionBaseline;
+    }
+
+    outputChannel.appendLine('⚠️ No "extensionBaseline" found in extension package.json');
+    return 'unknown';
+  } catch (error: unknown) {
+    const message = (error as Error).message || String(error);
+    outputChannel.appendLine(`❌ Error reading extension package.json: ${message}`);
+    return 'unknown';
+  }
+}

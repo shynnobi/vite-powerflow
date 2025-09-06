@@ -72,7 +72,8 @@ const STARTER_PACKAGE = '@vite-powerflow/starter';
 
 function serializeFrontmatter(packageMap: Map<string, string>): string {
   const entries = Array.from(packageMap.entries());
-  const pkgEntries = entries.filter(([k]) => k.startsWith('@'));
+  // Include both @-prefixed packages and regular packages (like vite-powerflow-sync)
+  const pkgEntries = entries.filter(([k]) => k.startsWith('@') || k.includes('-'));
   pkgEntries.sort(([a], [b]) => a.localeCompare(b));
   const lines: string[] = [];
   for (const [k, v] of pkgEntries) {

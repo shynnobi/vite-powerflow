@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
 
-export type SyncStatus = 'sync' | 'warning' | 'error' | 'pending';
+export type SyncStatus = 'sync' | 'warning' | 'error' | 'pending' | 'dependency-pending';
 
 export enum PackageLabel {
   Starter = 'Starter',
   Cli = 'CLI',
   Utils = 'Utils',
+  Extension = 'Extension',
 }
 
 export interface CheckResult {
@@ -14,6 +15,7 @@ export interface CheckResult {
   commitCount: number;
   changeset?: Changeset;
   packageVersion?: string;
+  futureVersion?: string;
   baselineCommit?: string;
   releaseCommit?: string;
   currentCommit?: string;

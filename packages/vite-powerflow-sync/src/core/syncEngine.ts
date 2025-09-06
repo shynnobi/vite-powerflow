@@ -1,11 +1,12 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 
-import { readLatestChangeset } from './changesetReader.js';
-import { getCommitsSince, getCurrentCommit, getFilesChangedSince } from './gitCommands.js';
-import { resolveRefToSha } from './gitStatus.js';
-import { readPackageInfo } from './packageReader.js';
-import { CheckResult, PackageLabel, SyncCheckConfig } from './types.js';
+import { checkWillBeUpdatedByChangeset, getPackageNameFromConfig } from './changesetChecker';
+import { readLatestChangeset } from './changesetReader';
+import { getCommitsSince, getCurrentCommit, getFilesChangedSince } from './gitCommands';
+import { resolveRefToSha } from './gitStatus';
+import { readPackageInfo } from './packageReader';
+import { CheckResult, PackageLabel, SyncCheckConfig } from './types';
 
 /**
  * Checks the sync status of a package against its baseline (commit/tag).
@@ -45,18 +46,25 @@ export async function checkSyncStatus(
     return { sha: sha?.substring(0, 40) || '', message: msgParts.join(' ') };
   });
 
-  // Read package version for reporting (Starter/CLI)
+  // Read package version for reporting (derive from commitPath)
   let packageVersion: string | undefined;
   try {
+    // Derive package.json path from commitPath
+    let packageJsonPath: string;
+
     if (config.label === PackageLabel.Starter) {
-      const templatePackagePath = path.join(workspaceRoot, 'packages/cli/template/package.json');
-      const templatePkg = await readPackageInfo(templatePackagePath);
-      packageVersion = templatePkg?.version;
-    } else if (config.label === PackageLabel.Cli) {
-      const cliPackagePath = path.join(workspaceRoot, 'packages/cli/package.json');
-      const cliPkg = await readPackageInfo(cliPackagePath);
-      packageVersion = cliPkg?.version;
+      // Special case: Starter uses the template package.json
+      packageJsonPath = path.join(workspaceRoot, 'packages/cli/template/package.json');
+    } else {
+      // For other packages, derive from commitPath
+      // e.g., "packages/utils/" -> "packages/utils/package.json"
+      // e.g., "packages/cli/" -> "packages/cli/package.json"
+      const normalizedPath = config.commitPath.replace(/\/$/, ''); // Remove trailing slash
+      packageJsonPath = path.join(workspaceRoot, normalizedPath, 'package.json');
     }
+
+    const pkg = await readPackageInfo(packageJsonPath);
+    packageVersion = pkg?.version;
   } catch {}
 
   // Main sync logic: detect auto-release commit, unreleased commits, and changeset coverage
@@ -122,11 +130,10 @@ export async function checkSyncStatus(
       let outsideCommits: { sha: string; message: string }[] = [];
       let filesChangedAfterChangeset: string[] = [];
       if (latestChangeset) {
-        // Use anchor from changeset if present, else lastCommitSha
-        type ChangesetWithOptionalAnchor = typeof latestChangeset & { anchor?: unknown };
-        const { anchor } = latestChangeset as ChangesetWithOptionalAnchor;
         anchorForDiff =
-          typeof anchor === 'string' && anchor.length > 0 ? anchor : latestChangeset.lastCommitSha;
+          latestChangeset.anchor && latestChangeset.anchor.length > 0
+            ? latestChangeset.anchor
+            : latestChangeset.lastCommitSha;
         if (anchorForDiff) {
           // Get commits covered by changeset (anchorSha..anchor)
           const coveredRaw = getCommitsSince(
@@ -152,6 +159,7 @@ export async function checkSyncStatus(
             const [sha, ...msg] = line.split(' ');
             return { sha: sha?.substring(0, 7) || '', message: msg.join(' ') };
           });
+
           // Get files changed after changeset anchor
           filesChangedAfterChangeset = getFilesChangedSince(
             workspaceRoot,
@@ -162,8 +170,32 @@ export async function checkSyncStatus(
         }
       }
 
-      // If no changeset found, report pending/warning based on file changes
+      // If no changeset found, check if package will be updated via dependencies
       if (!latestChangeset) {
+        // Check if this package will be updated by changeset due to internal dependencies
+        const packageName = getPackageNameFromConfig(config);
+        if (packageName) {
+          const dependencyCheck = checkWillBeUpdatedByChangeset(
+            workspaceRoot,
+            packageName,
+            outputChannel
+          );
+
+          if (dependencyCheck.willBeUpdated) {
+            return {
+              status: 'dependency-pending',
+              message: `Will be updated to v${dependencyCheck.newVersion} via ${dependencyCheck.reason}`,
+              commitCount: unreleasedCommits.length,
+              packageVersion,
+              futureVersion: dependencyCheck.newVersion,
+              baselineCommit: baseline,
+              currentCommit,
+              commits: unreleasedCommits,
+            };
+          }
+        }
+
+        // Original logic: report pending/warning based on file changes
         if (filesChangedSinceBaseline.length === 0) {
           return {
             status: 'pending',
@@ -230,18 +262,31 @@ export async function checkSyncStatus(
       }
 
       // Otherwise, changeset found and all files covered
+      // Get future version from changeset status for all packages
+      let futureVersion: string | undefined;
+      const packageName = getPackageNameFromConfig(config);
+      if (packageName) {
+        const dependencyCheck = checkWillBeUpdatedByChangeset(
+          workspaceRoot,
+          packageName,
+          outputChannel
+        );
+        futureVersion = dependencyCheck.newVersion;
+      }
+
       return {
         status: 'pending',
         message: `Changeset found: ${latestChangeset.fileName} (${latestChangeset.bumpType})`,
         commitCount: unreleasedCommits.length,
         packageVersion,
+        futureVersion,
         baselineCommit: baseline,
         releaseCommit: lastReleaseCommitSha,
         currentCommit,
         commits: unreleasedCommits,
         changeset: { fileName: latestChangeset.fileName, bumpType: latestChangeset.bumpType },
         coveredCommits: coveredCommits,
-        notCoveredCommits: [],
+        notCoveredCommits: outsideCommits,
       };
     }
 

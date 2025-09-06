@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { parseChangesetFrontmatter } from './changesetParser.js';
+import { parseChangesetFrontmatter } from './changesetParser';
 
 describe('changesetParser', () => {
   describe('parseChangesetFrontmatter', () => {

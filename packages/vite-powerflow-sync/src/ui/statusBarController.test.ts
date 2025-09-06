@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as vscode from 'vscode';
 
-import { createMockOutputChannel, createMockStatusBarItem } from '../utils/testUtils.js';
-import { handleSyncResults, updateStatusBar } from './statusBarController.js';
+import { createMockOutputChannel, createMockStatusBarItem } from '../utils/testUtils';
+import { handleSyncResults, updateStatusBar } from './statusBarController';
 
 describe('ui', () => {
   it('should export functions', () => {

@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { createMockOutputChannel } from '../utils/testUtils.js';
-import { handleInSync, handleUnreleasedCommits } from './syncHandler.js';
-import { PackageLabel, SyncCheckConfig } from './types.js';
+import { createMockOutputChannel } from '../utils/testUtils';
+import { handleInSync, handleUnreleasedCommits } from './syncHandler';
+import { PackageLabel, SyncCheckConfig } from './types';
 
 describe('syncHandler', () => {
   const mockOutputChannel = createMockOutputChannel();
