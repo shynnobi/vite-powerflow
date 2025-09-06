@@ -2,9 +2,9 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { logMessage } from '../utils/logMessage.js';
-import { parseChangesetFrontmatter } from './changesetParser.js';
-import { readChangesetStatus } from './changesetReader.js';
+import { logMessage } from '../utils/logMessage';
+import { parseChangesetFrontmatter } from './changesetParser';
+import { readChangesetStatus } from './changesetReader';
 
 // Mock dependencies
 vi.mock('fs/promises');

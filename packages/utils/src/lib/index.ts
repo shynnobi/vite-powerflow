@@ -4,6 +4,6 @@
  * Warning: Never export test or dev files here!
  */
 
-export * from './getMonorepoRoot';
-export * from './logger';
+export * from './getMonorepoRoot.js';
+export * from './logger.js';
 // DO NOT export .test.ts or dev files here!

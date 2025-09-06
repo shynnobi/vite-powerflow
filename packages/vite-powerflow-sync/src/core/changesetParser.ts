@@ -61,8 +61,13 @@ export function extractMetadataAfterFrontmatter(content: string): {
   for (const line of lines) {
     const trimmed = line.trim();
 
-    // Stop scanning if we reach an empty line or markdown content
-    if (trimmed === '' || trimmed.startsWith('#')) {
+    // Skip empty lines at the beginning
+    if (trimmed === '') {
+      continue;
+    }
+
+    // Stop scanning if we reach markdown content
+    if (trimmed.startsWith('#')) {
       break;
     }
 

@@ -1,4 +1,4 @@
-import { detectWorkspaceRoot } from './workspaceDetector.js';
+import { detectWorkspaceRoot } from './workspaceDetector';
 
 describe('workspaceDetector', () => {
   it('should export detectWorkspaceRoot', () => {

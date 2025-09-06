@@ -1,14 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as vscode from 'vscode';
 
-import { runAllSyncChecks } from './core/syncChecker.js';
-import { PackageLabel } from './core/types.js';
-import { detectWorkspaceRoot } from './core/workspaceDetector.js';
-import { updateStatusBar } from './ui/statusBarController.js';
-import { createRefreshStatusBar } from './ui/syncCommands.js';
-import { createDebounced, createWatcher } from './utils/extensionUtils.js';
-import { setupExtensionTestScenario, setupWorkspaceScenario } from './utils/testUtils.js';
-import { activate, deactivate } from './extension.js';
+import { runAllSyncChecks } from './core/syncChecker';
+import { PackageLabel } from './core/types';
+import { detectWorkspaceRoot } from './core/workspaceDetector';
+import { updateStatusBar } from './ui/statusBarController';
+import { createRefreshStatusBar } from './ui/syncCommands';
+import { createDebounced, createWatcher } from './utils/extensionUtils';
+import { setupExtensionTestScenario, setupWorkspaceScenario } from './utils/testUtils';
+import { activate, deactivate } from './extension';
 
 // Mock VS Code API
 vi.mock('vscode', async () => {

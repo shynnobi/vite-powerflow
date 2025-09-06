@@ -1,12 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as vscode from 'vscode';
 
-import {
-  createMockCommand,
-  createMockContext,
-  createMockStatusBarItem,
-} from '../utils/testUtils.js';
-import { createRefreshStatusBar } from './syncCommands.js';
+import { createMockCommand, createMockContext, createMockStatusBarItem } from '../utils/testUtils';
+import { createRefreshStatusBar } from './syncCommands';
 
 // Mock VS Code API
 vi.mock('vscode', async () => {
