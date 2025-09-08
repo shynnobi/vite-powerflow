@@ -22,8 +22,6 @@ export async function checkSyncStatus(
   workspaceRoot: string,
   outputChannel: vscode.OutputChannel
 ): Promise<CheckResult> {
-  outputChannel.appendLine(`🔍 [${config.label}] STARTING checkSyncStatus`);
-
   // Resolve baseline commit/tag for comparison
   const baseline = await config.baseline();
   if (!baseline || baseline === 'unknown') {
@@ -51,9 +49,6 @@ export async function checkSyncStatus(
   // Find the last changeset release commit (search in ALL commits, not just package-filtered)
   let lastReleaseCommitSha: string | undefined;
   try {
-    outputChannel.appendLine(
-      `🔍 [${config.label}] Searching commits from ${baseline} to ${currentCommit}`
-    );
     const allCommitsUnfilteredRaw = getCommitsSince(
       workspaceRoot,
       baseline,
@@ -61,21 +56,6 @@ export async function checkSyncStatus(
       '', // Empty path = no filtering
       outputChannel
     );
-    outputChannel.appendLine(
-      `🔍 [${config.label}] Found ${allCommitsUnfilteredRaw.length} commits in range`
-    );
-
-    // Debug: show all commits with release pattern
-    const releaseCommits = allCommitsUnfilteredRaw.filter(line =>
-      /chore: release new versions|Version Packages/i.test(line)
-    );
-    outputChannel.appendLine(
-      `🔍 [${config.label}] Found ${releaseCommits.length} potential release commits:`
-    );
-    releaseCommits.forEach(commit => {
-      const [sha] = commit.split(' ');
-      outputChannel.appendLine(`   • ${sha?.substring(0, 7)}: ${commit}`);
-    });
 
     // For NPM packages, we want the FIRST release commit (oldest in range)
     // because that's the one that corresponds to the published version
@@ -85,22 +65,13 @@ export async function checkSyncStatus(
     if (releaseCommitIndex >= 0) {
       const [releaseSha] = allCommitsUnfilteredRaw[releaseCommitIndex].split(' ');
       lastReleaseCommitSha = releaseSha?.substring(0, 40);
-      outputChannel.appendLine(
-        `🔍 [${config.label}] Selected FIRST release commit: ${lastReleaseCommitSha}`
-      );
-    } else {
-      outputChannel.appendLine(`🔍 [${config.label}] No release commit found in unfiltered search`);
     }
   } catch (error) {
-    outputChannel.appendLine(`🔍 [${config.label}] Unfiltered search failed: ${error}`);
     // If unfiltered search fails, fallback to filtered search
     const releaseCommitIndex = allCommits.findIndex(c =>
       /chore: release new versions|Version Packages/i.test(c.message)
     );
     lastReleaseCommitSha = releaseCommitIndex >= 0 ? allCommits[releaseCommitIndex].sha : undefined;
-    outputChannel.appendLine(
-      `🔍 [${config.label}] Fallback search result: ${lastReleaseCommitSha}`
-    );
   }
 
   // Read package version for reporting (derive from commitPath)
@@ -268,9 +239,6 @@ export async function checkSyncStatus(
 
         // If we found a release commit and there are unreleased commits,
         // but the release commit covers them, then it's actually sync
-        outputChannel.appendLine(
-          `🔍 [${config.label}] DEBUG: lastReleaseCommitSha=${lastReleaseCommitSha}, unreleasedCommits.length=${unreleasedCommits.length}`
-        );
         if (lastReleaseCommitSha && unreleasedCommits.length > 0) {
           // Check if the release commit is after the baseline in the commit history
           const releaseCommitIndex = allCommits.findIndex(c => c.sha === lastReleaseCommitSha);
@@ -278,10 +246,7 @@ export async function checkSyncStatus(
 
           if (releaseCommitIndex >= 0 && baselineIndex >= 0 && releaseCommitIndex > baselineIndex) {
             // The release commit covers all commits after baseline, so it's sync
-            outputChannel.appendLine(
-              `🔍 [${config.label}] Release commit ${lastReleaseCommitSha} covers all changes`
-            );
-            const result = {
+            return {
               status: 'sync',
               message: config.messages.inSync,
               commitCount: 0,
@@ -291,13 +256,9 @@ export async function checkSyncStatus(
               currentCommit,
               commits: [],
             };
-            outputChannel.appendLine(
-              `🔍 [${config.label}] RETURNING: baselineCommit=${result.baselineCommit}, releaseCommit=${result.releaseCommit}`
-            );
-            return result;
           }
         }
-        const warningResult = {
+        return {
           status: 'warning',
           message: '',
           commitCount: unreleasedCommits.length,
@@ -307,10 +268,6 @@ export async function checkSyncStatus(
           currentCommit,
           commits: unreleasedCommits,
         };
-        outputChannel.appendLine(
-          `🔍 [${config.label}] RETURNING WARNING: baselineCommit=${warningResult.baselineCommit}, releaseCommit=${warningResult.releaseCommit}`
-        );
-        return warningResult;
       }
 
       // Normalize anchor SHA for diffing
