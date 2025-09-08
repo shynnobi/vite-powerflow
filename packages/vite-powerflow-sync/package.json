@@ -2,7 +2,10 @@
   "name": "vite-powerflow-sync",
   "private": true,
   "version": "0.0.3",
-  "extensionBaseline": "756ff9ab282c2d724a14ef2b0e0970352826a7dc",
+  "syncBaseline": {
+    "commit": "e2bdf2c4d103df0592367b15d7d1325e7eebcaea",
+    "updatedAt": "2025-09-08T15:08:37.000Z"
+  },
   "displayName": "Vite Powerflow - Sync Monitor",
   "description": "Monitor sync status between Vite Powerflow starter app and CLI template. Detect when changeset is needed or template sync is required.",
   "publisher": "vite-powerflow",
