@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.7
+
+### Patch Changes
+
+- Updated dependencies [c3d3f11]
+  - @vite-powerflow/utils@0.0.5
+
 ## 1.0.6
 
 ### Patch Changes

@@ -1,7 +1,7 @@
 {
   "name": "vite-powerflow-sync",
   "private": true,
-  "version": "0.0.3",
+  "version": "0.0.4",
   "syncBaseline": {
     "commit": "e2bdf2c4d103df0592367b15d7d1325e7eebcaea",
     "updatedAt": "2025-09-08T15:08:37.000Z"
