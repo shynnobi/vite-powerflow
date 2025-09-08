@@ -72,14 +72,27 @@ export function getExtensionBaseline(
     );
     const content = fs.readFileSync(extensionPackagePath, 'utf-8');
     const extensionPackage = JSON.parse(content) as {
-      extensionBaseline?: string;
+      syncBaseline?: { commit?: string };
+      extensionBaseline?: string; // fallback for backward compatibility
     };
 
+    // Try new syncBaseline first
+    if (extensionPackage.syncBaseline?.commit) {
+      outputChannel.appendLine(
+        `ℹ️ Using syncBaseline from extension package.json: ${extensionPackage.syncBaseline.commit}`
+      );
+      return extensionPackage.syncBaseline.commit;
+    }
+
+    // Fallback to old extensionBaseline for backward compatibility
     if (extensionPackage.extensionBaseline) {
+      outputChannel.appendLine(
+        `ℹ️ Using legacy extensionBaseline: ${extensionPackage.extensionBaseline}`
+      );
       return extensionPackage.extensionBaseline;
     }
 
-    outputChannel.appendLine('⚠️ No "extensionBaseline" found in extension package.json');
+    outputChannel.appendLine('⚠️ No baseline found in extension package.json');
     return 'unknown';
   } catch (error: unknown) {
     const message = (error as Error).message || String(error);
