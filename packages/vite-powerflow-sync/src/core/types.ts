@@ -39,7 +39,7 @@ export interface SyncCheckConfig {
 
 export interface Changeset {
   fileName: string;
-  bumpType: 'minor' | 'patch' | 'major';
+  bumpType: 'minor' | 'patch' | 'major' | 'none';
 }
 
 export interface ChangesetStatus {
