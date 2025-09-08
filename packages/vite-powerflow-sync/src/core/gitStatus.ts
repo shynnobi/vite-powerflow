@@ -78,9 +78,9 @@ export function getExtensionBaseline(
 
     // Try new syncBaseline first
     if (extensionPackage.syncBaseline?.commit) {
-      outputChannel.appendLine(
-        `ℹ️ Using syncBaseline from extension package.json: ${extensionPackage.syncBaseline.commit}`
-      );
+      // outputChannel.appendLine(
+      //   `ℹ️ Using syncBaseline from extension package.json: ${extensionPackage.syncBaseline.commit}`
+      // );
       return extensionPackage.syncBaseline.commit;
     }
 
