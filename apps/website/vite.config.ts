@@ -3,21 +3,45 @@
  * React + PWA + SEO setup
  */
 
+import fs from 'fs';
+import path from 'path';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react-swc';
 import { visualizer } from 'rollup-plugin-visualizer';
-import type { PluginOption } from 'vite';
+import type { Plugin, PluginOption } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 import { VitePWA } from 'vite-plugin-pwa';
 import compression from 'vite-plugin-compression';
-import { DOMAIN_CONFIG } from './config/domain.js';
-import { generatePWAManifest, SEO_DEFAULTS } from './config/site-config.js';
+import { PROJECT_CONFIG } from './src/config/projectConfig.js';
+import { generatePWAManifest, validateConfiguration } from './src/lib/pwa.js';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
-import { viteSitemapAdvanced } from './plugins/vite-sitemap-advanced.ts';
-import { viteRobotsCopy } from './plugins/vite-plugin-robots-copy.ts';
-import viteHtmlValidate from './plugins/vite-html-validate.ts';
 import { createHtmlPlugin } from 'vite-plugin-html';
+import Sitemap from 'vite-plugin-sitemap';
+
+// Validate configuration on startup
+validateConfiguration(PROJECT_CONFIG.seo, {
+  ...PROJECT_CONFIG.pwa,
+  icons: [...PROJECT_CONFIG.pwa.icons],
+});
+
+// Vite plugins
+const robotsPlugin = (): Plugin => {
+  return {
+    name: 'robots-plugin',
+    closeBundle() {
+      const sourcePath = path.resolve(process.cwd(), '.robots.production.txt');
+      const targetPath = path.resolve(process.cwd(), 'dist/robots.txt');
+
+      try {
+        fs.copyFileSync(sourcePath, targetPath);
+        console.log('🤖 Robots.txt copied to dist/robots.txt');
+      } catch (error) {
+        console.error('❌ Error copying robots.txt:', error);
+      }
+    },
+  };
+};
 
 export default defineConfig({
   plugins: [
@@ -42,19 +66,19 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,jpg,jpeg}'],
       },
-      manifest: generatePWAManifest(), // Generated from centralized SEO config
+      manifest: generatePWAManifest({
+        ...PROJECT_CONFIG.pwa,
+        icons: [...PROJECT_CONFIG.pwa.icons],
+      }), // Generated using @vite-powerflow/utils
     }),
 
     // SEO
-    viteSitemapAdvanced({
-      hostname: DOMAIN_CONFIG.production,
-      autoRoutes: true,
-      images: true,
+    Sitemap({
+      hostname: PROJECT_CONFIG.domain.production,
+      dynamicRoutes: ['/'],
+      exclude: ['/admin', '/confidentiel'],
     }),
-    viteRobotsCopy(),
-
-    // Quality
-    viteHtmlValidate(),
+    robotsPlugin(),
 
     // Build
     createHtmlPlugin({
@@ -62,7 +86,7 @@ export default defineConfig({
       template: 'index.html',
       inject: {
         data: {
-          VITE_APP_TITLE: SEO_DEFAULTS.title,
+          VITE_APP_TITLE: PROJECT_CONFIG.seo.title,
         },
       },
     }),
