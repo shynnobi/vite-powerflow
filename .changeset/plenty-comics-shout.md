@@ -2,7 +2,7 @@
 '@vite-powerflow/starter': minor
 ---
 
-anchor: 9b1e4e569b2961239b9bb72eddbf786a33bad65c
+anchor: 40bd894b8a86a53ac1671797eb42aced9d5356c0
 baseline: 7438c181621b571a18810698cee0f35acee67129
 
 feat(starter): add complete SEO and PWA infrastructure
@@ -27,6 +27,7 @@ feat(starter): add complete SEO and PWA infrastructure
 - Add automatic sitemap generation with vite-plugin-sitemap
 - Add HTML template processing with title injection
 - Add compression and image optimization plugins
+- Fix robots.txt plugin to ensure dist directory exists before copying
 
 **Assets & Configuration:**
 
