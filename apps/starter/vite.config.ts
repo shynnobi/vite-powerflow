@@ -60,7 +60,14 @@ export default defineConfig({
     Sitemap({
       hostname: PROJECT_CONFIG.domain.production,
       dynamicRoutes: ['/'],
-      exclude: ['/admin', '/confidentiel'],
+      exclude: ['/admin', '/private', '/confidentiel'],
+      robots: [
+        {
+          userAgent: '*',
+          allow: '/',
+          disallow: ['/admin/', '/private/'],
+        },
+      ],
     }),
 
     // Build
