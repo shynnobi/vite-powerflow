@@ -45,9 +45,9 @@ export const PROJECT_CONFIG: ProjectConfig = {
     description: 'A modern React application built with Vite PowerFlow starter kit.',
 
     // TODO: Choose your app's theme color (affects browser UI when PWA is running)
-    theme_color: '#111828',
+    theme_color: '#32A8FF',
     // TODO: Choose your app's background color (consistent with theme)
-    background_color: '#111828',
+    background_color: '#111111',
 
     // Display Mode
     display: 'standalone', // App-like experience (hides browser UI)
