@@ -34,6 +34,12 @@ const robotsPlugin = (): Plugin => {
       const targetPath = path.resolve(process.cwd(), 'dist/robots.txt');
 
       try {
+        // Ensure dist directory exists
+        const distDir = path.dirname(targetPath);
+        if (!fs.existsSync(distDir)) {
+          fs.mkdirSync(distDir, { recursive: true });
+        }
+
         fs.copyFileSync(sourcePath, targetPath);
         console.log('🤖 Robots.txt copied to dist/robots.txt');
       } catch (error) {
