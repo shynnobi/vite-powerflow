@@ -26,6 +26,35 @@ validateConfiguration(PROJECT_CONFIG.seo, {
 });
 
 // Vite plugins
+const robotsPlugin = (): Plugin => {
+  return {
+    name: 'robots-plugin',
+    closeBundle() {
+      const targetPath = path.resolve(process.cwd(), 'dist/robots.txt');
+
+      try {
+        // Ensure dist directory exists
+        const distDir = path.dirname(targetPath);
+        if (!fs.existsSync(distDir)) {
+          fs.mkdirSync(distDir, { recursive: true });
+        }
+
+        // Generate robots.txt content
+        const robotsContent = `User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+Sitemap: ${PROJECT_CONFIG.domain.production}/sitemap.xml`;
+
+        fs.writeFileSync(targetPath, robotsContent, 'utf-8');
+        console.log('🤖 Robots.txt generated with security rules');
+      } catch (error) {
+        console.error('❌ Error generating robots.txt:', error);
+      }
+    },
+  };
+};
 
 export default defineConfig({
   plugins: [
@@ -61,14 +90,9 @@ export default defineConfig({
       hostname: PROJECT_CONFIG.domain.production,
       dynamicRoutes: ['/'],
       exclude: ['/admin', '/private', '/confidentiel'],
-      robots: [
-        {
-          userAgent: '*',
-          allow: '/',
-          disallow: ['/admin/', '/private/'],
-        },
-      ],
+      allowRobots: false, // Disable robots.txt generation (handled by custom plugin)
     }),
+    robotsPlugin(),
 
     // Build
     createHtmlPlugin({
