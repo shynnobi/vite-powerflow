@@ -5,7 +5,8 @@ import type { SEOProps } from '@/lib/seo';
 
 export function SEO({ title, description, image, url, keywords, author }: SEOProps) {
   // Use passed values with fallbacks to PROJECT_CONFIG defaults
-  const seoTitle = title || PROJECT_CONFIG.seo.title;
+  const siteName = PROJECT_CONFIG.seo.siteName;
+  const seoTitle = title ? `${title} | ${siteName}` : PROJECT_CONFIG.seo.title;
   const seoDescription = description || PROJECT_CONFIG.seo.description;
   const seoImage = image || PROJECT_CONFIG.seo.image;
   const seoUrl = url || PROJECT_CONFIG.seo.url;

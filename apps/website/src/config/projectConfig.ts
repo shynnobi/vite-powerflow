@@ -16,8 +16,8 @@ export const PROJECT_CONFIG: ProjectConfig = {
     keywords: 'vite, react, typescript, seo, pwa, react-router, sitemap, modern web',
     author: 'Shynn',
 
-    // Image for social sharing previews (Open Graph, Twitter, etc.)
-    image: '/images/og-default.svg',
+    // Image (1200x630) for social sharing previews (Open Graph, Twitter, etc.)
+    image: '/images/og-default-1200-630.png',
 
     // Site branding (used in PWA, Open Graph, Twitter)
     siteName: 'Vite PowerFlow', // Official site name - can be longer than title
