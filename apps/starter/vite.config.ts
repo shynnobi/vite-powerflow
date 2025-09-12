@@ -26,28 +26,6 @@ validateConfiguration(PROJECT_CONFIG.seo, {
 });
 
 // Vite plugins
-const robotsPlugin = (): Plugin => {
-  return {
-    name: 'robots-plugin',
-    closeBundle() {
-      const sourcePath = path.resolve(process.cwd(), '.robots.production.txt');
-      const targetPath = path.resolve(process.cwd(), 'dist/robots.txt');
-
-      try {
-        // Ensure dist directory exists
-        const distDir = path.dirname(targetPath);
-        if (!fs.existsSync(distDir)) {
-          fs.mkdirSync(distDir, { recursive: true });
-        }
-
-        fs.copyFileSync(sourcePath, targetPath);
-        console.log('🤖 Robots.txt copied to dist/robots.txt');
-      } catch (error) {
-        console.error('❌ Error copying robots.txt:', error);
-      }
-    },
-  };
-};
 
 export default defineConfig({
   plugins: [
@@ -84,7 +62,6 @@ export default defineConfig({
       dynamicRoutes: ['/'],
       exclude: ['/admin', '/confidentiel'],
     }),
-    robotsPlugin(),
 
     // Build
     createHtmlPlugin({
