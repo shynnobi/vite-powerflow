@@ -18,7 +18,7 @@ export const PROJECT_CONFIG: ProjectConfig = {
     author: 'Your Name',
 
     // TODO: Replace with your app's social sharing image (1200x630px recommended)
-    image: '/images/og-default-1200-630.png',
+    image: '/images/og-image-1200-630.png',
 
     // TODO: Update with your official site name (can be longer than title)
     siteName: 'My App',
