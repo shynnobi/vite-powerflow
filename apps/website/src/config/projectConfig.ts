@@ -17,7 +17,7 @@ export const PROJECT_CONFIG: ProjectConfig = {
     author: 'Shynn',
 
     // Image (1200x630) for social sharing previews (Open Graph, Twitter, etc.)
-    image: '/images/og-default-1200-630.png',
+    image: '/images/og-image-1200-630.png',
 
     // Site branding (used in PWA, Open Graph, Twitter)
     siteName: 'Vite PowerFlow', // Official site name - can be longer than title
