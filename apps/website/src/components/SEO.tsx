@@ -3,10 +3,10 @@ import { Helmet } from 'react-helmet-async';
 import { PROJECT_CONFIG } from '@/config/projectConfig';
 import type { SEOProps } from '@/lib/seo';
 
-export function SEO({ title, description, image, url, keywords, author }: SEOProps) {
+export function SEO({ title, description, image, url, keywords, author, isHomepage }: SEOProps) {
   // Use passed values with fallbacks to PROJECT_CONFIG defaults
   const siteName = PROJECT_CONFIG.seo.siteName;
-  const seoTitle = title ? `${title} | ${siteName}` : PROJECT_CONFIG.seo.title;
+  const seoTitle = isHomepage ? title : `${title} | ${siteName}`;
   const seoDescription = description || PROJECT_CONFIG.seo.description;
   const seoImage = image || PROJECT_CONFIG.seo.image;
   const seoUrl = url || PROJECT_CONFIG.seo.url;

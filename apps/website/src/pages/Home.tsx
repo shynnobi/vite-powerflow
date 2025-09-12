@@ -16,6 +16,7 @@ export default function Home(): ReactElement {
         title="Vite PowerFlow | Next generation starter"
         description="Ultra-fast React development with TypeScript, testing, CI/CD workflows, and containerized development - all configured with industry best practices."
         keywords="vite, react, typescript, starter kit, testing, ci/cd, dev containers, docker, tailwind css, shadcn/ui, storybook, vitest, playwright"
+        isHomepage
       />
 
       <div className="relative flex flex-col min-h-screen">

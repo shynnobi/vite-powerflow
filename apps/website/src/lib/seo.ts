@@ -29,4 +29,5 @@ export interface SEOProps {
   url?: string;
   keywords?: string;
   author?: string;
+  isHomepage?: boolean; // Optional - if true, title is used as-is without siteName suffix
 }
