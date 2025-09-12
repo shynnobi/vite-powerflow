@@ -30,14 +30,27 @@ const robotsPlugin = (): Plugin => {
   return {
     name: 'robots-plugin',
     closeBundle() {
-      const sourcePath = path.resolve(process.cwd(), '.robots.production.txt');
       const targetPath = path.resolve(process.cwd(), 'dist/robots.txt');
 
       try {
-        fs.copyFileSync(sourcePath, targetPath);
-        console.log('🤖 Robots.txt copied to dist/robots.txt');
+        // Ensure dist directory exists
+        const distDir = path.dirname(targetPath);
+        if (!fs.existsSync(distDir)) {
+          fs.mkdirSync(distDir, { recursive: true });
+        }
+
+        // Generate robots.txt content
+        const robotsContent = `User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+Sitemap: ${PROJECT_CONFIG.domain.production}/sitemap.xml`;
+
+        fs.writeFileSync(targetPath, robotsContent, 'utf-8');
+        console.log('🤖 Robots.txt generated with security rules');
       } catch (error) {
-        console.error('❌ Error copying robots.txt:', error);
+        console.error('❌ Error generating robots.txt:', error);
       }
     },
   };
@@ -76,9 +89,9 @@ export default defineConfig({
     Sitemap({
       hostname: PROJECT_CONFIG.domain.production,
       dynamicRoutes: ['/'],
-      exclude: ['/admin', '/confidentiel'],
+      exclude: ['/admin', '/private', '/confidentiel'],
     }),
-    robotsPlugin(),
+    robotsPlugin(), // Generate robots.txt after sitemap (will override)
 
     // Build
     createHtmlPlugin({

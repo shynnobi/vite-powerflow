@@ -86,13 +86,12 @@ export default defineConfig({
     }),
 
     // SEO
-    robotsPlugin(), // Generate robots.txt first
     Sitemap({
       hostname: PROJECT_CONFIG.domain.production,
       dynamicRoutes: ['/'],
       exclude: ['/admin', '/private', '/confidentiel'],
-      allowRobots: false, // Disable robots.txt generation (handled by custom plugin)
     }),
+    robotsPlugin(), // Generate robots.txt after sitemap (will override)
 
     // Build
     createHtmlPlugin({
