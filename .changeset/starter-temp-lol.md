@@ -3,6 +3,7 @@
 '@vite-powerflow/starter': patch
 ---
 
+anchor: e935a07d27d6cfb9812e4c10c1e4529ae021599e
 baseline: d0de5cc8c98fc878c41bc9cd8e37244d66793de3
 
 Fix desync between starter and npm template
