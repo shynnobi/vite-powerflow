@@ -1,5 +1,15 @@
 # @vite-powerflow/utils
 
+## 0.0.7
+
+### Patch Changes
+
+- Fix package publishing configuration
+  - Add files configuration to publish only dist/ directory
+  - Remove unnecessary source files from npm package
+  - Align with CLI package publishing approach
+  - Reduce package size from 158.5kB to 127.7kB
+
 ## 0.0.6
 
 ### Patch Changes
