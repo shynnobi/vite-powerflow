@@ -177,7 +177,7 @@ html {
   color: white;
 }
 
-/* Animation bounce subtile pour l’icône flèche du HeroSection */
+/* Subtle bounce animation for the arrow icon in HeroSection */
 .bounce-arrow {
   animation: bounceArrow 1.5s ease-in-out infinite;
 }

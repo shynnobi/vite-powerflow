@@ -30,6 +30,13 @@ A React + Vite starter, fully containerized for reproducible and collaborative d
 - **[shadcn/ui](https://ui.shadcn.com/)** - Re-usable components built with Radix UI and Tailwind CSS
 - **[Storybook](https://storybook.js.org/)** - Component playground for isolated development and testing
 
+### 🌐 SEO & PWA
+
+- **[React Helmet Async](https://github.com/staylor/react-helmet-async)** - Meta tags, Open Graph, and Twitter Cards
+- **[vite-plugin-pwa](https://github.com/vite-pwa/vite-plugin-pwa)** - Installable web app with service worker
+- **[vite-plugin-sitemap](https://github.com/nuxt-contrib/vite-plugin-sitemap)** - Automatic XML sitemap generation
+- **SEO Components** - Configurable SEO component for all pages
+
 ### 📦 State & Data Management
 
 - **[Zustand](https://github.com/pmndrs/zustand)** - Lightweight state management library
@@ -301,6 +308,40 @@ This section details the essential configuration aspects of the project, includi
 │   └── e2e/           # End-to-end tests
 └── public/            # Static assets
 ```
+
+### SEO & PWA Configuration
+
+The project includes comprehensive SEO and PWA configuration for production-ready applications:
+
+#### SEO Components
+
+- **SEO Component** (`src/components/SEO.tsx`) - Configurable component for meta tags, Open Graph, and Twitter Cards
+- **React Helmet Async** - Document head management for dynamic meta tag updates
+- **Open Graph & Twitter Cards** - Social media sharing with customizable images and descriptions
+- **Dynamic Sitemap** - Automatic XML sitemap generation for search engines
+- **Robots.txt Generation** - Automated robots.txt with basic security rules and sitemap reference
+- **Canonical URLs** - Proper URL canonicalization for SEO
+
+#### PWA Infrastructure
+
+- **Web App Manifest** - PWA manifest with configurable app metadata and icons
+- **Service Worker** - Automatic service worker generation via VitePWA plugin
+- **App Installation** - Installable web app with standalone display mode
+- **Theme Customization** - Configurable theme and background colors
+- **Favicon Management** - Multi-format favicon support for different devices
+
+#### Build Optimizations
+
+- **Image Optimization** - Automatic PNG/JPEG/WebP compression with vite-plugin-image-optimizer
+- **Asset Compression** - Gzip compression for optimized bundle sizes
+- **HTML Minification** - Production-ready HTML optimization
+
+#### Configuration Files
+
+- [`vite.config.ts`](./vite.config.ts) — PWA, sitemap, compression, and image optimization plugins
+- [`src/components/SEO.tsx`](./src/components/SEO.tsx) — SEO component for meta tags management
+- [`src/config/projectConfig.ts`](./src/config/projectConfig.ts) — Centralized SEO and PWA configuration
+- [`public/images/og-image-1200-630.png`](./public/images/og-image-1200-630.png) — Default Open Graph image
 
 ### Path Aliases
 
