@@ -2,7 +2,7 @@
 '@vite-powerflow/starter': minor
 ---
 
-anchor: 0674a9a132c880f1f925d41298bdcbb7a0b428b4
+anchor: 5ee8eebc2797d8ef941626b439a325122f6b5615
 baseline: 7438c181621b571a18810698cee0f35acee67129
 
 feat(starter): add complete SEO and PWA infrastructure
@@ -34,3 +34,10 @@ feat(starter): add complete SEO and PWA infrastructure
 - Replace vite.svg with generic favicon structure
 - Add project configuration types for reusable setup
 - Integrate SEO component in Home page with isHomepage prop
+
+**Build Configuration:**
+
+- Reorder SEO plugins for proper robots.txt generation
+- Remove invalid allowRobots option from sitemap plugin
+- Ensure consistent robots.txt behavior between starter and website
+- Update plugin execution order: Sitemap first, then robots override
