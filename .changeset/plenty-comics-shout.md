@@ -2,7 +2,7 @@
 '@vite-powerflow/starter': minor
 ---
 
-anchor: 87e7878cdf992f31f2d7dd9ef38988c3f2cff451
+anchor: 0674a9a132c880f1f925d41298bdcbb7a0b428b4
 baseline: 7438c181621b571a18810698cee0f35acee67129
 
 feat(starter): add complete SEO and PWA infrastructure
