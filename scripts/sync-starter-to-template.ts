@@ -3,9 +3,9 @@ import fs from 'fs-extra';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
+import { TemplatePkgJson } from './types/package-json';
 import { getLatestReleaseCommitWithShort } from './git-utils';
 import { logRootError, logRootInfo, logRootSuccess } from './monorepo-logger';
-import { TemplatePkgJson } from './types/package-json';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
