@@ -84,7 +84,7 @@
     "set-cli-template-baseline": "tsx scripts/set-cli-template-baseline.ts",
     "changeset:augment": "tsx scripts/augment-changeset.ts",
     "changeset:create": "pnpm changeset && pnpm changeset:augment",
-    "release:prepare": "changeset version && pnpm sync:starter-to-template && pnpm set-cli-template-baseline",
+    "release:prepare": "pnpm sync:starter-to-template && pnpm set-cli-template-baseline && changeset version",
     "release:publish": "pnpm build && changeset publish",
     "ci:local": "git clean -fdx && pnpm install --frozen-lockfile && CI=true ./scripts/ci.sh"
   },
