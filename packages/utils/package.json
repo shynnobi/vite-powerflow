@@ -32,6 +32,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "dist/"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
