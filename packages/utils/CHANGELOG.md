@@ -1,5 +1,14 @@
 # @vite-powerflow/utils
 
+## 0.0.6
+
+### Patch Changes
+
+- d7fe39c: Update Utils package baseline and sync detection
+  - Fix sync commit detection and display improvements
+  - Update package baseline to latest release commit
+  - Ensure proper status reporting in sync monitoring
+
 ## 0.0.5
 
 ### Patch Changes

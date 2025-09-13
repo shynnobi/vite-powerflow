@@ -2,6 +2,8 @@
 'vite-powerflow-sync': patch
 ---
 
+anchor: d7fe39cb30c9371bfa2fb3f8e8e65393863a2f13
+
 Fix critical sync monitoring and release commit detection bugs
 
 - Fix lastReleaseCommitSha detection by searching in unfiltered commit history
