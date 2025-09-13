@@ -1,3 +1,4 @@
+import { execSync } from 'child_process';
 import fs from 'fs-extra';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
@@ -151,6 +152,45 @@ void (async () => {
         // Remove extends line while preserving exact formatting
         const cleanedTsconfig = tsconfigRaw.replace(/^\s*"extends":\s*"[^"]+",?\s*\n/gm, '');
         await fs.writeFile(tsconfigPath, cleanedTsconfig, 'utf8');
+      }
+    }
+
+    // 6. Create changeset for CLI if template was modified and we're not in CI
+    if (!process.env.CI) {
+      try {
+        // Check if there are changes in the template directory
+        const hasChanges = execSync('git status --porcelain packages/cli/template/', {
+          encoding: 'utf8',
+          cwd: root,
+        }).trim();
+
+        if (hasChanges) {
+          logRootInfo('Template changes detected, creating changeset for CLI...');
+
+          const changesetPath = path.join(root, '.changeset');
+          const timestamp = Date.now();
+          const changesetFile = path.join(changesetPath, `cli-template-sync-${timestamp}.md`);
+
+          const changesetContent = `---
+"@vite-powerflow/create": patch
+---
+
+Sync CLI template with latest starter changes
+
+- Updated template with latest starter features and dependencies
+- Template baseline updated to commit ${getLatestReleaseCommitWithShort(root).short}
+`;
+
+          await fs.writeFile(changesetFile, changesetContent, 'utf8');
+          logRootInfo(`Created changeset: ${path.basename(changesetFile)}`);
+        } else {
+          logRootInfo('No template changes detected, skipping changeset creation');
+        }
+      } catch (changesetError) {
+        logRootInfo('Warning: Could not create changeset for CLI template changes');
+        logRootInfo(
+          changesetError instanceof Error ? changesetError.message : String(changesetError)
+        );
       }
     }
 

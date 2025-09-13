@@ -1,5 +1,24 @@
 # @vite-powerflow/utils
 
+## 0.0.7
+
+### Patch Changes
+
+- Fix package publishing configuration
+  - Add files configuration to publish only dist/ directory
+  - Remove unnecessary source files from npm package
+  - Align with CLI package publishing approach
+  - Reduce package size from 158.5kB to 127.7kB
+
+## 0.0.6
+
+### Patch Changes
+
+- d7fe39c: Update Utils package baseline and sync detection
+  - Fix sync commit detection and display improvements
+  - Update package baseline to latest release commit
+  - Ensure proper status reporting in sync monitoring
+
 ## 0.0.5
 
 ### Patch Changes
