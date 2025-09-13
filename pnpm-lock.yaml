@@ -702,8 +702,8 @@ importers:
         specifier: ^2.2.1
         version: 2.2.1
       '@vite-powerflow/utils':
-        specifier: ^0.0.5
-        version: 0.0.5
+        specifier: ^0.0.7
+        version: 0.0.7
       chalk:
         specifier: ^5.4.1
         version: 5.4.1
@@ -3951,8 +3951,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@vite-powerflow/utils@0.0.5':
-    resolution: {integrity: sha512-+hGoO81Kbha13UAt+LqstHkyps6QGPNwD35jpoVYCf+pTdPmJboVD7/vGWDVOdbIS1stWe0J6mpw3dx+TKLtqw==}
+  '@vite-powerflow/utils@0.0.7':
+    resolution: {integrity: sha512-hhbs22WpcCFk5twwW4Hwf2v+clnuA9lK1bW6xOPpcoJZhvIu142BnLf9Kc7PQkBLSUNOLtDD237ZTTCUfuwe6g==}
 
   '@vitejs/plugin-react-swc@3.10.2':
     resolution: {integrity: sha512-xD3Rdvrt5LgANug7WekBn1KhcvLn1H3jNBfJRL3reeOIua/WnZOEV5qi5qIBq5T8R0jUDmRtxuvk4bPhzGHDWw==}
@@ -12662,7 +12662,7 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.11.1':
     optional: true
 
-  '@vite-powerflow/utils@0.0.5':
+  '@vite-powerflow/utils@0.0.7':
     dependencies:
       chalk: 5.4.1
       find-up: 7.0.0
