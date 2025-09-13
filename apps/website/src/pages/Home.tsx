@@ -6,7 +6,6 @@ import { Footer } from './Home/Footer';
 import { GetStartedSection } from './Home/GetStartedSection';
 import { Header } from './Home/Header';
 import { HeroSection } from './Home/HeroSection';
-import { SEO_DEFAULTS } from '../../config/site-config';
 
 import { SEO } from '@/components/SEO';
 
@@ -14,9 +13,10 @@ export default function Home(): ReactElement {
   return (
     <>
       <SEO
-        title={SEO_DEFAULTS.title}
-        description={SEO_DEFAULTS.description}
+        title="Vite PowerFlow | Next generation starter"
+        description="Ultra-fast React development with TypeScript, testing, CI/CD workflows, and containerized development - all configured with industry best practices."
         keywords="vite, react, typescript, starter kit, testing, ci/cd, dev containers, docker, tailwind css, shadcn/ui, storybook, vitest, playwright"
+        isHomepage
       />
 
       <div className="relative flex flex-col min-h-screen">
