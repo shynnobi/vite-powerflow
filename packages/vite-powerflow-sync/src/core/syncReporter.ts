@@ -3,30 +3,26 @@ import * as path from 'path';
 import { formatBaseline } from './baselineFormatter';
 import { readPackageInfo } from './packageReader';
 import { CheckResult, PackageLabel, SyncCheckConfig } from './types';
+import { MONITORED_NPM_PACKAGES, SPECIAL_PACKAGE_CONFIGS } from '../config/monitoredPackages';
 
 /**
  * Determine the distribution channel for a package based on its private property
  */
 async function getDistributionChannel(label: PackageLabel, workspaceRoot: string): Promise<string> {
   try {
-    // Get package path based on label
+    // Get package path from configuration instead of hardcoded paths
     let packagePath: string | null = null;
 
-    switch (label) {
-      case PackageLabel.Cli:
-        packagePath = path.join(workspaceRoot, 'packages/cli/package.json');
-        break;
-      case PackageLabel.Utils:
-        packagePath = path.join(workspaceRoot, 'packages/utils/package.json');
-        break;
-      case PackageLabel.Extension:
-        packagePath = path.join(workspaceRoot, 'packages/vite-powerflow-sync/package.json');
-        break;
-      case PackageLabel.Starter:
-        packagePath = path.join(workspaceRoot, 'packages/cli/template/package.json');
-        break;
-      default:
-        return '';
+    // Check if it's a standard NPM package
+    const npmPackage = MONITORED_NPM_PACKAGES.find(pkg => pkg.label === label);
+    if (npmPackage) {
+      packagePath = path.join(workspaceRoot, npmPackage.pkgPath);
+    } else if (label === PackageLabel.Extension) {
+      // Special case for extension
+      packagePath = path.join(workspaceRoot, 'packages/vite-powerflow-sync/package.json');
+    } else if (label === PackageLabel.Starter) {
+      // Special case for starter template
+      packagePath = path.join(workspaceRoot, 'packages/cli/template/package.json');
     }
 
     if (!packagePath) return '';
