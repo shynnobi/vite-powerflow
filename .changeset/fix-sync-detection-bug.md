@@ -2,6 +2,8 @@
 'vite-powerflow-sync': patch
 ---
 
+anchor: 73ee0b386c00714afc6fdaed41280cde8807d2ef
+
 Fix sync detection logic and improve extension packaging
 
 - Fix anchor determination using findLastIndex instead of findIndex in syncEngine

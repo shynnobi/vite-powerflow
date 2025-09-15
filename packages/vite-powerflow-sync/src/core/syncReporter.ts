@@ -4,7 +4,56 @@ import { formatBaseline } from './baselineFormatter';
 import { readPackageInfo } from './packageReader';
 import { CheckResult, PackageLabel, SyncCheckConfig } from './types';
 
-export function formatPackageStatus(label: PackageLabel, result: CheckResult): string {
+/**
+ * Determine the distribution channel for a package based on its private property
+ */
+async function getDistributionChannel(label: PackageLabel, workspaceRoot: string): Promise<string> {
+  try {
+    // Get package path based on label
+    let packagePath: string | null = null;
+
+    switch (label) {
+      case PackageLabel.Cli:
+        packagePath = path.join(workspaceRoot, 'packages/cli/package.json');
+        break;
+      case PackageLabel.Utils:
+        packagePath = path.join(workspaceRoot, 'packages/utils/package.json');
+        break;
+      case PackageLabel.Extension:
+        packagePath = path.join(workspaceRoot, 'packages/vite-powerflow-sync/package.json');
+        break;
+      case PackageLabel.Starter:
+        packagePath = path.join(workspaceRoot, 'packages/cli/template/package.json');
+        break;
+      default:
+        return '';
+    }
+
+    if (!packagePath) return '';
+
+    // Read package info and check private property
+    const pkgInfo = await readPackageInfo(packagePath);
+    if (!pkgInfo) return '';
+
+    // If private: false → published on npm
+    // If private: true → local/internal use only
+    if (pkgInfo.private === false) {
+      return 'npm';
+    } else if (pkgInfo.private === true) {
+      return 'local';
+    }
+
+    return '';
+  } catch {
+    return '';
+  }
+}
+
+export async function formatPackageStatus(
+  label: PackageLabel,
+  result: CheckResult,
+  workspaceRoot: string
+): Promise<string> {
   let versionInfo = '';
   if (result.packageVersion) {
     versionInfo = ` (v${result.packageVersion})`;
@@ -12,11 +61,16 @@ export function formatPackageStatus(label: PackageLabel, result: CheckResult): s
 
   let title = `📦 [${label}]${versionInfo}`;
 
+  // Get distribution channel based on package.json private property
+  const distributionChannel = await getDistributionChannel(label, workspaceRoot);
+
   // For Starter, if both baselineCommit and releaseCommit are present, show both
   if (result.baselineCommit && result.releaseCommit) {
-    title += ` - baseline ${result.baselineCommit.substring(0, 7)} (npm) + release commit ${result.releaseCommit.substring(0, 7)}`;
+    const channelInfo = distributionChannel ? ` (${distributionChannel})` : '';
+    title += ` - baseline ${result.baselineCommit.substring(0, 7)}${channelInfo} + release commit ${result.releaseCommit.substring(0, 7)}`;
   } else if (result.baselineCommit) {
-    title += ` - baseline ${result.baselineCommit.substring(0, 7)}`;
+    const channelInfo = distributionChannel ? ` (${distributionChannel})` : '';
+    title += ` - baseline ${result.baselineCommit.substring(0, 7)}${channelInfo}`;
   }
   let lines: string[] = [];
   lines.push(title);
@@ -188,9 +242,10 @@ export function formatGlobalStatus(
   return result;
 }
 
-export function formatSyncOutput(
-  results: { label: PackageLabel; result: CheckResult }[]
-): string[] {
+export async function formatSyncOutput(
+  results: { label: PackageLabel; result: CheckResult }[],
+  workspaceRoot: string
+): Promise<string[]> {
   const lines: string[] = [];
 
   const now = new Date();
@@ -205,7 +260,7 @@ export function formatSyncOutput(
   lines.push('');
 
   for (const { label, result } of results) {
-    const statusLines = formatPackageStatus(label, result).split('\n');
+    const statusLines = (await formatPackageStatus(label, result, workspaceRoot)).split('\n');
     lines.push(...statusLines);
     lines.push('');
   }

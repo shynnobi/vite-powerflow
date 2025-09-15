@@ -139,7 +139,7 @@ async function runSyncChecks(forceRun = false) {
     updateStatusBar(statusBarItem, finalStatus, 'Click to view sync status');
 
     // Format and display sync output using centralized formatting
-    const outputLines = formatSyncOutput(labeledResults);
+    const outputLines = await formatSyncOutput(labeledResults, workspaceRoot);
     reportSyncOutput(outputChannel, outputLines);
   } catch (error: unknown) {
     const errorLog = `❌ Error during sync checks: ${(error as Error).message || String(error)}`;
