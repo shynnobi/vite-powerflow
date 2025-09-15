@@ -68,7 +68,7 @@
     "compile": "tsx scripts/bundle-extension.ts",
     "watch": "tsx scripts/bundle-extension.ts --watch",
     "vscode:prepublish": "tsx scripts/bundle-extension.ts",
-    "package": "vsce package"
+    "package": "vsce package -o vite-powerflow-sync.vsix"
   },
   "devDependencies": {
     "@types/node": "^24.0.15",
