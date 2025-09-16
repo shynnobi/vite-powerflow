@@ -41,7 +41,7 @@ Our monorepo uses a consistent alias system to eliminate relative paths and enab
 
 - **Purpose:** Import functions from **other packages** in the monorepo
 - **Scope:** Cross-package imports (sharing code between packages)
-- **Example:** `@vite-powerflow/utils` points to `packages/utils/dist/index.js`
+- **Example:** `@vite-powerflow/shared-utils` points to `packages/shared-utils/dist/index.js`
 - **When to use:** For importing utilities from a different package
 
 ### ❌ Common Mistake
@@ -50,7 +50,7 @@ Our monorepo uses a consistent alias system to eliminate relative paths and enab
 
 - `@utils/foo` ❌ (ambiguous - could be internal or external)
 - `@/utils/foo` ✅ (clearly internal)
-- `@vite-powerflow/utils` ✅ (clearly external package)
+- `@vite-powerflow/shared-utils` ✅ (clearly external package)
 
 ## System Architecture
 
@@ -61,7 +61,7 @@ Monorepo
 │   │   ├── tsconfig.json (internal aliases: @/*)
 │   │   ├── build.js (esbuild with alias resolution)
 │   │   └── src/
-│   └── utils/
+│   └── shared-utils/
 │       ├── tsconfig.json (internal aliases: @/*)
 │       └── src/
 ├── apps/
@@ -290,7 +290,7 @@ export { add } from './utils/math.js';
   "compilerOptions": {
     "paths": {
       "@vite-powerflow/example-package": ["packages/example-package/dist/index.js"],
-      "@vite-powerflow/utils": ["packages/utils/dist/index.js"]
+      "@vite-powerflow/shared-utils": ["packages/shared-utils/dist/index.js"]
     }
   }
 }
@@ -316,7 +316,7 @@ The `scripts/generate-vite-aliases.cjs` script:
 import { internalUtil } from '@/utils/helper';
 
 // Inter-package alias (resolved by Vite/TypeScript)
-import { externalUtil } from '@vite-powerflow/utils';
+import { externalUtil } from '@vite-powerflow/shared-utils';
 
 export function myFunction() {
   return internalUtil() + externalUtil();
@@ -340,11 +340,11 @@ export function appFunction() {
 
 ### 📝 Quick Reference
 
-| Import Type       | Alias Pattern           | Example                                       | Points To                            |
-| ----------------- | ----------------------- | --------------------------------------------- | ------------------------------------ |
-| **Internal**      | `@/utils/foo`           | `import { foo } from '@/utils/foo'`           | Current package's `src/utils/foo.ts` |
-| **Inter-package** | `@vite-powerflow/utils` | `import { foo } from '@vite-powerflow/utils'` | `packages/utils/dist/index.js`       |
-| **❌ Wrong**      | `@utils/foo`            | `import { foo } from '@utils/foo'`            | Ambiguous/undefined                  |
+| Import Type       | Alias Pattern                  | Example                                              | Points To                             |
+| ----------------- | ------------------------------ | ---------------------------------------------------- | ------------------------------------- |
+| **Internal**      | `@/utils/foo`                  | `import { foo } from '@/utils/foo'`                  | Current package's `src/utils/foo.ts`  |
+| **Inter-package** | `@vite-powerflow/shared-utils` | `import { foo } from '@vite-powerflow/shared-utils'` | `packages/shared-utils/dist/index.js` |
+| **❌ Wrong**      | `@utils/foo`                   | `import { foo } from '@utils/foo'`                   | Ambiguous/undefined                   |
 
 ## Environments
 
@@ -436,11 +436,11 @@ export function appFunction() {
 
 - **TypeScript:** Use the package alias without extension:
   ```ts
-  import { foo } from '@vite-powerflow/utils';
+  import { foo } from '@vite-powerflow/shared-utils';
   ```
 - **JavaScript ESM:** Use the extension if required by the runtime:
   ```js
-  import { foo } from '@vite-powerflow/utils/index.js';
+  import { foo } from '@vite-powerflow/shared-utils/index.js';
   ```
 
 ### Local Aliases (within a package/app)
@@ -457,13 +457,13 @@ export function appFunction() {
 
 ### Summary Table
 
-| Context                | Extension in import? | Example                                                |
-| ---------------------- | :------------------: | ------------------------------------------------------ |
-| TypeScript source      |      ❌ (never)      | `import { foo } from './foo'`                          |
-| JavaScript ESM         |      ✅ (often)      | `import { foo } from './foo.js'`                       |
-| Tests TypeScript       |      ❌ (never)      | `import { foo } from '@/utils/bar'`                    |
-| Inter-package (TS)     |      ❌ (never)      | `import { foo } from '@vite-powerflow/utils'`          |
-| Inter-package (JS ESM) |   ✅ (if required)   | `import { foo } from '@vite-powerflow/utils/index.js'` |
+| Context                | Extension in import? | Example                                                       |
+| ---------------------- | :------------------: | ------------------------------------------------------------- |
+| TypeScript source      |      ❌ (never)      | `import { foo } from './foo'`                                 |
+| JavaScript ESM         |      ✅ (often)      | `import { foo } from './foo.js'`                              |
+| Tests TypeScript       |      ❌ (never)      | `import { foo } from '@/utils/bar'`                           |
+| Inter-package (TS)     |      ❌ (never)      | `import { foo } from '@vite-powerflow/shared-utils'`          |
+| Inter-package (JS ESM) |   ✅ (if required)   | `import { foo } from '@vite-powerflow/shared-utils/index.js'` |
 
 **Rule of thumb:**
 

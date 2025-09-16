@@ -19,7 +19,6 @@
     }
   },
   "scripts": {
-    "build": "echo 'No build needed - functions are inlined at build time'",
     "test": "vitest",
     "lint": "eslint src --ext .ts",
     "type-check": "tsc --noEmit"

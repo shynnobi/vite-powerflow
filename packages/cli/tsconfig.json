@@ -10,9 +10,5 @@
   },
   "include": ["src", "__tests__/**/*.ts", "build.ts", "types/**/*.d.ts", "types/**/*.ts"],
   "exclude": ["dist", "node_modules", "template"],
-  "references": [
-    {
-      "path": "../utils"
-    }
-  ]
+  "references": []
 }

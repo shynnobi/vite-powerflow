@@ -44,7 +44,7 @@ export async function checkSyncStatus(
   // ============================================================================
 
   // The baseline represents the "last known good state" of this package
-  // It could be a version tag (e.g., @vite-powerflow/utils@0.0.6) or a specific commit
+  // It could be a version tag (e.g., @vite-powerflow/create@0.0.6) or a specific commit
   // This serves as our reference point for determining what has changed
   const baseline = await config.baseline();
   if (!baseline || baseline === 'unknown') {

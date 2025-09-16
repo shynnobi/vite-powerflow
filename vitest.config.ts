@@ -5,7 +5,7 @@ export default defineConfig({
   test: {
     projects: [
       './packages/cli',
-      './packages/utils',
+      './packages/shared-utils',
       './packages/vite-powerflow-sync',
       './apps/starter',
       './apps/website',
