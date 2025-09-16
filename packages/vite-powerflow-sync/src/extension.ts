@@ -1,8 +1,7 @@
 import * as vscode from 'vscode';
 
-import { MONITORED_NPM_PACKAGES } from './config/monitoredPackages';
 import { runAllSyncChecks } from './core/syncChecker';
-import { formatSyncOutput } from './core/syncReporter';
+import { formatSyncOutput, getAllMonitoredPackages } from './core/syncReporter';
 import { CheckResult, LabeledCheckResult, SyncStatus } from './core/types';
 import { detectWorkspaceRoot } from './core/workspaceDetector';
 import { updateStatusBar } from './ui/statusBarController';
@@ -13,10 +12,11 @@ import { reportSyncOutput } from './utils/outputReporter';
 let outputChannel: vscode.OutputChannel;
 let statusBarItem: vscode.StatusBarItem;
 let isChecking = false;
+let debugMode = false;
 
 const COMMAND_ID = 'vitePowerflow.runSyncCheck';
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   outputChannel = vscode.window.createOutputChannel('Vite Powerflow Sync');
   statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
   statusBarItem.command = COMMAND_ID;
@@ -32,7 +32,17 @@ export function activate(context: vscode.ExtensionContext) {
     outputChannel.show();
   });
 
-  context.subscriptions.push(runSyncCheckCommand);
+  const toggleDebugCommand = vscode.commands.registerCommand(
+    'vitePowerflow.toggleDebugMode',
+    () => {
+      debugMode = !debugMode;
+      const message = debugMode ? 'Debug mode enabled' : 'Debug mode disabled';
+      vscode.window.showInformationMessage(`Vite Powerflow: ${message}`);
+      outputChannel.appendLine(`🔧 ${message}`);
+    }
+  );
+
+  context.subscriptions.push(runSyncCheckCommand, toggleDebugCommand);
 
   try {
     const workspaceRoot = detectWorkspaceRoot();
@@ -43,11 +53,11 @@ export function activate(context: vscode.ExtensionContext) {
 
       void debouncedCheck('Activation');
 
-      // Create watchers based on the centralized configuration
-      [
-        ...MONITORED_NPM_PACKAGES.map(p => p.pkgPath),
-        'packages/cli/template/package.json', // Special case for template
-      ].forEach(pkgPath => {
+      // Create watchers based on the syncConfig from package.json files
+      const monitoredPackages = await getAllMonitoredPackages(workspaceRoot, outputChannel);
+      const packagePaths = monitoredPackages.map(p => p.pkgPath);
+
+      packagePaths.forEach(pkgPath => {
         createWatcher(
           new vscode.RelativePattern(workspaceRoot, pkgPath),
           (_uri, _event) => {
@@ -67,8 +77,8 @@ export function activate(context: vscode.ExtensionContext) {
       );
       createWatcher(
         new vscode.RelativePattern(workspaceRoot, '.git/refs/heads/**'),
-        (_uri, event) => {
-          debouncedCheck(event === 'created' ? 'Branch creation' : 'Branch commit');
+        (_uri, _event) => {
+          debouncedCheck(_event === 'created' ? 'Branch creation' : 'Branch commit');
         },
         context
       );

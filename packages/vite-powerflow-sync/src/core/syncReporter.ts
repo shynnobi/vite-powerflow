@@ -1,30 +1,69 @@
+import * as fs from 'fs';
 import * as path from 'path';
 
 import { formatBaseline } from './baselineFormatter';
+import { discoverMonitoredPackages } from './gitStatus';
 import { readPackageInfo } from './packageReader';
-import { CheckResult, PackageLabel, SyncCheckConfig } from './types';
-import { MONITORED_NPM_PACKAGES, SPECIAL_PACKAGE_CONFIGS } from '../config/monitoredPackages';
+import { CheckResult, MonitoredPackage, SyncCheckConfig } from './types';
 
+/**
+ * Centralized function to get package.json path for any package label
+ * This replaces hardcoded paths throughout the codebase
+ */
+export function getPackageJsonPath(label: string, workspaceRoot: string): string | null {
+  // Use discovered packages to find the correct path
+  const discoveredPackages = discoverMonitoredPackages(workspaceRoot, {
+    appendLine: (_message: string) => {
+      // Silent operation for this context
+    },
+  });
+
+  // Find package by label directly
+  const discoveredPackage = discoveredPackages.find(pkg => pkg.syncConfig.label === label);
+
+  if (discoveredPackage) {
+    // Use the discovered pkgPath
+    const pkgPath = typeof discoveredPackage.pkgPath === 'string' ? discoveredPackage.pkgPath : '';
+    const fullPath = path.join(workspaceRoot, pkgPath);
+    if (fs.existsSync(fullPath)) {
+      return fullPath;
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Get package name from package.json path
+ * Reads directly from package.json to avoid hardcoded mappings
+ */
+export async function getPackageNameFromPath(packagePath: string): Promise<string> {
+  try {
+    // Read package name directly from package.json
+    const pkgInfo = await readPackageInfo(packagePath);
+    if (pkgInfo?.name && typeof pkgInfo.name === 'string') {
+      return pkgInfo.name;
+    }
+  } catch {
+    // Silently fall back to path-based extraction
+  }
+
+  // Fallback: extract from path pattern
+  const pathRegex = /packages\/([^/]+)\/package\.json/;
+  const pathMatch = pathRegex.exec(packagePath);
+  if (pathMatch) {
+    return `@vite-powerflow/${pathMatch[1]}`;
+  }
+
+  return '';
+}
 /**
  * Determine the distribution channel for a package based on its private property
  */
-async function getDistributionChannel(label: PackageLabel, workspaceRoot: string): Promise<string> {
+async function getDistributionChannel(label: string, workspaceRoot: string): Promise<string> {
   try {
-    // Get package path from configuration instead of hardcoded paths
-    let packagePath: string | null = null;
-
-    // Check if it's a standard NPM package
-    const npmPackage = MONITORED_NPM_PACKAGES.find(pkg => pkg.label === label);
-    if (npmPackage) {
-      packagePath = path.join(workspaceRoot, npmPackage.pkgPath);
-    } else if (label === PackageLabel.Extension) {
-      // Special case for extension
-      packagePath = path.join(workspaceRoot, 'packages/vite-powerflow-sync/package.json');
-    } else if (label === PackageLabel.Starter) {
-      // Special case for starter template
-      packagePath = path.join(workspaceRoot, 'packages/cli/template/package.json');
-    }
-
+    // Use centralized function to get package path
+    const packagePath = getPackageJsonPath(label, workspaceRoot);
     if (!packagePath) return '';
 
     // Read package info and check private property
@@ -46,7 +85,7 @@ async function getDistributionChannel(label: PackageLabel, workspaceRoot: string
 }
 
 export async function formatPackageStatus(
-  label: PackageLabel,
+  label: string,
   result: CheckResult,
   workspaceRoot: string
 ): Promise<string> {
@@ -60,7 +99,7 @@ export async function formatPackageStatus(
   // Get distribution channel based on package.json private property
   const distributionChannel = await getDistributionChannel(label, workspaceRoot);
 
-  // For Starter, if both baselineCommit and releaseCommit are present, show both
+  // Show baseline and release commit info if both are present
   if (result.baselineCommit && result.releaseCommit) {
     const channelInfo = distributionChannel ? ` (${distributionChannel})` : '';
     title += ` - baseline ${result.baselineCommit.substring(0, 7)}${channelInfo} + release commit ${result.releaseCommit.substring(0, 7)}`;
@@ -68,7 +107,7 @@ export async function formatPackageStatus(
     const channelInfo = distributionChannel ? ` (${distributionChannel})` : '';
     title += ` - baseline ${result.baselineCommit.substring(0, 7)}${channelInfo}`;
   }
-  let lines: string[] = [];
+  const lines: string[] = [];
   lines.push(title);
 
   if (result.status === 'error') {
@@ -144,9 +183,7 @@ export async function formatPackageStatus(
   return lines.join('\n');
 }
 
-export function formatGlobalStatus(
-  results: { label: PackageLabel; result: CheckResult }[]
-): string[] {
+export function formatGlobalStatus(results: { label: string; result: CheckResult }[]): string[] {
   if (results.length === 0) return [];
 
   let syncCount = 0;
@@ -210,15 +247,17 @@ export function formatGlobalStatus(
   }
   result.push(summary);
 
-  const changesetMap = new Map<string, { label: PackageLabel; bumpType: string }[]>();
+  const changesetMap = new Map<string, { label: string; bumpType: string }[]>();
 
   for (const { label, result: pkgResult } of results) {
     if (pkgResult.changeset) {
       const fileName = pkgResult.changeset.fileName;
-      if (!changesetMap.has(fileName)) {
+      if (typeof fileName === 'string' && !changesetMap.has(fileName)) {
         changesetMap.set(fileName, []);
       }
-      changesetMap.get(fileName)!.push({ label, bumpType: pkgResult.changeset.bumpType });
+      if (typeof fileName === 'string') {
+        changesetMap.get(fileName)!.push({ label, bumpType: pkgResult.changeset.bumpType });
+      }
     }
   }
 
@@ -239,7 +278,7 @@ export function formatGlobalStatus(
 }
 
 export async function formatSyncOutput(
-  results: { label: PackageLabel; result: CheckResult }[],
+  results: { label: string; result: CheckResult }[],
   workspaceRoot: string
 ): Promise<string[]> {
   const lines: string[] = [];
@@ -276,20 +315,65 @@ export async function formatSyncOutput(
 export async function formatBaselineLog(
   config: SyncCheckConfig,
   baseline: string,
-  workspaceRoot: string
+  _workspaceRoot: string
 ): Promise<string> {
   const shortBaseline = formatBaseline(baseline);
   let message = `📦 [${config.label}] Checking against baseline (commit/tag ${shortBaseline})`;
 
-  if (config.label === PackageLabel.Starter) {
-    try {
-      const templatePackagePath = path.join(workspaceRoot, 'packages/cli/template/package.json');
-      const templatePkg = await readPackageInfo(templatePackagePath);
-      if (templatePkg?.version) {
-        message = `📦 [Starter] Checking against CLI template baseline (commit ${shortBaseline}, version ${templatePkg.version})`;
-      }
-    } catch {}
-  }
-
   return message;
+}
+
+/**
+ * Get all monitored packages directly from their syncConfig in package.json
+ * This completely replaces the need for monitoredPackages.ts
+ */
+export async function getAllMonitoredPackages(
+  workspaceRoot: string,
+  outputChannel: { appendLine: (_value: string) => void }
+): Promise<MonitoredPackage[]> {
+  const discoveredPackages = discoverMonitoredPackages(workspaceRoot, outputChannel);
+
+  const results = await Promise.all(
+    discoveredPackages.map(async discoveredPackage => {
+      // Use label directly from syncConfig (no hardcode mapping needed)
+      const configLabel =
+        typeof discoveredPackage.syncConfig.label === 'string'
+          ? discoveredPackage.syncConfig.label
+          : '';
+
+      // Build full path and read package details
+      const pkgPath =
+        typeof discoveredPackage.pkgPath === 'string' ? discoveredPackage.pkgPath : '';
+      const fullPackagePath = path.join(workspaceRoot, pkgPath);
+      const pkgName = pkgPath ? await getPackageNameFromPath(fullPackagePath) : '';
+
+      // Extract directory path for commit tracking
+      const commitPath = pkgPath ? path.dirname(pkgPath) + '/' : '';
+
+      // Determine type based on private property
+      let type: 'npm' | 'unpublished' = 'unpublished';
+      try {
+        const pkgInfo = await readPackageInfo(fullPackagePath);
+        if (pkgInfo?.private === false) {
+          type = 'npm';
+        }
+      } catch {
+        // Keep default type as unpublished
+      }
+
+      return {
+        label: configLabel,
+        pkgName,
+        pkgPath,
+        commitPath,
+        type,
+        baseline:
+          typeof discoveredPackage.syncConfig.baseline === 'string'
+            ? discoveredPackage.syncConfig.baseline
+            : '',
+      };
+    })
+  );
+
+  return results;
 }
