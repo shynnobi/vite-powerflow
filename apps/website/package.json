@@ -63,7 +63,7 @@
     "@types/react-dom": "^19.1.6",
     "@typescript-eslint/eslint-plugin": "^8.37.0",
     "@typescript-eslint/parser": "^8.37.0",
-    "@vite-powerflow/utils": "workspace:^",
+    "@vite-powerflow/shared-utils": "workspace:*",
     "@vitejs/plugin-react-swc": "^3.10.2",
     "@vitest/browser": "3.2.4",
     "@vitest/coverage-v8": "^3.2.4",
@@ -109,6 +109,7 @@
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
+    "@vite-powerflow/shared-utils": "workspace:*",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-dropdown-menu": "^2.1.15",
     "@radix-ui/react-separator": "^1.1.7",

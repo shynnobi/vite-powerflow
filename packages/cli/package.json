@@ -1,7 +1,13 @@
 {
   "name": "@vite-powerflow/create",
   "private": false,
-  "version": "1.2.8",
+  "version": "1.2.9",
+  "syncConfig": {
+    "baseline": "08d79e2ca815952ed3a2a9dae101c13570eaeadb",
+    "label": "CLI",
+    "monitored": true,
+    "updatedAt": "2025-09-16T00:21:51.032Z"
+  },
   "description": "Create modern React + Vite apps with production-ready tooling, testing, and best practices. Includes TypeScript, Tailwind CSS, shadcn/ui, Zustand, TanStack Query, and more.",
   "author": {
     "name": "Shynn",
@@ -76,7 +82,6 @@
   },
   "dependencies": {
     "@sindresorhus/slugify": "^2.2.1",
-    "@vite-powerflow/utils": "^0.0.7",
     "chalk": "^5.4.1",
     "commander": "^14.0.0",
     "enquirer": "^2.4.1",

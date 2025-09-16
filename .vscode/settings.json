@@ -14,6 +14,7 @@
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "eslint.workingDirectories": [{ "mode": "auto" }],
   "eslint.useFlatConfig": true,
+  "eslint.enable": true,
   "vite.autoStart": false,
   "remote.autoForwardPorts": false,
   "typescript.tsdk": "node_modules/typescript/lib",
@@ -34,6 +35,5 @@
   },
   "search.exclude": {
     "**/node_modules": true
-  },
-  "problems.decorations.enabled": false
+  }
 }

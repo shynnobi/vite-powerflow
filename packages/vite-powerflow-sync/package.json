@@ -2,9 +2,11 @@
   "name": "vite-powerflow-sync",
   "private": true,
   "version": "0.0.4",
-  "syncBaseline": {
-    "commit": "e2bdf2c4d103df0592367b15d7d1325e7eebcaea",
-    "updatedAt": "2025-09-08T15:08:37.000Z"
+  "syncConfig": {
+    "baseline": "08d79e2ca815952ed3a2a9dae101c13570eaeadb",
+    "label": "Extension",
+    "monitored": true,
+    "updatedAt": "2025-09-16T00:21:51.035Z"
   },
   "displayName": "Vite Powerflow - Sync Monitor",
   "description": "Monitor sync status between Vite Powerflow starter app and CLI template. Detect when changeset is needed or template sync is required.",
@@ -52,6 +54,10 @@
       {
         "command": "vitePowerflow.refreshSyncCheck",
         "title": "Vite Powerflow: Refresh Sync Status"
+      },
+      {
+        "command": "vitePowerflow.toggleDebugMode",
+        "title": "Vite Powerflow: Toggle Debug Mode"
       }
     ]
   },
@@ -68,7 +74,7 @@
     "compile": "tsx scripts/bundle-extension.ts",
     "watch": "tsx scripts/bundle-extension.ts --watch",
     "vscode:prepublish": "tsx scripts/bundle-extension.ts",
-    "package": "vsce package"
+    "package": "vsce package -o vite-powerflow-sync.vsix"
   },
   "devDependencies": {
     "@types/node": "^24.0.15",

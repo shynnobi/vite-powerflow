@@ -1,23 +1,29 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 
-import { MONITORED_NPM_PACKAGES, SPECIAL_PACKAGE_CONFIGS } from '../config/monitoredPackages';
 import { handleSyncError } from './errorHandler';
 import { getCurrentCommit } from './gitCommands';
 import { resolveRefToSha } from './gitStatus';
 import { readLatestNpmVersion, readPackageInfo } from './packageReader';
 import { checkSyncStatus } from './syncEngine';
+import { getAllMonitoredPackages } from './syncReporter';
 import { CheckResult, LabeledCheckResult, SyncCheckConfig, SyncCheckError } from './types';
 
 /**
  * Generic sync check for packages published on npm.
- * @param config - The package-specific configuration from monitoredPackages.ts.
+ * @param config - The package configuration from syncConfig.
  * @param workspaceRoot - Absolute path to workspace root.
  * @param outputChannel - VS Code output channel for logging.
  * @returns A CheckResult promise.
  */
 async function checkNpmPackageSync(
-  config: (typeof MONITORED_NPM_PACKAGES)[number],
+  config: {
+    label: any;
+    pkgName: string;
+    pkgPath: string;
+    commitPath: string;
+    baseline?: string;
+  },
   workspaceRoot: string,
   outputChannel: vscode.OutputChannel
 ): Promise<CheckResult> {
@@ -31,30 +37,47 @@ async function checkNpmPackageSync(
 
     const latestPublishedVersion = readLatestNpmVersion(pkg.name, outputChannel);
 
-    if (!latestPublishedVersion) {
-      return {
-        status: 'sync',
-        message: 'Not published on npm yet.',
-        commitCount: 0,
-        packageVersion: pkg.version,
-        currentCommit: getCurrentCommit(workspaceRoot),
+    // For private packages (like extension), use baseline from syncConfig
+    let baselineSha: string;
+    let messages: SyncCheckConfig['messages'];
+
+    if (pkg.private === true) {
+      // Use baseline from syncConfig for private packages
+      baselineSha = config.baseline || 'unknown';
+      messages = {
+        notFound: `No baseline configured for ${config.label}.`,
+        inSync: `${config.label} is up to date.`,
+        unreleased: `unreleased ${config.label} changes found.`,
+        errorPrefix: `${config.label} status check failed`,
+      };
+    } else {
+      // For published packages, use npm version as baseline
+      if (!latestPublishedVersion) {
+        return {
+          status: 'sync',
+          message: 'Not published on npm yet.',
+          commitCount: 0,
+          packageVersion: pkg.version,
+          currentCommit: getCurrentCommit(workspaceRoot),
+        };
+      }
+
+      const npmTag = `${pkg.name}@${latestPublishedVersion}`;
+      baselineSha = resolveRefToSha(workspaceRoot, npmTag, outputChannel) ?? npmTag;
+      messages = {
+        notFound: `No published ${config.label} tag found on npm.`,
+        inSync: `All ${config.label} changes since ${npmTag} have been published.`,
+        unreleased: `unreleased ${config.label} changes found.`,
+        errorPrefix: `${config.label} status check failed`,
       };
     }
-
-    const npmTag = `${pkg.name}@${latestPublishedVersion}`;
-    const baselineSha = resolveRefToSha(workspaceRoot, npmTag, outputChannel) ?? npmTag;
 
     const fullConfig: SyncCheckConfig = {
       label: config.label,
       baseline: () => Promise.resolve(baselineSha),
       commitPath: config.commitPath,
       targetPackage: config.pkgName,
-      messages: {
-        notFound: `No published ${config.label} tag found on npm.`,
-        inSync: `All ${config.label} changes since ${npmTag} have been published.`,
-        unreleased: `unreleased ${config.label} changes found.`,
-        errorPrefix: `${config.label} status check failed`,
-      },
+      messages,
     };
 
     return await checkSyncStatus(fullConfig, workspaceRoot, outputChannel);
@@ -81,44 +104,6 @@ async function checkNpmPackageSync(
 /**
  * Internal function to check starter sync status.
  */
-async function checkStarter(
-  workspaceRoot: string,
-  outputChannel: vscode.OutputChannel
-): Promise<CheckResult> {
-  const config: SyncCheckConfig = {
-    ...SPECIAL_PACKAGE_CONFIGS.starter,
-    baseline: () =>
-      Promise.resolve(SPECIAL_PACKAGE_CONFIGS.starter.baseline(workspaceRoot, outputChannel)),
-  };
-
-  try {
-    return await checkSyncStatus(config, workspaceRoot, outputChannel);
-  } catch (error) {
-    const syncError = error instanceof Error ? error : new Error(String(error));
-    return handleSyncError(config, syncError, outputChannel);
-  }
-}
-
-/**
- * Check extension sync status using special configuration
- */
-async function checkExtension(
-  workspaceRoot: string,
-  outputChannel: vscode.OutputChannel
-): Promise<CheckResult> {
-  const config: SyncCheckConfig = {
-    ...SPECIAL_PACKAGE_CONFIGS.extension,
-    baseline: () =>
-      Promise.resolve(SPECIAL_PACKAGE_CONFIGS.extension.baseline(workspaceRoot, outputChannel)),
-  };
-
-  try {
-    return await checkSyncStatus(config, workspaceRoot, outputChannel);
-  } catch (error) {
-    const syncError = error instanceof Error ? error : new Error(String(error));
-    return handleSyncError(config, syncError, outputChannel);
-  }
-}
 
 /**
  * Runs all configured sync checks in parallel.
@@ -131,24 +116,14 @@ export async function runAllSyncChecks(
   workspaceRoot: string,
   outputChannel: vscode.OutputChannel
 ): Promise<LabeledCheckResult[]> {
-  const starterCheck = checkStarter(workspaceRoot, outputChannel).then(result => ({
-    label: SPECIAL_PACKAGE_CONFIGS.starter.label,
-    result,
-  }));
+  const monitoredPackages = await getAllMonitoredPackages(workspaceRoot, outputChannel);
 
-  const extensionCheck = checkExtension(workspaceRoot, outputChannel).then(result => ({
-    label: SPECIAL_PACKAGE_CONFIGS.extension.label,
-    result,
-  }));
-
-  const npmPackageChecks = MONITORED_NPM_PACKAGES.map(config =>
+  const allChecks = monitoredPackages.map(config =>
     checkNpmPackageSync(config, workspaceRoot, outputChannel).then(result => ({
       label: config.label,
       result,
     }))
   );
-
-  const allChecks = [starterCheck, ...npmPackageChecks, extensionCheck];
 
   return Promise.all(allChecks);
 }

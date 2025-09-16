@@ -9,18 +9,18 @@ import * as vscode from 'vscode';
 const npmVersionCache = new Map<string, { version: string; timestamp: number }>();
 
 /**
- * Reads and parses a package.json file, returning its name and version if available.
+ * Reads and parses a package.json file, returning its name, version, and private flag if available.
  * @param packagePath - The absolute path to the package.json file
- * @returns An object with name and version, or null if not found or invalid
+ * @returns An object with name, version, and private flag, or null if not found or invalid
  */
 export async function readPackageInfo(
   packagePath: string
-): Promise<{ name: string; version: string } | null> {
+): Promise<{ name: string; version: string; private?: boolean } | null> {
   try {
     const pkgContent = await fs.promises.readFile(packagePath, 'utf-8');
-    const pkg = JSON.parse(pkgContent) as { name?: string; version?: string };
+    const pkg = JSON.parse(pkgContent) as { name?: string; version?: string; private?: boolean };
     if (pkg.name && pkg.version) {
-      return { name: pkg.name, version: pkg.version };
+      return { name: pkg.name, version: pkg.version, private: pkg.private };
     }
     return null;
   } catch {
@@ -37,7 +37,8 @@ export async function readPackageInfo(
  */
 export function readLatestNpmVersion(
   packageName: string,
-  outputChannel: vscode.OutputChannel
+  outputChannel: vscode.OutputChannel,
+  debugMode = false
 ): string | null {
   const cached = npmVersionCache.get(packageName);
   // Cache for 5 minutes to avoid excessive network requests.
@@ -54,9 +55,11 @@ export function readLatestNpmVersion(
     npmVersionCache.set(packageName, { version, timestamp: Date.now() });
     return version;
   } catch {
-    outputChannel.appendLine(
-      `ℹ️ Could not fetch version for '${packageName}' from npm. It may not be published yet.`
-    );
+    if (debugMode) {
+      outputChannel.appendLine(
+        `ℹ️ Could not fetch version for '${packageName}' from npm. It may not be published yet.`
+      );
+    }
     return null;
   }
 }

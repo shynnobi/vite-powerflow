@@ -1,16 +1,13 @@
 import { execSync } from 'child_process';
-import * as vscode from 'vscode';
 
-export interface PackageBump {
-  name: string;
-  version: string;
-  bumpType: 'patch' | 'minor' | 'major';
-}
+// Import types
+import type { PackageBump } from './types.js';
+import { getPackageJsonPath, getPackageNameFromPath } from './syncReporter.js';
 
 export interface ChangesetStatusResult {
   willBeUpdated: boolean;
   newVersion?: string;
-  bumpType?: 'patch' | 'minor' | 'major';
+  bumpType?: 'patch' | 'minor' | 'major' | 'none';
   reason?: string;
   triggerPackage?: string;
 }
@@ -66,8 +63,7 @@ function parseChangesetStatus(output: string): PackageBump[] {
  */
 export function checkWillBeUpdatedByChangeset(
   workspaceRoot: string,
-  packageName: string,
-  _outputChannel?: vscode.OutputChannel
+  packageName: string
 ): ChangesetStatusResult {
   try {
     const output = execSync('pnpm changeset status --verbose', {
@@ -110,31 +106,32 @@ export function checkWillBeUpdatedByChangeset(
 /**
  * Get the package name from sync config
  */
-export function getPackageNameFromConfig(config: {
+export async function getPackageNameFromConfig(config: {
   targetPackage?: string;
   label: unknown;
   commitPath: string;
-}): string {
+}): Promise<string> {
   if (config.targetPackage) {
     return config.targetPackage;
   }
 
-  // Derive package name from commit path
-  if (config.commitPath.includes('packages/cli/')) {
-    return '@vite-powerflow/create';
-  }
-  if (config.commitPath.includes('packages/utils/')) {
-    return '@vite-powerflow/utils';
-  }
-  if (config.commitPath.includes('apps/starter/')) {
-    return '@vite-powerflow/starter';
-  }
+  // Try to get package name from label
+  if (config.label && typeof config.label === 'string') {
+    try {
+      // Use a dummy workspace root since we just need to map the label
+      const dummyWorkspaceRoot = '/tmp';
+      const packagePath = getPackageJsonPath(config.label, dummyWorkspaceRoot);
 
-  // Fallback: try to extract from path
-  const pathRegex = /packages\/([^\/]+)/;
-  const pathMatch = pathRegex.exec(config.commitPath);
-  if (pathMatch) {
-    return `@vite-powerflow/${pathMatch[1]}`;
+      if (packagePath) {
+        // Use centralized function to get package name from path
+        const packageName = await getPackageNameFromPath(packagePath);
+        if (packageName) {
+          return packageName;
+        }
+      }
+    } catch {
+      // If label mapping fails, fall back to commit path parsing
+    }
   }
 
   return '';

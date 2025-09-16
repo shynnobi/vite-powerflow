@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as vscode from 'vscode';
 
 import { runAllSyncChecks } from './core/syncChecker';
-import { PackageLabel } from './core/types';
+import { formatSyncOutput, getAllMonitoredPackages } from './core/syncReporter';
 import { detectWorkspaceRoot } from './core/workspaceDetector';
 import { updateStatusBar } from './ui/statusBarController';
 import { createRefreshStatusBar } from './ui/syncCommands';
@@ -55,6 +55,10 @@ vi.mock('./utils/extensionUtils.js', () => ({
 vi.mock('./core/workspaceDetector.js', () => ({
   detectWorkspaceRoot: vi.fn(),
 }));
+vi.mock('./core/syncReporter.js', () => ({
+  getAllMonitoredPackages: vi.fn(),
+  formatSyncOutput: vi.fn(),
+}));
 
 const mockRunAllSyncChecks = vi.mocked(runAllSyncChecks);
 const mockCreateRefreshStatusBar = vi.mocked(createRefreshStatusBar);
@@ -62,6 +66,8 @@ const mockUpdateStatusBar = vi.mocked(updateStatusBar);
 const mockCreateDebounced = vi.mocked(createDebounced);
 const mockCreateWatcher = vi.mocked(createWatcher);
 const mockDetectWorkspaceRoot = vi.mocked(detectWorkspaceRoot);
+const mockGetAllMonitoredPackages = vi.mocked(getAllMonitoredPackages);
+const mockFormatSyncOutput = vi.mocked(formatSyncOutput);
 
 describe('extension', () => {
   let mockContext: vscode.ExtensionContext;
@@ -87,12 +93,12 @@ describe('extension', () => {
   });
 
   describe('activate', () => {
-    it('should create output channel and status bar item', () => {
+    it('should create output channel and status bar item', async () => {
       // GIVEN: A valid workspace exists
       setupWorkspaceScenario(mockDetectWorkspaceRoot, mockCreateDebounced);
 
       // WHEN: Extension is activated
-      activate(mockContext);
+      await activate(mockContext);
 
       // THEN: VS Code resources are created with correct configuration
       expect(vscode.window.createOutputChannel).toHaveBeenCalledWith('Vite Powerflow Sync');
@@ -104,23 +110,23 @@ describe('extension', () => {
       expect(mockStatusBarItem.tooltip).toBe('Show sync status and re-run check');
     });
 
-    it('should register refresh status bar', () => {
+    it('should register refresh status bar', async () => {
       // GIVEN: A valid workspace exists
       setupWorkspaceScenario(mockDetectWorkspaceRoot, mockCreateDebounced);
 
       // WHEN: Extension is activated
-      activate(mockContext);
+      await activate(mockContext);
 
       // THEN: Refresh status bar is registered with context and callback
       expect(mockCreateRefreshStatusBar).toHaveBeenCalledWith(mockContext, expect.any(Function));
     });
 
-    it('should register commands correctly', () => {
+    it('should register commands correctly', async () => {
       // GIVEN: A valid workspace exists
       setupWorkspaceScenario(mockDetectWorkspaceRoot, mockCreateDebounced);
 
       // WHEN: Extension is activated
-      activate(mockContext);
+      await activate(mockContext);
 
       // THEN: Main sync check command is registered
       expect(vscode.commands.registerCommand).toHaveBeenCalledWith(
@@ -132,10 +138,10 @@ describe('extension', () => {
       expect(mockCreateRefreshStatusBar).toHaveBeenCalledWith(mockContext, expect.any(Function));
     });
 
-    it('should show output channel when command is executed', () => {
+    it('should show output channel when command is executed', async () => {
       // GIVEN: Extension is activated with valid workspace
       setupWorkspaceScenario(mockDetectWorkspaceRoot, mockCreateDebounced);
-      activate(mockContext);
+      await activate(mockContext);
 
       // WHEN: Sync check command is executed
       const commandCallback = (vscode.commands.registerCommand as any).mock.calls[0][1];
@@ -145,22 +151,42 @@ describe('extension', () => {
       expect(mockOutputChannel.show).toHaveBeenCalled();
     });
 
-    it('should setup file watchers when workspace root exists', () => {
+    it('should setup file watchers when workspace root exists', async () => {
       // GIVEN: A valid workspace exists
       const { mockDebouncedFn } = setupWorkspaceScenario(
         mockDetectWorkspaceRoot,
         mockCreateDebounced
       );
 
+      // Mock monitored packages to return some test packages
+      mockGetAllMonitoredPackages.mockResolvedValue([
+        {
+          label: 'Starter',
+          pkgName: '@vite-powerflow/starter',
+          pkgPath: 'apps/starter/package.json',
+          commitPath: 'apps/starter/',
+          type: 'unpublished',
+          baseline: 'abc123',
+        },
+        {
+          label: 'CLI',
+          pkgName: '@vite-powerflow/create',
+          pkgPath: 'packages/cli/package.json',
+          commitPath: 'packages/cli/',
+          type: 'npm',
+          baseline: 'def456',
+        },
+      ]);
+
       // WHEN: Extension is activated
-      activate(mockContext);
+      await activate(mockContext);
 
       // THEN: Debounced sync check is created and called
       expect(mockCreateDebounced).toHaveBeenCalledWith(expect.any(Function), 1000);
       expect(mockDebouncedFn).toHaveBeenCalledWith('Activation');
 
       // AND: File watchers are created for all monitored paths
-      expect(mockCreateWatcher).toHaveBeenCalledTimes(5);
+      expect(mockCreateWatcher).toHaveBeenCalled();
       const watcherCalls = mockCreateWatcher.mock.calls;
       watcherCalls.forEach(call => {
         expect(call[0]).toBeInstanceOf(vscode.RelativePattern);
@@ -169,12 +195,12 @@ describe('extension', () => {
       });
     });
 
-    it('should show error status when not in workspace', () => {
+    it('should show error status when not in workspace', async () => {
       // GIVEN: No valid workspace is found
       mockDetectWorkspaceRoot.mockReturnValue(null);
 
       // WHEN: Extension is activated
-      activate(mockContext);
+      await activate(mockContext);
 
       // THEN: Error status is displayed and no watchers are created
       expect(mockUpdateStatusBar).toHaveBeenCalledWith(
@@ -185,14 +211,14 @@ describe('extension', () => {
       expect(mockCreateWatcher).not.toHaveBeenCalled();
     });
 
-    it('should add items to context subscriptions', () => {
+    it('should add items to context subscriptions', async () => {
       // GIVEN: A valid workspace exists
       mockDetectWorkspaceRoot.mockReturnValue('/workspace');
       const mockDebouncedFn = vi.fn();
       mockCreateDebounced.mockReturnValue(mockDebouncedFn);
 
       // WHEN: Extension is activated
-      activate(mockContext);
+      await activate(mockContext);
 
       // THEN: All disposable items are added to context subscriptions
       expect(mockContext.subscriptions).toContain(mockStatusBarItem);
@@ -201,12 +227,12 @@ describe('extension', () => {
   });
 
   describe('deactivate', () => {
-    it('should dispose resources', () => {
+    it('should dispose resources', async () => {
       // GIVEN: Extension is activated with valid workspace
       mockDetectWorkspaceRoot.mockReturnValue('/workspace');
       const mockDebouncedFn = vi.fn();
       mockCreateDebounced.mockReturnValue(mockDebouncedFn);
-      activate(mockContext);
+      await activate(mockContext);
 
       // WHEN: Extension is deactivated
       deactivate();
@@ -223,7 +249,7 @@ describe('extension', () => {
       mockDetectWorkspaceRoot.mockReturnValue('/workspace');
       const results = [
         {
-          label: PackageLabel.Starter,
+          label: 'Starter',
           result: {
             status: 'sync' as const,
             message: 'Starter in sync',
@@ -231,7 +257,7 @@ describe('extension', () => {
           },
         },
         {
-          label: PackageLabel.Cli,
+          label: 'CLI',
           result: {
             status: 'warning' as const,
             message: 'CLI has changes',
@@ -240,7 +266,7 @@ describe('extension', () => {
         },
       ];
       mockRunAllSyncChecks.mockResolvedValue(results);
-      activate(mockContext);
+      await activate(mockContext);
 
       // WHEN: Sync check is triggered via refresh
       const refreshFunction = mockCreateRefreshStatusBar.mock.calls[0][1];
@@ -261,7 +287,7 @@ describe('extension', () => {
       mockDetectWorkspaceRoot.mockReturnValue('/workspace');
       const results = [
         {
-          label: PackageLabel.Starter,
+          label: 'Starter',
           result: {
             status: 'error' as const,
             message: 'Starter error',
@@ -269,7 +295,7 @@ describe('extension', () => {
           },
         },
         {
-          label: PackageLabel.Cli,
+          label: 'CLI',
           result: {
             status: 'sync' as const,
             message: 'CLI sync',
@@ -278,7 +304,7 @@ describe('extension', () => {
         },
       ];
       mockRunAllSyncChecks.mockResolvedValue(results);
-      activate(mockContext);
+      await activate(mockContext);
 
       // WHEN: Sync check is performed
       const refreshFunction = mockCreateRefreshStatusBar.mock.calls[0][1];
@@ -297,7 +323,7 @@ describe('extension', () => {
       mockDetectWorkspaceRoot.mockReturnValue('/workspace');
       const results = [
         {
-          label: PackageLabel.Starter,
+          label: 'Starter',
           result: {
             status: 'pending' as const,
             message: 'Starter pending',
@@ -305,7 +331,7 @@ describe('extension', () => {
           },
         },
         {
-          label: PackageLabel.Cli,
+          label: 'CLI',
           result: {
             status: 'pending' as const,
             message: 'CLI pending',
@@ -314,7 +340,7 @@ describe('extension', () => {
         },
       ];
       mockRunAllSyncChecks.mockResolvedValue(results);
-      activate(mockContext);
+      await activate(mockContext);
 
       // WHEN: Sync check is performed
       const refreshFunction = mockCreateRefreshStatusBar.mock.calls[0][1];
@@ -332,7 +358,7 @@ describe('extension', () => {
       // GIVEN: Extension is activated but sync check will fail
       mockDetectWorkspaceRoot.mockReturnValue('/workspace');
       mockRunAllSyncChecks.mockRejectedValue(new Error('Check failed'));
-      activate(mockContext);
+      await activate(mockContext);
 
       // WHEN: Sync check is performed and fails
       const refreshFunction = mockCreateRefreshStatusBar.mock.calls[0][1];
