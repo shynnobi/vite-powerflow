@@ -76,6 +76,5 @@ export const PROJECT_CONFIG: ProjectConfig = {
 
     // Development domain is managed by vite.config.ts (port 5173)
     // No duplication - Vite is the SSOT for dev server config
-    // Dynamic logic will be moved to @vite-powerflow/utils
   },
 } as const;

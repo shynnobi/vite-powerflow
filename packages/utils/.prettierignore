@@ -1,7 +1,0 @@
-node_modules
-.turbo
-.pnpm-store
-coverage
-dist
-build
-

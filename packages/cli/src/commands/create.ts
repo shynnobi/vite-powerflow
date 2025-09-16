@@ -1,10 +1,21 @@
-import { logError, logSuccess } from '@vite-powerflow/utils';
 import fs from 'fs/promises';
 import fsExtra from 'fs-extra';
 import path from 'path';
 import { simpleGit } from 'simple-git';
 import { fileURLToPath } from 'url';
 
+import { logError, logSuccess } from '../utils/shared/logger.js';
+
+/**
+ * Standard package.json structure used by CLI
+ */
+interface PackageJson {
+  name?: string;
+  version?: string;
+  private?: boolean;
+  author?: string | { name: string; email?: string; url?: string };
+  [key: string]: unknown;
+}
 import { updateDevcontainerWorkspaceFolder, updateDockerComposeVolume } from '../utils/fs-utils.js';
 import { directoryExists } from '../utils/fs-utils.js';
 
@@ -14,13 +25,6 @@ interface ProjectOptions {
   git: boolean;
   gitUserName?: string;
   gitUserEmail?: string;
-}
-
-interface PackageJson {
-  name: string;
-  author?: string | { name: string; email?: string; url?: string };
-  starterSource?: unknown;
-  [key: string]: unknown;
 }
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -131,7 +135,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
         delete packageJson.homepage;
         delete packageJson.bugs;
         delete packageJson.keywords;
-        delete packageJson.starterSource; // This is a custom field for our monorepo
+        delete packageJson.syncConfig; // Remove monorepo-specific sync configuration
 
         await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
       }

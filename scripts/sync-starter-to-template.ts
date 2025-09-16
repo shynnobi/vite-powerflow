@@ -3,8 +3,6 @@ import fs from 'fs-extra';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
-import { TemplatePkgJson } from './types/package-json';
-import { getLatestReleaseCommitWithShort } from './git-utils';
 import { logRootError, logRootInfo, logRootSuccess } from './monorepo-logger';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -35,6 +33,12 @@ void (async () => {
 
   logRootInfo('—— Sync apps/starter to packages/cli/template ——');
   try {
+    // 0. Ensure shared-utils are inlined in the starter before copying
+    logRootInfo('Ensuring shared-utils are inlined in starter...');
+    execSync('pnpm inline:shared-utils', {
+      cwd: root,
+      stdio: 'inherit',
+    });
     // 1. Remove any existing template directory before copying
     logRootInfo('Deleting existing template folder...');
     await fs.remove(templateDest);
@@ -77,9 +81,13 @@ void (async () => {
     );
     const pkgPath = path.join(templateDest, 'package.json');
     const pkgRaw = await fs.readFile(pkgPath, 'utf8');
-    const pkg = JSON.parse(pkgRaw) as TemplatePkgJson;
+    const pkg = JSON.parse(pkgRaw) as {
+      scripts?: Record<string, string>;
+      [key: string]: unknown;
+    };
 
     // Replace workspace dependencies with concrete versions from the monorepo
+    // BUT exclude @vite-powerflow/shared-utils as it will be inlined
     try {
       const depsToReplace: Record<string, string> = {};
       const allDeps = {
@@ -89,6 +97,12 @@ void (async () => {
 
       for (const [name, version] of Object.entries(allDeps)) {
         if (typeof version === 'string' && version.startsWith('workspace:')) {
+          // Skip @vite-powerflow/shared-utils as it will be inlined
+          if (name === '@vite-powerflow/shared-utils') {
+            logRootInfo(`  - Skipping ${name} (will be inlined)`);
+            continue;
+          }
+
           const localVersion = await getPackageVersion(name);
           depsToReplace[name] = `^${localVersion}`;
         }
@@ -98,6 +112,13 @@ void (async () => {
         if (!deps) return;
         for (const key in deps) {
           if (deps[key].startsWith('workspace:')) {
+            // Remove @vite-powerflow/shared-utils completely as it will be inlined
+            if (key === '@vite-powerflow/shared-utils') {
+              delete deps[key];
+              logRootInfo(`  - Removed ${key} (will be inlined)`);
+              continue;
+            }
+
             if (depsToReplace[key]) {
               deps[key] = depsToReplace[key];
               logRootInfo(`  - Replaced ${key} with version ${depsToReplace[key]}`);
@@ -116,20 +137,8 @@ void (async () => {
       process.exit(1);
     }
 
-    // Add CLI template baseline commit metadata
-    try {
-      // Get the latest release commit hash using shared utility
-      const { full, short } = getLatestReleaseCommitWithShort(root);
-
-      // Always update starterSource with the latest release commit
-      pkg.starterSource = {
-        commit: full,
-        syncedAt: new Date().toISOString(),
-      };
-      logRootInfo(`starterSource updated with commit: ${short}`);
-    } catch {
-      logRootInfo('Warning: Could not add CLI template baseline commit metadata');
-    }
+    // Note: starterSource is no longer needed as we use syncConfig.baseline directly
+    // The template already has the correct syncConfig.baseline from the starter copy
 
     // Add/update scripts
     pkg.scripts = {
@@ -155,44 +164,8 @@ void (async () => {
       }
     }
 
-    // 6. Create changeset for CLI if template was modified and we're not in CI
-    if (!process.env.CI) {
-      try {
-        // Check if there are changes in the template directory
-        const hasChanges = execSync('git status --porcelain packages/cli/template/', {
-          encoding: 'utf8',
-          cwd: root,
-        }).trim();
-
-        if (hasChanges) {
-          logRootInfo('Template changes detected, creating changeset for CLI...');
-
-          const changesetPath = path.join(root, '.changeset');
-          const timestamp = Date.now();
-          const changesetFile = path.join(changesetPath, `cli-template-sync-${timestamp}.md`);
-
-          const changesetContent = `---
-"@vite-powerflow/create": patch
----
-
-Sync CLI template with latest starter changes
-
-- Updated template with latest starter features and dependencies
-- Template baseline updated to commit ${getLatestReleaseCommitWithShort(root).short}
-`;
-
-          await fs.writeFile(changesetFile, changesetContent, 'utf8');
-          logRootInfo(`Created changeset: ${path.basename(changesetFile)}`);
-        } else {
-          logRootInfo('No template changes detected, skipping changeset creation');
-        }
-      } catch (changesetError) {
-        logRootInfo('Warning: Could not create changeset for CLI template changes');
-        logRootInfo(
-          changesetError instanceof Error ? changesetError.message : String(changesetError)
-        );
-      }
-    }
+    // 6. Template sync completed - version bump will be handled by changeset version
+    logRootInfo('Template sync completed - version bump will be handled by changeset version');
 
     logRootSuccess('Template synchronized successfully!');
   } catch (err) {

@@ -3,7 +3,7 @@ import { CheckResult, SyncCheckConfig } from './types';
 export function handleUnreleasedCommits(
   config: SyncCheckConfig,
   newCommits: string[],
-  _outputChannel: { appendLine: (v: string) => void },
+  _outputChannel: { appendLine: (_v: string) => void },
   additionalInfo?: { packageVersion?: string; baselineCommit?: string; currentCommit?: string }
 ): CheckResult {
   const commitCount = newCommits.length;
@@ -19,7 +19,7 @@ export function handleUnreleasedCommits(
 
 export function handleInSync(
   config: SyncCheckConfig,
-  _outputChannel: { appendLine: (v: string) => void },
+  _outputChannel: { appendLine: (_v: string) => void },
   additionalInfo?: { packageVersion?: string; baselineCommit?: string; currentCommit?: string }
 ): CheckResult {
   return {

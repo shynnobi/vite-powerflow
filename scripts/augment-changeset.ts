@@ -107,9 +107,9 @@ function readStarterBaseline(repoRoot: string, out: ConsoleOutput): string | und
   try {
     const templatePkgPath = path.join(repoRoot, 'packages/cli/template/package.json');
     const content = fs.readFileSync(templatePkgPath, 'utf-8');
-    const json = JSON.parse(content) as { starterSource?: { commit?: string } };
-    if (json.starterSource?.commit) return json.starterSource.commit;
-    out.appendLine('ℹ️ augment-changeset: starterSource.commit not found (baseline omitted).');
+    const json = JSON.parse(content) as { syncConfig?: { baseline?: string } };
+    if (json.syncConfig?.baseline) return json.syncConfig.baseline;
+    out.appendLine('ℹ️ augment-changeset: syncConfig.baseline not found (baseline omitted).');
     return undefined;
   } catch (e) {
     if (e instanceof Error) {

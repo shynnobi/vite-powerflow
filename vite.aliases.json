@@ -1,5 +1,5 @@
 {
   "@vite-powerflow/create": "/workspaces/vite-powerflow/packages/cli/dist",
-  "@vite-powerflow/utils": "/workspaces/vite-powerflow/packages/utils/dist",
+  "@vite-powerflow/shared-utils": "/workspaces/vite-powerflow/packages/shared-utils/dist",
   "vite-powerflow-sync": "/workspaces/vite-powerflow/packages/vite-powerflow-sync/dist"
 }

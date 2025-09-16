@@ -82,7 +82,7 @@ export default defineConfig({
       manifest: generatePWAManifest({
         ...PROJECT_CONFIG.pwa,
         icons: [...PROJECT_CONFIG.pwa.icons],
-      }), // Generated using @vite-powerflow/utils
+      }),
     }),
 
     // SEO
