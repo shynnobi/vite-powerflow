@@ -1,6 +1,9 @@
 import { findUp } from 'find-up';
 import path from 'path';
 
+/**
+ * Finds the monorepo root by looking for pnpm-workspace.yaml
+ */
 export async function getMonorepoRoot(): Promise<string> {
   const workspaceFile = await findUp('pnpm-workspace.yaml');
   if (!workspaceFile) {

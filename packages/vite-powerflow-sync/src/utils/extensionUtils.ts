@@ -9,7 +9,7 @@ import * as vscode from 'vscode';
  */
 export function createWatcher(
   pattern: vscode.RelativePattern,
-  onChange: (uri: vscode.Uri, event: string) => void,
+  onChange: (_uri: vscode.Uri, _event: string) => void,
   context: vscode.ExtensionContext
 ) {
   const watcher = vscode.workspace.createFileSystemWatcher(pattern);
@@ -26,7 +26,8 @@ export function createWatcher(
  * @param delay - The debounce delay in milliseconds
  * @returns A debounced function
  */
-export function createDebounced<T extends unknown[]>(fn: (...args: T) => void, delay: number) {
+
+export function createDebounced<T extends unknown[]>(fn: (..._args: T) => void, delay: number) {
   let timer: NodeJS.Timeout;
   return (...args: T) => {
     clearTimeout(timer);

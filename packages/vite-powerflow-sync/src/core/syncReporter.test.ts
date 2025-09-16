@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from 'vitest';
 
 import { formatBaselineLog, formatSyncOutput } from './syncReporter';
-import { CheckResult, PackageLabel, SyncCheckConfig } from './types';
+import { CheckResult, SyncCheckConfig } from './types';
 
 // Mock the packages module
 vi.mock('./packageReader.js', () => ({
@@ -25,10 +25,10 @@ const normalizeReport = (lines: string[]): string[] => {
 // No fake timers needed; tests normalize timestamp in snapshots
 
 describe('formatSyncOutput', () => {
-  test('should show all packages as synchronized when there are no pending commits or changesets', () => {
+  test('should show all packages as synchronized when there are no pending commits or changesets', async () => {
     const data = [
       {
-        label: PackageLabel.Starter,
+        label: 'Starter',
         result: {
           status: 'sync',
           message: '',
@@ -38,7 +38,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
       {
-        label: PackageLabel.Cli,
+        label: 'CLI',
         result: {
           status: 'sync',
           message: '',
@@ -48,13 +48,13 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
+    expect(normalizeReport(await formatSyncOutput(data, '/fake/workspace/root'))).toMatchSnapshot();
   });
 
-  test('should warn when there are commits without a corresponding changeset', () => {
+  test('should warn when there are commits without a corresponding changeset', async () => {
     const data = [
       {
-        label: PackageLabel.Starter,
+        label: 'Starter',
         result: {
           status: 'warning',
           message: '',
@@ -68,7 +68,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
       {
-        label: PackageLabel.Cli,
+        label: 'CLI',
         result: {
           status: 'sync',
           message: '',
@@ -78,13 +78,13 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
+    expect(normalizeReport(await formatSyncOutput(data, '/fake/workspace/root'))).toMatchSnapshot();
   });
 
-  test('should display a pending changeset when commits are present and a changeset is detected', () => {
+  test('should display a pending changeset when commits are present and a changeset is detected', async () => {
     const data = [
       {
-        label: PackageLabel.Starter,
+        label: 'Starter',
         result: {
           status: 'pending',
           message: '',
@@ -101,7 +101,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
       {
-        label: PackageLabel.Cli,
+        label: 'CLI',
         result: {
           status: 'warning',
           message: '',
@@ -114,13 +114,13 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
+    expect(normalizeReport(await formatSyncOutput(data, '/fake/workspace/root'))).toMatchSnapshot();
   });
 
-  test('should display error messages when check errors occur for one or more packages', () => {
+  test('should display error messages when check errors occur for one or more packages', async () => {
     const data = [
       {
-        label: PackageLabel.Starter,
+        label: 'Starter',
         result: {
           status: 'error',
           message: 'Unable to find baseline commit in git history',
@@ -129,7 +129,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
       {
-        label: PackageLabel.Cli,
+        label: 'CLI',
         result: {
           status: 'error',
           message: 'Git repository not found or corrupted',
@@ -138,13 +138,13 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
+    expect(normalizeReport(await formatSyncOutput(data, '/fake/workspace/root'))).toMatchSnapshot();
   });
 
-  test('should handle a complex mixed situation with pending changesets and warnings', () => {
+  test('should handle a complex mixed situation with pending changesets and warnings', async () => {
     const data = [
       {
-        label: PackageLabel.Starter,
+        label: 'Starter',
         result: {
           status: 'pending',
           message: '',
@@ -160,7 +160,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
       {
-        label: PackageLabel.Cli,
+        label: 'CLI',
         result: {
           status: 'warning',
           message: '',
@@ -179,13 +179,13 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
+    expect(normalizeReport(await formatSyncOutput(data, '/fake/workspace/root'))).toMatchSnapshot();
   });
 
-  test('should display a warning when there are many commits without a changeset (limit case)', () => {
+  test('should display a warning when there are many commits without a changeset (limit case)', async () => {
     const data = [
       {
-        label: PackageLabel.Starter,
+        label: 'Starter',
         result: {
           status: 'warning',
           message: '',
@@ -208,7 +208,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
       {
-        label: PackageLabel.Cli,
+        label: 'CLI',
         result: {
           status: 'sync',
           message: '',
@@ -218,13 +218,13 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
+    expect(normalizeReport(await formatSyncOutput(data, '/fake/workspace/root'))).toMatchSnapshot();
   });
 
-  test('should show a pending changeset when only part of the commits are covered (partial changeset)', () => {
+  test('should show a pending changeset when only part of the commits are covered (partial changeset)', async () => {
     const data = [
       {
-        label: PackageLabel.Starter,
+        label: 'Starter',
         result: {
           status: 'pending',
           message: '',
@@ -243,7 +243,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
       {
-        label: PackageLabel.Cli,
+        label: 'CLI',
         result: {
           status: 'pending',
           message: '',
@@ -259,13 +259,13 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
+    expect(normalizeReport(await formatSyncOutput(data, '/fake/workspace/root'))).toMatchSnapshot();
   });
 
-  test('should warn when a package has commits but no version (no packageVersion field)', () => {
+  test('should warn when a package has commits but no version (no packageVersion field)', async () => {
     const data = [
       {
-        label: PackageLabel.Starter,
+        label: 'Starter',
         result: {
           status: 'warning',
           message: '',
@@ -277,7 +277,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
       {
-        label: PackageLabel.Cli,
+        label: 'CLI',
         result: {
           status: 'sync',
           message: '',
@@ -285,13 +285,13 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
+    expect(normalizeReport(await formatSyncOutput(data, '/fake/workspace/root'))).toMatchSnapshot();
   });
 
-  test('should group packages by the same changeset file for multi-package changesets', () => {
+  test('should group packages by the same changeset file for multi-package changesets', async () => {
     const data = [
       {
-        label: PackageLabel.Starter,
+        label: 'Starter',
         result: {
           status: 'pending',
           message: '',
@@ -308,7 +308,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
       {
-        label: PackageLabel.Cli,
+        label: 'CLI',
         result: {
           status: 'pending',
           message: '',
@@ -322,13 +322,13 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
+    expect(normalizeReport(await formatSyncOutput(data, '/fake/workspace/root'))).toMatchSnapshot();
   });
 
-  test('should handle multiple multi-package changesets and group them correctly', () => {
+  test('should handle multiple multi-package changesets and group them correctly', async () => {
     const data = [
       {
-        label: PackageLabel.Starter,
+        label: 'Starter',
         result: {
           status: 'pending',
           message: '',
@@ -345,7 +345,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
       {
-        label: PackageLabel.Cli,
+        label: 'CLI',
         result: {
           status: 'pending',
           message: '',
@@ -363,7 +363,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
       {
-        label: 'Utils' as PackageLabel,
+        label: 'Utils',
         result: {
           status: 'pending',
           message: '',
@@ -377,7 +377,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
       {
-        label: 'Types' as PackageLabel,
+        label: 'Types',
         result: {
           status: 'pending',
           message: '',
@@ -391,13 +391,13 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
+    expect(normalizeReport(await formatSyncOutput(data, '/fake/workspace/root'))).toMatchSnapshot();
   });
 
-  test('should prioritize ERROR status over other statuses when present', () => {
+  test('should prioritize ERROR status over other statuses when present', async () => {
     const data = [
       {
-        label: PackageLabel.Starter,
+        label: 'Starter',
         result: {
           status: 'error',
           message: 'Git repository not found',
@@ -406,7 +406,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
       {
-        label: PackageLabel.Cli,
+        label: 'CLI',
         result: {
           status: 'pending',
           message: '',
@@ -423,13 +423,13 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
+    expect(normalizeReport(await formatSyncOutput(data, '/fake/workspace/root'))).toMatchSnapshot();
   });
 
-  test('should prioritize WARNING status over SYNC when no errors are present', () => {
+  test('should prioritize WARNING status over SYNC when no errors are present', async () => {
     const data = [
       {
-        label: PackageLabel.Starter,
+        label: 'Starter',
         result: {
           status: 'sync',
           message: '',
@@ -439,7 +439,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
       {
-        label: PackageLabel.Cli,
+        label: 'CLI',
         result: {
           status: 'warning',
           message: '',
@@ -453,13 +453,13 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
+    expect(normalizeReport(await formatSyncOutput(data, '/fake/workspace/root'))).toMatchSnapshot();
   });
 
-  test('should show all packages as synchronized when all statuses are SYNC', () => {
+  test('should show all packages as synchronized when all statuses are SYNC', async () => {
     const data = [
       {
-        label: PackageLabel.Starter,
+        label: 'Starter',
         result: {
           status: 'sync',
           message: '',
@@ -469,7 +469,7 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
       {
-        label: PackageLabel.Cli,
+        label: 'CLI',
         result: {
           status: 'sync',
           message: '',
@@ -479,14 +479,14 @@ describe('formatSyncOutput', () => {
         } as CheckResult,
       },
     ];
-    expect(normalizeReport(formatSyncOutput(data))).toMatchSnapshot();
+    expect(normalizeReport(await formatSyncOutput(data, '/fake/workspace/root'))).toMatchSnapshot();
   });
 });
 
 describe('formatBaselineLog', () => {
   test('should format basic baseline log for non-Starter config', async () => {
     const config: SyncCheckConfig = {
-      label: PackageLabel.Cli,
+      label: 'CLI',
       baseline: () => Promise.resolve('abc123456789'),
       commitPath: 'packages/cli/',
       messages: {
@@ -501,9 +501,9 @@ describe('formatBaselineLog', () => {
     expect(result).toBe('📦 [CLI] Checking against baseline (commit/tag abc1234)');
   });
 
-  test('should format enhanced log for Starter config with version', async () => {
+  test('should format basic baseline log for any package config', async () => {
     const config: SyncCheckConfig = {
-      label: PackageLabel.Starter,
+      label: 'Starter',
       baseline: () => Promise.resolve('abc123456789'),
       commitPath: 'apps/starter/',
       messages: {
@@ -515,8 +515,6 @@ describe('formatBaselineLog', () => {
     };
 
     const result = await formatBaselineLog(config, 'abc123456789', '/test/workspace');
-    expect(result).toBe(
-      '📦 [Starter] Checking against CLI template baseline (commit abc1234, version 1.0.0)'
-    );
+    expect(result).toBe('📦 [Starter] Checking against baseline (commit/tag abc1234)');
   });
 });

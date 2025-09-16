@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import { logError } from '@vite-powerflow/utils';
 import chalk from 'chalk';
 import { Command } from 'commander';
 import fs from 'fs/promises';
@@ -9,6 +8,7 @@ import { createProject } from './commands/create.js';
 import { directoryExists } from './utils/fs-utils.js';
 import { promptProjectName } from './utils/prompt-ui.js';
 import { safePackageName } from './utils/safe-package-name.js';
+import { logError } from './utils/shared/logger.js';
 import type { GitOptions } from '../types/git-options.js';
 
 let currentProjectPath: string | null = null;

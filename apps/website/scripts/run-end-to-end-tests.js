@@ -6,7 +6,7 @@ import { homedir } from 'os';
 import path from 'path';
 import process from 'process';
 
-import { logInfo, logSuccess, logError } from '@vite-powerflow/utils';
+import { logInfo, logSuccess, logError } from '@vite-powerflow/shared-utils/logger';
 
 // Playwright cache directory (persistent volume recommended)
 const PLAYWRIGHT_CACHE_DIR = path.join(homedir(), '.cache', 'ms-playwright');

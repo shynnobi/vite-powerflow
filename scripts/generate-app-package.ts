@@ -4,8 +4,6 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import { LogFn } from './types/log';
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -75,7 +73,7 @@ function walkFiles(dir: string, cb: (file: string) => void) {
   }
 }
 
-const log: LogFn = msg => console.log(`\x1b[36m[generate:${type}]\x1b[0m ${msg}`);
+const log = (msg: string) => console.log(`\x1b[36m[generate:${type}]\x1b[0m ${msg}`);
 
 log(`Copying template to ${type === 'app' ? 'apps' : 'packages'}/${name}...`);
 copyDir(templateDir, destDir);

@@ -83,7 +83,7 @@ jobs:
         with:
           # This command will be executed by the action ONLY
           # after the "Version Packages" PR has been merged.
-          publish: pnpm run release:publish
+          publish: pnpm run release:complete
           # This command will be run to create the PR.
           version: pnpm run release:prepare
           # IMPORTANT: The following values are read from scripts/release-constants.ts

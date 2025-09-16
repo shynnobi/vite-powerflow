@@ -1,7 +1,13 @@
 {
   "name": "@vite-powerflow/starter",
   "private": true,
-  "version": "1.2.8",
+  "version": "1.2.9",
+  "syncConfig": {
+    "baseline": "08d79e2ca815952ed3a2a9dae101c13570eaeadb",
+    "label": "Starter",
+    "monitored": true,
+    "updatedAt": "2025-09-16T00:58:53.261Z"
+  },
   "description": "",
   "author": {
     "name": "Shynn",
@@ -113,7 +119,9 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "rollup-plugin-visualizer": "^6.0.3",
+    "sharp": "^0.34.3",
     "storybook": "9.0.16",
+    "svgo": "^4.0.0",
     "turbo": "^2.5.5",
     "typescript": "^5.8.3",
     "vite": "^7.0.5",
@@ -127,7 +135,7 @@
     "@rollup/rollup-darwin-arm64": "^4.45.1",
     "@tanstack/react-query": "^5.83.0",
     "@tanstack/react-query-devtools": "^5.83.0",
-    "@vite-powerflow/utils": "workspace:*",
+    "@vite-powerflow/shared-utils": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.525.0",

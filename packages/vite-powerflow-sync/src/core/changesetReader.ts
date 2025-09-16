@@ -2,8 +2,8 @@ import { execSync } from 'child_process';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 
-import { extractMetadataAfterFrontmatter, parseChangesetFrontmatter } from './changesetParser';
-import { Changeset, ChangesetStatus } from './types';
+import { extractMetadataAfterFrontmatter, parseChangesetFrontmatter } from './changesetParser.js';
+import { Changeset, ChangesetStatus } from './types.js';
 
 export async function readChangesetStatus(
   workspaceRoot: string,
@@ -27,7 +27,7 @@ export async function readChangesetStatus(
         const bumpType = frontmatter.get(targetPackage)!;
 
         // Check if anchor is present (for compatibility)
-        const { anchor: _anchor } = extractMetadataAfterFrontmatter(content);
+        const { anchor: _ } = extractMetadataAfterFrontmatter(content);
 
         const changeset: Changeset = {
           fileName: file,
@@ -112,7 +112,9 @@ export async function readLatestChangeset(
             .trim()
             .replace(/\r?\n/g, '');
           if (/^[0-9a-f]{40}$/i.test(full)) anchor = full;
-        } catch {}
+        } catch {
+          // Ignore errors when extracting anchor
+        }
       }
 
       const changeset: Changeset = {
@@ -153,6 +155,7 @@ export async function readLatestChangeset(
       'code' in error &&
       (error as { code?: string }).code !== 'ENOENT'
     ) {
+      // Ignore non-ENOENT errors
     }
     return null;
   }

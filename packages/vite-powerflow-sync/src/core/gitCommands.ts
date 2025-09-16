@@ -12,7 +12,7 @@ export function getCommitsSince(
   baseRef: string,
   headRef: string,
   pathspec: string,
-  outputChannel: { appendLine: (value: string) => void }
+  outputChannel: { appendLine: (_value: string) => void }
 ): string[] {
   try {
     execSync(`git cat-file -e ${baseRef}^{commit}`, {
@@ -53,7 +53,7 @@ export function getFilesChangedSince(
   workspaceRoot: string,
   sinceRef: string,
   pathspec: string,
-  outputChannel: { appendLine: (value: string) => void }
+  outputChannel: { appendLine: (_value: string) => void }
 ): string[] {
   try {
     execSync(`git cat-file -e ${sinceRef}^{commit}`, {

@@ -14,7 +14,7 @@
       "path": "packages/cli"
     },
     {
-      "path": "packages/utils"
+      "path": "packages/shared-utils"
     },
     {
       "path": "packages/vite-powerflow-sync"

@@ -15,7 +15,7 @@ vi.mock('./gitCommands.js', () => ({
   getFilesChangedSince: vi.fn(),
 }));
 vi.mock('./gitStatus.js', () => ({
-  getTemplateBaseline: vi.fn(),
+  getPackageBaseline: vi.fn(),
   resolveRefToSha: vi.fn(),
 }));
 vi.mock('./packageReader.js', () => ({
