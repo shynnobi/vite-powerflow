@@ -1,7 +1,13 @@
 {
   "name": "@vite-powerflow/starter",
   "private": true,
-  "version": "1.2.7",
+  "version": "1.2.8",
+  "syncConfig": {
+    "baseline": "de957698f2d2d418ea1af496e630ab03bb8c9ee6",
+    "label": "Starter",
+    "monitored": true,
+    "updatedAt": "2025-09-16T00:58:53.261Z"
+  },
   "description": "",
   "author": {
     "name": "Shynn",
@@ -157,9 +163,5 @@
   "homepage": "https://vite-powerflow.netlify.app",
   "bugs": {
     "url": "https://github.com/shynnobi/vite-powerflow/issues"
-  },
-  "starterSource": {
-    "commit": "ee8b29bf3964a05a719bb664fca02d2609205823",
-    "syncedAt": "2025-09-13T22:34:00.223Z"
   }
 }

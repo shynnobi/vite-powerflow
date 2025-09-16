@@ -2,7 +2,7 @@
 'vite-powerflow-sync': patch
 ---
 
-anchor: d9709e4e91dbea42a55c618aae9c29ea2cb55510
+anchor: eb8b77868c9ede9617e8994cbbadc8feb29d030e
 
 Fix sync detection logic and improve extension packaging
 

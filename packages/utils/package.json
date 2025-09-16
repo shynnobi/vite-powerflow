@@ -2,6 +2,12 @@
   "name": "@vite-powerflow/utils",
   "private": false,
   "version": "0.0.7",
+  "syncConfig": {
+    "baseline": "de957698f2d2d418ea1af496e630ab03bb8c9ee6",
+    "label": "Utils",
+    "monitored": true,
+    "updatedAt": "2025-09-16T00:21:51.033Z"
+  },
   "description": "Internal utility functions for the Vite PowerFlow project",
   "author": {
     "name": "Shynn",

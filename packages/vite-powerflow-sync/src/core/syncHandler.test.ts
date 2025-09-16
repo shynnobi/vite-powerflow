@@ -2,13 +2,13 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { createMockOutputChannel } from '../utils/testUtils';
 import { handleInSync, handleUnreleasedCommits } from './syncHandler';
-import { PackageLabel, SyncCheckConfig } from './types';
+import { SyncCheckConfig } from './types';
 
 describe('syncHandler', () => {
   const mockOutputChannel = createMockOutputChannel();
 
   const mockConfig: SyncCheckConfig = {
-    label: PackageLabel.Starter,
+    label: 'Starter',
     baseline: () => Promise.resolve('test-baseline'),
     commitPath: 'test/',
     messages: {

@@ -1,5 +1,5 @@
 // Release constants - keep in sync across all files
-// Used by: .github/workflows/release.yml, scripts/git-utils.ts, packages/vite-powerflow-sync
+// Used by: .github/workflows/release.yml, packages/vite-powerflow-sync
 
 export const RELEASE_CONSTANTS = {
   COMMIT_MESSAGE: 'chore: release new versions',

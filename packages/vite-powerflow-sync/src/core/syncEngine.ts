@@ -1,12 +1,12 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 
-import { checkWillBeUpdatedByChangeset, getPackageNameFromConfig } from './changesetChecker';
-import { readLatestChangeset } from './changesetReader';
-import { getCommitsSince, getCurrentCommit, getFilesChangedSince } from './gitCommands';
-import { resolveRefToSha } from './gitStatus';
-import { readPackageInfo } from './packageReader';
-import { CheckResult, PackageLabel, SyncCheckConfig } from './types';
+import { checkWillBeUpdatedByChangeset, getPackageNameFromConfig } from './changesetChecker.js';
+import { readLatestChangeset } from './changesetReader.js';
+import { getCommitsSince, getCurrentCommit, getFilesChangedSince } from './gitCommands.js';
+import { resolveRefToSha } from './gitStatus.js';
+import { readPackageInfo } from './packageReader.js';
+import { CheckResult, SyncCheckConfig } from './types.js';
 
 /**
  * Core sync engine that determines if a package is in sync with its published version.
@@ -103,7 +103,7 @@ export async function checkSyncStatus(
       const [releaseSha] = allCommitsUnfilteredRaw[releaseCommitIndex].split(' ');
       lastReleaseCommitSha = releaseSha?.substring(0, 40);
     }
-  } catch (error) {
+  } catch (_error) {
     // If unfiltered search fails, fallback to filtered search
     const releaseCommitIndex = allCommits.findIndex(c =>
       /chore: release new versions|Version Packages/i.test(c.message)
@@ -117,20 +117,18 @@ export async function checkSyncStatus(
     // Derive package.json path from commitPath
     let packageJsonPath: string;
 
-    if (config.label === PackageLabel.Starter) {
-      // Special case: Starter uses the template package.json
-      packageJsonPath = path.join(workspaceRoot, 'packages/cli/template/package.json');
-    } else {
-      // For other packages, derive from commitPath
-      // e.g., "packages/utils/" -> "packages/utils/package.json"
-      // e.g., "packages/cli/" -> "packages/cli/package.json"
-      const normalizedPath = config.commitPath.replace(/\/$/, ''); // Remove trailing slash
-      packageJsonPath = path.join(workspaceRoot, normalizedPath, 'package.json');
-    }
+    // Derive package.json path from commitPath for all packages
+    // e.g., "packages/utils/" -> "packages/utils/package.json"
+    // e.g., "packages/cli/" -> "packages/cli/package.json"
+    // e.g., "apps/starter/" -> "apps/starter/package.json"
+    const normalizedPath = config.commitPath.replace(/\/$/, ''); // Remove trailing slash
+    packageJsonPath = path.join(workspaceRoot, normalizedPath, 'package.json');
 
     const pkg = await readPackageInfo(packageJsonPath);
     packageVersion = pkg?.version;
-  } catch {}
+  } catch {
+    // Ignore errors when reading package info
+  }
 
   // ============================================================================
   // PHASE 4: ANALYZE SYNC STATUS USING COMMIT HISTORY
@@ -264,13 +262,9 @@ export async function checkSyncStatus(
       // If no changeset found, check if package will be updated via dependencies
       if (!latestChangeset) {
         // Check if this package will be updated by changeset due to internal dependencies
-        const packageName = getPackageNameFromConfig(config);
+        const packageName = await getPackageNameFromConfig(config);
         if (packageName) {
-          const dependencyCheck = checkWillBeUpdatedByChangeset(
-            workspaceRoot,
-            packageName,
-            outputChannel
-          );
+          const dependencyCheck = checkWillBeUpdatedByChangeset(workspaceRoot, packageName);
 
           if (dependencyCheck.willBeUpdated) {
             return {
@@ -379,13 +373,9 @@ export async function checkSyncStatus(
       // Otherwise, changeset found and all files covered
       // Get future version from changeset status for all packages
       let futureVersion: string | undefined;
-      const packageName = getPackageNameFromConfig(config);
+      const packageName = await getPackageNameFromConfig(config);
       if (packageName) {
-        const dependencyCheck = checkWillBeUpdatedByChangeset(
-          workspaceRoot,
-          packageName,
-          outputChannel
-        );
+        const dependencyCheck = checkWillBeUpdatedByChangeset(workspaceRoot, packageName);
         futureVersion = dependencyCheck.newVersion;
       }
 
