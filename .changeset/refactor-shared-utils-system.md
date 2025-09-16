@@ -3,7 +3,7 @@
 'vite-powerflow-sync': minor
 ---
 
-anchor: d5138130a4f36b25e5f5d8e05765f24cbfc11cb9
+anchor: a9b9b528a1f7f09e5ba609ef581732b0b5562091
 baseline: 08d79e2ca815952ed3a2a9dae101c13570eaeadb
 
 ## Refactor: Replace Utils Package with Shared-Utils and Inlining System

@@ -2,7 +2,7 @@
 '@vite-powerflow/create': patch
 ---
 
-anchor: d5138130a4f36b25e5f5d8e05765f24cbfc11cb9
+anchor: a9b9b528a1f7f09e5ba609ef581732b0b5562091
 
 ## Fix CLI E2E Tests and Inline Shared Utilities
 
