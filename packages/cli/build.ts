@@ -1,8 +1,9 @@
-import { logError, logInfo, logSuccess } from '@vite-powerflow/utils';
 import * as esbuild from 'esbuild';
 import fs from 'fs-extra';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
+import { logError, logInfo, logSuccess } from './src/utils/shared/logger.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

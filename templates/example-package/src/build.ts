@@ -1,4 +1,4 @@
-import { logError, logInfo, logSuccess } from '@vite-powerflow/utils';
+import { logError, logInfo, logSuccess } from './utils/shared/logger.ts';
 import * as esbuild from 'esbuild';
 
 (async () => {

@@ -54,6 +54,9 @@ importers:
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
+      '@types/glob':
+        specifier: ^9.0.0
+        version: 9.0.0
       '@types/js-yaml':
         specifier: ^4.0.9
         version: 4.0.9
@@ -192,9 +195,9 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: ^5.83.0
         version: 5.83.0(@tanstack/react-query@5.83.0(react@19.1.0))(react@19.1.0)
-      '@vite-powerflow/utils':
+      '@vite-powerflow/shared-utils':
         specifier: workspace:*
-        version: link:../../packages/utils
+        version: link:../../packages/shared-utils
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -566,9 +569,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^8.37.0
         version: 8.38.0(eslint@9.31.0(jiti@2.4.2))(typescript@5.8.3)
-      '@vite-powerflow/utils':
-        specifier: workspace:^
-        version: link:../../packages/utils
+      '@vite-powerflow/shared-utils':
+        specifier: workspace:*
+        version: link:../../packages/shared-utils
       '@vitejs/plugin-react-swc':
         specifier: ^3.10.2
         version: 3.10.2(vite@7.0.5(@types/node@24.0.15)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0))
@@ -701,9 +704,9 @@ importers:
       '@sindresorhus/slugify':
         specifier: ^2.2.1
         version: 2.2.1
-      '@vite-powerflow/utils':
-        specifier: ^0.0.7
-        version: 0.0.7
+      '@vite-powerflow/shared-utils':
+        specifier: workspace:*
+        version: link:../shared-utils
       chalk:
         specifier: ^5.4.1
         version: 5.4.1
@@ -753,6 +756,31 @@ importers:
       vitest:
         specifier: ^1.6.1
         version: 1.6.1(@types/node@24.0.15)(@vitest/browser@3.2.4(msw@2.10.4(@types/node@24.0.15)(typescript@5.8.3))(playwright@1.54.1)(vite@7.0.5(@types/node@24.0.15)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0))(vitest@3.2.4))(@vitest/ui@3.2.4(vitest@3.2.4))(jsdom@26.1.0)(lightningcss@1.30.1)(terser@5.43.1)
+
+  packages/shared-utils:
+    dependencies:
+      chalk:
+        specifier: ^5.4.1
+        version: 5.4.1
+      find-up:
+        specifier: ^7.0.0
+        version: 7.0.0
+      ora:
+        specifier: ^8.1.1
+        version: 8.2.0
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.15
+      eslint:
+        specifier: ^9.0.0
+        version: 9.31.0(jiti@2.4.2)
+      typescript:
+        specifier: ^5.0.0
+        version: 5.8.3
+      vitest:
+        specifier: ^1.0.0
+        version: 1.6.1(@types/node@20.19.15)(jsdom@26.1.0)(lightningcss@1.30.1)(terser@5.43.1)
 
   packages/utils:
     dependencies:
@@ -3601,6 +3629,10 @@ packages:
   '@types/fs-extra@11.0.4':
     resolution: {integrity: sha512-yTbItCNreRooED33qjunPthRcSjERP1r4MqCZc7wv0u2sUkzTFp45tgUfS5+r7FrZPdmCCNflLhVSP/o+SemsQ==}
 
+  '@types/glob@9.0.0':
+    resolution: {integrity: sha512-00UxlRaIUvYm4R4W9WYkN8/J+kV8fmOQ7okeH6YFtGWFMt3odD45tpG5yA5wnL7HE6lLgjaTW5n14ju2hl2NNA==}
+    deprecated: This is a stub types definition. glob provides its own type definitions, so you do not need this installed.
+
   '@types/graceful-fs@4.1.9':
     resolution: {integrity: sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ==}
 
@@ -3645,6 +3677,9 @@ packages:
 
   '@types/node@12.20.55':
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
+
+  '@types/node@20.19.15':
+    resolution: {integrity: sha512-W3bqcbLsRdFDVcmAM5l6oLlcl67vjevn8j1FPZ4nx+K5jNoWCh+FC/btxFoBPnvQlrHHDwfjp1kjIEDfwJ0Mog==}
 
   '@types/node@24.0.15':
     resolution: {integrity: sha512-oaeTSbCef7U/z7rDeJA138xpG3NuKc64/rZ2qmUFkFJmnMsAPaluIifqyWd8hSSMxyP9oie3dLAqYPblag9KgA==}
@@ -3950,9 +3985,6 @@ packages:
     resolution: {integrity: sha512-lrW200hZdbfRtztbygyaq/6jP6AKE8qQN2KvPcJ+x7wiD038YtnYtZ82IMNJ69GJibV7bwL3y9FgK+5w/pYt6g==}
     cpu: [x64]
     os: [win32]
-
-  '@vite-powerflow/utils@0.0.7':
-    resolution: {integrity: sha512-hhbs22WpcCFk5twwW4Hwf2v+clnuA9lK1bW6xOPpcoJZhvIu142BnLf9Kc7PQkBLSUNOLtDD237ZTTCUfuwe6g==}
 
   '@vitejs/plugin-react-swc@3.10.2':
     resolution: {integrity: sha512-xD3Rdvrt5LgANug7WekBn1KhcvLn1H3jNBfJRL3reeOIua/WnZOEV5qi5qIBq5T8R0jUDmRtxuvk4bPhzGHDWw==}
@@ -8530,6 +8562,9 @@ packages:
   underscore@1.13.7:
     resolution: {integrity: sha512-GMXzWtsc57XAtguZgaQViUOzs0KTkk8ojr3/xAxXLITqf/3EMwxC0inyETfDFjH/Krbhuep0HNbbjI9i/q3F3g==}
 
+  undici-types@6.21.0:
+    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
+
   undici-types@7.8.0:
     resolution: {integrity: sha512-9UJ2xGDvQ43tYyVMpuHlsgApydB8ZKfVYTsLDhXkFL/6gfkp+U8xTGdh8pMJv1SpZna0zxG1DwsKZsreLbXBxw==}
 
@@ -12265,6 +12300,10 @@ snapshots:
       '@types/jsonfile': 6.1.4
       '@types/node': 24.0.15
 
+  '@types/glob@9.0.0':
+    dependencies:
+      glob: 11.0.3
+
   '@types/graceful-fs@4.1.9':
     dependencies:
       '@types/node': 24.0.15
@@ -12313,6 +12352,10 @@ snapshots:
       '@types/node': 24.0.15
 
   '@types/node@12.20.55': {}
+
+  '@types/node@20.19.15':
+    dependencies:
+      undici-types: 6.21.0
 
   '@types/node@24.0.15':
     dependencies:
@@ -12661,16 +12704,6 @@ snapshots:
 
   '@unrs/resolver-binding-win32-x64-msvc@1.11.1':
     optional: true
-
-  '@vite-powerflow/utils@0.0.7':
-    dependencies:
-      chalk: 5.4.1
-      find-up: 7.0.0
-      inquirer: 9.3.7
-      ora: 8.2.0
-      simple-git: 3.28.0
-    transitivePeerDependencies:
-      - supports-color
 
   '@vitejs/plugin-react-swc@3.10.2(vite@7.0.5(@types/node@24.0.15)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0))':
     dependencies:
@@ -17946,6 +17979,8 @@ snapshots:
 
   underscore@1.13.7: {}
 
+  undici-types@6.21.0: {}
+
   undici-types@7.8.0: {}
 
   undici@7.12.0: {}
@@ -18058,6 +18093,24 @@ snapshots:
       spdx-expression-parse: 3.0.1
 
   validator@13.15.15: {}
+
+  vite-node@1.6.1(@types/node@20.19.15)(lightningcss@1.30.1)(terser@5.43.1):
+    dependencies:
+      cac: 6.7.14
+      debug: 4.4.1
+      pathe: 1.1.2
+      picocolors: 1.1.1
+      vite: 5.4.19(@types/node@20.19.15)(lightningcss@1.30.1)(terser@5.43.1)
+    transitivePeerDependencies:
+      - '@types/node'
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
 
   vite-node@1.6.1(@types/node@24.0.15)(lightningcss@1.30.1)(terser@5.43.1):
     dependencies:
@@ -18172,6 +18225,17 @@ snapshots:
       - supports-color
       - typescript
 
+  vite@5.4.19(@types/node@20.19.15)(lightningcss@1.30.1)(terser@5.43.1):
+    dependencies:
+      esbuild: 0.21.5
+      postcss: 8.5.6
+      rollup: 4.45.1
+    optionalDependencies:
+      '@types/node': 20.19.15
+      fsevents: 2.3.3
+      lightningcss: 1.30.1
+      terser: 5.43.1
+
   vite@5.4.19(@types/node@24.0.15)(lightningcss@1.30.1)(terser@5.43.1):
     dependencies:
       esbuild: 0.21.5
@@ -18199,6 +18263,41 @@ snapshots:
       terser: 5.43.1
       tsx: 4.20.3
       yaml: 2.8.0
+
+  vitest@1.6.1(@types/node@20.19.15)(jsdom@26.1.0)(lightningcss@1.30.1)(terser@5.43.1):
+    dependencies:
+      '@vitest/expect': 1.6.1
+      '@vitest/runner': 1.6.1
+      '@vitest/snapshot': 1.6.1
+      '@vitest/spy': 1.6.1
+      '@vitest/utils': 1.6.1
+      acorn-walk: 8.3.4
+      chai: 4.5.0
+      debug: 4.4.1
+      execa: 8.0.1
+      local-pkg: 0.5.1
+      magic-string: 0.30.17
+      pathe: 1.1.2
+      picocolors: 1.1.1
+      std-env: 3.9.0
+      strip-literal: 2.1.1
+      tinybench: 2.9.0
+      tinypool: 0.8.4
+      vite: 5.4.19(@types/node@20.19.15)(lightningcss@1.30.1)(terser@5.43.1)
+      vite-node: 1.6.1(@types/node@20.19.15)(lightningcss@1.30.1)(terser@5.43.1)
+      why-is-node-running: 2.3.0
+    optionalDependencies:
+      '@types/node': 20.19.15
+      jsdom: 26.1.0
+    transitivePeerDependencies:
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
 
   vitest@1.6.1(@types/node@24.0.15)(@vitest/browser@3.2.4(msw@2.10.4(@types/node@24.0.15)(typescript@5.8.3))(playwright@1.54.1)(vite@7.0.5(@types/node@24.0.15)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0))(vitest@3.2.4))(@vitest/ui@3.2.4(vitest@3.2.4))(jsdom@26.1.0)(lightningcss@1.30.1)(terser@5.43.1):
     dependencies:

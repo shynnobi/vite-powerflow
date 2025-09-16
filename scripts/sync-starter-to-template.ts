@@ -33,6 +33,12 @@ void (async () => {
 
   logRootInfo('—— Sync apps/starter to packages/cli/template ——');
   try {
+    // 0. Ensure shared-utils are inlined in the starter before copying
+    logRootInfo('Ensuring shared-utils are inlined in starter...');
+    execSync('pnpm inline:shared-utils', {
+      cwd: root,
+      stdio: 'inherit',
+    });
     // 1. Remove any existing template directory before copying
     logRootInfo('Deleting existing template folder...');
     await fs.remove(templateDest);
@@ -81,6 +87,7 @@ void (async () => {
     };
 
     // Replace workspace dependencies with concrete versions from the monorepo
+    // BUT exclude @vite-powerflow/shared-utils as it will be inlined
     try {
       const depsToReplace: Record<string, string> = {};
       const allDeps = {
@@ -90,6 +97,12 @@ void (async () => {
 
       for (const [name, version] of Object.entries(allDeps)) {
         if (typeof version === 'string' && version.startsWith('workspace:')) {
+          // Skip @vite-powerflow/shared-utils as it will be inlined
+          if (name === '@vite-powerflow/shared-utils') {
+            logRootInfo(`  - Skipping ${name} (will be inlined)`);
+            continue;
+          }
+
           const localVersion = await getPackageVersion(name);
           depsToReplace[name] = `^${localVersion}`;
         }
@@ -99,6 +112,13 @@ void (async () => {
         if (!deps) return;
         for (const key in deps) {
           if (deps[key].startsWith('workspace:')) {
+            // Remove @vite-powerflow/shared-utils completely as it will be inlined
+            if (key === '@vite-powerflow/shared-utils') {
+              delete deps[key];
+              logRootInfo(`  - Removed ${key} (will be inlined)`);
+              continue;
+            }
+
             if (depsToReplace[key]) {
               deps[key] = depsToReplace[key];
               logRootInfo(`  - Replaced ${key} with version ${depsToReplace[key]}`);

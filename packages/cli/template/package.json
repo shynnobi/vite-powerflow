@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.2.8",
   "syncConfig": {
-    "baseline": "de957698f2d2d418ea1af496e630ab03bb8c9ee6",
+    "baseline": "08d79e2ca815952ed3a2a9dae101c13570eaeadb",
     "label": "Starter",
     "monitored": true,
     "updatedAt": "2025-09-16T00:58:53.261Z"
@@ -133,7 +133,6 @@
     "@rollup/rollup-darwin-arm64": "^4.45.1",
     "@tanstack/react-query": "^5.83.0",
     "@tanstack/react-query-devtools": "^5.83.0",
-    "@vite-powerflow/utils": "^0.0.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.525.0",
