@@ -1,40 +1,74 @@
 import * as vscode from 'vscode';
 
+/**
+ * Sync status types
+ */
 export type SyncStatus = 'sync' | 'warning' | 'error' | 'pending' | 'dependency-pending';
 
-export enum PackageLabel {
-  Starter = 'Starter',
-  Cli = 'CLI',
-  Utils = 'Utils',
-  Extension = 'Extension',
+/**
+ * Configuration structure for sync monitoring in package.json
+ */
+export interface SyncConfig {
+  baseline: string;
+  label: string;
+  monitored: boolean;
+  updatedAt?: string;
 }
 
-export interface CheckResult {
-  status: SyncStatus;
-  message: string;
-  commitCount: number;
-  changeset?: Changeset;
-  packageVersion?: string;
-  futureVersion?: string;
-  baselineCommit?: string;
-  releaseCommit?: string;
-  currentCommit?: string;
-  commits?: { sha: string; message: string }[];
-  coveredCommits?: { sha: string; message: string }[];
-  notCoveredCommits?: { sha: string; message: string }[];
+/**
+ * Package bump information for changesets
+ */
+export interface PackageBump {
+  name: string;
+  version: string;
+  bumpType: 'patch' | 'minor' | 'major' | 'none';
 }
 
+/**
+ * Monitored package information
+ */
+export interface MonitoredPackage {
+  label: string;
+  pkgName: string;
+  pkgPath: string;
+  commitPath: string;
+  type: 'npm' | 'unpublished';
+  baseline?: string;
+}
+
+/**
+ * Sync check configuration
+ */
 export interface SyncCheckConfig {
-  label: PackageLabel;
+  label: string;
   baseline: () => Promise<string>;
   commitPath: string;
+  targetPackage?: string;
   messages: {
     notFound: string;
     inSync: string;
     unreleased: string;
     errorPrefix: string;
   };
-  targetPackage?: string;
+}
+
+/**
+ * Check result from sync engine
+ */
+export interface CheckResult {
+  status: SyncStatus;
+  message: string;
+  commitCount: number;
+  packageVersion?: string;
+  currentCommit?: string;
+  baselineCommit?: string;
+  releaseCommit?: string;
+  unreleasedCommits?: string[];
+  changeset?: Changeset;
+  futureVersion?: string;
+  commits?: { sha: string; message: string }[];
+  coveredCommits?: { sha: string; message: string }[];
+  notCoveredCommits?: { sha: string; message: string }[];
 }
 
 export interface Changeset {
@@ -73,6 +107,6 @@ export interface SyncResult {
 }
 
 export interface LabeledCheckResult {
-  label: PackageLabel;
+  label: string;
   result: CheckResult;
 }
