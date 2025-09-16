@@ -2,7 +2,7 @@
 'vite-powerflow-sync': patch
 ---
 
-anchor: eb8b77868c9ede9617e8994cbbadc8feb29d030e
+anchor: c1f29881
 
 Fix sync detection logic and improve extension packaging
 
@@ -15,3 +15,4 @@ Fix sync detection logic and improve extension packaging
 - Create robust install-extension.ts script with error handling
 - Add file validation and corruption detection
 - Improve extension installation feedback and logging
+- Finalize package updates and test improvements
