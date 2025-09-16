@@ -3,7 +3,7 @@
 'vite-powerflow-sync': minor
 ---
 
-anchor: 192b700ebadbeb02de42b3ab334c11dcbae88d1b
+anchor: d5138130a4f36b25e5f5d8e05765f24cbfc11cb9
 baseline: 08d79e2ca815952ed3a2a9dae101c13570eaeadb
 
 ## Refactor: Replace Utils Package with Shared-Utils and Inlining System
@@ -25,6 +25,7 @@ baseline: 08d79e2ca815952ed3a2a9dae101c13570eaeadb
 - **Autonomous packages**: Each package can be built independently with inlined utilities
 - **Hybrid approach**: Direct usage for development, inlining for production builds
 - **Improved maintainability**: Centralized utilities with automatic distribution
+- **Fix image optimization**: Added missing `sharp` and `svgo` dependencies for `vite-plugin-image-optimizer`
 
 ### 📁 File Structure Changes
 

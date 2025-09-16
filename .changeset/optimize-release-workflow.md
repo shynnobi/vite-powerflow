@@ -4,7 +4,7 @@
 'vite-powerflow-sync': patch
 ---
 
-anchor: 192b700ebadbeb02de42b3ab334c11dcbae88d1b
+anchor: d5138130a4f36b25e5f5d8e05765f24cbfc11cb9
 baseline: 08d79e2ca815952ed3a2a9dae101c13570eaeadb
 
 ## Optimize Release Workflow and Clean Up Scripts
