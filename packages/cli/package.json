@@ -1,7 +1,7 @@
 {
   "name": "@vite-powerflow/create",
   "private": false,
-  "version": "1.2.8",
+  "version": "1.2.9",
   "syncConfig": {
     "baseline": "de957698f2d2d418ea1af496e630ab03bb8c9ee6",
     "label": "CLI",
@@ -82,7 +82,7 @@
   },
   "dependencies": {
     "@sindresorhus/slugify": "^2.2.1",
-    "@vite-powerflow/utils": "^0.0.7",
+    "@vite-powerflow/utils": "^0.0.8",
     "chalk": "^5.4.1",
     "commander": "^14.0.0",
     "enquirer": "^2.4.1",

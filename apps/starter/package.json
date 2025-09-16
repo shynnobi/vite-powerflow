@@ -1,7 +1,7 @@
 {
   "name": "@vite-powerflow/starter",
   "private": true,
-  "version": "1.2.8",
+  "version": "1.2.9",
   "syncConfig": {
     "baseline": "de957698f2d2d418ea1af496e630ab03bb8c9ee6",
     "label": "Starter",

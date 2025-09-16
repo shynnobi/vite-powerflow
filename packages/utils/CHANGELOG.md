@@ -1,5 +1,14 @@
 # @vite-powerflow/utils
 
+## 0.0.8
+
+### Patch Changes
+
+- 05dfbbd: Add sync monitoring configuration to utils package
+  - Add syncConfig to package.json for VS Code extension monitoring
+  - Configure baseline tracking and monitoring status
+  - Enable automatic sync detection for utils package
+
 ## 0.0.7
 
 ### Patch Changes
