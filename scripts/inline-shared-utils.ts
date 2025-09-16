@@ -9,10 +9,10 @@ const SHARED_UTILS = 'packages/shared-utils/src';
  * Get consumers for inlining (only starter for hybrid approach)
  */
 function getConsumers(): string[] {
-  // Hybrid approach: only inline in starter, other packages use shared-utils directly
-  const consumers = ['apps/starter'];
+  // Hybrid approach: inline in starter and CLI for autonomous packages
+  const consumers = ['apps/starter', 'packages/cli'];
 
-  console.log('🔍 Using hybrid approach - inlining only in starter...');
+  console.log('🔍 Using hybrid approach - inlining in starter and CLI...');
   for (const consumer of consumers) {
     console.log(`  📦 Target consumer: ${consumer}`);
   }

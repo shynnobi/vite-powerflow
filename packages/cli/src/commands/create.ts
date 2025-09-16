@@ -1,9 +1,10 @@
-import { logError, logSuccess } from '@vite-powerflow/shared-utils/logger';
 import fs from 'fs/promises';
 import fsExtra from 'fs-extra';
 import path from 'path';
 import { simpleGit } from 'simple-git';
 import { fileURLToPath } from 'url';
+
+import { logError, logSuccess } from '../utils/shared/logger.js';
 
 /**
  * Standard package.json structure used by CLI
