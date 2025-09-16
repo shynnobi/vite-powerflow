@@ -39,7 +39,6 @@
   "packageManager": "pnpm@10.13.1",
   "scripts": {
     "predev": "pnpm generate-aliases",
-    "prebuild": "pnpm inline:shared-utils",
     "build": "npx turbo run build",
     "prepare": "husky",
     "postinstall": "./scripts/postinstall.sh",
@@ -85,7 +84,7 @@
     "sync:starter-to-template": "tsx scripts/sync-starter-to-template.ts",
     "changeset:augment": "tsx scripts/augment-changeset.ts",
     "changeset:create": "pnpm changeset && pnpm changeset:augment",
-    "release:prepare": "pnpm sync:starter-to-template && changeset version",
+    "release:prepare": "changeset version && pnpm sync:starter-to-template",
     "release:publish": "pnpm build && changeset publish",
     "release:update-baselines": "tsx scripts/update-baselines.ts",
     "ci:local": "git clean -fdx && pnpm install --frozen-lockfile && CI=true ./scripts/ci.sh"

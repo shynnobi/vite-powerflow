@@ -164,44 +164,8 @@ void (async () => {
       }
     }
 
-    // 6. Create changeset for CLI if template was modified and we're not in CI
-    if (!process.env.CI) {
-      try {
-        // Check if there are changes in the template directory
-        const hasChanges = execSync('git status --porcelain packages/cli/template/', {
-          encoding: 'utf8',
-          cwd: root,
-        }).trim();
-
-        if (hasChanges) {
-          logRootInfo('Template changes detected, creating changeset for CLI...');
-
-          const changesetPath = path.join(root, '.changeset');
-          const timestamp = Date.now();
-          const changesetFile = path.join(changesetPath, `cli-template-sync-${timestamp}.md`);
-
-          const changesetContent = `---
-"@vite-powerflow/create": patch
----
-
-Sync CLI template with latest starter changes
-
-- Updated template with latest starter features and dependencies
-- Template syncConfig.baseline inherited from starter
-`;
-
-          await fs.writeFile(changesetFile, changesetContent, 'utf8');
-          logRootInfo(`Created changeset: ${path.basename(changesetFile)}`);
-        } else {
-          logRootInfo('No template changes detected, skipping changeset creation');
-        }
-      } catch (changesetError) {
-        logRootInfo('Warning: Could not create changeset for CLI template changes');
-        logRootInfo(
-          changesetError instanceof Error ? changesetError.message : String(changesetError)
-        );
-      }
-    }
+    // 6. Template sync completed - version bump will be handled by changeset version
+    logRootInfo('Template sync completed - version bump will be handled by changeset version');
 
     logRootSuccess('Template synchronized successfully!');
   } catch (err) {
