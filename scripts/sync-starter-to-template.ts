@@ -3,8 +3,6 @@ import fs from 'fs-extra';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
-import { TemplatePkgJson } from './types/package-json';
-import { getLatestReleaseCommitWithShort } from './git-utils';
 import { logRootError, logRootInfo, logRootSuccess } from './monorepo-logger';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -77,7 +75,10 @@ void (async () => {
     );
     const pkgPath = path.join(templateDest, 'package.json');
     const pkgRaw = await fs.readFile(pkgPath, 'utf8');
-    const pkg = JSON.parse(pkgRaw) as TemplatePkgJson;
+    const pkg = JSON.parse(pkgRaw) as {
+      scripts?: Record<string, string>;
+      [key: string]: unknown;
+    };
 
     // Replace workspace dependencies with concrete versions from the monorepo
     try {
@@ -116,20 +117,8 @@ void (async () => {
       process.exit(1);
     }
 
-    // Add CLI template baseline commit metadata
-    try {
-      // Get the latest release commit hash using shared utility
-      const { full, short } = getLatestReleaseCommitWithShort(root);
-
-      // Always update starterSource with the latest release commit
-      pkg.starterSource = {
-        commit: full,
-        syncedAt: new Date().toISOString(),
-      };
-      logRootInfo(`starterSource updated with commit: ${short}`);
-    } catch {
-      logRootInfo('Warning: Could not add CLI template baseline commit metadata');
-    }
+    // Note: starterSource is no longer needed as we use syncConfig.baseline directly
+    // The template already has the correct syncConfig.baseline from the starter copy
 
     // Add/update scripts
     pkg.scripts = {
@@ -178,7 +167,7 @@ void (async () => {
 Sync CLI template with latest starter changes
 
 - Updated template with latest starter features and dependencies
-- Template baseline updated to commit ${getLatestReleaseCommitWithShort(root).short}
+- Template syncConfig.baseline inherited from starter
 `;
 
           await fs.writeFile(changesetFile, changesetContent, 'utf8');
