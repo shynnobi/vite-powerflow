@@ -772,14 +772,14 @@ importers:
   packages/shared-utils:
     dependencies:
       chalk:
-        specifier: ^5.4.1
+        specifier: ^5.6.2
         version: 5.6.2
       find-up:
         specifier: ^7.0.0
         version: 7.0.0
       ora:
-        specifier: ^8.1.1
-        version: 8.2.0
+        specifier: ^9.0.0
+        version: 9.0.0
     devDependencies:
       '@types/node':
         specifier: ^20.0.0

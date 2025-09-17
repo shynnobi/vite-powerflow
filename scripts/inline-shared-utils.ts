@@ -1,23 +1,66 @@
 #!/usr/bin/env tsx
 import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { glob } from 'glob';
+import { builtinModules } from 'module';
 import path from 'path';
 
 const SHARED_UTILS = 'packages/shared-utils/src';
+const SHARED_UTILS_PACKAGE_JSON = 'packages/shared-utils/package.json';
 
 /**
  * Get consumers for inlining (only starter for hybrid approach)
  */
 function getConsumers(): string[] {
-  // Hybrid approach: inline in starter and CLI for autonomous packages
-  const consumers = ['apps/starter', 'packages/cli'];
+  // All packages that use shared utilities
+  const consumers = ['apps/starter', 'packages/cli', 'packages/vite-powerflow-sync'];
 
-  console.log('🔍 Using hybrid approach - inlining in starter and CLI...');
+  console.log('🔍 Making packages autonomous by inlining shared utilities...');
   for (const consumer of consumers) {
     console.log(`  📦 Target consumer: ${consumer}`);
   }
 
   return consumers;
+}
+
+/**
+ * Detect the appropriate import extension for a consumer project
+ */
+function getImportExtension(consumer: string): string {
+  const packageJsonPath = `${consumer}/package.json`;
+
+  if (!existsSync(packageJsonPath)) {
+    return ''; // Default: no extension
+  }
+
+  try {
+    const pkg = JSON.parse(readFileSync(packageJsonPath, 'utf-8')) as {
+      bin?: unknown;
+      type?: string;
+      dependencies?: Record<string, string>;
+      devDependencies?: Record<string, string>;
+    };
+
+    // Node.js project - has bin field and type: module
+    if (pkg.bin && pkg.type === 'module') {
+      return '.js';
+    }
+
+    // Vite project - has vite dependency
+    if (pkg.dependencies?.vite || pkg.devDependencies?.vite) {
+      return ''; // No extension for Vite projects
+    }
+
+    // React project - has react dependency
+    if (pkg.dependencies?.react || pkg.devDependencies?.react) {
+      return ''; // React projects typically don't use extensions
+    }
+
+    // Default fallback
+    return '';
+  } catch {
+    console.log(`⚠️  Could not read package.json for ${consumer}, using default import extension`);
+    return '';
+  }
 }
 
 interface ImportMapping {
@@ -94,14 +137,15 @@ function extractExports(content: string): string[] {
 async function inlineSharedUtils(): Promise<void> {
   console.log('🔄 Inlining shared utilities...');
 
+  // Get required dependencies from shared-utils (will be calculated per consumer)
+  console.log('📦 Dependencies will be extracted per consumer based on used files...');
+
   // Automatically detect all mappings
   const importMappings = await autoDetectAllMappings();
   console.log(`📋 Detected ${importMappings.length} modules to inline`);
 
   // Get consumers (hybrid approach)
-  console.log('🔍 Getting consumers...');
   const consumers = getConsumers();
-  console.log(`📦 Found ${consumers.length} consumers`);
 
   for (const consumer of consumers) {
     if (!existsSync(consumer)) {
@@ -165,12 +209,14 @@ async function inlineSharedUtils(): Promise<void> {
           const relativePath = path.relative(path.dirname(file), `${consumer}/src/utils/shared`);
           const normalizedPath = relativePath.startsWith('.') ? relativePath : `./${relativePath}`;
 
-          // Determine the file name to import automatically
-          const fileName = mapping.from.split('/').pop() + '.ts';
+          // Determine the file name and extension based on project type
+          const fileName = mapping.from.split('/').pop();
+          const importExtension = getImportExtension(consumer);
+          const importPath = `${normalizedPath}/${fileName}${importExtension}`;
 
           content = content.replace(
             new RegExp(`from ['"]${mapping.from.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}['"]`, 'g'),
-            `from '${normalizedPath}/${fileName}'`
+            `from '${importPath}'`
           );
           modified = true;
         }
@@ -181,6 +227,11 @@ async function inlineSharedUtils(): Promise<void> {
         console.log(`  🔄 Updated imports in ${path.relative(consumer, file)}`);
       }
     }
+
+    // Update dependencies in package.json based on actually used files
+    console.log(`📦 Updating dependencies for ${consumer}...`);
+    const requiredDeps = getRequiredDependencies(usedFiles);
+    updateConsumerDependencies(consumer, requiredDeps);
 
     console.log(`✅ Completed ${consumer}`);
   }
@@ -228,7 +279,160 @@ function extractImportedFunctions(content: string, importPath: string): string[]
   return functions;
 }
 
+/**
+ * Extract dependencies from shared-utils package.json that are needed for inlined files
+ */
+function getRequiredDependencies(usedFiles: Set<string>): Record<string, string> {
+  if (!existsSync(SHARED_UTILS_PACKAGE_JSON)) {
+    console.log('❌ Shared utils package.json not found, skipping dependency copying');
+    return {};
+  }
+
+  const packageJson = JSON.parse(readFileSync(SHARED_UTILS_PACKAGE_JSON, 'utf-8')) as {
+    dependencies?: Record<string, string>;
+  };
+  const dependencies = packageJson.dependencies ?? {};
+
+  // Only detect dependencies for files that are actually being inlined
+  const usedDependencies = detectUsedDependenciesForFiles(usedFiles);
+  console.log(`🔍 Detected used dependencies for inlined files: ${usedDependencies.join(', ')}`);
+
+  // Only return dependencies that are actually used in the inlined files
+  const requiredDeps: Record<string, string> = {};
+
+  for (const dep of usedDependencies) {
+    const depVersion = dependencies[dep];
+    if (depVersion) {
+      requiredDeps[dep] = depVersion;
+    }
+  }
+
+  return requiredDeps;
+}
+
+/**
+ * Automatically detect which dependencies are used in specific shared-utils files
+ */
+function detectUsedDependenciesForFiles(usedFiles: Set<string>): string[] {
+  const usedDeps = new Set<string>();
+
+  for (const fileName of Array.from(usedFiles)) {
+    const filePath = `packages/shared-utils/src/${fileName}`;
+    if (existsSync(filePath)) {
+      const content = readFileSync(filePath, 'utf-8');
+      const imports = extractImportsFromFile(content);
+
+      for (const importPath of imports) {
+        // Extract the package name from import paths
+        const packageName = extractPackageNameFromImport(importPath);
+        if (packageName) {
+          usedDeps.add(packageName);
+        }
+      }
+    }
+  }
+
+  return Array.from(usedDeps);
+}
+
+/**
+ * Extract import statements from file content
+ */
+function extractImportsFromFile(content: string): string[] {
+  const imports: string[] = [];
+
+  // Pattern to detect import statements
+  const importRegex = /import\s+(?:.*?\s+from\s+)?['"]([^'"]+)['"]/g;
+
+  let match: RegExpExecArray | null;
+  while ((match = importRegex.exec(content)) !== null) {
+    const importPath = match[1];
+    imports.push(importPath);
+  }
+
+  return imports;
+}
+
+/**
+ * Extract package name from import path
+ */
+function extractPackageNameFromImport(importPath: string): string | null {
+  // Handle different import patterns:
+  // - 'chalk' -> 'chalk'
+  // - 'ora' -> 'ora'
+  // - 'find-up' -> 'find-up'
+  // - 'path' -> null (built-in module)
+  // - './relative/path' -> null (relative import)
+  // - '@scope/package' -> '@scope/package'
+  // - '@scope/package/subpath' -> '@scope/package'
+
+  // Skip relative imports and built-in modules
+  if (importPath.startsWith('.') || importPath.startsWith('/')) {
+    return null;
+  }
+
+  // Use Node.js built-in modules API for automatic detection
+  const builtInModules = new Set(builtinModules);
+
+  if (builtInModules.has(importPath)) {
+    return null;
+  }
+
+  // Handle scoped packages
+  if (importPath.startsWith('@')) {
+    const parts = importPath.split('/');
+    if (parts.length >= 2) {
+      return `${parts[0]}/${parts[1]}`;
+    }
+  }
+
+  // Handle regular packages
+  const parts = importPath.split('/');
+  return parts[0] || null;
+}
+
+/**
+ * Update package.json of a consumer to include required dependencies
+ */
+function updateConsumerDependencies(consumer: string, requiredDeps: Record<string, string>): void {
+  const packageJsonPath = `${consumer}/package.json`;
+
+  if (!existsSync(packageJsonPath)) {
+    console.log(`❌ Package.json not found for ${consumer}, skipping dependency update`);
+    return;
+  }
+
+  const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8')) as {
+    dependencies?: Record<string, string>;
+  };
+
+  // Initialize dependencies object if it doesn't exist
+  packageJson.dependencies ??= {};
+
+  let hasChanges = false;
+
+  // Add or update required dependencies
+  for (const [depName, depVersion] of Object.entries(requiredDeps)) {
+    const currentVersion = packageJson.dependencies[depName];
+    if (!currentVersion || currentVersion !== depVersion) {
+      packageJson.dependencies[depName] = depVersion;
+      hasChanges = true;
+      console.log(`  ✅ Added/updated dependency: ${depName}@${depVersion}`);
+    }
+  }
+
+  if (hasChanges) {
+    writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n');
+    console.log(`  ✅ Updated package.json for ${consumer}`);
+  } else {
+    console.log(`  ℹ️  No dependency changes needed for ${consumer}`);
+  }
+}
+
 // Execute the script
 if (import.meta.url === `file://${process.argv[1]}`) {
-  inlineSharedUtils().catch(console.error);
+  inlineSharedUtils().catch(error => {
+    console.error(`❌ Script failed: ${error instanceof Error ? error.message : String(error)}`);
+    process.exit(1);
+  });
 }
