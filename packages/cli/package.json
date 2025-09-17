@@ -1,7 +1,7 @@
 {
   "name": "@vite-powerflow/create",
   "private": false,
-  "version": "1.3.1",
+  "version": "1.3.2",
   "syncConfig": {
     "baseline": "08d79e2ca815952ed3a2a9dae101c13570eaeadb",
     "label": "CLI",
