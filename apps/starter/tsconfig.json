@@ -16,7 +16,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
-    "composite": true,
+    "declaration": false,
+    "declarationMap": false,
     "paths": {
       "@/*": ["src/*"],
       "@/assets/*": ["src/assets/*"],
@@ -34,5 +35,11 @@
   },
   "extends": "../../tsconfig.base.json",
   "include": ["src", "tests"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "vite.config.ts",
+    "vite.config.mts",
+    "vitest.config.ts",
+    "vitest.config.mts"
+  ]
 }

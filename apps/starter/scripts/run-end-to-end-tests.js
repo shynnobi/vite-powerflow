@@ -80,7 +80,7 @@ const testFiles = globSync('tests/e2e/*.{spec,test}.ts');
 if (testFiles.length > 0) {
   const startTime = Date.now();
   try {
-    execSync('pnpm exec playwright test --reporter=dot', { stdio: 'inherit' });
+    execSync('pnpm exec playwright test', { stdio: 'inherit' });
     const duration = ((Date.now() - startTime) / 1000).toFixed(1);
     logSuccess(`E2E tests completed (${testFiles.length} files, ${duration}s)`);
   } catch (error) {

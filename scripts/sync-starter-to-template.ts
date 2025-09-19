@@ -164,7 +164,60 @@ void (async () => {
       }
     }
 
-    // 6. Template sync completed - version bump will be handled by changeset version
+    // 6. Transform vite.config.ts to use project name placeholder
+    logRootInfo('Transforming vite.config.ts for template usage...');
+    const viteConfigPath = path.join(templateDest, 'vite.config.ts');
+    if (await fs.pathExists(viteConfigPath)) {
+      const viteConfigRaw = await fs.readFile(viteConfigPath, 'utf-8');
+      // Replace hardcoded 'starter' with {{projectName}} placeholder
+      const transformedViteConfig = viteConfigRaw
+        .replace(
+          /cacheDir:\s*['"]\.\/node_modules\/\.vite\/starter['"]/g,
+          "cacheDir: './node_modules/.vite/{{projectName}}'"
+        )
+        .replace(
+          /reportsDirectory:\s*['"]\.\/coverage\/starter['"]/g,
+          "reportsDirectory: './coverage/{{projectName}}'"
+        );
+
+      await fs.writeFile(viteConfigPath, transformedViteConfig, 'utf8');
+      logRootInfo('  - Replaced hardcoded project names with {{projectName}} placeholders');
+    }
+
+    // 7. Transform package.json scripts from Turbo to Nx
+    logRootInfo('Transforming package.json scripts from Turbo to Nx...');
+    const transformedPkg = {
+      ...pkg,
+      scripts: {
+        ...pkg.scripts,
+        // Transform Turbo scripts to Nx scripts
+        dev: 'nx serve',
+        build: 'nx build',
+        preview: 'vite preview',
+        test: 'vitest run',
+        'test:coverage': 'nx test --coverage',
+        'test:coverage:report': 'vitest run --coverage --reporter=html',
+        lint: 'nx lint',
+        'lint:fix': 'nx lint:fix',
+        format: 'nx format',
+        'format:fix': 'nx format:fix',
+        fix: 'nx fix',
+        'type-check': 'nx type-check',
+        'validate:static': 'nx validate:static',
+        'validate:quick': 'nx validate:quick',
+        'validate:full': 'nx validate:full',
+        'validate:commit': 'npx lint-staged; nx test',
+        // Add Nx-specific scripts
+        'nx:cache:stats': 'nx show projects --with-target=lint,format,build,test',
+        'nx:cache:clear': 'nx reset',
+      },
+    };
+
+    await fs.writeFile(pkgPath, JSON.stringify(transformedPkg, null, 2), 'utf8');
+    logRootInfo('  - Transformed Turbo scripts to Nx scripts');
+    logRootInfo('  - Added Nx-specific cache management scripts');
+
+    // 8. Template sync completed - version bump will be handled by changeset version
     logRootInfo('Template sync completed - version bump will be handled by changeset version');
 
     logRootSuccess('Template synchronized successfully!');
