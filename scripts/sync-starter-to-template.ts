@@ -193,7 +193,7 @@ void (async () => {
         // Transform Turbo scripts to Nx scripts
         dev: 'nx serve',
         build: 'nx build',
-        preview: 'nx preview',
+        preview: 'vite preview',
         test: 'nx test',
         'test:coverage': 'nx test --coverage',
         'test:coverage:report': 'vitest run --coverage --reporter=html',
