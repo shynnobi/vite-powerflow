@@ -4,6 +4,11 @@ services:
       context: . # Build from the Dockerfile in the current directory (project root)
       dockerfile: Dockerfile
 
+    # Official Playwright 2025 solution for zombie processes
+    init: true
+    ipc: host
+    shm_size: 2gb
+
     volumes:
       # Mount the project directory into the container at /workspaces/vite-powerflow
       # The :cached flag improves performance on macOS/Windows

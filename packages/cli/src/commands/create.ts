@@ -160,10 +160,27 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       throw readmeError;
     }
 
-    // 8. Format config files with Prettier for consistency
+    // 8. Update vite.config.ts placeholder for project name
+    const viteConfigPath = path.join(projectPath, 'vite.config.ts');
+    try {
+      if (await fsExtra.pathExists(viteConfigPath)) {
+        let viteConfigContent = await fs.readFile(viteConfigPath, 'utf-8');
+        viteConfigContent = viteConfigContent.replace(/{{projectName}}/g, options.projectName);
+        await fs.writeFile(viteConfigPath, viteConfigContent);
+      }
+    } catch (viteConfigError) {
+      logError('Failed to update vite.config.ts');
+      logError(
+        viteConfigError instanceof Error ? viteConfigError.message : String(viteConfigError)
+      );
+      throw viteConfigError;
+    }
+
+    // 9. Format config files with Prettier for consistency
     const filesToFormat: string[] = [];
     if (await fsExtra.pathExists(packageJsonPath)) filesToFormat.push(packageJsonPath);
     if (await fsExtra.pathExists(tsconfigPath)) filesToFormat.push(tsconfigPath);
+    if (await fsExtra.pathExists(viteConfigPath)) filesToFormat.push(viteConfigPath);
     const devcontainerJsonPath = path.join(projectPath, '.devcontainer', 'devcontainer.json');
     if (await fsExtra.pathExists(devcontainerJsonPath)) filesToFormat.push(devcontainerJsonPath);
     const dockerComposePath = path.join(projectPath, 'docker-compose.yml');
