@@ -59,7 +59,7 @@ function findWorkspaceForFile(file: string): string | null {
   const normFile = path.normalize(file);
   for (const ws of workspaceRoots) {
     if (normFile === ws || normFile.startsWith(ws + path.sep)) {
-      // 3.2. Return the package name, not the path
+      // 3.3. Return the package name, not the path
       const packageJsonPath = path.join(ws, 'package.json');
       if (fs.existsSync(packageJsonPath)) {
         const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8')) as {
