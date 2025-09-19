@@ -22,6 +22,7 @@ export default [
     ignores: [
       '.next/**',
       '.turbo/**',
+      '.nx/**',
       'coverage/**',
       'dist/**',
       'html/**',
