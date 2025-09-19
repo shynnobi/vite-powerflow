@@ -50,11 +50,16 @@ const workspaceRoots = workspaces?.map(ws => path.relative(process.cwd(), ws));
 
 // 3. Map each file to a workspace
 function findWorkspaceForFile(file: string): string | null {
-  // 3.1. Find the workspace whose path is a prefix of the file
+  // 3.1. Skip template files - they should not be executed as workspaces
+  if (file.includes('packages/cli/template/')) {
+    return null;
+  }
+
+  // 3.2. Find the workspace whose path is a prefix of the file
   const normFile = path.normalize(file);
   for (const ws of workspaceRoots) {
     if (normFile === ws || normFile.startsWith(ws + path.sep)) {
-      // 3.2. Return the package name, not the path
+      // 3.3. Return the package name, not the path
       const packageJsonPath = path.join(ws, 'package.json');
       if (fs.existsSync(packageJsonPath)) {
         const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8')) as {
