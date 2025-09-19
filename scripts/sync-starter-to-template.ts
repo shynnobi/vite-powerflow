@@ -194,7 +194,7 @@ void (async () => {
         dev: 'nx serve',
         build: 'nx build',
         preview: 'vite preview',
-        test: 'nx test',
+        test: 'vitest run',
         'test:coverage': 'nx test --coverage',
         'test:coverage:report': 'vitest run --coverage --reporter=html',
         lint: 'nx lint',

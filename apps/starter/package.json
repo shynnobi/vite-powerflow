@@ -41,7 +41,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest",
+    "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:coverage:report": "vitest run --coverage --reporter=html",
     "test:e2e": "tsx ./scripts/run-end-to-end-tests.js",
