@@ -164,7 +164,27 @@ void (async () => {
       }
     }
 
-    // 6. Template sync completed - version bump will be handled by changeset version
+    // 6. Transform vite.config.ts to use project name placeholder
+    logRootInfo('Transforming vite.config.ts for template usage...');
+    const viteConfigPath = path.join(templateDest, 'vite.config.ts');
+    if (await fs.pathExists(viteConfigPath)) {
+      const viteConfigRaw = await fs.readFile(viteConfigPath, 'utf-8');
+      // Replace hardcoded 'starter' with {{projectName}} placeholder
+      const transformedViteConfig = viteConfigRaw
+        .replace(
+          /cacheDir:\s*['"]\.\/node_modules\/\.vite\/starter['"]/g,
+          "cacheDir: './node_modules/.vite/{{projectName}}'"
+        )
+        .replace(
+          /reportsDirectory:\s*['"]\.\/coverage\/starter['"]/g,
+          "reportsDirectory: './coverage/{{projectName}}'"
+        );
+
+      await fs.writeFile(viteConfigPath, transformedViteConfig, 'utf8');
+      logRootInfo('  - Replaced hardcoded project names with {{projectName}} placeholders');
+    }
+
+    // 7. Template sync completed - version bump will be handled by changeset version
     logRootInfo('Template sync completed - version bump will be handled by changeset version');
 
     logRootSuccess('Template synchronized successfully!');
