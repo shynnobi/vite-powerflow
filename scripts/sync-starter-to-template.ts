@@ -184,7 +184,40 @@ void (async () => {
       logRootInfo('  - Replaced hardcoded project names with {{projectName}} placeholders');
     }
 
-    // 7. Template sync completed - version bump will be handled by changeset version
+    // 7. Transform package.json scripts from Turbo to Nx
+    logRootInfo('Transforming package.json scripts from Turbo to Nx...');
+    const transformedPkg = {
+      ...pkg,
+      scripts: {
+        ...pkg.scripts,
+        // Transform Turbo scripts to Nx scripts
+        dev: 'nx serve',
+        build: 'nx build',
+        preview: 'nx preview',
+        test: 'nx test',
+        'test:coverage': 'nx test --coverage',
+        'test:coverage:report': 'vitest run --coverage --reporter=html',
+        lint: 'nx lint',
+        'lint:fix': 'nx lint:fix',
+        format: 'nx format',
+        'format:fix': 'nx format:fix',
+        fix: 'nx fix',
+        'type-check': 'nx type-check',
+        'validate:static': 'nx lint && nx format && nx type-check',
+        'validate:quick': 'pnpm validate:static && pnpm test',
+        'validate:full': 'pnpm validate:quick && pnpm test:e2e',
+        'validate:commit': 'npx lint-staged && pnpm test',
+        // Add Nx-specific scripts
+        'nx:cache:stats': 'nx show projects --with-target=lint,format,build,test',
+        'nx:cache:clear': 'nx reset',
+      },
+    };
+
+    await fs.writeFile(pkgPath, JSON.stringify(transformedPkg, null, 2), 'utf8');
+    logRootInfo('  - Transformed Turbo scripts to Nx scripts');
+    logRootInfo('  - Added Nx-specific cache management scripts');
+
+    // 8. Template sync completed - version bump will be handled by changeset version
     logRootInfo('Template sync completed - version bump will be handled by changeset version');
 
     logRootSuccess('Template synchronized successfully!');
