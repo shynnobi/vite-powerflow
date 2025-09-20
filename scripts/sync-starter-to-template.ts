@@ -191,7 +191,7 @@ void (async () => {
       scripts: {
         ...pkg.scripts,
         // Transform Turbo scripts to Nx scripts
-        dev: 'nx serve',
+        dev: 'vite',
         build: 'nx build',
         preview: 'vite preview',
         test: 'vitest run',

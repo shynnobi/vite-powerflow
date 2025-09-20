@@ -3,7 +3,7 @@
 '@vite-powerflow/starter': major
 ---
 
-anchor: fc3af5204817cb35212e69a35c208afccfca48e2
+anchor: 03894e2d5516ee278c2c16eafbd54a71d487df39
 baseline: 08d79e2ca815952ed3a2a9dae101c13570eaeadb
 
 # v2.0.0: Nx Integration + Process Optimization
