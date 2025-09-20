@@ -16,7 +16,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
-    "composite": true,
+    "declaration": false,
+    "declarationMap": false,
     "paths": {
       "@/*": ["src/*"],
       "@/assets/*": ["src/assets/*"],
@@ -33,5 +34,11 @@
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
   "include": ["src", "tests"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "vite.config.ts",
+    "vite.config.mts",
+    "vitest.config.ts",
+    "vitest.config.mts"
+  ]
 }

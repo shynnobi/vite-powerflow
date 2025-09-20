@@ -23,7 +23,7 @@
   "javascript.validate.enable": true,
   "css.customData": [".vscode/tailwind.json"],
   "css.lint.unknownAtRules": "ignore",
-  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
   "typescript.tsserver.watchOptions": {
     "watchDirectory": "useFsEvents",
     "watchFile": "useFsEvents",

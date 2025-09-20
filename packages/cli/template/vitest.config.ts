@@ -4,12 +4,15 @@ import { defineConfig } from 'vitest/config';
 
 const tsconfig = JSON.parse(readFileSync(path.resolve(__dirname, 'tsconfig.json'), 'utf-8'));
 
-const aliases = Object.entries(tsconfig.compilerOptions.paths || {}).reduce((acc, [key, value]) => {
-  const aliasKey = key.replace(/\/\*$/, '');
-  const aliasPath = value[0].replace(/\/\*$/, '');
-  acc[aliasKey] = path.resolve(__dirname, aliasPath);
-  return acc;
-}, {});
+const aliases = Object.entries(tsconfig.compilerOptions.paths || {}).reduce(
+  (acc: Record<string, string>, [key, value]) => {
+    const aliasKey = key.replace(/\/\*$/, '');
+    const aliasPath = (value as string[])[0].replace(/\/\*$/, '');
+    acc[aliasKey] = path.resolve(__dirname, aliasPath);
+    return acc;
+  },
+  {}
+);
 
 export default defineConfig({
   test: {

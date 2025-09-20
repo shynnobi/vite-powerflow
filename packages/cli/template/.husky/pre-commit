@@ -1,7 +1,7 @@
 echo "🔍 Validating your commit..."
 
-pnpm validate:commit || {
-  echo "❌ Validation failed. Please fix the issues above."
+npx lint-staged --concurrent false --relative || {
+  echo "❌ Lint-staged failed. Please fix the issues above."
   exit 1
 }
 
