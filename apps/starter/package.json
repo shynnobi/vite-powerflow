@@ -68,7 +68,9 @@
     "postinstall": "./scripts/postinstall.sh",
     "nx:cache:stats": "nx show projects --with-target=lint,format,build,test",
     "nx:cache:clear": "nx reset",
-    "monitor:processes": "./scripts/monitor-processes.sh"
+    "monitor:processes": "./scripts/monitor-processes.sh",
+    "lint:fix:standalone": "eslint --fix .",
+    "format:fix:standalone": "prettier --write ."
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
