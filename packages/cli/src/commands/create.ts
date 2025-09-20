@@ -176,7 +176,30 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       throw viteConfigError;
     }
 
-    // 9. Format config files with Prettier for consistency
+    // 9. Update project.json placeholders for project name
+    const projectJsonPath = path.join(projectPath, 'project.json');
+    try {
+      if (await fsExtra.pathExists(projectJsonPath)) {
+        let projectJsonContent = await fs.readFile(projectJsonPath, 'utf-8');
+        projectJsonContent = projectJsonContent.replace(
+          /@vite-powerflow\/starter/g,
+          options.projectName
+        );
+        projectJsonContent = projectJsonContent.replace(
+          /@vite-powerflow\/starter:build/g,
+          `${options.projectName}:build`
+        );
+        await fs.writeFile(projectJsonPath, projectJsonContent);
+      }
+    } catch (projectJsonError) {
+      logError('Failed to update project.json');
+      logError(
+        projectJsonError instanceof Error ? projectJsonError.message : String(projectJsonError)
+      );
+      throw projectJsonError;
+    }
+
+    // 10. Format config files with Prettier for consistency
     const filesToFormat: string[] = [];
     if (await fsExtra.pathExists(packageJsonPath)) filesToFormat.push(packageJsonPath);
     if (await fsExtra.pathExists(tsconfigPath)) filesToFormat.push(tsconfigPath);
@@ -210,7 +233,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       throw formatError;
     }
 
-    // 9. Initialize Git repository if requested
+    // 13. Initialize Git repository if requested
     if (options.git) {
       try {
         const projectGit = simpleGit(projectPath);
@@ -229,7 +252,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       }
     }
 
-    // 10. Replace lint-staged config with Nx version for generated projects
+    // 11. Replace lint-staged config with Nx version for generated projects
     const lintstagedPath = path.join(projectPath, '.lintstagedrc.js');
     const lintstagedNxPath = path.join(projectPath, '.lintstagedrc-nx.js');
 
@@ -251,7 +274,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       throw lintstagedError;
     }
 
-    // 11. Clean up package.json scripts (remove standalone scripts)
+    // 12. Clean up package.json scripts (remove standalone scripts)
     const packageJsonCleanupPath = path.join(projectPath, 'package.json');
     try {
       const packageJsonRaw = await fs.readFile(packageJsonCleanupPath, 'utf-8');
