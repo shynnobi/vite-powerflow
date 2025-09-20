@@ -1,6 +1,6 @@
 /**
  * Vite PowerFlow Configuration
- * React + PWA + SEO setup
+ * React + PWA + SEO setup with Nx integration
  */
 
 import fs from 'fs';
@@ -57,6 +57,7 @@ Sitemap: ${PROJECT_CONFIG.domain.production}/sitemap.xml`;
 };
 
 export default defineConfig({
+  cacheDir: './node_modules/.vite/starter',
   plugins: [
     // Core
     react(),
@@ -108,19 +109,19 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
   },
+  preview: {
+    port: 4173,
+    host: true,
+    open: false,
+  },
   test: {
     globals: true,
     environment: 'jsdom',
-    include: [
-      './tests/*.{test,spec}.{js,jsx,ts,tsx}',
-      './tests/**/*.{test,spec}.{js,jsx,ts,tsx}',
-      './**/__tests__/**/*.{test,spec}.{js,jsx,ts,tsx}',
-      './**/__tests__/*.{test,spec}.{js,jsx,ts,tsx}',
-    ],
+    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    reporters: ['default', 'html'],
     coverage: {
-      provider: 'v8',
-      reporter: ['text', 'json', 'html'],
-      reportsDirectory: './coverage',
+      reportsDirectory: './coverage/starter',
+      provider: 'v8' as const,
     },
   },
 });

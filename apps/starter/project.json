@@ -1,0 +1,92 @@
+{
+  "name": "@vite-powerflow/starter",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist"
+      }
+    },
+    "serve": {
+      "executor": "@nx/vite:dev-server",
+      "persistent": true,
+      "options": {
+        "buildTarget": "@vite-powerflow/starter:build"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vitest run"
+      }
+    },
+    "test:coverage": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/coverage/**"],
+      "options": {
+        "command": "vitest run --coverage"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["src/**/*.{ts,tsx,js,jsx}", "*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "lint:fix": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["src/**/*.{ts,tsx,js,jsx}", "*.{ts,tsx,js,jsx}"],
+        "fix": true
+      }
+    },
+    "format": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,md}\" \"*.{ts,tsx,js,jsx,json,css,md}\""
+      }
+    },
+    "format:fix": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\" \"*.{ts,tsx,js,jsx,json,css,md}\""
+      }
+    },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit"
+      }
+    },
+    "fix": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["nx lint:fix", "nx format:fix"],
+        "parallel": false
+      }
+    },
+    "validate:static": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["nx lint", "nx format", "nx type-check"],
+        "parallel": true
+      }
+    },
+    "validate:quick": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["nx validate:static", "nx test"],
+        "parallel": false
+      }
+    },
+    "validate:full": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["nx validate:quick", "nx test:e2e"],
+        "parallel": false
+      }
+    }
+  }
+}

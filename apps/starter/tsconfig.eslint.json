@@ -11,5 +11,6 @@
     "vitest.config.ts",
     "vitest.storybook.config.ts",
     "vitest.shims.d.ts"
-  ]
+  ],
+  "exclude": ["node_modules", "dist", "coverage"]
 }

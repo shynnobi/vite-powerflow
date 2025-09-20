@@ -22,6 +22,7 @@ export default [
     ignores: [
       '.next/**',
       '.turbo/**',
+      '.nx/**',
       'coverage/**',
       'dist/**',
       'html/**',
@@ -31,6 +32,8 @@ export default [
       'vite.config.ts',
       'vitest.config.ts',
       'public/mockServiceWorker.js',
+      '**/vite.config.*.timestamp*',
+      '**/vitest.config.*.timestamp*',
     ],
   },
   // Node.js globals for all JS files
@@ -42,6 +45,9 @@ export default [
         console: 'readonly',
         __dirname: 'readonly',
         __filename: 'readonly',
+        require: 'readonly',
+        setTimeout: 'readonly',
+        global: 'readonly',
       },
     },
   },
@@ -80,7 +86,7 @@ export default [
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-        project: './tsconfig.eslint.json',
+        project: ['./tsconfig.eslint.json', './tsconfig.spec.json'],
       },
       globals: {
         process: 'readonly',
