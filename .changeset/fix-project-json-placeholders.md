@@ -3,8 +3,12 @@
 '@vite-powerflow/starter': minor
 ---
 
-anchor: 60169b4e91b20d031717c926807459dd36235e3f
+anchor: 9a5be236f0d4a8f660d0b60c70a826f909212274
 baseline: 08d79e2ca815952ed3a2a9dae101c13570eaeadb
+
+# <<<<<<< HEAD
+
+> > > > > > > 220f6420 (chore: update lockfile after dependency cleanup)
 
 # <<<<<<< HEAD
 
