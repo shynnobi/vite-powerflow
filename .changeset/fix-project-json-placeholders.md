@@ -3,38 +3,8 @@
 '@vite-powerflow/starter': minor
 ---
 
-anchor: 170618e8a33c2c30e2a912868266087802b8883b
+anchor: fdcaf8027d046558e62ac5eee57171a302e6a332
 baseline: 08d79e2ca815952ed3a2a9dae101c13570eaeadb
-
-# <<<<<<< HEAD
-
-> > > > > > > 6cdb4a17 (fix: update vite.config.ts import path for pwa types)
-
-# <<<<<<< HEAD
-
-> > > > > > > 548aa761 (fix: definitively remove chalk and ora from lockfile)
-
-# <<<<<<< HEAD
-
-> > > > > > > 220f6420 (chore: update lockfile after dependency cleanup)
-
-# <<<<<<< HEAD
-
-> > > > > > > 70ab8990 (feat: add dist directory cleanup before build process)
-
-# <<<<<<< HEAD
-
-> > > > > > > c5143ac3 (chore: remove unused hello-utils file)
-
-# <<<<<<< HEAD
-
-> > > > > > > 051b504d (chore: remove unused logger utilities and dependencies)
-
-# <<<<<<< HEAD
-
-> > > > > > > 050c6abd (chore: remove unused starter API file)
-
-feat: comprehensive starter optimization and Nx integration
 
 ## Starter Configuration & Structure
 
