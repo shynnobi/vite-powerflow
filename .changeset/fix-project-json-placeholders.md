@@ -3,7 +3,7 @@
 '@vite-powerflow/starter': minor
 ---
 
-anchor: 70ab89908e11bda674b5a9fa435364165b0c95b8
+anchor: 220f6420c1707f765bd36373728669a177a6496c
 baseline: 08d79e2ca815952ed3a2a9dae101c13570eaeadb
 
 feat: comprehensive starter optimization and Nx integration
