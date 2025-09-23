@@ -3,8 +3,12 @@
 '@vite-powerflow/starter': minor
 ---
 
-anchor: 9a5be236f0d4a8f660d0b60c70a826f909212274
+anchor: 32940aaa501d943ef8b02d2aa74ba680a466b6d1
 baseline: 08d79e2ca815952ed3a2a9dae101c13570eaeadb
+
+# <<<<<<< HEAD
+
+> > > > > > > 548aa761 (fix: definitively remove chalk and ora from lockfile)
 
 # <<<<<<< HEAD
 
