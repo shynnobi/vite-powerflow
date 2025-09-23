@@ -1,6 +1,5 @@
 /**
- * Enterprise-grade lint-staged configuration for Nx monorepos
- * Optimized for Vite PowerFlow starter
+ * lint-staged configuration for Nx monorepos
  */
 
 const createNxCommand = (target, files) => {
