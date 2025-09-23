@@ -165,7 +165,10 @@ export async function createProject(options: ProjectOptions): Promise<void> {
     try {
       if (await fsExtra.pathExists(viteConfigPath)) {
         let viteConfigContent = await fs.readFile(viteConfigPath, 'utf-8');
+        // Replace {{projectName}} placeholders
         viteConfigContent = viteConfigContent.replace(/{{projectName}}/g, options.projectName);
+        // Replace hardcoded 'starter' references
+        viteConfigContent = viteConfigContent.replace(/starter/g, options.projectName);
         await fs.writeFile(viteConfigPath, viteConfigContent);
       }
     } catch (viteConfigError) {
@@ -176,11 +179,34 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       throw viteConfigError;
     }
 
-    // 9. Update project.json placeholders for project name
+    // 9. Update vitest.config.ts placeholder for project name
+    const vitestConfigPath = path.join(projectPath, 'vitest.config.ts');
+    try {
+      if (await fsExtra.pathExists(vitestConfigPath)) {
+        let vitestConfigContent = await fs.readFile(vitestConfigPath, 'utf-8');
+        // Replace hardcoded 'starter' references
+        vitestConfigContent = vitestConfigContent.replace(/starter/g, options.projectName);
+        await fs.writeFile(vitestConfigPath, vitestConfigContent);
+      }
+    } catch (vitestConfigError) {
+      logError('Failed to update vitest.config.ts');
+      logError(
+        vitestConfigError instanceof Error ? vitestConfigError.message : String(vitestConfigError)
+      );
+      throw vitestConfigError;
+    }
+
+    // 10. Update project.json placeholders for project name
     const projectJsonPath = path.join(projectPath, 'project.json');
     try {
       if (await fsExtra.pathExists(projectJsonPath)) {
         let projectJsonContent = await fs.readFile(projectJsonPath, 'utf-8');
+        // Replace {{projectName}} placeholders
+        projectJsonContent = projectJsonContent.replace(
+          /\{\{projectName\}\}/g,
+          options.projectName
+        );
+        // Replace @vite-powerflow/starter references
         projectJsonContent = projectJsonContent.replace(
           /@vite-powerflow\/starter/g,
           options.projectName
@@ -199,11 +225,12 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       throw projectJsonError;
     }
 
-    // 10. Format config files with Prettier for consistency
+    // 11. Format config files with Prettier for consistency
     const filesToFormat: string[] = [];
     if (await fsExtra.pathExists(packageJsonPath)) filesToFormat.push(packageJsonPath);
     if (await fsExtra.pathExists(tsconfigPath)) filesToFormat.push(tsconfigPath);
     if (await fsExtra.pathExists(viteConfigPath)) filesToFormat.push(viteConfigPath);
+    if (await fsExtra.pathExists(vitestConfigPath)) filesToFormat.push(vitestConfigPath);
     const devcontainerJsonPath = path.join(projectPath, '.devcontainer', 'devcontainer.json');
     if (await fsExtra.pathExists(devcontainerJsonPath)) filesToFormat.push(devcontainerJsonPath);
     const dockerComposePath = path.join(projectPath, 'docker-compose.yml');
@@ -233,36 +260,19 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       throw formatError;
     }
 
-    // 13. Initialize Git repository if requested
-    if (options.git) {
-      try {
-        const projectGit = simpleGit(projectPath);
-        await projectGit.init();
-        if (options.gitUserName) {
-          await projectGit.addConfig('user.name', options.gitUserName, false, 'local');
-        }
-        if (options.gitUserEmail) {
-          await projectGit.addConfig('user.email', options.gitUserEmail, false, 'local');
-        }
-        // logSuccess('Git initialized.');
-      } catch (gitError) {
-        logError('Failed to initialize Git');
-        logError(gitError instanceof Error ? gitError.message : String(gitError));
-        throw gitError;
-      }
-    }
-
-    // 11. Replace lint-staged config with Nx version for generated projects
+    // 12. Replace lint-staged config with Nx version for generated projects
+    // Note: The starter includes both standalone and Nx lint-staged configs to handle
+    // monorepo compatibility issues in GitHub Actions. Generated projects use pure Nx.
     const lintstagedPath = path.join(projectPath, '.lintstagedrc.js');
     const lintstagedNxPath = path.join(projectPath, '.lintstagedrc-nx.js');
 
     try {
-      // Delete the standalone version
+      // Delete the standalone version (used in monorepo to avoid Nx dependency issues)
       if (await fsExtra.pathExists(lintstagedPath)) {
         await fs.unlink(lintstagedPath);
       }
 
-      // Rename Nx version to be the main config
+      // Rename Nx version to be the main config (generated projects use pure Nx)
       if (await fsExtra.pathExists(lintstagedNxPath)) {
         await fs.rename(lintstagedNxPath, lintstagedPath);
       }
@@ -274,13 +284,16 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       throw lintstagedError;
     }
 
-    // 12. Clean up package.json scripts (remove standalone scripts)
+    // 13. Clean up package.json scripts (remove standalone scripts)
+    // Note: Standalone scripts were needed in the monorepo starter to avoid Nx dependency issues
+    // in GitHub Actions CI/CD pipelines (resolved "nx ENOENT" errors). Generated projects use
+    // pure Nx commands, so these standalone fallbacks are no longer needed.
     const packageJsonCleanupPath = path.join(projectPath, 'package.json');
     try {
       const packageJsonRaw = await fs.readFile(packageJsonCleanupPath, 'utf-8');
       const packageJson = JSON.parse(packageJsonRaw);
 
-      // Remove standalone scripts
+      // Remove standalone scripts (no longer needed in generated projects)
       delete packageJson.scripts['format:fix:standalone'];
       delete packageJson.scripts['lint:fix:standalone'];
 
@@ -293,21 +306,27 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       throw packageJsonError;
     }
 
-    // 12. Create initial commit with all modifications if Git was initialized
+    // 14. Initialize Git repository and create initial commit if requested
     if (options.git) {
       try {
         const projectGit = simpleGit(projectPath);
+        await projectGit.init();
+        if (options.gitUserName) {
+          await projectGit.addConfig('user.name', options.gitUserName, false, 'local');
+        }
+        if (options.gitUserEmail) {
+          await projectGit.addConfig('user.email', options.gitUserEmail, false, 'local');
+        }
         await projectGit.add('.');
         await projectGit.commit('chore: initial commit');
-        // logSuccess('Initial commit created.');
       } catch (gitError) {
-        logError('Failed to create initial commit');
+        logError('Failed to initialize Git or create initial commit');
         logError(gitError instanceof Error ? gitError.message : String(gitError));
         throw gitError;
       }
     }
 
-    // 13. Final success log
+    // 15. Final success log
     logSuccess(`Project created at: ${projectPath}`);
   } catch (error) {
     logError('Failed to create project');

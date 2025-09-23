@@ -137,21 +137,6 @@ void (async () => {
       process.exit(1);
     }
 
-    // Note: starterSource is no longer needed as we use syncConfig.baseline directly
-    // The template already has the correct syncConfig.baseline from the starter copy
-
-    // Add/update scripts
-    pkg.scripts = {
-      ...pkg.scripts,
-      format: pkg.scripts?.format ?? 'prettier --check .',
-      'validate:static': 'run-p format lint type-check',
-      'validate:quick': 'run-s validate:static test',
-      'validate:full': 'run-s validate:static test test:e2e',
-      'validate:commit': 'npx lint-staged && pnpm test',
-    };
-
-    await fs.writeFile(pkgPath, JSON.stringify(pkg, null, 2), 'utf8');
-
     // 5. Clean tsconfig.json by removing 'extends' for standalone usage
     logRootInfo("Cleaning tsconfig.json (removing 'extends')...");
     const tsconfigPath = path.join(templateDest, 'tsconfig.json');
@@ -164,62 +149,43 @@ void (async () => {
       }
     }
 
-    // 6. Transform vite.config.ts to use project name placeholder
-    logRootInfo('Transforming vite.config.ts for template usage...');
-    const viteConfigPath = path.join(templateDest, 'vite.config.ts');
-    if (await fs.pathExists(viteConfigPath)) {
-      const viteConfigRaw = await fs.readFile(viteConfigPath, 'utf-8');
-      // Replace hardcoded 'starter' with {{projectName}} placeholder
-      const transformedViteConfig = viteConfigRaw
-        .replace(
-          /cacheDir:\s*['"]\.\/node_modules\/\.vite\/starter['"]/g,
-          "cacheDir: './node_modules/.vite/{{projectName}}'"
-        )
-        .replace(
-          /reportsDirectory:\s*['"]\.\/coverage\/starter['"]/g,
-          "reportsDirectory: './coverage/{{projectName}}'"
-        );
-
-      await fs.writeFile(viteConfigPath, transformedViteConfig, 'utf8');
-      logRootInfo('  - Replaced hardcoded project names with {{projectName}} placeholders');
-    }
-
-    // 7. Transform package.json scripts from Turbo to Nx
-    logRootInfo('Transforming package.json scripts from Turbo to Nx...');
-    const transformedPkg = {
-      ...pkg,
-      scripts: {
-        ...pkg.scripts,
-        // Transform Turbo scripts to Nx scripts
-        dev: 'vite',
-        build: 'nx build',
-        preview: 'vite preview',
-        test: 'vitest run',
-        'test:coverage': 'nx test --coverage',
-        'test:coverage:report': 'vitest run --coverage --reporter=html',
-        lint: 'nx lint',
-        'lint:fix': 'nx lint:fix',
-        format: 'nx format',
-        'format:fix': 'nx format:fix',
-        fix: 'nx fix',
-        'type-check': 'nx type-check',
-        'validate:static': 'nx validate:static',
-        'validate:quick': 'nx validate:quick',
-        'validate:full': 'nx validate:full',
-        'validate:commit': 'npx lint-staged; nx test',
-        // Add Nx-specific scripts
-        'nx:cache:stats': 'nx show projects --with-target=lint,format,build,test',
-        'nx:cache:clear': 'nx reset',
-      },
+    // 7. Transform package.json scripts from Turbo to Nx with optimizations
+    logRootInfo('Transforming package.json scripts from Turbo to Nx with optimizations...');
+    pkg.scripts = {
+      ...pkg.scripts,
+      // Transform to optimized Nx scripts
+      dev: 'nx serve',
+      build: 'nx build',
+      preview: 'nx preview',
+      test: 'nx test',
+      'test:coverage': 'nx test:coverage',
+      'test:coverage:report': 'vitest run --coverage --reporter=html',
+      'test:e2e': 'playwright test',
+      'test:e2e:setup': './scripts/e2e-setup.sh',
+      'test:e2e:clear': './scripts/e2e-clear-cache.sh',
+      'test:e2e:ui': 'playwright test --ui --ui-host 0.0.0.0 --ui-port 9324',
+      'test:e2e:report': 'playwright show-report',
+      'test:all': 'nx test:all',
+      storybook: 'nx storybook',
+      'storybook:test': 'test-storybook --url http://localhost:9009',
+      'storybook:build': 'nx build-storybook',
+      'storybook:cleanup': './scripts/cleanup-storybook.sh',
+      lint: 'nx lint',
+      'lint:fix': 'nx lint:fix',
+      format: 'nx format:check',
+      'format:fix': 'nx format:write',
+      fix: 'nx lint:fix && nx format:write',
+      'type-check': 'nx type-check',
+      'validate:static': 'nx validate:static',
+      'validate:quick': 'nx validate:quick',
+      'validate:full': 'nx validate:full',
+      'validate:commit': 'npx lint-staged; nx test',
+      'nx:cache:stats': 'nx show projects --with-target=lint,format,build,test',
+      'nx:cache:clear': 'nx reset',
     };
 
-    await fs.writeFile(pkgPath, JSON.stringify(transformedPkg, null, 2), 'utf8');
+    await fs.writeFile(pkgPath, JSON.stringify(pkg, null, 2), 'utf8');
     logRootInfo('  - Transformed Turbo scripts to Nx scripts');
-    logRootInfo('  - Added Nx-specific cache management scripts');
-
-    // 8. Template sync completed - version bump will be handled by changeset version
-    logRootInfo('Template sync completed - version bump will be handled by changeset version');
-
     logRootSuccess('Template synchronized successfully!');
   } catch (err) {
     logRootError('Template synchronization failed!');
