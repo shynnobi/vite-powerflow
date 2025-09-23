@@ -3,32 +3,8 @@
 '@vite-powerflow/starter': minor
 ---
 
-anchor: cf44ba8a4dd18324855289bb2a1367700e0cda0c
+anchor: 71670fe08ca964f86a9544af46fce91c6d18c18c
 baseline: 08d79e2ca815952ed3a2a9dae101c13570eaeadb
-
-<<<<<<< HEAD
-
-<<<<<<< HEAD
-
-<<<<<<< HEAD
-
-<<<<<<< HEAD
-
-<<<<<<< HEAD
-
-# <<<<<<< HEAD
-
-> > > > > > > # 2beae03a (chore: remove nx-optimization.patch reference file)
-> > > > > > >
-> > > > > > > # 8294268f (feat(turbo): optimize cache configuration for monorepo tests)
-> > > > > > >
-> > > > > > > # c37801c6 (refactor: move type definitions to dedicated types directory)
-> > > > > > >
-> > > > > > > # 6cc2019e (fix: update vite.config.ts import path for pwa types)
-> > > > > > >
-> > > > > > > # 8ced8cd8 (refactor: make starter configuration more generic)
-> > > > > > >
-> > > > > > > 0a034cf0 (chore: update changeset for comprehensive starter optimization)
 
 feat: comprehensive starter optimization and Nx integration
 
