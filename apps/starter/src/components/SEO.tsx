@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 
 import { PROJECT_CONFIG } from '@/config/projectConfig';
-import type { SEOProps } from '@/lib/seo';
+import type { SEOProps } from '@/types/seo';
 
 export function SEO({ title, description, image, url, keywords, author, isHomepage }: SEOProps) {
   // Use passed values with fallbacks to PROJECT_CONFIG defaults

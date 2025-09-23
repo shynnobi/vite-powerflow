@@ -1,12 +1,46 @@
 ---
-'@vite-powerflow/create': patch
+'@vite-powerflow/create': minor
+'@vite-powerflow/starter': minor
 ---
 
-fix: replace project name placeholders in project.json
+anchor: 220f6420c1707f765bd36373728669a177a6496c
+baseline: 08d79e2ca815952ed3a2a9dae101c13570eaeadb
 
-- Add step 9 to replace @vite-powerflow/starter with {{projectName}} in project.json
-- Replace buildTarget references with correct project name
-- Update step numbering for consistency
-- Ensures generated projects have correct Nx project configuration
+feat: comprehensive starter optimization and Nx integration
 
-This fix ensures that when users create new projects with the CLI, the generated project.json file will have the correct project name instead of the hardcoded @vite-powerflow/starter references.
+## Starter Configuration & Structure
+
+- Move type definitions to dedicated `src/types/` directory (seo.ts, pwa.ts, config.ts)
+- Remove unused logger utilities and dependencies (chalk, ora, jiti, npm-run-all, listr2)
+- Simplify counterStore.ts by replacing logger.warn with console.warn
+- Delete unused files: src/index.ts, src/utils/hello-utils.ts, tests/unit/example.test.ts
+
+## Nx Integration & Optimization
+
+- Add complete Nx configuration (nx.json, project.json) with native executors
+- Implement Nx targets for test, test:coverage, test:e2e, preview, storybook, build-storybook
+- Add Nx-specific scripts and dependencies (@nx/storybook, @chromatic-com/storybook)
+- Create E2E and Storybook setup/cleanup scripts with container detection
+- Optimize Vitest configuration with proper include patterns and reporters
+
+## Template Generation & CLI
+
+- Update create.ts to handle {{projectName}} placeholders in project.json, vite.config.ts, vitest.config.ts
+- Improve sync-starter-to-template.ts for better template transformation
+- Add Git initialization and commit logic with detailed comments
+- Handle lint-staged configuration switching (standalone → Nx)
+
+## Configuration & Generic Setup
+
+- Make projectConfig.ts more generic with placeholders and empty fields
+- Update Home.tsx to use generic titles and descriptions
+- Improve E2E test comments and structure
+- Add comprehensive .nxignore and .gitignore files
+
+## Turbo Integration
+
+- Optimize turbo.json for monorepo-wide test caching
+- Add globalDependencies and outputs configuration
+- Maintain Turbo compatibility in monorepo while enabling Nx in generated projects
+
+This major update transforms the starter into a fully optimized Nx-ready template while maintaining Turbo compatibility in the monorepo root.
