@@ -2,7 +2,9 @@
 '@vite-powerflow/create': patch
 ---
 
-anchor: 8f909d68931f234610062716a08409aa0ae2d1b5
+anchor: 7de7524393e7c8bf927ce6418d47fd9d959769ab
+
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 
@@ -18,7 +20,9 @@ anchor: 8f909d68931f234610062716a08409aa0ae2d1b5
 > > > > > > >
 > > > > > > > # c37801c6 (refactor: move type definitions to dedicated types directory)
 > > > > > > >
-> > > > > > > 6cc2019e (fix: update vite.config.ts import path for pwa types)
+> > > > > > > # 6cc2019e (fix: update vite.config.ts import path for pwa types)
+> > > > > > >
+> > > > > > > 8ced8cd8 (refactor: make starter configuration more generic)
 
 fix: replace project name placeholders in project.json
 
