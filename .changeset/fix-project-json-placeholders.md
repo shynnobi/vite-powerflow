@@ -2,7 +2,9 @@
 '@vite-powerflow/create': patch
 ---
 
-anchor: dbf351c77aeaa57df1922e51f70a83c1dde2bf25
+anchor: 8f909d68931f234610062716a08409aa0ae2d1b5
+
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 
@@ -14,7 +16,9 @@ anchor: dbf351c77aeaa57df1922e51f70a83c1dde2bf25
 > > > > > > >
 > > > > > > > # 8294268f (feat(turbo): optimize cache configuration for monorepo tests)
 > > > > > > >
-> > > > > > > c37801c6 (refactor: move type definitions to dedicated types directory)
+> > > > > > > # c37801c6 (refactor: move type definitions to dedicated types directory)
+> > > > > > >
+> > > > > > > 6cc2019e (fix: update vite.config.ts import path for pwa types)
 
 fix: replace project name placeholders in project.json
 
