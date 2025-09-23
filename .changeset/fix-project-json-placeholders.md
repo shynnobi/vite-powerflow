@@ -3,8 +3,12 @@
 '@vite-powerflow/starter': minor
 ---
 
-anchor: 90733b9afbb4fb08db727b93ff9676533755cdc6
+anchor: 60169b4e91b20d031717c926807459dd36235e3f
 baseline: 08d79e2ca815952ed3a2a9dae101c13570eaeadb
+
+# <<<<<<< HEAD
+
+> > > > > > > 70ab8990 (feat: add dist directory cleanup before build process)
 
 # <<<<<<< HEAD
 
