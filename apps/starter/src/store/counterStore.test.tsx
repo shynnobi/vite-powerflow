@@ -4,10 +4,12 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import Home from '@/pages/Home';
 import { useCounterStore } from '@/store/counterStore';
+import { createWrapper } from '@/tests/config/reactTestSetup';
 
 expect.extend(toHaveNoViolations);
 
 describe('counterStore', () => {
+  const wrapper = createWrapper();
   beforeEach(() => {
     useCounterStore.setState({ count: 0 });
   });
@@ -70,7 +72,7 @@ describe('counterStore', () => {
   });
 
   it('Home counter section should have no accessibility violations', async () => {
-    const { container } = render(<Home />);
+    const { container } = render(<Home />, { wrapper });
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
