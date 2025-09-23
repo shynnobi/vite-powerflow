@@ -3,8 +3,12 @@
 '@vite-powerflow/starter': minor
 ---
 
-anchor: 71670fe08ca964f86a9544af46fce91c6d18c18c
+anchor: bc41d2a9a94818bfd0a42a8c14cca94414626c3e
 baseline: 08d79e2ca815952ed3a2a9dae101c13570eaeadb
+
+# <<<<<<< HEAD
+
+> > > > > > > 050c6abd (chore: remove unused starter API file)
 
 feat: comprehensive starter optimization and Nx integration
 
