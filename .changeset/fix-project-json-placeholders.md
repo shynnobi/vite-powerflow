@@ -2,11 +2,15 @@
 '@vite-powerflow/create': patch
 ---
 
-anchor: e37fa2ff6dafde7f7bda9fb531dee5517aec8bdb
+anchor: 6d8c966eb774f0cfb0174b593c83a7e0a974061b
+
+<<<<<<< HEAD
 
 # <<<<<<< HEAD
 
-> > > > > > > 2beae03a (chore: remove nx-optimization.patch reference file)
+> > > > > > > # 2beae03a (chore: remove nx-optimization.patch reference file)
+> > > > > > >
+> > > > > > > 8294268f (feat(turbo): optimize cache configuration for monorepo tests)
 
 fix: replace project name placeholders in project.json
 
