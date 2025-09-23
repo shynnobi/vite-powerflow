@@ -3,8 +3,12 @@
 '@vite-powerflow/starter': minor
 ---
 
-anchor: 32940aaa501d943ef8b02d2aa74ba680a466b6d1
+anchor: 170618e8a33c2c30e2a912868266087802b8883b
 baseline: 08d79e2ca815952ed3a2a9dae101c13570eaeadb
+
+# <<<<<<< HEAD
+
+> > > > > > > 6cdb4a17 (fix: update vite.config.ts import path for pwa types)
 
 # <<<<<<< HEAD
 
