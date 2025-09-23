@@ -3,8 +3,12 @@
 '@vite-powerflow/starter': minor
 ---
 
-anchor: bc41d2a9a94818bfd0a42a8c14cca94414626c3e
+anchor: c93290cca0a06e63da9141e5e54756ae6cdad534
 baseline: 08d79e2ca815952ed3a2a9dae101c13570eaeadb
+
+# <<<<<<< HEAD
+
+> > > > > > > 051b504d (chore: remove unused logger utilities and dependencies)
 
 # <<<<<<< HEAD
 
