@@ -2,7 +2,7 @@
 '@vite-powerflow/create': patch
 ---
 
-anchor: c37801c61744faa963afedd94891592aaa961778
+anchor: 6cc2019eb21332981fb280c83f7b4c6948f0ef20
 
 fix: replace project name placeholders in project.json
 
