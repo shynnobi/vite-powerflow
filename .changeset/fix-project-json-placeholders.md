@@ -2,7 +2,11 @@
 '@vite-powerflow/create': patch
 ---
 
-anchor: 6a5962921d1e5009da5fb0782f96806fe6d2ce61
+anchor: e37fa2ff6dafde7f7bda9fb531dee5517aec8bdb
+
+# <<<<<<< HEAD
+
+> > > > > > > 2beae03a (chore: remove nx-optimization.patch reference file)
 
 fix: replace project name placeholders in project.json
 
