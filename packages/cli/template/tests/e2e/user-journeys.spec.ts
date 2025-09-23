@@ -1,4 +1,4 @@
-// Example E2E test for a starter project
+// Example E2E test
 // Philosophy: Keep it simple and pedagogical. This test demonstrates navigation and a basic interaction.
 // Users are encouraged to delete or extend this file as needed for their own project.
 

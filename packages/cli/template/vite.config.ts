@@ -14,7 +14,7 @@ import { defineConfig } from 'vitest/config';
 import { VitePWA } from 'vite-plugin-pwa';
 import compression from 'vite-plugin-compression';
 import { PROJECT_CONFIG } from './src/config/projectConfig.js';
-import { generatePWAManifest, validateConfiguration } from './src/lib/pwa.js';
+import { generatePWAManifest, validateConfiguration } from './src/types/pwa.js';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import Sitemap from 'vite-plugin-sitemap';
@@ -57,7 +57,7 @@ Sitemap: ${PROJECT_CONFIG.domain.production}/sitemap.xml`;
 };
 
 export default defineConfig({
-  cacheDir: './node_modules/.vite/{{projectName}}',
+  cacheDir: './node_modules/.vite/starter',
   plugins: [
     // Core
     react(),
@@ -120,7 +120,7 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     reporters: ['default', 'html'],
     coverage: {
-      reportsDirectory: './coverage/{{projectName}}',
+      reportsDirectory: './coverage/starter',
       provider: 'v8' as const,
     },
   },
