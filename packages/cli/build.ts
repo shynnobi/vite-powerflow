@@ -59,6 +59,7 @@ void (async () => {
 
   try {
     logInfo('Building the CLI tool...');
+
     // 1. Check template folder
     if (!(await fs.pathExists(templatePath))) {
       logError(
