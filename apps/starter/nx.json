@@ -1,5 +1,5 @@
 {
-  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "$schema": "node_modules/nx/schemas/nx-schema.json",
   "tui": {
     "enabled": false
   },
@@ -7,9 +7,9 @@
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "format"],
-        "parallel": 1,
-        "maxParallel": 1,
+        "cacheableOperations": ["build", "lint", "test", "type-check"],
+        "parallel": 3,
+        "maxParallel": 3,
         "useDaemonProcess": true
       }
     }
@@ -21,7 +21,24 @@
     },
     "test:e2e": {
       "dependsOn": ["^build"],
-      "outputs": ["{projectRoot}/test-results/**", "{projectRoot}/playwright-report/**"]
+      "outputs": ["{projectRoot}/test-results/**", "{projectRoot}/playwright-report/**"],
+      "cache": false,
+      "inputs": [
+        "production",
+        "{projectRoot}/tests/**/*",
+        "{projectRoot}/playwright.config.*",
+        "!{projectRoot}/test-results/**",
+        "!{projectRoot}/playwright-report/**"
+      ]
+    },
+    "lint": {
+      "inputs": ["default", "^production"]
+    },
+    "type-check": {
+      "inputs": ["default", "^production"]
+    },
+    "preview": {
+      "dependsOn": ["^build"]
     },
     "test:coverage": {
       "inputs": ["default", "^production"]
@@ -41,21 +58,5 @@
       "!{projectRoot}/test-setup.[jt]s"
     ],
     "sharedGlobals": []
-  },
-  "plugins": [
-    {
-      "plugin": "@nx/vite/plugin",
-      "options": {
-        "buildTargetName": "vite:build",
-        "testTargetName": "vite:test",
-        "serveTargetName": "vite:serve",
-        "devTargetName": "vite:dev",
-        "previewTargetName": "vite:preview",
-        "serveStaticTargetName": "serve-static",
-        "typecheckTargetName": "typecheck",
-        "buildDepsTargetName": "build-deps",
-        "watchDepsTargetName": "watch-deps"
-      }
-    }
-  ]
+  }
 }

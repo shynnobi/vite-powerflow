@@ -1,27 +1,32 @@
-import { readFileSync } from 'fs';
-import * as path from 'path';
 import { defineConfig } from 'vitest/config';
-
-const tsconfig = JSON.parse(readFileSync(path.resolve(__dirname, 'tsconfig.json'), 'utf-8'));
-
-const aliases = Object.entries(tsconfig.compilerOptions.paths || {}).reduce(
-  (acc: Record<string, string>, [key, value]) => {
-    const aliasKey = key.replace(/\/\*$/, '');
-    const aliasPath = (value as string[])[0].replace(/\/\*$/, '');
-    acc[aliasKey] = path.resolve(__dirname, aliasPath);
-    return acc;
-  },
-  {}
-);
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
+  plugins: [tsconfigPaths()],
   test: {
+    coverage: {
+      reportsDirectory: './coverage/starter',
+    },
     setupFiles: ['./tests/config/reactTestSetup.tsx'],
     environment: 'jsdom',
     globals: true,
-    include: ['tests/**/*.test.{ts,tsx,js,jsx}'],
-  },
-  resolve: {
-    alias: aliases,
+    include: [
+      'src/**/*.{test,spec}.{ts,tsx,js,jsx}',
+      'tests/**/*.{test,spec}.{ts,tsx,js,jsx}',
+      '!tests/e2e/**',
+    ],
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/coverage/**',
+      '**/tests/e2e/**',
+      '**/.{idea,git,cache,output,temp}/**',
+      '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*',
+    ],
+    reporters: ['default', 'verbose'],
+    outputFile: {
+      html: './test-results/index.html',
+      json: './test-results/results.json',
+    },
   },
 });
