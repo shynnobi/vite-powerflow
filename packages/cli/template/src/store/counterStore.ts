@@ -1,8 +1,6 @@
 import { create } from 'zustand';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 
-import { logger } from '@/utils/logger';
-
 /**
  * Counter state interface
  * @interface CounterState
@@ -25,7 +23,7 @@ interface CounterState {
  * @param error - The error that occurred
  */
 const handleStorageError = (action: string, key: string, error: unknown) => {
-  logger.warn(`Storage operation failed: ${action} ${key}`, error);
+  console.warn(`Storage operation failed: ${action} ${key}`, error);
 };
 
 /**

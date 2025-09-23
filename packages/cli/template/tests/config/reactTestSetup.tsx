@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { cleanup } from '@testing-library/react';
 import { afterEach } from 'vitest';
@@ -39,7 +40,9 @@ export const createWrapper = () => {
   });
 
   const TestWrapper = ({ children }: { children: ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </HelmetProvider>
   );
   TestWrapper.displayName = 'TestWrapper';
 

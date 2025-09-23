@@ -3,7 +3,7 @@
 // Complete configuration for Vite PowerFlow starter template
 // =============================================================================
 
-import type { ProjectConfig } from '@/lib/config';
+import type { ProjectConfig } from '@/types/config';
 
 export const PROJECT_CONFIG: ProjectConfig = {
   // 🎯 SEO Configuration
@@ -11,11 +11,11 @@ export const PROJECT_CONFIG: ProjectConfig = {
     // TODO: Replace with your app's actual title (appears in browser tab)
     title: 'My App',
     // TODO: Write a compelling description for search engines (160 chars max)
-    description: 'A modern React application built with Vite PowerFlow starter kit.',
+    description: 'description',
     // TODO: Add relevant keywords for your app's content and audience
-    keywords: 'react, vite, typescript, starter kit, modern web development',
+    keywords: '',
     // TODO: Add your name or company name
-    author: 'Your Name',
+    author: '',
 
     // TODO: Replace with your app's social sharing image (1200x630px recommended)
     image: '/images/og-image-1200-630.png',
@@ -23,7 +23,7 @@ export const PROJECT_CONFIG: ProjectConfig = {
     // TODO: Update with your official site name (can be longer than title)
     siteName: 'My App',
     // TODO: Write a short tagline/slogan for your app
-    siteDescription: 'Modern React development with Vite PowerFlow',
+    siteDescription: 'description',
 
     // TODO: Replace with your actual Twitter/X handle
     twitterSite: '@yourusername',
@@ -42,7 +42,7 @@ export const PROJECT_CONFIG: ProjectConfig = {
     // TODO: Set a short name for mobile home screen icons (prevents truncation)
     short_name: 'MyApp',
     // TODO: Write a compelling description for your PWA
-    description: 'A modern React application built with Vite PowerFlow starter kit.',
+    description: 'description',
 
     // TODO: Choose your app's theme color (affects browser UI when PWA is running)
     theme_color: '#32A8FF',

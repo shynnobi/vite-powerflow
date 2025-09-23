@@ -13,20 +13,13 @@
       "executor": "@nx/vite:dev-server",
       "persistent": true,
       "options": {
-        "buildTarget": "@vite-powerflow/starter:build"
+        "buildTarget": "{{projectName}}:build"
       }
     },
-    "test": {
-      "executor": "nx:run-commands",
+    "preview": {
+      "executor": "@nx/vite:preview-server",
       "options": {
-        "command": "vitest run"
-      }
-    },
-    "test:coverage": {
-      "executor": "nx:run-commands",
-      "outputs": ["{projectRoot}/coverage/**"],
-      "options": {
-        "command": "vitest run --coverage"
+        "buildTarget": "{{projectName}}:build"
       }
     },
     "lint": {
@@ -42,35 +35,46 @@
         "fix": true
       }
     },
-    "format": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,md}\" \"*.{ts,tsx,js,jsx,json,css,md}\""
-      }
-    },
-    "format:fix": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\" \"*.{ts,tsx,js,jsx,json,css,md}\""
-      }
-    },
     "type-check": {
-      "executor": "nx:run-commands",
+      "executor": "@nx/js:tsc",
       "options": {
-        "command": "tsc --noEmit"
+        "main": "src/main.tsx",
+        "tsConfig": "tsconfig.json",
+        "outputPath": "dist",
+        "noEmit": true
       }
     },
-    "fix": {
+    "test": {
+      "executor": "@nx/vite:test",
+      "options": {
+        "config": "vitest.config.ts"
+      }
+    },
+    "test:coverage": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{projectRoot}/coverage/**"],
+      "options": {
+        "config": "vitest.config.ts",
+        "coverage": true
+      }
+    },
+    "test:e2e": {
+      "executor": "@nx/playwright:playwright",
+      "options": {
+        "config": "playwright.config.ts"
+      }
+    },
+    "test:all": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["nx lint:fix", "nx format:fix"],
-        "parallel": false
+        "commands": ["nx test", "nx test:e2e"],
+        "parallel": true
       }
     },
     "validate:static": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["nx lint", "nx format", "nx type-check"],
+        "commands": ["nx lint", "nx format:check", "nx type-check"],
         "parallel": true
       }
     },
@@ -84,8 +88,25 @@
     "validate:full": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["nx validate:quick", "nx test:e2e"],
+        "commands": ["nx validate:static", "nx test:all"],
         "parallel": false
+      }
+    },
+    "storybook": {
+      "executor": "@nx/storybook:storybook",
+      "options": {
+        "configDir": ".storybook",
+        "browserTarget": "{{projectName}}:build",
+        "compodoc": false
+      }
+    },
+    "build-storybook": {
+      "executor": "@nx/storybook:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "configDir": ".storybook",
+        "browserTarget": "{{projectName}}:build",
+        "outputPath": "dist/storybook"
       }
     }
   }
