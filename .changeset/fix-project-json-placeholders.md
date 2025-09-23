@@ -2,7 +2,9 @@
 '@vite-powerflow/create': patch
 ---
 
-anchor: 6d8c966eb774f0cfb0174b593c83a7e0a974061b
+anchor: dbf351c77aeaa57df1922e51f70a83c1dde2bf25
+
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 
@@ -10,7 +12,9 @@ anchor: 6d8c966eb774f0cfb0174b593c83a7e0a974061b
 
 > > > > > > > # 2beae03a (chore: remove nx-optimization.patch reference file)
 > > > > > > >
-> > > > > > > 8294268f (feat(turbo): optimize cache configuration for monorepo tests)
+> > > > > > > # 8294268f (feat(turbo): optimize cache configuration for monorepo tests)
+> > > > > > >
+> > > > > > > c37801c6 (refactor: move type definitions to dedicated types directory)
 
 fix: replace project name placeholders in project.json
 

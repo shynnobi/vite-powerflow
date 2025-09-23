@@ -3,7 +3,7 @@
 // Complete configuration for Vite PowerFlow starter template
 // =============================================================================
 
-import type { ProjectConfig } from '@/lib/config';
+import type { ProjectConfig } from '@/types/config';
 
 export const PROJECT_CONFIG: ProjectConfig = {
   // 🎯 SEO Configuration
