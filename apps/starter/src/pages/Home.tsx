@@ -12,11 +12,11 @@ export default function Home(): ReactElement {
     <>
       <SEO
         // TODO: Replace with your app's actual title (appears in browser tab)
-        title="My App | A modern React starter kit"
+        title="My App | Made with Vite PowerFlow"
         // TODO: Write a compelling description for search engines (160 chars max)
-        description="A React + Vite starter, fully containerized for reproducible development, with strict code quality tools and AI-powered workflow. Includes comprehensive testing, linting, and CI/CD."
+        description="description"
         // TODO: Add relevant keywords for your app's content and audience
-        keywords="vite, react, typescript, starter kit, testing, ci/cd, dev containers, docker, tailwind css, shadcn/ui, storybook, vitest, playwright"
+        keywords=""
         isHomepage
       />
       <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-6">

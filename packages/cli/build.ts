@@ -8,6 +8,15 @@ import { logError, logInfo, logSuccess } from './src/utils/shared/logger.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Clean dist directory before building
+async function cleanDist(): Promise<void> {
+  const distPath = path.join(__dirname, 'dist');
+  if (await fs.pathExists(distPath)) {
+    await fs.remove(distPath);
+    logInfo('🧹 Cleaned dist directory');
+  }
+}
+
 // Copy template to dist
 async function copyTemplate(): Promise<void> {
   const templatePath = path.join(__dirname, 'template');
@@ -59,7 +68,11 @@ void (async () => {
 
   try {
     logInfo('Building the CLI tool...');
-    // 1. Check template folder
+
+    // 1. Clean dist directory
+    await cleanDist();
+
+    // 2. Check template folder
     if (!(await fs.pathExists(templatePath))) {
       logError(
         'The template folder is missing in packages/cli! The build will fail if this folder is required.'
@@ -67,10 +80,10 @@ void (async () => {
       process.exit(1);
     }
 
-    // 2. Copy template to dist
+    // 3. Copy template to dist
     await copyTemplate();
 
-    // 3. Build the CLI
+    // 4. Build the CLI
     await esbuild.build({
       entryPoints: ['src/index.ts'],
       bundle: true,
