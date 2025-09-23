@@ -4,16 +4,19 @@ import { axe, toHaveNoViolations } from 'jest-axe';
 import { describe, expect, it } from 'vitest';
 
 import App from '@/App';
+import { createWrapper } from '@/tests/config/reactTestSetup';
 
 expect.extend(toHaveNoViolations);
 
 describe('App', () => {
+  const wrapper = createWrapper();
   it('should render the main heading when the application starts', () => {
     // Given: The application is mounted in a browser router
     render(
       <BrowserRouter>
         <App />
-      </BrowserRouter>
+      </BrowserRouter>,
+      { wrapper }
     );
 
     // When: The application renders
@@ -25,7 +28,8 @@ describe('App', () => {
     const { container } = render(
       <BrowserRouter>
         <App />
-      </BrowserRouter>
+      </BrowserRouter>,
+      { wrapper }
     );
     const results = await axe(container);
     expect(results).toHaveNoViolations();

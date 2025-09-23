@@ -1,5 +1,11 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [
+    "**/.env*",
+    "**/tsconfig*.json",
+    "**/vitest.config.*",
+    "**/playwright.config.*"
+  ],
   "tasks": {
     "generate:aliases": {
       "outputs": ["vite.aliases.json", "tsconfig.base.json", "tsconfig.json", "vitest.config.ts"]
@@ -23,12 +29,30 @@
     "lint": {
       "dependsOn": ["^build"]
     },
-    "test:coverage:report": {},
-    "test:coverage": {},
-    "test:e2e": {},
-    "test:integration": {},
-    "test:unit": {},
-    "test": {},
+    "test:coverage:report": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**", "test-results/**"]
+    },
+    "test:coverage": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "test:e2e": {
+      "dependsOn": ["^build"],
+      "outputs": ["test-results/**", "playwright-report/**"]
+    },
+    "test:integration": {
+      "dependsOn": ["^build"],
+      "outputs": ["test-results/**"]
+    },
+    "test:unit": {
+      "dependsOn": ["^build"],
+      "outputs": ["test-results/**"]
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["test-results/**"]
+    },
     "type-check": {}
   }
 }

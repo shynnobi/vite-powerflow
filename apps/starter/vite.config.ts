@@ -14,7 +14,7 @@ import { defineConfig } from 'vitest/config';
 import { VitePWA } from 'vite-plugin-pwa';
 import compression from 'vite-plugin-compression';
 import { PROJECT_CONFIG } from './src/config/projectConfig.js';
-import { generatePWAManifest, validateConfiguration } from './src/lib/pwa.js';
+import { generatePWAManifest, validateConfiguration } from './src/types/pwa.js';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import Sitemap from 'vite-plugin-sitemap';
