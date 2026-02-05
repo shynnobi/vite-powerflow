@@ -35,14 +35,33 @@ export async function createProject(options: ProjectOptions): Promise<void> {
 
   try {
     // 1. Copy template files to the new project directory
-    const templatePath = path.join(__dirname, 'template');
+    // After build: dist/index.js is in dist/, so template is in dist/template/
+    // During development: src/commands/create.ts is in src/commands/, so we need to go up to packages/cli/template/
+    let templatePath = path.join(__dirname, '..', '..', 'template');
+
+    // If template not found (bundled case), try relative to the current module
+    if (!(await fsExtra.pathExists(templatePath))) {
+      // In bundled/distributed case, template should be alongside dist/index.js
+      templatePath = path.join(__dirname, 'template');
+    }
+
+    if (!(await fsExtra.pathExists(templatePath))) {
+      logError(`Template directory not found at ${templatePath}`);
+      throw new Error(`Template directory not found. Expected at: ${templatePath}`);
+    }
+
+    logSuccess(`✅ Template found at: ${templatePath}`);
     await fsExtra.copy(templatePath, projectPath);
 
     // 2. Rename gitignore to .gitignore for proper Git tracking
+    // The gitignore file is named 'gitignore' (without dot) in the template to avoid npm ignoring it during package distribution
     const gitignorePath = path.join(projectPath, 'gitignore');
     const dotGitignorePath = path.join(projectPath, '.gitignore');
     if (await fsExtra.pathExists(gitignorePath)) {
       await fsExtra.move(gitignorePath, dotGitignorePath);
+      logSuccess('✅ .gitignore configured');
+    } else {
+      logError(`⚠️  Warning: gitignore file not found at ${gitignorePath}`);
     }
 
     // 3. Convert _vscode to .vscode for VS Code compatibility, then clean up _vscode

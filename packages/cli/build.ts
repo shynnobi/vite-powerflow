@@ -39,17 +39,8 @@ async function copyTemplate(): Promise<void> {
       await fs.chmod(postinstallPath, 0o755);
     }
 
-    // Copy .gitignore as gitignore to avoid npm ignoring it
-    const gitignoreSource = path.join(templatePath, '.gitignore');
-    const gitignoreDest = path.join(distTemplatePath, 'gitignore');
-    if (await fs.pathExists(gitignoreSource)) {
-      await fs.copy(gitignoreSource, gitignoreDest);
-      // Remove the original .gitignore from dist to avoid duplication
-      const originalGitignoreInDist = path.join(distTemplatePath, '.gitignore');
-      if (await fs.pathExists(originalGitignoreInDist)) {
-        await fs.remove(originalGitignoreInDist);
-      }
-    }
+    // Note: .gitignore is already named as 'gitignore' in the template source
+    // to avoid npm ignoring it during package distribution
 
     logSuccess('Template copied successfully!');
   } catch (err) {
