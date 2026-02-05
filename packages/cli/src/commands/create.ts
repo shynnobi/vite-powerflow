@@ -138,6 +138,12 @@ export async function createProject(options: ProjectOptions): Promise<void> {
         delete packageJson.keywords;
         delete packageJson.syncConfig; // Remove monorepo-specific sync configuration
 
+        // Fix web:dev script in root package.json to use Vite directly via pnpm filter.
+        // This makes "pnpm web:dev" an alias for "pnpm --filter @<projectName>/web dev".
+        if (packageJson.scripts && (packageJson.scripts as any)['web:dev']) {
+          (packageJson.scripts as any)['web:dev'] = `pnpm --filter @${options.packageName}/web dev`;
+        }
+
         await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
       }
 
@@ -270,14 +276,36 @@ export async function createProject(options: ProjectOptions): Promise<void> {
           /\{\{projectName\}\}/g,
           options.projectName
         );
+        // Ensure Nx project name for web app matches the generated package name
+        // This makes sure Nx registers a project like "@<projectName>/web"
+        webProjectJsonContent = webProjectJsonContent.replace(
+          /"name":\s*"@vite-powerflow\/starter"/,
+          `"name": "@${options.packageName}/web"`
+        );
         // Replace @vite-powerflow/starter-web references
         webProjectJsonContent = webProjectJsonContent.replace(
           /@vite-powerflow\/starter-web/g,
           `@${options.packageName}/web`
         );
+        // Replace @vite-powerflow/starter-web:build references
         webProjectJsonContent = webProjectJsonContent.replace(
           /@vite-powerflow\/starter-web:build/g,
           `@${options.packageName}/web:build`
+        );
+        // Replace @vite-powerflow/starter-web:serve references
+        webProjectJsonContent = webProjectJsonContent.replace(
+          /@vite-powerflow\/starter-web:serve/g,
+          `@${options.packageName}/web:serve`
+        );
+        // Replace older starter buildTarget/browserTarget values that pointed to the
+        // root project ("test-app") so they now point to the web project instead.
+        webProjectJsonContent = webProjectJsonContent.replace(
+          /test-app:build/g,
+          `@${options.packageName}/web:build`
+        );
+        webProjectJsonContent = webProjectJsonContent.replace(
+          /test-app:serve/g,
+          `@${options.packageName}/web:serve`
         );
         await fs.writeFile(webProjectJsonPath, webProjectJsonContent);
       }
@@ -329,7 +357,22 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       throw formatError;
     }
 
-    // 12. Replace lint-staged config with Nx version for generated projects
+    // 13. Fix .gitignore to include .nx/ directory
+    const projectGitignorePath = path.join(projectPath, '.gitignore');
+    try {
+      if (await fsExtra.pathExists(projectGitignorePath)) {
+        let gitignoreContent = await fs.readFile(projectGitignorePath, 'utf-8');
+        // Replace .nx with .nx/ to ignore the entire directory
+        gitignoreContent = gitignoreContent.replace(/\.nx(?!\/)/g, '.nx/');
+        await fs.writeFile(projectGitignorePath, gitignoreContent);
+      }
+    } catch (gitignoreError) {
+      logError('Failed to update .gitignore');
+      logError(gitignoreError instanceof Error ? gitignoreError.message : String(gitignoreError));
+      throw gitignoreError;
+    }
+
+    // 14. Replace lint-staged config with Nx version for generated projects
     // Note: The starter includes both standalone and Nx lint-staged configs to handle
     // monorepo compatibility issues in GitHub Actions. Generated projects use pure Nx.
     const lintstagedPath = path.join(projectPath, '.lintstagedrc.js');

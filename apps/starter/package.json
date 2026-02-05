@@ -6,7 +6,7 @@
   "type": "module",
   "packageManager": "pnpm@10.13.1",
   "scripts": {
-    "dev": "nx run-many --target=dev --all",
+    "web:dev": "nx serve @vite-powerflow/starter-web",
     "build": "nx run-many --target=build --all",
     "test": "nx run-many --target=test --all",
     "test:e2e": "nx run-many --target=test:e2e --all",
