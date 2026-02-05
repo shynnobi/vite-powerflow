@@ -12,7 +12,8 @@
       "outputs": ["dist/**", "src/**/*.d.ts"]
     },
     "dev": {
-      "cache": false
+      "cache": false,
+      "persistent": true
     },
     "lint": {
       "dependsOn": ["^build"]
