@@ -150,42 +150,49 @@ void (async () => {
     }
 
     // 7. Transform package.json scripts from Turbo to Nx with optimizations
-    logRootInfo('Transforming package.json scripts from Turbo to Nx with optimizations...');
-    pkg.scripts = {
-      ...pkg.scripts,
-      // Transform to optimized Nx scripts
-      dev: 'nx serve',
-      build: 'nx build',
-      preview: 'nx preview',
-      test: 'nx test',
-      'test:coverage': 'nx test:coverage',
-      'test:coverage:report': 'vitest run --coverage --reporter=html',
-      'test:e2e': 'playwright test',
-      'test:e2e:setup': './scripts/e2e-setup.sh',
-      'test:e2e:clear': './scripts/e2e-clear-cache.sh',
-      'test:e2e:ui': 'playwright test --ui --ui-host 0.0.0.0 --ui-port 9324',
-      'test:e2e:report': 'playwright show-report',
-      'test:all': 'nx test:all',
-      storybook: 'nx storybook',
-      'storybook:test': 'test-storybook --url http://localhost:9009',
-      'storybook:build': 'nx build-storybook',
-      'storybook:cleanup': './scripts/cleanup-storybook.sh',
-      lint: 'nx lint',
-      'lint:fix': 'nx lint:fix',
-      format: 'nx format:check',
-      'format:fix': 'nx format:write',
-      fix: 'nx lint:fix && nx format:write',
-      'type-check': 'nx type-check',
-      'validate:static': 'nx validate:static',
-      'validate:quick': 'nx validate:quick',
-      'validate:full': 'nx validate:full',
-      'validate:commit': 'npx lint-staged; nx test',
-      'nx:cache:stats': 'nx show projects --with-target=lint,format,build,test',
-      'nx:cache:clear': 'nx reset',
-    };
+    // Skip transformation for root package.json (monorepo root should use turbo)
+    const isRootPackage = pkgPath === path.join(templateDest, 'package.json');
 
-    await fs.writeFile(pkgPath, JSON.stringify(pkg, null, 2), 'utf8');
-    logRootInfo('  - Transformed Turbo scripts to Nx scripts');
+    if (!isRootPackage) {
+      logRootInfo('Transforming package.json scripts from Turbo to Nx with optimizations...');
+      pkg.scripts = {
+        ...pkg.scripts,
+        // Transform to optimized Nx scripts
+        dev: 'nx serve',
+        build: 'nx build',
+        preview: 'nx preview',
+        test: 'nx test',
+        'test:coverage': 'nx test:coverage',
+        'test:coverage:report': 'vitest run --coverage --reporter=html',
+        'test:e2e': 'playwright test',
+        'test:e2e:setup': './scripts/e2e-setup.sh',
+        'test:e2e:clear': './scripts/e2e-clear-cache.sh',
+        'test:e2e:ui': 'playwright test --ui --ui-host 0.0.0.0 --ui-port 9324',
+        'test:e2e:report': 'playwright show-report',
+        'test:all': 'nx test:all',
+        storybook: 'nx storybook',
+        'storybook:test': 'test-storybook --url http://localhost:9009',
+        'storybook:build': 'nx build-storybook',
+        'storybook:cleanup': './scripts/cleanup-storybook.sh',
+        lint: 'nx lint',
+        'lint:fix': 'nx lint:fix',
+        format: 'nx format:check',
+        'format:fix': 'nx format:write',
+        fix: 'nx lint:fix && nx format:write',
+        'type-check': 'nx type-check',
+        'validate:static': 'nx validate:static',
+        'validate:quick': 'nx validate:quick',
+        'validate:full': 'nx validate:full',
+        'validate:commit': 'npx lint-staged; nx test',
+        'nx:cache:stats': 'nx show projects --with-target=lint,format,build,test',
+        'nx:cache:clear': 'nx reset',
+      };
+      logRootInfo('  - Transformed Turbo scripts to Nx scripts');
+    } else {
+      logRootInfo(
+        'Skipping Turbo to Nx transformation for root package.json (keeping turbo scripts)'
+      );
+    }
     logRootSuccess('Template synchronized successfully!');
   } catch (err) {
     logRootError('Template synchronization failed!');

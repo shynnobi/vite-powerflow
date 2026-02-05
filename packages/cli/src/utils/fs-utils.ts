@@ -15,7 +15,9 @@ export async function directoryExists(path: string): Promise<boolean> {
  */
 export async function updateDevcontainerWorkspaceFolder(projectDir: string): Promise<void> {
   const devcontainerPath = path.join(projectDir, '.devcontainer', 'devcontainer.json');
-  await fs.access(devcontainerPath);
+  if (!(await directoryExists(devcontainerPath))) {
+    return; // Skip if devcontainer doesn't exist
+  }
   const devcontainerRaw = await fs.readFile(devcontainerPath, 'utf8');
   const devcontainer = JSON.parse(devcontainerRaw) as { workspaceFolder?: string };
   const projectName = path.basename(projectDir);
@@ -28,7 +30,9 @@ export async function updateDevcontainerWorkspaceFolder(projectDir: string): Pro
  */
 export async function updateDockerComposeVolume(projectDir: string): Promise<void> {
   const composePath = path.join(projectDir, 'docker-compose.yml');
-  await fs.access(composePath);
+  if (!(await directoryExists(composePath))) {
+    return; // Skip if docker-compose doesn't exist
+  }
   const projectName = path.basename(projectDir);
   let content = await fs.readFile(composePath, 'utf8');
   content = content.replace(/workspaces\/vite-powerflow/g, `workspaces/${projectName}`);

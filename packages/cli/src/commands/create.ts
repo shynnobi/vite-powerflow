@@ -106,6 +106,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
 
     // 6. Update package.json with the new project name and clean metadata
     const packageJsonPath = path.join(projectPath, 'package.json');
+    const webPackageJsonPath = path.join(projectPath, 'apps', 'web', 'package.json');
     const tsconfigPath = path.join(projectPath, 'tsconfig.json');
     const readmePath = path.join(projectPath, 'README.md');
     try {
@@ -139,6 +140,25 @@ export async function createProject(options: ProjectOptions): Promise<void> {
 
         await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
       }
+
+      // 6b. Update apps/web/package.json with the new project name
+      if (await fsExtra.pathExists(webPackageJsonPath)) {
+        const webPackageJsonRaw = await fs.readFile(webPackageJsonPath, 'utf-8');
+        const webPackageJson = JSON.parse(webPackageJsonRaw) as PackageJson;
+
+        // Rename the web package to @projectName/web
+        webPackageJson.name = `@${options.packageName}/web`;
+        webPackageJson.version = '0.0.1';
+
+        // Clean up metadata inherited from the monorepo starter
+        delete webPackageJson.repository;
+        delete webPackageJson.homepage;
+        delete webPackageJson.bugs;
+        delete webPackageJson.keywords;
+        delete webPackageJson.syncConfig;
+
+        await fs.writeFile(webPackageJsonPath, JSON.stringify(webPackageJson, null, 2));
+      }
     } catch (packageJsonError) {
       logError('Failed to update package.json');
       logError(
@@ -162,6 +182,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
 
     // 8. Update vite.config.ts placeholder for project name
     const viteConfigPath = path.join(projectPath, 'vite.config.ts');
+    const webViteConfigPath = path.join(projectPath, 'apps', 'web', 'vite.config.ts');
     try {
       if (await fsExtra.pathExists(viteConfigPath)) {
         let viteConfigContent = await fs.readFile(viteConfigPath, 'utf-8');
@@ -170,6 +191,19 @@ export async function createProject(options: ProjectOptions): Promise<void> {
         // Replace hardcoded 'starter' references
         viteConfigContent = viteConfigContent.replace(/starter/g, options.projectName);
         await fs.writeFile(viteConfigPath, viteConfigContent);
+      }
+
+      // 8b. Update apps/web/vite.config.ts placeholder for project name
+      if (await fsExtra.pathExists(webViteConfigPath)) {
+        let webViteConfigContent = await fs.readFile(webViteConfigPath, 'utf-8');
+        // Replace {{projectName}} placeholders
+        webViteConfigContent = webViteConfigContent.replace(
+          /{{projectName}}/g,
+          options.projectName
+        );
+        // Replace hardcoded 'starter' references
+        webViteConfigContent = webViteConfigContent.replace(/starter/g, options.projectName);
+        await fs.writeFile(webViteConfigPath, webViteConfigContent);
       }
     } catch (viteConfigError) {
       logError('Failed to update vite.config.ts');
@@ -181,12 +215,21 @@ export async function createProject(options: ProjectOptions): Promise<void> {
 
     // 9. Update vitest.config.ts placeholder for project name
     const vitestConfigPath = path.join(projectPath, 'vitest.config.ts');
+    const webVitestConfigPath = path.join(projectPath, 'apps', 'web', 'vitest.config.ts');
     try {
       if (await fsExtra.pathExists(vitestConfigPath)) {
         let vitestConfigContent = await fs.readFile(vitestConfigPath, 'utf-8');
         // Replace hardcoded 'starter' references
         vitestConfigContent = vitestConfigContent.replace(/starter/g, options.projectName);
         await fs.writeFile(vitestConfigPath, vitestConfigContent);
+      }
+
+      // 9b. Update apps/web/vitest.config.ts placeholder for project name
+      if (await fsExtra.pathExists(webVitestConfigPath)) {
+        let webVitestConfigContent = await fs.readFile(webVitestConfigPath, 'utf-8');
+        // Replace hardcoded 'starter' references
+        webVitestConfigContent = webVitestConfigContent.replace(/starter/g, options.projectName);
+        await fs.writeFile(webVitestConfigPath, webVitestConfigContent);
       }
     } catch (vitestConfigError) {
       logError('Failed to update vitest.config.ts');
@@ -198,6 +241,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
 
     // 10. Update project.json placeholders for project name
     const projectJsonPath = path.join(projectPath, 'project.json');
+    const webProjectJsonPath = path.join(projectPath, 'apps', 'web', 'project.json');
     try {
       if (await fsExtra.pathExists(projectJsonPath)) {
         let projectJsonContent = await fs.readFile(projectJsonPath, 'utf-8');
@@ -217,6 +261,26 @@ export async function createProject(options: ProjectOptions): Promise<void> {
         );
         await fs.writeFile(projectJsonPath, projectJsonContent);
       }
+
+      // 10b. Update apps/web/project.json placeholders for project name
+      if (await fsExtra.pathExists(webProjectJsonPath)) {
+        let webProjectJsonContent = await fs.readFile(webProjectJsonPath, 'utf-8');
+        // Replace {{projectName}} placeholders
+        webProjectJsonContent = webProjectJsonContent.replace(
+          /\{\{projectName\}\}/g,
+          options.projectName
+        );
+        // Replace @vite-powerflow/starter-web references
+        webProjectJsonContent = webProjectJsonContent.replace(
+          /@vite-powerflow\/starter-web/g,
+          `@${options.packageName}/web`
+        );
+        webProjectJsonContent = webProjectJsonContent.replace(
+          /@vite-powerflow\/starter-web:build/g,
+          `@${options.packageName}/web:build`
+        );
+        await fs.writeFile(webProjectJsonPath, webProjectJsonContent);
+      }
     } catch (projectJsonError) {
       logError('Failed to update project.json');
       logError(
@@ -228,9 +292,14 @@ export async function createProject(options: ProjectOptions): Promise<void> {
     // 11. Format config files with Prettier for consistency
     const filesToFormat: string[] = [];
     if (await fsExtra.pathExists(packageJsonPath)) filesToFormat.push(packageJsonPath);
+    if (await fsExtra.pathExists(webPackageJsonPath)) filesToFormat.push(webPackageJsonPath);
     if (await fsExtra.pathExists(tsconfigPath)) filesToFormat.push(tsconfigPath);
     if (await fsExtra.pathExists(viteConfigPath)) filesToFormat.push(viteConfigPath);
+    if (await fsExtra.pathExists(webViteConfigPath)) filesToFormat.push(webViteConfigPath);
     if (await fsExtra.pathExists(vitestConfigPath)) filesToFormat.push(vitestConfigPath);
+    if (await fsExtra.pathExists(webVitestConfigPath)) filesToFormat.push(webVitestConfigPath);
+    if (await fsExtra.pathExists(projectJsonPath)) filesToFormat.push(projectJsonPath);
+    if (await fsExtra.pathExists(webProjectJsonPath)) filesToFormat.push(webProjectJsonPath);
     const devcontainerJsonPath = path.join(projectPath, '.devcontainer', 'devcontainer.json');
     if (await fsExtra.pathExists(devcontainerJsonPath)) filesToFormat.push(devcontainerJsonPath);
     const dockerComposePath = path.join(projectPath, 'docker-compose.yml');
