@@ -150,7 +150,7 @@ void (async () => {
     }
 
     // 7. Transform package.json scripts from Turbo to Nx with optimizations
-    // Skip transformation for root package.json (monorepo root should use turbo)
+    // Skip transformation for root package.json (monorepo root now uses nx run-many)
     const isRootPackage = pkgPath === path.join(templateDest, 'package.json');
 
     if (!isRootPackage) {
@@ -189,9 +189,7 @@ void (async () => {
       };
       logRootInfo('  - Transformed Turbo scripts to Nx scripts');
     } else {
-      logRootInfo(
-        'Skipping Turbo to Nx transformation for root package.json (keeping turbo scripts)'
-      );
+      logRootInfo('Skipping transformation for root package.json (already using nx run-many)');
     }
     logRootSuccess('Template synchronized successfully!');
   } catch (err) {

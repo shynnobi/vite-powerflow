@@ -6,7 +6,9 @@
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist"
+        "outputPath": "{projectRoot}/dist",
+        "root": "{projectRoot}",
+        "configFile": "{projectRoot}/vite.config.ts"
       }
     },
     "serve": {
@@ -40,7 +42,7 @@
       "options": {
         "main": "src/main.tsx",
         "tsConfig": "tsconfig.json",
-        "outputPath": "dist",
+        "outputPath": "{projectRoot}/dist",
         "noEmit": true
       }
     },
@@ -106,7 +108,7 @@
       "options": {
         "configDir": ".storybook",
         "browserTarget": "{{projectName}}:build",
-        "outputPath": "dist/storybook"
+        "outputPath": "{projectRoot}/dist/storybook"
       }
     }
   }

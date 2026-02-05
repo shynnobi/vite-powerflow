@@ -16,6 +16,7 @@ node_modules
 # Build outputs
 *.local
 .turbo/
+.nx/
 dist
 dist-ssr
 my-vite-powerflow-app
