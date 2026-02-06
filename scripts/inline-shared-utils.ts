@@ -155,9 +155,7 @@ async function inlineSharedUtils(): Promise<void> {
 
     console.log(`📦 Processing ${consumer}...`);
 
-    // Create the destination directory
     const targetDir = `${consumer}/src/utils/shared`;
-    mkdirSync(targetDir, { recursive: true });
 
     // Analyze source files to detect imports
     const sourceFiles = await glob(`${consumer}/**/*.{ts,js}`, {
@@ -186,6 +184,14 @@ async function inlineSharedUtils(): Promise<void> {
         }
       }
     }
+
+    if (usedFiles.size === 0) {
+      console.log(`  ℹ️  No shared-utils usage found for ${consumer}`);
+      continue;
+    }
+
+    // Create the destination directory only when needed
+    mkdirSync(targetDir, { recursive: true });
 
     // Copy used files
     for (const file of Array.from(usedFiles)) {
