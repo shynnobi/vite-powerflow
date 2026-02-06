@@ -192,77 +192,27 @@ void (async () => {
     const isRootPackage = pkgPath === path.join(templateDest, 'package.json');
 
     if (isRootPackage) {
-      logRootInfo('Patching root package.json scripts for standalone (no Nx) usage...');
+      logRootInfo('Patching root package.json scripts from starter SSOT...');
+      const starterPkgPath = path.join(starterSrc, 'package.json');
+      const starterPkgRaw = await fs.readFile(starterPkgPath, 'utf8');
+      const starterPkg = JSON.parse(starterPkgRaw) as {
+        scripts?: Record<string, string>;
+        devDependencies?: Record<string, string>;
+      };
+
       pkg.scripts = {
-        ...pkg.scripts,
+        ...(starterPkg.scripts ?? {}),
+        // Dev server should run directly via Vite for the web app
         'web:dev': 'pnpm --filter @template-app/web dev',
-        dev: 'pnpm --filter @template-app/web dev',
-        build: 'pnpm --filter @template-app/web build',
-        preview: 'pnpm --filter @template-app/web preview',
-        test: 'pnpm --filter @template-app/web test',
-        'test:coverage': 'pnpm --filter @template-app/web test:coverage',
-        'test:coverage:report': 'pnpm --filter @template-app/web test:coverage:report',
-        'test:e2e': 'pnpm --filter @template-app/web test:e2e',
-        'test:e2e:setup': 'pnpm --filter @template-app/web test:e2e:setup',
-        'test:e2e:clear': 'pnpm --filter @template-app/web test:e2e:clear',
-        'test:e2e:ui': 'pnpm --filter @template-app/web test:e2e:ui',
-        'test:e2e:report': 'pnpm --filter @template-app/web test:e2e:report',
-        'test:all': 'pnpm --filter @template-app/web test:all',
-        storybook: 'pnpm --filter @template-app/web storybook',
-        'storybook:test': 'pnpm --filter @template-app/web storybook:test',
-        'storybook:build': 'pnpm --filter @template-app/web storybook:build',
-        'storybook:cleanup': 'pnpm --filter @template-app/web storybook:cleanup',
-        lint: 'pnpm --filter @template-app/web lint',
-        'lint:fix': 'pnpm --filter @template-app/web lint:fix',
-        format: 'pnpm --filter @template-app/web format',
-        'format:fix': 'pnpm --filter @template-app/web format:fix',
-        fix: 'pnpm --filter @template-app/web fix',
-        'type-check': 'pnpm --filter @template-app/web type-check',
-        'validate:static': 'pnpm --filter @template-app/web validate:static',
-        'validate:quick': 'pnpm --filter @template-app/web validate:quick',
-        'validate:full': 'pnpm --filter @template-app/web validate:full',
-        'validate:commit': 'pnpm --filter @template-app/web validate:commit',
       };
-      if (pkg.devDependencies && typeof pkg.devDependencies === 'object') {
-        // Root template doesn't need Nx
-        delete (pkg.devDependencies as Record<string, string>).nx;
-      }
-      logRootInfo('  - Root scripts now proxy to apps/web without Nx');
-    } else {
-      logRootInfo('Transforming package.json scripts from Turbo to Nx with optimizations...');
-      pkg.scripts = {
-        ...pkg.scripts,
-        // Transform to optimized Nx scripts
-        dev: 'nx serve',
-        build: 'nx build',
-        preview: 'nx preview',
-        test: 'nx test',
-        'test:coverage': 'nx test:coverage',
-        'test:coverage:report': 'vitest run --coverage --reporter=html',
-        'test:e2e': 'playwright test',
-        'test:e2e:setup': './scripts/e2e-setup.sh',
-        'test:e2e:clear': './scripts/e2e-clear-cache.sh',
-        'test:e2e:ui': 'playwright test --ui --ui-host 0.0.0.0 --ui-port 9324',
-        'test:e2e:report': 'playwright show-report',
-        'test:all': 'nx test:all',
-        storybook: 'nx storybook',
-        'storybook:test': 'test-storybook --url http://localhost:9009',
-        'storybook:build': 'nx build-storybook',
-        'storybook:cleanup': './scripts/cleanup-storybook.sh',
-        lint: 'nx lint',
-        'lint:fix': 'nx lint:fix',
-        format: 'nx format:check',
-        'format:fix': 'nx format:write',
-        fix: 'nx lint:fix && nx format:write',
-        'type-check': 'nx type-check',
-        'validate:static': 'nx validate:static',
-        'validate:quick': 'nx validate:quick',
-        'validate:full': 'nx validate:full',
-        'validate:commit': 'npx lint-staged; nx test',
-        'nx:cache:stats': 'nx show projects --with-target=lint,format,build,test',
-        'nx:cache:clear': 'nx reset',
+
+      // Ensure Nx stays available in the template root
+      pkg.devDependencies = {
+        ...(pkg.devDependencies as Record<string, string> | undefined),
+        nx: starterPkg.devDependencies?.nx ?? '21.5.2',
       };
-      logRootInfo('  - Transformed Turbo scripts to Nx scripts');
+
+      logRootInfo('  - Root scripts now mirror starter package.json (SSOT)');
     }
     logRootSuccess('Template synchronized successfully!');
   } catch (err) {
