@@ -11,6 +11,8 @@
     "lint": "nx run-many --targets=lint --all",
     "format": "nx run-many --targets=format --all",
     "format:fix": "nx run-many --targets=format:write --all",
+    "format:fix:standalone": "prettier --write .",
+    "lint:fix:standalone": "eslint --fix .",
     "type-check": "nx run-many --targets=type-check --all",
     "test": "nx run-many --targets=test --all",
     "validate:static": "nx run-many --target=lint --all && nx run-many --target=format --all && nx run-many --target=type-check --all",
