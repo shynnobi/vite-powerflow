@@ -71,7 +71,7 @@
     "cli:start": "node packages/cli/dist/index.js",
     "cli:build-start": "pnpm cli:build && pnpm cli:start",
     "cli:sync-build-start": "pnpm sync:starter-to-template && pnpm cli:build && pnpm cli:start",
-    "starter:dev": "cd apps/starter && pnpm dev",
+    "starter:web:dev": "pnpm -C apps/starter --filter @vite-powerflow/starter-web dev",
     "starter:build": "cd apps/starter && pnpm build",
     "starter:storybook": "cd apps/starter/apps/web && pnpm storybook",
     "web:dev": "pnpm -filter @vite-powerflow/website dev",

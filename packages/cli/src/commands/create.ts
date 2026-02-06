@@ -301,9 +301,13 @@ export async function createProject(options: ProjectOptions): Promise<void> {
           /"name":\s*"@vite-powerflow\/starter"/,
           `"name": "@${options.packageName}/web"`
         );
-        // Replace @vite-powerflow/starter-web references
+        // Replace both @vite-powerflow/starter-web and @template-app/starter-web patterns
         webProjectJsonContent = webProjectJsonContent.replace(
           /@vite-powerflow\/starter-web/g,
+          `@${options.packageName}/web`
+        );
+        webProjectJsonContent = webProjectJsonContent.replace(
+          /@template-app\/starter-web/g,
           `@${options.packageName}/web`
         );
         // Replace @vite-powerflow/starter-web:build references
@@ -311,9 +315,17 @@ export async function createProject(options: ProjectOptions): Promise<void> {
           /@vite-powerflow\/starter-web:build/g,
           `@${options.packageName}/web:build`
         );
+        webProjectJsonContent = webProjectJsonContent.replace(
+          /@template-app\/starter-web:build/g,
+          `@${options.packageName}/web:build`
+        );
         // Replace @vite-powerflow/starter-web:serve references
         webProjectJsonContent = webProjectJsonContent.replace(
           /@vite-powerflow\/starter-web:serve/g,
+          `@${options.packageName}/web:serve`
+        );
+        webProjectJsonContent = webProjectJsonContent.replace(
+          /@template-app\/starter-web:serve/g,
           `@${options.packageName}/web:serve`
         );
         // Replace older starter buildTarget/browserTarget values that pointed to the
