@@ -67,7 +67,7 @@
     "validate:full": "pnpm validate:quick && pnpm test:e2e",
     "validate:commit": "npx lint-staged; pnpm test",
     "prepare": "husky",
-    "postinstall": "./scripts/postinstall.sh",
+    "postinstall": "../../scripts/postinstall.sh",
     "nx:cache:stats": "nx show projects --with-target=lint,format,build,test",
     "nx:cache:clear": "nx reset",
     "lint:fix:standalone": "eslint --fix .",

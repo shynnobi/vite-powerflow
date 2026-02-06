@@ -87,6 +87,7 @@ export default [
       parser: tsParser,
       parserOptions: {
         project: ['./tsconfig.eslint.json', './tsconfig.spec.json'],
+        tsconfigRootDir: __dirname,
       },
       globals: {
         process: 'readonly',

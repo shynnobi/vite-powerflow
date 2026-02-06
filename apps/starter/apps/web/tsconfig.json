@@ -30,8 +30,7 @@
       "@/tests/*": ["tests/*"],
       "@/types/*": ["src/types/*"],
       "@/utils/*": ["src/utils/*"]
-    },
-    "types": ["vitest/globals", "@testing-library/jest-dom"]
+    }
   },
   "include": ["src", "tests"],
   "exclude": [
