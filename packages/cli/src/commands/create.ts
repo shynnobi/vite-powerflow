@@ -15,7 +15,6 @@ import { patchProjectJson } from './create/project-patch.js';
 import { rewriteReadme, rewriteViteConfig, rewriteVitestConfig } from './create/config-rewrite.js';
 import {
   cleanupStandaloneScripts,
-  fixGitignoreNx,
   fixPermissions,
   formatConfigFiles,
   swapLintStagedConfig,
@@ -32,6 +31,16 @@ interface ProjectOptions {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+/**
+ * Project creation pipeline:
+ * 1) Copy template and normalize dotfiles
+ * 2) Fix permissions and update devcontainer/docker metadata
+ * 3) Patch package.json + project.json with project naming
+ * 4) Rewrite placeholders in README/vite/vitest configs
+ * 5) Format touched config files
+ * 6) Swap lint-staged config and clean standalone scripts
+ * 7) Optionally init git and commit
+ */
 export async function createProject(options: ProjectOptions): Promise<void> {
   let packageName = options.packageName;
   let projectPath = path.join(process.cwd(), packageName);
@@ -67,10 +76,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
     // 6. Update package.json with the new project name and clean metadata
     const packageJsonPath = path.join(projectPath, 'package.json');
     const webPackageJsonPath = path.join(projectPath, 'apps', 'web', 'package.json');
-    const tsconfigPath = path.join(projectPath, 'tsconfig.json');
-    const viteConfigPath = path.join(projectPath, 'vite.config.ts');
     const webViteConfigPath = path.join(projectPath, 'apps', 'web', 'vite.config.ts');
-    const vitestConfigPath = path.join(projectPath, 'vitest.config.ts');
     const webVitestConfigPath = path.join(projectPath, 'apps', 'web', 'vitest.config.ts');
     try {
       await patchRootPackageJson({
@@ -127,7 +133,6 @@ export async function createProject(options: ProjectOptions): Promise<void> {
     }
 
     // 10. Update project.json placeholders for project name
-    const projectJsonPath = path.join(projectPath, 'project.json');
     const webProjectJsonPath = path.join(projectPath, 'apps', 'web', 'project.json');
     try {
       await patchProjectJson({
@@ -147,12 +152,8 @@ export async function createProject(options: ProjectOptions): Promise<void> {
     const filesToFormat: string[] = [];
     if (await fsExtra.pathExists(packageJsonPath)) filesToFormat.push(packageJsonPath);
     if (await fsExtra.pathExists(webPackageJsonPath)) filesToFormat.push(webPackageJsonPath);
-    if (await fsExtra.pathExists(tsconfigPath)) filesToFormat.push(tsconfigPath);
-    if (await fsExtra.pathExists(viteConfigPath)) filesToFormat.push(viteConfigPath);
     if (await fsExtra.pathExists(webViteConfigPath)) filesToFormat.push(webViteConfigPath);
-    if (await fsExtra.pathExists(vitestConfigPath)) filesToFormat.push(vitestConfigPath);
     if (await fsExtra.pathExists(webVitestConfigPath)) filesToFormat.push(webVitestConfigPath);
-    if (await fsExtra.pathExists(projectJsonPath)) filesToFormat.push(projectJsonPath);
     if (await fsExtra.pathExists(webProjectJsonPath)) filesToFormat.push(webProjectJsonPath);
     const devcontainerJsonPath = path.join(projectPath, '.devcontainer', 'devcontainer.json');
     if (await fsExtra.pathExists(devcontainerJsonPath)) filesToFormat.push(devcontainerJsonPath);
@@ -166,17 +167,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       throw formatError;
     }
 
-    // 13. Fix .gitignore to include .nx/ directory
-    const projectGitignorePath = path.join(projectPath, '.gitignore');
-    try {
-      await fixGitignoreNx(projectPath);
-    } catch (gitignoreError) {
-      logError('Failed to update .gitignore');
-      logError(gitignoreError instanceof Error ? gitignoreError.message : String(gitignoreError));
-      throw gitignoreError;
-    }
-
-    // 14. Replace lint-staged config with Nx version for generated projects
+    // 12. Replace lint-staged config with Nx version for generated projects
     // Note: The starter includes both standalone and Nx lint-staged configs to handle
     // monorepo compatibility issues in GitHub Actions. Generated projects use pure Nx.
     try {

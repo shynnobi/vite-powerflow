@@ -9,22 +9,7 @@ interface PatchProjectOptions {
 }
 
 export async function patchProjectJson(options: PatchProjectOptions): Promise<void> {
-  const projectJsonPath = path.join(options.projectPath, 'project.json');
   const webProjectJsonPath = path.join(options.projectPath, 'apps', 'web', 'project.json');
-
-  if (await fsExtra.pathExists(projectJsonPath)) {
-    let projectJsonContent = await fs.readFile(projectJsonPath, 'utf-8');
-    projectJsonContent = projectJsonContent.replace(/\{\{projectName\}\}/g, options.projectName);
-    projectJsonContent = projectJsonContent.replace(
-      /@vite-powerflow\/starter/g,
-      options.projectName
-    );
-    projectJsonContent = projectJsonContent.replace(
-      /@vite-powerflow\/starter:build/g,
-      `${options.projectName}:build`
-    );
-    await fs.writeFile(projectJsonPath, projectJsonContent);
-  }
 
   if (await fsExtra.pathExists(webProjectJsonPath)) {
     let webProjectJsonContent = await fs.readFile(webProjectJsonPath, 'utf-8');

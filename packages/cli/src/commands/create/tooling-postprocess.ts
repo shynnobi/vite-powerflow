@@ -69,16 +69,6 @@ export async function formatConfigFiles(
   });
 }
 
-export async function fixGitignoreNx(projectPath: string): Promise<void> {
-  const projectGitignorePath = path.join(projectPath, '.gitignore');
-
-  if (await fsExtra.pathExists(projectGitignorePath)) {
-    let gitignoreContent = await fs.readFile(projectGitignorePath, 'utf-8');
-    gitignoreContent = gitignoreContent.replace(/\.nx(?!\/)/g, '.nx/');
-    await fs.writeFile(projectGitignorePath, gitignoreContent);
-  }
-}
-
 export async function swapLintStagedConfig(projectPath: string): Promise<void> {
   const lintstagedPath = path.join(projectPath, '.lintstagedrc.js');
   const lintstagedNxPath = path.join(projectPath, '.lintstagedrc-nx.js');
