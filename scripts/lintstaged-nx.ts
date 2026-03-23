@@ -75,7 +75,6 @@ if (impactedWorkspaces.length) {
   logRootInfo(`[lintstaged-nx] Impacted workspaces: ${impactedWorkspaces.join(', ')}`);
 
   // Run lint for all impacted workspaces
-  const lintTargets = impactedWorkspaces.map(ws => `${ws}:lint`);
   logRootInfo(
     `[lintstaged-nx] Running: nx run-many --target=lint --projects=${impactedWorkspaces.join(',')}`
   );
@@ -96,7 +95,6 @@ if (impactedWorkspaces.length) {
   }
 
   // Run format for all impacted workspaces
-  const formatTargets = impactedWorkspaces.map(ws => `${ws}:format`);
   logRootInfo(
     `[lintstaged-nx] Running: nx run-many --target=format --projects=${impactedWorkspaces.join(',')}`
   );
