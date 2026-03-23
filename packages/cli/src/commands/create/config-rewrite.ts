@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import fsExtra from 'fs-extra';
 import path from 'path';
+
 import { directoryExists } from '../../utils/fs-utils.js';
 
 interface RewriteConfigOptions {

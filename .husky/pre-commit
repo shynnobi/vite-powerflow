@@ -5,4 +5,4 @@ pnpm changeset:augment
 git add .changeset/
 
 # Run lint-staged sequentially to prevent memory issues
-pnpm lint-staged --concurrent false
+pnpm lint-staged --config .lintstagedrc.cjs --concurrent false

@@ -55,5 +55,6 @@
         "useDaemonProcess": true
       }
     }
-  }
+  },
+  "analytics": false
 }

@@ -3,16 +3,15 @@ import path from 'path';
 import { simpleGit } from 'simple-git';
 import { fileURLToPath } from 'url';
 
-import { logError, logSuccess } from '../utils/shared/logger.js';
+import { rewriteReadme, rewriteViteConfig, rewriteVitestConfig } from './create/config-rewrite.js';
+import { patchRootPackageJson, patchWebPackageJson } from './create/package-patch.js';
+import { patchProjectJson } from './create/project-patch.js';
 import {
   copyTemplate,
   renameGitignore,
   renameVscodeFolder,
   resolveTemplatePath,
 } from './create/template-copy.js';
-import { patchRootPackageJson, patchWebPackageJson } from './create/package-patch.js';
-import { patchProjectJson } from './create/project-patch.js';
-import { rewriteReadme, rewriteViteConfig, rewriteVitestConfig } from './create/config-rewrite.js';
 import {
   cleanupStandaloneScripts,
   fixPermissions,
@@ -20,6 +19,7 @@ import {
   swapLintStagedConfig,
   updateDevcontainerAndDocker,
 } from './create/tooling-postprocess.js';
+import { logError, logSuccess } from '../utils/shared/logger.js';
 
 interface ProjectOptions {
   projectName: string;

@@ -69,9 +69,10 @@
       }
     },
     "test:e2e": {
-      "executor": "@nx/playwright:playwright",
+      "executor": "nx:run-commands",
       "options": {
-        "config": "playwright.config.ts"
+        "command": "pnpm exec playwright install && pnpm test:e2e",
+        "cwd": "{projectRoot}"
       }
     },
     "test:all": {
