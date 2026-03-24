@@ -61,7 +61,7 @@
     "validate:static": "nx run-many --target=lint --all && nx run-many --target=format --all && nx run-many --target=type-check --all",
     "validate:quick": "nx run-many --target=lint --all && nx run-many --target=format --all && nx run-many --target=test --all",
     "validate:commit": "npx lint-staged --config .lintstagedrc.cjs && pnpm test",
-    "validate:full": "nx run-many --target=lint --all && nx run-many --target=format --all && nx run-many --target=type-check --all && nx run-many --target=test --all && nx run-many --target=test:e2e --all --outputStyle=static && pnpm build",
+    "validate:full": "nx run-many --target=lint --all && nx run-many --target=format --all && nx run-many --target=type-check --all && nx run-many --target=test --all && nx run-many --target=test:e2e --all --outputStyle=stream && pnpm build",
     "cli:build": "pnpm --filter @vite-powerflow/create build",
     "cli:start": "node packages/cli/dist/index.js",
     "cli:build-start": "pnpm cli:build && pnpm cli:start",
