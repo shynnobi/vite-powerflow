@@ -80,7 +80,7 @@
     "changeset:augment": "tsx scripts/augment-changeset.ts",
     "changeset:create": "pnpm changeset && pnpm changeset:augment",
     "release:prepare": "changeset version && pnpm sync:starter-to-template",
-    "release:publish": "pnpm build && changeset publish",
+    "release:publish": "pnpm nx run-many --target=build --all --exclude=@vite-powerflow/starter-web && changeset publish",
     "release:complete": "pnpm release:publish && pnpm release:update-baselines",
     "release:update-baselines": "tsx scripts/update-baselines.ts",
     "ci:local": "git clean -fdx && pnpm install --frozen-lockfile && CI=true ./scripts/ci.sh"
