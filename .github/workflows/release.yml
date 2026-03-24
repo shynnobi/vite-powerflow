@@ -38,7 +38,7 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Build packages
-        run: pnpm build
+        run: pnpm nx run-many --target=build --all --exclude=@vite-powerflow/starter-web
 
       - name: Test NPM Token
         run: |
