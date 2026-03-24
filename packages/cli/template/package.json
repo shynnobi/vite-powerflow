@@ -6,15 +6,21 @@
   "type": "module",
   "packageManager": "pnpm@10.13.1",
   "scripts": {
-    "dev": "turbo run dev",
-    "build": "turbo run build",
-    "test": "turbo run test",
-    "test:e2e": "turbo run test:e2e",
-    "lint": "turbo run lint",
-    "type-check": "turbo run type-check",
-    "clean": "turbo run clean"
+    "web:dev": "pnpm --filter @vite-powerflow/starter-web dev",
+    "build": "nx run-many --targets=build --all",
+    "lint": "nx run-many --targets=lint --all",
+    "format": "nx run-many --targets=format --all",
+    "format:fix": "nx run-many --targets=format:write --all",
+    "format:fix:standalone": "prettier --write .",
+    "lint:fix:standalone": "eslint --fix .",
+    "type-check": "nx run-many --targets=type-check --all",
+    "test": "nx run-many --targets=test --all",
+    "validate:static": "nx run-many --target=lint --all && nx run-many --target=format --all && nx run-many --target=type-check --all",
+    "validate:quick": "nx run-many --target=lint --all && nx run-many --target=format --all && nx run-many --target=test --all",
+    "validate:commit": "npx lint-staged --config .lintstagedrc.cjs && pnpm test",
+    "validate:full": "nx run-many --target=lint --all && nx run-many --target=format --all && nx run-many --target=test --all && nx run-many --target=test:e2e --all --outputStyle=stream && pnpm build"
   },
   "devDependencies": {
-    "turbo": "^2.5.6"
+    "nx": "21.5.2"
   }
 }

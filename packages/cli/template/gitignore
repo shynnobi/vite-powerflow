@@ -15,15 +15,19 @@ node_modules
 
 # Build outputs
 .turbo/
+.nx/
 *.local
 dist
 dist-ssr
 html
-packages/cli/template
 
 # Editor directories and files
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tailwind.json
 .DS_Store
 .idea
+.vscode/*
 *.njsproj
 *.ntvs*
 *.sln
@@ -33,7 +37,6 @@ packages/cli/template
 # Testing
 coverage
 playwright-report
-storybook-static
 test-results
 
 # Environment variables
@@ -50,16 +53,8 @@ test-results
 .tmp
 .tsbuildinfo
 
-# Nx cache
-.nx/cache
-.nx/workspace-data
-
 # TypeScript incremental build info
 **/tsconfig.tsbuildinfo
-
-# Vite/Vitest timestamp files
-vite.config.*.timestamp*
-vitest.config.*.timestamp*
 
 # Build visualizer
 stats.html
@@ -74,3 +69,6 @@ test-results/
 
 # Ignore temporary commit message file
 /temp_commit_msg.txt
+
+# MSW (Mock Service Worker) - Generated automatically
+**/mockServiceWorker.js

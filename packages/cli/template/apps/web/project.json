@@ -1,38 +1,70 @@
 {
-  "name": "@vite-powerflow/starter",
+  "name": "@template-app/starter-web",
   "projectType": "application",
   "targets": {
     "build": {
       "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
-        "outputPath": "dist"
+        "outputPath": "{projectRoot}/dist",
+        "root": "{projectRoot}",
+        "configFile": "{projectRoot}/vite.config.ts"
       }
     },
     "serve": {
       "executor": "@nx/vite:dev-server",
       "persistent": true,
       "options": {
-        "buildTarget": "{{projectName}}:build"
+        "buildTarget": "{projectName}:build"
       }
     },
     "preview": {
       "executor": "@nx/vite:preview-server",
       "options": {
-        "buildTarget": "{{projectName}}:build"
+        "buildTarget": "{projectName}:build"
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
       "options": {
-        "lintFilePatterns": ["src/**/*.{ts,tsx,js,jsx}", "*.{ts,tsx,js,jsx}"]
+        "eslintConfig": "{projectRoot}/eslint.config.js",
+        "lintFilePatterns": [
+          "{projectRoot}/src/**/*.{ts,tsx,js,jsx}",
+          "{projectRoot}/*.{ts,tsx,js,jsx}"
+        ]
       }
     },
     "lint:fix": {
       "executor": "@nx/eslint:lint",
       "options": {
-        "lintFilePatterns": ["src/**/*.{ts,tsx,js,jsx}", "*.{ts,tsx,js,jsx}"],
+        "eslintConfig": "{projectRoot}/eslint.config.js",
+        "lintFilePatterns": [
+          "{projectRoot}/src/**/*.{ts,tsx,js,jsx}",
+          "{projectRoot}/*.{ts,tsx,js,jsx}"
+        ],
         "fix": true
+      }
+    },
+    "format": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prettier --check .",
+        "cwd": "{projectRoot}"
+      },
+      "cache": true,
+      "inputs": [
+        "default",
+        "{projectRoot}/.prettierignore",
+        "{workspaceRoot}/.prettierrc"
+      ]
+    },
+    "format:fix": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prettier --write .",
+        "cwd": "{projectRoot}"
       }
     },
     "type-check": {
@@ -40,55 +72,71 @@
       "options": {
         "main": "src/main.tsx",
         "tsConfig": "tsconfig.json",
-        "outputPath": "dist",
+        "outputPath": "{projectRoot}/dist",
         "noEmit": true
       }
     },
     "test": {
       "executor": "@nx/vite:test",
       "options": {
-        "config": "vitest.config.ts"
+        "configFile": "{projectRoot}/vitest.config.ts"
       }
     },
     "test:coverage": {
       "executor": "@nx/vite:test",
-      "outputs": ["{projectRoot}/coverage/**"],
+      "outputs": [
+        "{projectRoot}/coverage/**"
+      ],
       "options": {
-        "config": "vitest.config.ts",
+        "configFile": "{projectRoot}/vitest.config.ts",
         "coverage": true
       }
     },
     "test:e2e": {
-      "executor": "@nx/playwright:playwright",
+      "executor": "nx:run-commands",
       "options": {
-        "config": "playwright.config.ts"
+        "command": "pnpm exec playwright install && pnpm test:e2e",
+        "cwd": "{projectRoot}"
       }
     },
     "test:all": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["nx test", "nx test:e2e"],
+        "commands": [
+          "nx test",
+          "nx test:e2e"
+        ],
         "parallel": true
       }
     },
     "validate:static": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["nx lint", "nx format:check", "nx type-check"],
+        "commands": [
+          "nx lint",
+          "nx format:check",
+          "nx type-check"
+        ],
         "parallel": true
       }
     },
     "validate:quick": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["nx validate:static", "nx test"],
+        "commands": [
+          "nx validate:static",
+          "nx test"
+        ],
         "parallel": false
       }
     },
     "validate:full": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["nx validate:static", "nx test:all"],
+        "commands": [
+          "nx validate:static",
+          "nx test:all"
+        ],
         "parallel": false
       }
     },
@@ -96,17 +144,19 @@
       "executor": "@nx/storybook:storybook",
       "options": {
         "configDir": ".storybook",
-        "browserTarget": "{{projectName}}:build",
+        "browserTarget": "{projectName}:build",
         "compodoc": false
       }
     },
     "build-storybook": {
       "executor": "@nx/storybook:build",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "configDir": ".storybook",
         "browserTarget": "{{projectName}}:build",
-        "outputPath": "dist/storybook"
+        "outputPath": "{projectRoot}/dist/storybook"
       }
     }
   }
