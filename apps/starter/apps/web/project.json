@@ -45,6 +45,22 @@
         "fix": true
       }
     },
+    "format": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prettier --check .",
+        "cwd": "{projectRoot}"
+      },
+      "cache": true,
+      "inputs": ["default", "{projectRoot}/.prettierignore", "{workspaceRoot}/.prettierrc"]
+    },
+    "format:fix": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prettier --write .",
+        "cwd": "{projectRoot}"
+      }
+    },
     "type-check": {
       "executor": "@nx/js:tsc",
       "options": {

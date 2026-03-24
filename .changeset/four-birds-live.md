@@ -2,7 +2,7 @@
 '@vite-powerflow/create': minor
 ---
 
-anchor: f9acaccbe78c66bc48099b1f3b0e80e07ded8136
+anchor: bfdeb0b00090159175ce38c08b2d6e34391a5685
 
 Refactor the CLI project creation flow to align with the Nx monorepo template structure.
 
