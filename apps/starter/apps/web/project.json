@@ -1,38 +1,64 @@
 {
-  "name": "@vite-powerflow/starter",
+  "name": "@vite-powerflow/starter-web",
   "projectType": "application",
   "targets": {
     "build": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist"
+        "outputPath": "{projectRoot}/dist",
+        "root": "{projectRoot}",
+        "configFile": "{projectRoot}/vite.config.ts"
       }
     },
     "serve": {
       "executor": "@nx/vite:dev-server",
       "persistent": true,
       "options": {
-        "buildTarget": "{{projectName}}:build"
+        "buildTarget": "{projectName}:build"
       }
     },
     "preview": {
       "executor": "@nx/vite:preview-server",
       "options": {
-        "buildTarget": "{{projectName}}:build"
+        "buildTarget": "{projectName}:build"
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
       "options": {
-        "lintFilePatterns": ["src/**/*.{ts,tsx,js,jsx}", "*.{ts,tsx,js,jsx}"]
+        "eslintConfig": "{projectRoot}/eslint.config.js",
+        "lintFilePatterns": [
+          "{projectRoot}/src/**/*.{ts,tsx,js,jsx}",
+          "{projectRoot}/*.{ts,tsx,js,jsx}"
+        ]
       }
     },
     "lint:fix": {
       "executor": "@nx/eslint:lint",
       "options": {
-        "lintFilePatterns": ["src/**/*.{ts,tsx,js,jsx}", "*.{ts,tsx,js,jsx}"],
+        "eslintConfig": "{projectRoot}/eslint.config.js",
+        "lintFilePatterns": [
+          "{projectRoot}/src/**/*.{ts,tsx,js,jsx}",
+          "{projectRoot}/*.{ts,tsx,js,jsx}"
+        ],
         "fix": true
+      }
+    },
+    "format": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prettier --check .",
+        "cwd": "{projectRoot}"
+      },
+      "cache": true,
+      "inputs": ["default", "{projectRoot}/.prettierignore", "{workspaceRoot}/.prettierrc"]
+    },
+    "format:fix": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prettier --write .",
+        "cwd": "{projectRoot}"
       }
     },
     "type-check": {
@@ -40,28 +66,29 @@
       "options": {
         "main": "src/main.tsx",
         "tsConfig": "tsconfig.json",
-        "outputPath": "dist",
+        "outputPath": "{projectRoot}/dist",
         "noEmit": true
       }
     },
     "test": {
       "executor": "@nx/vite:test",
       "options": {
-        "config": "vitest.config.ts"
+        "configFile": "{projectRoot}/vitest.config.ts"
       }
     },
     "test:coverage": {
       "executor": "@nx/vite:test",
       "outputs": ["{projectRoot}/coverage/**"],
       "options": {
-        "config": "vitest.config.ts",
+        "configFile": "{projectRoot}/vitest.config.ts",
         "coverage": true
       }
     },
     "test:e2e": {
-      "executor": "@nx/playwright:playwright",
+      "executor": "nx:run-commands",
       "options": {
-        "config": "playwright.config.ts"
+        "command": "pnpm exec playwright install && pnpm test:e2e",
+        "cwd": "{projectRoot}"
       }
     },
     "test:all": {
@@ -96,7 +123,7 @@
       "executor": "@nx/storybook:storybook",
       "options": {
         "configDir": ".storybook",
-        "browserTarget": "{{projectName}}:build",
+        "browserTarget": "{projectName}:build",
         "compodoc": false
       }
     },
@@ -106,7 +133,7 @@
       "options": {
         "configDir": ".storybook",
         "browserTarget": "{{projectName}}:build",
-        "outputPath": "dist/storybook"
+        "outputPath": "{projectRoot}/dist/storybook"
       }
     }
   }

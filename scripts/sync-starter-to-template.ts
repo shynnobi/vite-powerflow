@@ -1,5 +1,6 @@
 import { execSync } from 'child_process';
 import fs from 'fs-extra';
+import { glob } from 'glob';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -62,8 +63,23 @@ void (async () => {
           'tsconfig.tsbuildinfo',
           'CHANGELOG.md',
         ];
+
         // Ignore explicit unwanted files/folders
-        return !ignore.some(dir => path.basename(srcPath) === dir);
+        const basename = path.basename(srcPath);
+        if (ignore.some(dir => basename === dir)) {
+          return false;
+        }
+
+        // Exclude ONLY the root project.json, but keep apps/web/project.json
+        if (basename === 'project.json') {
+          const relativePath = path.relative(starterSrc, srcPath);
+          // Only exclude if it's directly in root (no path separators)
+          if (!relativePath.includes(path.sep)) {
+            return false;
+          }
+        }
+
+        return true;
       },
     });
 
@@ -149,43 +165,55 @@ void (async () => {
       }
     }
 
-    // 7. Transform package.json scripts from Turbo to Nx with optimizations
-    logRootInfo('Transforming package.json scripts from Turbo to Nx with optimizations...');
-    pkg.scripts = {
-      ...pkg.scripts,
-      // Transform to optimized Nx scripts
-      dev: 'nx serve',
-      build: 'nx build',
-      preview: 'nx preview',
-      test: 'nx test',
-      'test:coverage': 'nx test:coverage',
-      'test:coverage:report': 'vitest run --coverage --reporter=html',
-      'test:e2e': 'playwright test',
-      'test:e2e:setup': './scripts/e2e-setup.sh',
-      'test:e2e:clear': './scripts/e2e-clear-cache.sh',
-      'test:e2e:ui': 'playwright test --ui --ui-host 0.0.0.0 --ui-port 9324',
-      'test:e2e:report': 'playwright show-report',
-      'test:all': 'nx test:all',
-      storybook: 'nx storybook',
-      'storybook:test': 'test-storybook --url http://localhost:9009',
-      'storybook:build': 'nx build-storybook',
-      'storybook:cleanup': './scripts/cleanup-storybook.sh',
-      lint: 'nx lint',
-      'lint:fix': 'nx lint:fix',
-      format: 'nx format:check',
-      'format:fix': 'nx format:write',
-      fix: 'nx lint:fix && nx format:write',
-      'type-check': 'nx type-check',
-      'validate:static': 'nx validate:static',
-      'validate:quick': 'nx validate:quick',
-      'validate:full': 'nx validate:full',
-      'validate:commit': 'npx lint-staged; nx test',
-      'nx:cache:stats': 'nx show projects --with-target=lint,format,build,test',
-      'nx:cache:clear': 'nx reset',
-    };
+    // 6. Transform project.json files to use template-compatible names
+    logRootInfo('Patching project.json files for template usage...');
+    const projectJsonFiles = await glob(path.join(templateDest, '**/project.json'), { dot: true });
+    for (const projectJsonFile of projectJsonFiles) {
+      try {
+        const projRaw = await fs.readFile(projectJsonFile, 'utf-8');
+        const proj = JSON.parse(projRaw) as { name?: string };
 
-    await fs.writeFile(pkgPath, JSON.stringify(pkg, null, 2), 'utf8');
-    logRootInfo('  - Transformed Turbo scripts to Nx scripts');
+        // Replace @vite-powerflow/ prefix with a placeholder that will be replaced during instantiation
+        const projectName = typeof proj.name === 'string' ? proj.name : undefined;
+        if (projectName?.startsWith('@vite-powerflow/')) {
+          proj.name = projectName.replace('@vite-powerflow/', '@template-app/');
+          await fs.writeFile(projectJsonFile, JSON.stringify(proj, null, 2) + '\n', 'utf-8');
+          logRootInfo(
+            `  - Updated project name in ${path.relative(templateDest, projectJsonFile)}`
+          );
+        }
+      } catch (e) {
+        logRootError(`Failed to patch ${projectJsonFile}: ${e}`);
+      }
+    }
+
+    // 7. Transform package.json scripts for template usage
+    // Root template should NOT use Nx for dev server (and generally should proxy to apps/web)
+    const isRootPackage = pkgPath === path.join(templateDest, 'package.json');
+
+    if (isRootPackage) {
+      logRootInfo('Patching root package.json scripts from starter SSOT...');
+      const starterPkgPath = path.join(starterSrc, 'package.json');
+      const starterPkgRaw = await fs.readFile(starterPkgPath, 'utf8');
+      const starterPkg = JSON.parse(starterPkgRaw) as {
+        scripts?: Record<string, string>;
+        devDependencies?: Record<string, string>;
+      };
+
+      pkg.scripts = {
+        ...(starterPkg.scripts ?? {}),
+        // Dev server should run directly via Vite for the web app
+        'web:dev': 'pnpm --filter @template-app/web dev',
+      };
+
+      // Ensure Nx stays available in the template root
+      pkg.devDependencies = {
+        ...(pkg.devDependencies as Record<string, string> | undefined),
+        nx: starterPkg.devDependencies?.nx ?? '21.5.2',
+      };
+
+      logRootInfo('  - Root scripts now mirror starter package.json (SSOT)');
+    }
     logRootSuccess('Template synchronized successfully!');
   } catch (err) {
     logRootError('Template synchronization failed!');

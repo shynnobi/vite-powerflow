@@ -93,7 +93,7 @@ describe('CLI E2E: project generation (non-interactive)', () => {
     expect(fs.existsSync(projectPath)).toBe(true);
     expect(fs.existsSync(path.join(projectPath, 'package.json'))).toBe(true);
     expect(fs.existsSync(path.join(projectPath, 'README.md'))).toBe(true);
-    expect(fs.existsSync(path.join(projectPath, 'tsconfig.json'))).toBe(true);
+    expect(fs.existsSync(path.join(projectPath, 'apps', 'web', 'tsconfig.json'))).toBe(true);
     expect(fs.existsSync(path.join(projectPath, '.devcontainer', 'devcontainer.json'))).toBe(true);
 
     // Cleanup

@@ -8,7 +8,14 @@
     "jsx": "react-jsx",
     "types": ["vitest/globals"]
   },
-  "include": ["src", "__tests__/**/*.ts", "build.ts", "types/**/*.d.ts", "types/**/*.ts"],
+  "include": [
+    "src",
+    "__tests__/**/*.ts",
+    "scripts/**/*.ts",
+    "build.ts",
+    "types/**/*.d.ts",
+    "types/**/*.ts"
+  ],
   "exclude": ["dist", "node_modules", "template"],
   "references": []
 }

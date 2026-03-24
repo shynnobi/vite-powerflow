@@ -1,0 +1,43 @@
+{
+  "name": "root-scripts",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "scripts",
+  "targets": {
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint scripts --ext .ts"
+      },
+      "cache": true,
+      "inputs": ["default", "{workspaceRoot}/scripts/**/*.ts", "{workspaceRoot}/.eslintrc.json"]
+    },
+    "format": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prettier --check scripts"
+      },
+      "cache": true,
+      "inputs": ["default", "{workspaceRoot}/scripts/**/*.ts", "{workspaceRoot}/.prettierrc"]
+    },
+    "format:fix": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prettier --write scripts"
+      }
+    },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit --project tsconfig.scripts.json"
+      },
+      "cache": true,
+      "inputs": [
+        "default",
+        "{workspaceRoot}/scripts/**/*.ts",
+        "{workspaceRoot}/tsconfig.scripts.json"
+      ]
+    }
+  },
+  "tags": ["type:tooling"]
+}
