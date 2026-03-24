@@ -3,6 +3,7 @@ import js from '@eslint/js';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import eslintComments from 'eslint-plugin-eslint-comments';
+import importPlugin from 'eslint-plugin-import';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
@@ -87,6 +88,7 @@ export default [
       parser: tsParser,
       parserOptions: {
         project: ['./tsconfig.eslint.json', './tsconfig.spec.json'],
+        tsconfigRootDir: __dirname,
       },
       globals: {
         process: 'readonly',
@@ -103,6 +105,7 @@ export default [
       'react-refresh': reactRefreshPlugin,
       'simple-import-sort': simpleImportSort,
       'jsx-a11y': jsxA11yPlugin,
+      import: importPlugin,
     },
     rules: {
       ...tsPlugin.configs.recommended.rules,
@@ -115,6 +118,7 @@ export default [
       'react-hooks/exhaustive-deps': 'warn',
       'react/react-in-jsx-scope': 'off',
       'react/no-unescaped-entities': 'off',
+      'import/no-unresolved': 'off', // Disabled: doesn't work well with TS path aliases in lint-staged
       'simple-import-sort/imports': [
         'error',
         {
@@ -147,6 +151,12 @@ export default [
     settings: {
       react: {
         version: 'detect',
+      },
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.json',
+        },
       },
     },
   },

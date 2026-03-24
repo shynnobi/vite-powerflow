@@ -1,7 +1,7 @@
 {
   "name": "vite-powerflow-sync",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "syncConfig": {
     "baseline": "c47ae60c069199fc1693e1455762157a8579d6be",
     "label": "Extension",
