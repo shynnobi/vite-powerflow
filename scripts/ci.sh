@@ -3,7 +3,6 @@ set -e
 
 pnpm format
 pnpm lint
-pnpm run root-scripts:static
-pnpm build
+pnpm nx run-many --target=build --all --exclude=@vite-powerflow/starter-web
 pnpm type-check
-pnpm test
+pnpm nx run-many --target=test --all --exclude=@vite-powerflow/starter-web

@@ -3,21 +3,26 @@
  * React + PWA + SEO setup with Nx integration
  */
 
-import fs from 'fs';
-import path from 'path';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react-swc';
+import fs from 'fs';
+import path from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
+import { fileURLToPath } from 'url';
 import type { Plugin, PluginOption } from 'vite';
+import compression from 'vite-plugin-compression';
+import { createHtmlPlugin } from 'vite-plugin-html';
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
+import { VitePWA } from 'vite-plugin-pwa';
+import Sitemap from 'vite-plugin-sitemap';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
-import { VitePWA } from 'vite-plugin-pwa';
-import compression from 'vite-plugin-compression';
+
 import { PROJECT_CONFIG } from './src/config/projectConfig.js';
 import { generatePWAManifest, validateConfiguration } from './src/types/pwa.js';
-import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
-import { createHtmlPlugin } from 'vite-plugin-html';
-import Sitemap from 'vite-plugin-sitemap';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Validate configuration on startup
 validateConfiguration(PROJECT_CONFIG.seo, {
@@ -27,10 +32,17 @@ validateConfiguration(PROJECT_CONFIG.seo, {
 
 // Vite plugins
 const robotsPlugin = (): Plugin => {
+  let resolvedOutDir = 'dist';
+
   return {
     name: 'robots-plugin',
+    configResolved(config) {
+      resolvedOutDir = config.build?.outDir ?? 'dist';
+    },
     closeBundle() {
-      const targetPath = path.resolve(process.cwd(), 'dist/robots.txt');
+      const targetPath = path.isAbsolute(resolvedOutDir)
+        ? path.join(resolvedOutDir, 'robots.txt')
+        : path.resolve(__dirname, resolvedOutDir, 'robots.txt');
 
       try {
         // Ensure dist directory exists
@@ -91,6 +103,8 @@ export default defineConfig({
       hostname: PROJECT_CONFIG.domain.production,
       dynamicRoutes: ['/'],
       exclude: ['/admin', '/private', '/confidentiel'],
+      outDir: path.resolve(__dirname, 'dist'),
+      generateRobotsTxt: false,
     }),
     robotsPlugin(), // Generate robots.txt after sitemap (will override)
 

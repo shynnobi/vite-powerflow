@@ -1,5 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/nrwl/nx/master/packages/nx/schemas/nx-schema.json",
+  "nxCloudAccessToken": "",
   "tui": {
     "enabled": false
   },
@@ -18,7 +19,7 @@
       "!{projectRoot}/playwright.config.[jt]s",
       "!{projectRoot}/vitest.config.[jt]s"
     ],
-    "sharedGlobals": []
+    "sharedGlobals": ["{workspaceRoot}/.github/**/*"]
   },
   "targetDefaults": {
     "build": {
@@ -54,5 +55,6 @@
         "useDaemonProcess": true
       }
     }
-  }
+  },
+  "analytics": false
 }

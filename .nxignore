@@ -1,0 +1,4 @@
+packages/cli/template/**
+apps/starter/project.json
+apps/starter/package.json
+apps/starter/pnpm-workspace.yaml

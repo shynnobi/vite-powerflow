@@ -1,0 +1,7 @@
+dist
+coverage
+html
+stats.html
+playwright-report
+test-results
+node_modules

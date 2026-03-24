@@ -3,7 +3,7 @@
   "private": false,
   "version": "2.1.0",
   "syncConfig": {
-    "baseline": "08d79e2ca815952ed3a2a9dae101c13570eaeadb",
+    "baseline": "c47ae60c069199fc1693e1455762157a8579d6be",
     "label": "CLI",
     "monitored": true,
     "updatedAt": "2025-09-16T00:21:51.032Z"
@@ -62,7 +62,8 @@
     "dev": "tsc -w",
     "start": "node dist/index.js",
     "test": "vitest run src/**/*.test.ts __tests__/unit/**/*.test.ts __tests__/integration/**/*.test.ts",
-    "test:e2e": "vitest run __tests__/e2e/",
+    "test:e2e": "tsx scripts/run-e2e-with-sync.ts",
+    "test:e2e:raw": "vitest run __tests__/e2e/",
     "lint": "eslint . --ext ts,tsx,js,jsx",
     "lint:fix": "eslint . --ext ts,tsx,js,jsx --fix",
     "format": "prettier --check .",
