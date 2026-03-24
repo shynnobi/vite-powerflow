@@ -2,7 +2,7 @@
 'vite-powerflow-sync': patch
 ---
 
-anchor: bfdeb0b00090159175ce38c08b2d6e34391a5685
+anchor: c558981e86b592ab6e2da2ba1f79af754b3519ec
 
 Update extension sync baseline metadata to match the current release anchor.
 
