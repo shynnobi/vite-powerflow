@@ -5,4 +5,4 @@ pnpm format
 pnpm lint
 pnpm nx run-many --target=build --all --exclude=@vite-powerflow/starter-web
 pnpm type-check
-pnpm test
+pnpm nx run-many --target=test --all --exclude=@vite-powerflow/starter-web
