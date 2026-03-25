@@ -1,8 +1,10 @@
 ---
-alwaysApply: true
+description: Apply when writing, reviewing, or refactoring code — architecture, component structure, TypeScript, React patterns
+alwaysApply: false
 ---
 
 ## Code Standards
+
 - Functional React components with hooks
 - Strict TypeScript typing
 - Explicit names for functions and variables
@@ -11,6 +13,7 @@ alwaysApply: true
 - Feature-based architecture rather than technical type
 
 ## Architecture Principles
+
 - Adapt architecture to project requirements rather than forcing specific technologies
 - Follow domain-driven design where appropriate
 - Maintain clear separation of concerns (UI, business logic, data access)

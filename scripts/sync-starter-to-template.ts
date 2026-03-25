@@ -206,10 +206,10 @@ void (async () => {
         'web:dev': 'pnpm --filter @template-app/web dev',
       };
 
-      // Ensure Nx stays available in the template root
+      // Keep starter root tooling dependencies in the template root
       pkg.devDependencies = {
         ...(pkg.devDependencies as Record<string, string> | undefined),
-        nx: starterPkg.devDependencies?.nx ?? '21.5.2',
+        ...(starterPkg.devDependencies ?? {}),
       };
 
       logRootInfo('  - Root scripts now mirror starter package.json (SSOT)');

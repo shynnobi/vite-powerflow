@@ -13,10 +13,8 @@ import {
   resolveTemplatePath,
 } from './create/template-copy.js';
 import {
-  cleanupStandaloneScripts,
   fixPermissions,
   formatConfigFiles,
-  swapLintStagedConfig,
   updateDevcontainerAndDocker,
 } from './create/tooling-postprocess.js';
 import { logError, logSuccess } from '../utils/shared/logger.js';
@@ -38,8 +36,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
  * 3) Patch package.json + project.json with project naming
  * 4) Rewrite placeholders in README/vite/vitest configs
  * 5) Format touched config files
- * 6) Swap lint-staged config and clean standalone scripts
- * 7) Optionally init git and commit
+ * 6) Optionally init git and commit
  */
 export async function createProject(options: ProjectOptions): Promise<void> {
   let packageName = options.packageName;
@@ -167,34 +164,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       throw formatError;
     }
 
-    // 12. Replace lint-staged config with Nx version for generated projects
-    // Note: The starter includes both standalone and Nx lint-staged configs to handle
-    // monorepo compatibility issues in GitHub Actions. Generated projects use pure Nx.
-    try {
-      await swapLintStagedConfig(projectPath);
-    } catch (lintstagedError) {
-      logError('Failed to update .lintstagedrc.js');
-      logError(
-        lintstagedError instanceof Error ? lintstagedError.message : String(lintstagedError)
-      );
-      throw lintstagedError;
-    }
-
-    // 13. Clean up package.json scripts (remove standalone scripts)
-    // Note: Standalone scripts were needed in the monorepo starter to avoid Nx dependency issues
-    // in GitHub Actions CI/CD pipelines (resolved "nx ENOENT" errors). Generated projects use
-    // pure Nx commands, so these standalone fallbacks are no longer needed.
-    try {
-      await cleanupStandaloneScripts(projectPath);
-    } catch (packageJsonError) {
-      logError('Failed to clean package.json scripts');
-      logError(
-        packageJsonError instanceof Error ? packageJsonError.message : String(packageJsonError)
-      );
-      throw packageJsonError;
-    }
-
-    // 14. Initialize Git repository and create initial commit if requested
+    // 12. Initialize Git repository and create initial commit if requested
     if (options.git) {
       try {
         const projectGit = simpleGit(projectPath);
@@ -214,7 +184,7 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       }
     }
 
-    // 15. Final success log
+    // 13. Final success log
     logSuccess(`Project created at: ${projectPath}`);
   } catch (error) {
     logError('Failed to create project');

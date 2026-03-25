@@ -1,9 +1,0 @@
----
-description: 
-globs: 
-alwaysApply: true
----
-- Follow ecosystem-specific conventions over custom configurations
-- Respect tool-specific naming patterns and best practices
-- Maintain consistency with official documentation and community standards
-- Prefer widely adopted patterns over custom solutions

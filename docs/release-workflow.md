@@ -82,37 +82,31 @@ graph TD
 
 ## Multi-Product Versioning & Release Structure
 
-This monorepo manages three main release streams:
+This monorepo manages two main release streams:
 
 1. **CLI** (`packages/cli`)
-   - Independent versioning and changelog
-   - Published on npm as `create-vite-powerflow`
-   - Tags: `cli-1.2.0`, `cli-1.3.0`, ...
-   - Changelog: `packages/cli/CHANGELOG.md`
-   - GitHub Releases: one per CLI tag
 
-2. **Starter** (`apps/starter`)
-   - Independent versioning and changelog
-   - Used as the main template for generated projects
-   - Tags: `starter-1.1.0`, `starter-1.2.0`, ...
-   - Changelog: `apps/starter/CHANGELOG.md`
-   - GitHub Releases: one per Starter tag
+- Independent versioning and changelog
+- Published on npm as `create-vite-powerflow`
+- Tags: `cli-1.2.0`, `cli-1.3.0`, ...
+- Changelog: `packages/cli/CHANGELOG.md` (includes Starter template changes)
+- GitHub Releases: one per CLI tag
 
-3. **Monorepo Global**
-   - Versioning and changelog for cross-cutting changes (scripts, infra, automation, etc.)
-   - Tags: `v2.0.0`, `v2.1.0`, ...
-   - Changelog: `CHANGELOG.md` (root)
-   - GitHub Releases: one per global tag
+2. **Monorepo Global**
+
+- Versioning and changelog for cross-cutting changes (scripts, infra, automation, etc.)
+- Tags: `v2.0.0`, `v2.1.0`, ...
+- Changelog: `CHANGELOG.md` (root)
+- GitHub Releases: one per global tag
 
 ---
 
 ### Tag & Release Convention Table
 
-| Component | Tag Example   | Changelog Location        | Release Description           |
-| --------- | ------------- | ------------------------- | ----------------------------- |
-| CLI       | cli-1.2.0     | packages/cli/CHANGELOG.md | CLI-specific changes/features |
-| Starter   | starter-1.1.0 | apps/starter/CHANGELOG.md | Starter template improvements |
-| Monorepo  | v2.0.0        | CHANGELOG.md (root)       | Infra/scripts/global changes  |
+| Component | Tag Example | Changelog Location        | Release Description                                   |
+| --------- | ----------- | ------------------------- | ----------------------------------------------------- |
+| CLI       | cli-1.2.0   | packages/cli/CHANGELOG.md | CLI-specific changes/features (includes Starter sync) |
+| Monorepo  | v2.0.0      | CHANGELOG.md (root)       | Infra/scripts/global changes                          |
 
 ---
 
@@ -123,10 +117,9 @@ This monorepo manages three main release streams:
   - Update `packages/cli/CHANGELOG.md`
   - Commit, tag (`cli-x.y.z`), push, publish on npm, create GitHub release
 
-- **When you update the Starter**:
-  - Bump version in `apps/starter` (if needed)
-  - Update `apps/starter/CHANGELOG.md`
-  - Commit, tag (`starter-x.y.z`), push, create GitHub release
+- **When you update the Starter template source (`apps/starter`)**:
+  - Document the user-facing impact in `packages/cli/CHANGELOG.md`
+  - Publish through the CLI release flow (`cli-x.y.z`)
 
 - **When you make global/infra changes**:
   - Update root `CHANGELOG.md`
@@ -136,19 +129,18 @@ This monorepo manages three main release streams:
 
 ### Example Combined Release History
 
-| Tag           | Description/Changelog |
-| ------------- | --------------------- |
-| v2.0.0        | Monorepo global       |
-| cli-1.2.0     | CLI                   |
-| starter-1.1.0 | Starter               |
-| v1.1.0        | Monorepo global       |
-| cli-1.1.0     | CLI                   |
+| Tag       | Description/Changelog          |
+| --------- | ------------------------------ |
+| v2.0.0    | Monorepo global                |
+| cli-1.2.0 | CLI (includes Starter changes) |
+| v1.1.0    | Monorepo global                |
+| cli-1.1.0 | CLI                            |
 
 ---
 
 ### Notes
 
-- Each product/package has its own changelog, version, and release cycle.
+- CLI changelog is the release source of truth for generated Starter template changes.
 - The GitHub Releases page will show a combined history for all tags.
 - This structure is inspired by Vite, Turborepo, Nx, and other major open source monorepos.
 

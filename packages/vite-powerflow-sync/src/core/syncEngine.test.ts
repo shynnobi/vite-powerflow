@@ -55,9 +55,8 @@ describe('syncEngine', () => {
   describe('checkSyncStatus for Starter', () => {
     it('should return pending status when changeset exists for starter package and no changes after anchor', async () => {
       // GIVEN: A changeset exists for the starter package and no files have changed after its anchor commit
-      const { getCurrentCommit, getCommitsSince, getFilesChangedSince } = await import(
-        './gitCommands.js'
-      );
+      const { getCurrentCommit, getCommitsSince, getFilesChangedSince } =
+        await import('./gitCommands.js');
       const { readLatestChangeset } = await import('./changesetReader.js');
       const { readPackageInfo } = await import('./packageReader.js');
 
@@ -92,9 +91,8 @@ describe('syncEngine', () => {
 
     it('should check git commits when no changeset exists (warning required)', async () => {
       // GIVEN: No changeset exists for the starter package and there are file changes under the starter path
-      const { getCurrentCommit, getCommitsSince, getFilesChangedSince } = await import(
-        './gitCommands.js'
-      );
+      const { getCurrentCommit, getCommitsSince, getFilesChangedSince } =
+        await import('./gitCommands.js');
       const { readLatestChangeset } = await import('./changesetReader.js');
       const { readPackageInfo } = await import('./packageReader.js');
 
