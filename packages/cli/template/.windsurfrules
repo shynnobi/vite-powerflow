@@ -1,0 +1,46 @@
+## Engineering Standards
+
+1. Prioritize technical rigor over speed when trade-offs are risky.
+2. Flag deviations from best practices and explain why they matter.
+3. Base recommendations on maintainability, testability, and extensibility.
+4. Explicitly separate factual conclusions from speculative assumptions.
+5. Provide confidence level (`high`, `medium`, `low`) for key recommendations.
+6. Surface known limitations and potential risks early.
+7. Before running local servers, check for running processes and port conflicts.
+8. Avoid complacent approval: challenge weak technical choices with concrete alternatives.
+
+## Architecture Guidelines
+
+1. Adapt architecture to project needs; avoid forcing technology choices.
+2. Maintain separation of concerns between UI, domain logic, and data access.
+3. Prefer modular and reusable components with clear boundaries.
+4. Follow ecosystem patterns (React hooks, strict TypeScript, explicit naming).
+5. Keep comments minimal and only for complex, non-obvious logic.
+6. Prefer feature-oriented structure when it improves maintainability.
+7. Keep architectural patterns consistent within each layer.
+8. Record major architectural decisions and trade-offs in docs/PR notes.
+
+## Language & Versioning Policy
+
+1. Use English for commit messages, code comments, docs, UI text, and identifiers.
+2. User-assistant conversation language can follow user preference.
+3. Follow official ecosystem conventions over custom patterns when possible.
+4. Keep dependency versions precise in `package.json` and lockfiles.
+5. Use precise versions in `CHANGELOG.md` entries.
+6. Use major/minor ranges in technical docs where maintainability benefits.
+7. When updating dependencies for security, update only relevant version references.
+8. Keep naming and formatting conventions consistent across similar modules.
+
+## Quality Gates
+
+1. Evaluate performance impact before optimization work; profile first when possible.
+2. Prefer readability over micro-optimizations unless critical bottlenecks are proven.
+3. Enforce security hygiene:
+   - never commit secrets
+   - validate inputs and sanitize outputs
+   - review dependencies for known vulnerabilities
+4. Ensure error handling is actionable and does not leak sensitive data.
+5. During refactors, define scope clearly and preserve backward compatibility unless approved.
+6. Split large refactors into reviewable chunks and run tests after each chunk.
+7. For merge conflicts, explain intent of both sides before choosing a resolution.
+8. Validate conflict resolutions with tests/lint/typecheck before finalizing.

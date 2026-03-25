@@ -1,5 +1,15 @@
 # vite-powerflow-sync
 
+## 0.1.2
+
+### Patch Changes
+
+- 1de8d85: anchor: f4bf773c62b2dc00f41e6c31d4b25e89657d0b4f
+
+  **Extension Test Alignment**
+  - Updated sync engine tests to align with new Nx validation flow changes
+  - Aligned sync behavior with consolidated starter rule structure
+
 ## 0.1.1
 
 ### Patch Changes
