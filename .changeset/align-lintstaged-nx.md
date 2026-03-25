@@ -2,7 +2,7 @@
 '@vite-powerflow/create': patch
 ---
 
-anchor: 925a5964825143d49b092a4530f6391bed12e9b6
+anchor: 6d7b3c5d900ea55e4af0499bd90500cb2db39449
 
 **CLI Template & Starter Alignment**
 
@@ -12,3 +12,6 @@ anchor: 925a5964825143d49b092a4530f6391bed12e9b6
 - Aligned validate scripts output style (static vs dynamic)
 - Removed obsolete CLI cleanup functions (`swapLintStagedConfig`)
 - Fixed sync-starter-to-template to preserve full devDependencies
+- Consolidated starter cursor rules: removed 10 duplicate/redundant files, aligned with root standards
+- Added `.windsurfrules` and windsurf workflow files to starter template
+- Optimized cursor rules token cost (alwaysApply: false for non-essential rules)
