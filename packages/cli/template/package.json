@@ -1,7 +1,7 @@
 {
   "name": "@vite-powerflow/starter",
   "private": true,
-  "version": "2.1.0",
+  "version": "0.0.1",
   "description": "Vite PowerFlow starter template - Monorepo with web app",
   "type": "module",
   "packageManager": "pnpm@10.13.1",
@@ -11,16 +11,18 @@
     "lint": "nx run-many --targets=lint --all",
     "format": "nx run-many --targets=format --all",
     "format:fix": "nx run-many --targets=format:write --all",
-    "format:fix:standalone": "prettier --write .",
-    "lint:fix:standalone": "eslint --fix .",
     "type-check": "nx run-many --targets=type-check --all",
     "test": "nx run-many --targets=test --all",
-    "validate:static": "nx run-many --target=lint --all && nx run-many --target=format --all && nx run-many --target=type-check --all",
-    "validate:quick": "nx run-many --target=lint --all && nx run-many --target=format --all && nx run-many --target=test --all",
-    "validate:commit": "npx lint-staged --config .lintstagedrc.cjs && pnpm test",
-    "validate:full": "nx run-many --target=lint --all && nx run-many --target=format --all && nx run-many --target=test --all && nx run-many --target=test:e2e --all --outputStyle=stream && pnpm build"
+    "validate:static": "nx run-many --target=lint --all && nx run-many --target=format --all --outputStyle=static && nx run-many --target=type-check --all",
+    "validate:quick": "nx run-many --target=lint --all && nx run-many --target=format --all --outputStyle=static && nx run-many --target=test --all",
+    "validate:commit": "npx lint-staged --config .lintstagedrc.js && pnpm test",
+    "validate:full": "nx run-many --target=lint --all && nx run-many --target=format --all --outputStyle=static && nx run-many --target=test --all && nx run-many --target=test:e2e --all --outputStyle=stream && pnpm build"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "nx": "21.5.2"
   }
 }
