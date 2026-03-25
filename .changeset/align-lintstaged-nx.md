@@ -2,6 +2,8 @@
 '@vite-powerflow/create': patch
 ---
 
+anchor: e5c77f3bd02e156090ca3c9ec01e8ca623d3187b
+
 **CLI Template & Starter Alignment**
 
 - Unified lint-staged configuration with inline Nx commands for both root and starter

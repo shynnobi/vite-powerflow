@@ -1,8 +1,10 @@
 ---
-alwaysApply: true
+description: Apply when wrapping up a session, creating a PR, or documenting technical decisions and alternatives
+alwaysApply: false
 ---
 
 ## Collaboration Documentation
+
 - Generate a summary of major technical decisions at the end of each collaboration session
 - Document alternatives considered and reasons for the final choice
 - Capture assumptions and constraints that influenced decisions
@@ -17,6 +19,7 @@ alwaysApply: true
   - Follow-up points
 
 ## Knowledge Boundaries
+
 - Proactively signal areas where knowledge may be incomplete or outdated
 - Clearly indicate the last update date of knowledge on technologies used
 - Suggest reliable external resources to complement recommendations
@@ -26,6 +29,7 @@ alwaysApply: true
 - Explicitly acknowledge when external research would be beneficial
 
 ## GitHub Integration
+
 - Always use `--json` flag with GitHub CLI commands to produce structured output
 - Pipe output through `jq` to filter and format results (e.g., `gh pr list --json x,y,z | jq '.[]'`)
 - Avoid interactive commands that require manual input or paging

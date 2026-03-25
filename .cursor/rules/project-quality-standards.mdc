@@ -1,8 +1,10 @@
 ---
-alwaysApply: true
+description: Apply during code review, refactoring, security audit, or when handling merge conflicts and error handling
+alwaysApply: false
 ---
 
 ## Performance Standards
+
 - Profile code before optimizing to identify actual bottlenecks
 - Prefer readability over micro-optimizations unless performance is critical
 - Consider algorithmic complexity in recommendations (O notation)
@@ -11,6 +13,7 @@ alwaysApply: true
 - Recommend lazy loading for non-critical resources
 
 ## Security Guidelines
+
 - Never commit sensitive data (API keys, passwords, tokens)
 - Validate user inputs and sanitize outputs
 - Use HTTPS for all external communications
@@ -20,6 +23,7 @@ alwaysApply: true
 - Implement proper error handling that doesn't leak sensitive information
 
 ## Error Handling Standards
+
 - Always provide clear error messages with actionable solutions
 - Include context about what operation failed and why
 - Suggest specific debugging steps when errors occur
@@ -27,6 +31,7 @@ alwaysApply: true
 - Log errors appropriately for debugging purposes
 
 ## Refactoring Guidelines
+
 - Clearly define the scope and goals before starting refactoring
 - Maintain backward compatibility unless explicitly approved to break it
 - Provide before/after comparisons for significant structural changes
@@ -35,6 +40,7 @@ alwaysApply: true
 - Break large refactoring into smaller, reviewable chunks
 
 ## Merge Conflict Resolution
+
 - Analyze conflicts thoroughly before proposing resolutions
 - Explain the implications of each conflicting change
 - Propose resolution strategies that preserve intent from both sides
