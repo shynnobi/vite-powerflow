@@ -1,7 +1,7 @@
 {
   "name": "@vite-powerflow/starter",
   "private": true,
-  "version": "2.1.0",
+  "version": "0.0.1",
   "description": "Vite PowerFlow starter template - Monorepo with web app",
   "type": "module",
   "packageManager": "pnpm@10.13.1",
