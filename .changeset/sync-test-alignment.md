@@ -2,7 +2,7 @@
 'vite-powerflow-sync': patch
 ---
 
-anchor: d67bb96b2b693d17e85fe3364df7e2c3ec87dc0e
+anchor: dad7e240a78a75173832d17e5763f05968a323c3
 
 **Extension Test Alignment**
 
