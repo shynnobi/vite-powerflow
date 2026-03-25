@@ -1,3 +1,8 @@
+---
+description: Commit workflow, validation, and message rules for AI-driven commits.
+alwaysApply: false
+---
+
 # AI Commit Process Rules
 
 ## 1. Commit Workflow
@@ -14,8 +19,8 @@ When the user requests to make a commit, the AI must:
 
 - All commit messages must follow the Conventional Commit format.
   - Allowed types: build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test.
-  - The header (first line) must be ≤ 72 characters, imperative mood, no period at the end.
-  - The body (optional) must be ≤ 100 characters per line, each line a complete thought.
+  - The header (first line) must be less than 72 characters, imperative mood, no period at the end.
+  - The body (optional) must be than 100 characters per line, each line a complete thought.
   - Use bullet points in the body for multiple changes.
   - All commit messages and comments must be written in English.
 - Commit messages must be readable and understandable by anyone reviewing the history, even without detailed knowledge of the code.

@@ -2,7 +2,7 @@
 '@vite-powerflow/create': patch
 ---
 
-anchor: dad7e240a78a75173832d17e5763f05968a323c3
+anchor: 925a5964825143d49b092a4530f6391bed12e9b6
 
 **CLI Template & Starter Alignment**
 
