@@ -1,7 +1,3 @@
-import fs from 'fs/promises';
-import fsExtra from 'fs-extra';
-import path from 'path';
-
 import {
   updateDevcontainerWorkspaceFolder,
   updateDockerComposeVolume,
@@ -68,28 +64,4 @@ export async function formatConfigFiles(
       }
     );
   });
-}
-
-export async function swapLintStagedConfig(projectPath: string): Promise<void> {
-  const lintstagedPath = path.join(projectPath, '.lintstagedrc.js');
-  const lintstagedNxPath = path.join(projectPath, '.lintstagedrc-nx.js');
-
-  if (await fsExtra.pathExists(lintstagedPath)) {
-    await fs.unlink(lintstagedPath);
-  }
-
-  if (await fsExtra.pathExists(lintstagedNxPath)) {
-    await fs.rename(lintstagedNxPath, lintstagedPath);
-  }
-}
-
-export async function cleanupStandaloneScripts(projectPath: string): Promise<void> {
-  const packageJsonCleanupPath = path.join(projectPath, 'package.json');
-  const packageJsonRaw = await fs.readFile(packageJsonCleanupPath, 'utf-8');
-  const packageJson = JSON.parse(packageJsonRaw);
-
-  delete packageJson.scripts['format:fix:standalone'];
-  delete packageJson.scripts['lint:fix:standalone'];
-
-  await fs.writeFile(packageJsonCleanupPath, JSON.stringify(packageJson, null, 2));
 }
