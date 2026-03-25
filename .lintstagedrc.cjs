@@ -1,6 +1,13 @@
+const path = require('path');
+
 module.exports = {
-  // Task 1: Run linting, formatting, and intelligent testing on a wide range of files.
-  '*.{js,jsx,ts,tsx,mjs,mts,cjs,cts,json,md,yml,yaml}': ['tsx scripts/lintstaged-nx.ts'],
+  '*.{js,jsx,ts,tsx,mjs,mts,cjs,cts,json,md,yml,yaml}': files => {
+    const relativeFiles = files.map(f => path.relative(process.cwd(), f));
+    return [
+      `nx affected --target=lint --files=${relativeFiles.join(',')}`,
+      `nx format:write --files=${relativeFiles.join(',')}`,
+    ];
+  },
 
   // Exclude the template directory from all checks.
   '!packages/cli/template/**': [],
