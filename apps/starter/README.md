@@ -4,9 +4,9 @@
 
 Choose your preferred development approach:
 
-### 🐳 Docker (Recommended)
+### 🐳 Docker
 
-1. Open your app in [**Cursor**](https://www.cursor.so/) or [**Visual Studio Code**](https://code.visualstudio.com/)
+1. Open your app in your favorite IDE
 
 2. `Reopen in Container` when prompted (Dev Container)
    - The first time, wait for the installation (can take a few minutes).
