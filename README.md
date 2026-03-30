@@ -60,10 +60,8 @@ A React + Vite starter, fully containerized for reproducible and collaborative d
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v18 or higher)
-- [Cursor AI Editor](https://www.cursor.com) or [Visual Studio Code](https://code.visualstudio.com/)
+- [Visual Studio Code](https://code.visualstudio.com/) or any modern IDE with AI support
 - [Docker](https://www.docker.com/)
-  > **Note:** For the best AI-assisted development experience, use [Cursor AI Editor](https://www.cursor.com).
-  > If you prefer a classic setup, [Visual Studio Code](https://code.visualstudio.com/) works perfectly.
 
 ### Generate an app using the CLI tool
 
@@ -107,31 +105,17 @@ The CLI tool supports the following options for non-interactive usage:
 
 ## 🤖 AI-Powered Development
 
-The **Vite PowerFlow** starter is optimized for **Cursor AI Code Editor** with pre-configured rules that enhance AI code assistance and code generation. These rules are defined in the [.cursor/rules/](./.cursor/rules/) directory and help the AI understand your project's context and best practices.
+Vite PowerFlow uses `AGENTS.md` as the single source of truth for AI agent behavior,
+coding standards, workflow guidance, and quality expectations.
 
-**Note**: While the project works perfectly with any IDE, Cursor's AI features are limited to 50 requests in the free tier. A paid subscription is required to access the enhanced development experience.
+This open format is readable by major AI coding tools and IDE agents (Codex, Jules,
+Cursor, Windsurf, Copilot, Devin, Aider, and others), which avoids duplicating rules per
+editor.
+
+- Monorepo rules: [`AGENTS.md`](./AGENTS.md)
+- Starter essential rules: [`apps/starter/AGENTS.md`](./apps/starter/AGENTS.md)
 
 > For detailed GitHub CLI and AI integration setup, see [GitHub CLI AI Setup](docs/github-cli-ai-setup.md)
-
-### Available Rules
-
-The following rules are pre-configured to enhance your development experience:
-
-| Rule File                                                                                  | Description                                                              |
-| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
-| [code-standards.mdc](./.cursor/rules/code-standards.mdc)                                   | Coding standards for the project (TypeScript, React, naming conventions) |
-| [development-methodology.mdc](./.cursor/rules/development-methodology.mdc)                 | Methodologies to follow (TDD, atomic commits, SoC)                       |
-| [documentation-versioning.mdc](./.cursor/rules/documentation-versioning.mdc)               | How to manage documentation and versioning                               |
-| [ecosystem-convention.mdc](./.cursor/rules/ecosystem-convention.mdc)                       | How to align with ecosystem and tool-specific conventions                |
-| [expected-AI-behavior.mdc](./.cursor/rules/expected-AI-behavior.mdc)                       | How the AI should interact, suggest, and validate code                   |
-| [github-cli-integration.mdc](./.cursor/rules/github-cli-integration.mdc)                   | How to use GitHub CLI efficiently in the workflow                        |
-| [github-pr-conventions.mdc](./.cursor/rules/github-pr-conventions.mdc)                     | Pull request standards and templates                                     |
-| [interaction-protocol.mdc](./.cursor/rules/interaction-protocol.mdc)                       | How the AI should communicate and interact with the user                 |
-| [language-policy.mdc](./.cursor/rules/language-policy.mdc)                                 | Language and naming conventions for code and documentation               |
-| [project-architecture-principles.mdc](./.cursor/rules/project-architecture-principles.mdc) | Architectural guidelines for the project                                 |
-| [technical-AI-posture.mdc](./.cursor/rules/technical-AI-posture.mdc)                       | The expected technical rigor and posture of the AI assistant             |
-
-> **Note**: You can customize these rules by adding, removing, or modifying them in the '.cursor/rules/' directory to better match your project's requirements and development workflow.
 
 ## 💻 Development Setup
 
@@ -502,22 +486,7 @@ graph TD
 
 ### Pull Requests
 
-We provide two approaches for creating Pull Requests, both based on our PR template (`.github/pull_request_template.md`):
-
-#### 1. Using Cursor IDE
-
-If you're using Cursor IDE, the AI will automatically:
-
-- Analyze your code changes
-- Generate a comprehensive PR description based on the template
-- Suggest appropriate change types and quality checks
-- Help review the changes for consistency and standards
-
-The AI uses the PR template structure while intelligently filling it based on your actual code modifications.
-
-#### 2. Using PR Template Directly
-
-For those not using Cursor, you can directly use the PR template located at `.github/pull_request_template.md`. This template provides a structured format for:
+Use the PR template located at `.github/pull_request_template.md`. This template provides a structured format for:
 
 - Describing changes
 - Listing implemented features
@@ -527,7 +496,8 @@ For those not using Cursor, you can directly use the PR template located at `.gi
 - Adding additional notes
 - Handling Dependabot updates
 
-Both approaches ensure consistent PR documentation by following the same template structure. Cursor IDE simply makes the process more efficient by automatically generating the content based on your changes.
+For the detailed PR workflow (`feat/fix -> dev` and sync `dev -> main`), follow the
+process documented in [`AGENTS.md`](./AGENTS.md).
 
 ## 📝 License
 
