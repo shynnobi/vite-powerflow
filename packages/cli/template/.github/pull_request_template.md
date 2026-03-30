@@ -2,26 +2,21 @@
 
 ## Description
 
-<!-- Description of the changes in this PR -->
+<!-- Summarize the intent and scope of this PR in 2–4 sentences.
+     For Type A (feat/fix → dev): synthesize from `git log dev..HEAD`.
+     For Type B (dev → main): state explicitly that this is a sync PR and list source branches. -->
 
-## Changes implemented
+## Changes
 
-<!-- List the main components or features implemented -->
+<!-- List the significant changes introduced. Be specific: name the modules, components,
+     configs, or scripts impacted. Avoid generic descriptions and raw file lists. -->
 
 -
 -
-
-## Tasks completed
-
-<!-- List the tasks completed from the development plan with checkmarks -->
-
-- [ ] TASK-ID: Description
-- [ ] TASK-ID: Description
-- [ ] TASK-ID: Description
 
 ## Type of change
 
-<!-- Mark the appropriate option(s) with an "x" -->
+<!-- Mark all that apply with an "x" -->
 
 - [ ] ✨ New feature
 - [ ] 🐛 Bug fix
@@ -33,55 +28,13 @@
 
 <!-- Mark all that apply with an "x" -->
 
-- [ ] 🧪 BDD/TDD approach followed
-- [ ] ✅ Unit tests added/updated
-- [ ] 🔄 Integration tests added/updated
-- [ ] 📚 Storybook stories updated
-- [ ] 🧠 Manual testing performed
+- [ ] ✅ Tests added or updated
 - [ ] 🔍 All existing tests pass
-
-## Additional notes
-
-<!-- Any other information that would be useful for reviewers -->
-
----
-
-<!-- For Dependabot PRs -->
-<details>
-<summary>📦 Dependabot Update Details</summary>
-
-- **Package**: <!-- e.g., react -->
-- **From**: <!-- e.g., 18.2.0 -->
-- **To**: <!-- e.g., 19.0.0 -->
-- **Type**: <!-- patch/minor/major -->
-- **Changelog**: <!-- link to changelog -->
-- [ ] 📦 Package Updates
-  - [ ] Patch Update (Bug fixes, documentation updates)
-  - [ ] Minor Update (New features, non-breaking changes)
-  - [ ] Major Update (Breaking changes, requires careful review)
-- [ ] 📝 Documentation updates
-- [ ] 🐛 Bug fix
-- [ ] ✨ New feature
-- [ ] 🔨 Refactoring
-- [ ] 🔧 Configuration
-
-## Quality Assurance
-
-<!-- Mark all that apply with an "x" -->
-
-- [ ] 🧪 BDD/TDD approach followed
-- [ ] ✅ Unit tests added/updated
-- [ ] 🔄 Integration tests added/updated
-- [ ] 📚 Storybook stories updated
+- [ ] 🔎 Lint and type checks pass
 - [ ] 🧠 Manual testing performed
-- [ ] 🔍 All existing tests pass
-- [ ] The code changes have been tested
-- [ ] All tests pass
-- [ ] Lint checks pass
-- [ ] Type checks pass
-- [ ] Documentation has been updated (if needed)
-- [ ] No breaking changes introduced
+- [ ] 📚 Documentation updated (if needed)
 
-## Additional Notes
+## Notes for reviewers
 
-<!-- Any additional information that would be helpful for reviewers -->
+<!-- Highlight anything that requires particular attention: trade-offs made, known
+     limitations, follow-up tasks, or open questions. Omit if not applicable. -->
