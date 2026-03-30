@@ -50,5 +50,9 @@ jobs:
             pnpm install --frozen-lockfile
           fi
 
-      - name: Run CI script
-        run: ./scripts/ci.sh
+      - name: Run CI checks
+        run: |
+          pnpm format
+          pnpm type-check
+          pnpm lint
+          pnpm build
