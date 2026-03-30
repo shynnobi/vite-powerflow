@@ -50,16 +50,10 @@ export async function createProject(options: ProjectOptions): Promise<void> {
       throw new Error(`Template directory not found. Expected at: ${templatePath}`);
     }
 
-    logSuccess(`✅ Template found at: ${templatePath}`);
     await copyTemplate(templatePath, projectPath);
 
     // 2. Rename gitignore to .gitignore for proper Git tracking
-    const didRenameGitignore = await renameGitignore(projectPath);
-    if (didRenameGitignore) {
-      logSuccess('✅ .gitignore configured');
-    } else {
-      logError(`⚠️  Warning: gitignore file not found at ${path.join(projectPath, 'gitignore')}`);
-    }
+    await renameGitignore(projectPath);
 
     // 3. Convert _vscode to .vscode for VS Code compatibility, then clean up _vscode
     await renameVscodeFolder(projectPath);
