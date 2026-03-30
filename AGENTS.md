@@ -35,6 +35,61 @@ vite-powerflow/
 └── AGENTS.md           # AI assistant rules (single source of truth)
 ```
 
+## Changeset Workflow
+
+This project uses Changesets for version management and changelog generation. Follow this workflow when making changes to published packages:
+
+### When to Create a Changeset
+
+Create a changeset when you make changes that affect published packages:
+
+- `@vite-powerflow/create` (CLI package published to npm)
+- Any other packages that will be released
+
+### Creating a Changeset
+
+1. **Manual method (recommended for AI agents):**
+
+   ```bash
+   # Create a new markdown file in .changeset/ directory
+   # File format: .changeset/[description].md
+
+   ---
+   "@vite-powerflow/create": patch|minor|major
+   ---
+
+   Brief description of changes for humans.
+   ```
+
+2. **Interactive method:**
+   ```bash
+   pnpm changeset
+   ```
+
+### Version Types
+
+- **`patch`**: Bug fixes, minor improvements, documentation updates
+- **`minor`**: New features, non-breaking changes
+- **`major`**: Breaking changes, API modifications
+
+### Example Changeset
+
+```markdown
+---
+'@vite-powerflow/create': patch
+---
+
+Remove unnecessary logs from CLI project creation output for cleaner user experience.
+```
+
+### Verification
+
+Check changeset status:
+
+```bash
+pnpm changeset status
+```
+
 ## Important Constraints
 
 - No direct edits under `packages/cli/template/**` — changes must be made in
