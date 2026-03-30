@@ -40,7 +40,7 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Check formatting
-        run: pnpm prettier --check .
+        run: pnpm format
 
   typescript:
     name: TypeScript
