@@ -4,6 +4,8 @@ import { glob } from 'glob';
 import { builtinModules } from 'module';
 import path from 'path';
 
+import { logger, logRootDetail } from './monorepo-logger';
+
 const SHARED_UTILS = 'packages/shared-utils/src';
 const SHARED_UTILS_PACKAGE_JSON = 'packages/shared-utils/package.json';
 
@@ -14,10 +16,8 @@ function getConsumers(): string[] {
   // All packages that use shared utilities
   const consumers = ['apps/starter', 'packages/cli', 'packages/vite-powerflow-sync'];
 
-  console.log('🔍 Making packages autonomous by inlining shared utilities...');
-  for (const consumer of consumers) {
-    console.log(`  📦 Target consumer: ${consumer}`);
-  }
+  logger.startGroup('Making packages autonomous by inlining shared utilities');
+  logger.detail(`Target consumers: ${consumers.join(', ')}`);
 
   return consumers;
 }
@@ -58,7 +58,7 @@ function getImportExtension(consumer: string): string {
     // Default fallback
     return '';
   } catch {
-    console.log(`⚠️  Could not read package.json for ${consumer}, using default import extension`);
+    logger.warn(`Could not read package.json for ${consumer}, using default import extension`);
     return '';
   }
 }
@@ -135,25 +135,25 @@ function extractExports(content: string): string[] {
 }
 
 async function inlineSharedUtils(): Promise<void> {
-  console.log('🔄 Inlining shared utilities...');
+  logger.info('Inlining shared utilities');
 
   // Get required dependencies from shared-utils (will be calculated per consumer)
-  console.log('📦 Dependencies will be extracted per consumer based on used files...');
+  logger.detail('Dependencies will be extracted per consumer based on used files');
 
   // Automatically detect all mappings
   const importMappings = await autoDetectAllMappings();
-  console.log(`📋 Detected ${importMappings.length} modules to inline`);
+  logger.detail(`Detected ${importMappings.length} modules to inline`);
 
   // Get consumers (hybrid approach)
   const consumers = getConsumers();
 
   for (const consumer of consumers) {
     if (!existsSync(consumer)) {
-      console.log(`⏭️  Skipping ${consumer} (not found)`);
+      logRootDetail(`Skipping ${consumer} (not found)`);
       continue;
     }
 
-    console.log(`📦 Processing ${consumer}...`);
+    logger.detail(`Processing ${consumer}`);
 
     const targetDir = `${consumer}/src/utils/shared`;
 
@@ -186,9 +186,12 @@ async function inlineSharedUtils(): Promise<void> {
     }
 
     if (usedFiles.size === 0) {
-      console.log(`  ℹ️  No shared-utils usage found for ${consumer}`);
+      logRootDetail(`No shared-utils usage found for ${consumer}`);
+      logger.endGroup();
       continue;
     }
+
+    logger.startGroup(`Processing ${consumer}`);
 
     // Create the destination directory only when needed
     mkdirSync(targetDir, { recursive: true });
@@ -200,7 +203,7 @@ async function inlineSharedUtils(): Promise<void> {
 
       if (existsSync(sourceFile)) {
         copyFileSync(sourceFile, targetFile);
-        console.log(`  ✅ Copied ${file}`);
+        logger.detail(`Copied ${file}`);
       }
     }
 
@@ -230,19 +233,21 @@ async function inlineSharedUtils(): Promise<void> {
 
       if (modified) {
         writeFileSync(file, content);
-        console.log(`  🔄 Updated imports in ${path.relative(consumer, file)}`);
+        logger.detail(`Updated imports in ${path.relative(consumer, file)}`);
       }
     }
 
     // Update dependencies in package.json based on actually used files
-    console.log(`📦 Updating dependencies for ${consumer}...`);
+    logger.detail(`Updating dependencies for ${consumer}`);
     const requiredDeps = getRequiredDependencies(usedFiles);
     updateConsumerDependencies(consumer, requiredDeps);
 
-    console.log(`✅ Completed ${consumer}`);
+    logger.success(`Completed ${consumer}`);
+    logger.endGroup();
   }
 
-  console.log('🎉 Shared utilities inlining completed!');
+  logger.endGroup();
+  logger.success('Shared utilities inlining completed');
 }
 
 function extractImportedFunctions(content: string, importPath: string): string[] {
@@ -290,7 +295,7 @@ function extractImportedFunctions(content: string, importPath: string): string[]
  */
 function getRequiredDependencies(usedFiles: Set<string>): Record<string, string> {
   if (!existsSync(SHARED_UTILS_PACKAGE_JSON)) {
-    console.log('❌ Shared utils package.json not found, skipping dependency copying');
+    logger.error('Shared utils package.json not found, skipping dependency copying');
     return {};
   }
 
@@ -301,7 +306,7 @@ function getRequiredDependencies(usedFiles: Set<string>): Record<string, string>
 
   // Only detect dependencies for files that are actually being inlined
   const usedDependencies = detectUsedDependenciesForFiles(usedFiles);
-  console.log(`🔍 Detected used dependencies for inlined files: ${usedDependencies.join(', ')}`);
+  logger.detail(`Detected used dependencies for inlined files: ${usedDependencies.join(', ')}`);
 
   // Only return dependencies that are actually used in the inlined files
   const requiredDeps: Record<string, string> = {};
@@ -404,7 +409,7 @@ function updateConsumerDependencies(consumer: string, requiredDeps: Record<strin
   const packageJsonPath = `${consumer}/package.json`;
 
   if (!existsSync(packageJsonPath)) {
-    console.log(`❌ Package.json not found for ${consumer}, skipping dependency update`);
+    logger.error(`Package.json not found for ${consumer}, skipping dependency update`);
     return;
   }
 
@@ -423,22 +428,22 @@ function updateConsumerDependencies(consumer: string, requiredDeps: Record<strin
     if (!currentVersion || currentVersion !== depVersion) {
       packageJson.dependencies[depName] = depVersion;
       hasChanges = true;
-      console.log(`  ✅ Added/updated dependency: ${depName}@${depVersion}`);
+      logger.detail(`Added/updated dependency: ${depName}@${depVersion}`);
     }
   }
 
   if (hasChanges) {
     writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n');
-    console.log(`  ✅ Updated package.json for ${consumer}`);
+    logger.detail(`Updated package.json for ${consumer}`);
   } else {
-    console.log(`  ℹ️  No dependency changes needed for ${consumer}`);
+    logger.detail(`No dependency changes needed for ${consumer}`);
   }
 }
 
 // Execute the script
 if (import.meta.url === `file://${process.argv[1]}`) {
   inlineSharedUtils().catch(error => {
-    console.error(`❌ Script failed: ${error instanceof Error ? error.message : String(error)}`);
+    logger.error(`Script failed: ${error instanceof Error ? error.message : String(error)}`);
     process.exit(1);
   });
 }

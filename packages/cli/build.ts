@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import { logError, logInfo, logSuccess } from './src/utils/shared/logger.js';
+import { endGroup, logError, logInfo, logSuccess, startGroup } from './src/utils/shared/logger.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,7 +13,7 @@ async function cleanDist(): Promise<void> {
   const distPath = path.join(__dirname, 'dist');
   if (await fs.pathExists(distPath)) {
     await fs.remove(distPath);
-    logInfo('🧹 Cleaned dist directory');
+    logInfo('Cleaning output directory');
   }
 }
 
@@ -23,7 +23,7 @@ async function copyTemplate(): Promise<void> {
   const distTemplatePath = path.join(__dirname, 'dist', 'template');
 
   try {
-    logInfo('Copying template to packages/cli/dist...');
+    logInfo('Bundling template');
 
     // Ensure dist directory exists
     await fs.ensureDir(path.dirname(distTemplatePath));
@@ -58,7 +58,7 @@ void (async () => {
   const templatePath = path.join(__dirname, 'template');
 
   try {
-    logInfo('Building the CLI tool...');
+    startGroup('Building the Vite PowerFlow CLI');
 
     // 1. Clean dist directory
     await cleanDist();
@@ -99,8 +99,10 @@ void (async () => {
       logLevel: 'info',
     });
 
-    logSuccess('CLI tool built successfully!');
+    endGroup();
+    logSuccess('Vite PowerFlow CLI built successfully');
   } catch (err) {
+    endGroup();
     logError('Build failed');
     if (err instanceof Error) {
       logError(err.message);
