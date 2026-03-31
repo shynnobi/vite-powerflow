@@ -7,14 +7,14 @@ Generate a new, production-ready [Vite PowerFlow](https://github.com/shynnobi/vi
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v18 or higher)
-- [Cursor AI Editor](https://www.cursor.com) or [Visual Studio Code](https://code.visualstudio.com/)
-- [Docker](https://www.docker.com/)
-  > **Note:** For the best AI-assisted development experience, use [Cursor AI Editor](https://www.cursor.com).
-  > If you prefer a classic setup, [Visual Studio Code](https://code.visualstudio.com/) works perfectly.
+- Your favorite code editor
+- [pnpm](https://pnpm.io/) (or npm/yarn)
+- [Docker](https://www.docker.com/) (optional, for containerized development)
+- [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) (optional, required only for Docker setup)
 
-### Generate an app using the CLI tool
+### Setup Steps
 
-1. Run this command in your terminal:
+1. **Create project with CLI:**
 
    ```bash
    npx @vite-powerflow/create my-app
@@ -22,21 +22,44 @@ Generate a new, production-ready [Vite PowerFlow](https://github.com/shynnobi/vi
 
    > You can also run the CLI tool in non-interactive mode for faster setup. See [CLI Options](#cli-options)
 
-2. Open the folder in your code editor
+2. **Open the folder in your code editor:**
 
-3. `Reopen in Container` when prompted (Dev Container)
+   ```bash
+   cd my-app
+   code .  # or open with your preferred editor
+   ```
 
-   ![DevContainer Prompt](https://www.dropbox.com/scl/fi/9rm4he8t53h9l30wz10vm/reopen-500.jpg?rlkey=dbrafybaezjnce85vj3b7p2jm&st=b22afec3&raw=1)
+3. **Choose your preferred development approach:**
 
-4. Wait for the installation (It can take a few minutes)
+#### 🐳 Docker Setup
 
-5. Launch dev server:
+If you installed the Dev Containers extension, you'll see a "Reopen in Container" prompt:
+
+1. Click `Reopen in Container` (or use the command palette)
+   - The first time, wait for the installation (can take a few minutes)
+   - On subsequent launches, you'll connect directly to the container
+
+2. Launch dev server:
 
    ```bash
    pnpm dev
    ```
 
-6. Start developing! 🚀
+#### 💻 Local Development
+
+1. Install dependencies:
+
+   ```bash
+   pnpm install
+   ```
+
+2. Launch dev server:
+
+   ```bash
+   pnpm dev
+   ```
+
+Start developing! 🚀
 
 <hr>
 
@@ -54,8 +77,10 @@ The CLI tool supports the following options for non-interactive usage:
 
 ## Documentation
 
-For full documentation, features, and advanced usage, see the [Vite PowerFlow monorepo README](https://github.com/shynnobi/vite-powerflow#readme).
-(WIP: Vite Powerflow website coming soon )
+- **Website:** [vite-powerflow.netlify.app](https://vite-powerflow.netlify.app/)
+- **GitHub:** [Vite PowerFlow monorepo](https://github.com/shynnobi/vite-powerflow#readme)
+
+For full documentation, features, and advanced usage, visit the official website or explore the repository.
 
 ---
 
