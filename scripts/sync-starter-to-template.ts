@@ -4,7 +4,12 @@ import { glob } from 'glob';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
-import { logRootError, logRootInfo, logRootSuccess } from './monorepo-logger';
+import {
+  logger,
+  logRootError as _logRootError,
+  logRootInfo as _logRootInfo,
+  logRootSuccess as _logRootSuccess,
+} from './monorepo-logger';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,20 +37,21 @@ void (async () => {
   const starterSrc = path.join(root, 'apps/starter');
   const templateDest = path.join(root, 'packages/cli/template');
 
-  logRootInfo('—— Sync apps/starter to packages/cli/template ——');
+  logger.startGroup('Sync apps/starter to packages/cli/template');
   try {
     // 0. Ensure shared-utils are inlined in the starter before copying
-    logRootInfo('Ensuring shared-utils are inlined in starter...');
+    logger.info('Inlining utilities into app');
     execSync('pnpm inline:shared-utils', {
       cwd: root,
-      stdio: 'inherit',
+      stdio: ['pipe', 'pipe', 'inherit'], // Hide pnpm stdout/stderr, show only errors
     });
+
     // 1. Remove any existing template directory before copying
-    logRootInfo('Deleting existing template folder...');
+    logger.info('Clearing template cache');
     await fs.remove(templateDest);
 
     // 2. Copy the starter app to the template destination
-    logRootInfo('Copying folders...');
+    logger.info('Syncing starter → template');
     await fs.copy(starterSrc, templateDest, {
       filter: (srcPath: string) => {
         const ignore = [
@@ -85,16 +91,14 @@ void (async () => {
 
     // 3. Ensure the template directory exists after copy
     if (!(await fs.pathExists(templateDest))) {
-      logRootError(
+      logger.error(
         'Failed to copy the template directory. Please check the source and destination paths.'
       );
       process.exit(1);
     }
 
     // 4. Patch package.json: update scripts, add metadata, and replace workspace deps
-    logRootInfo(
-      'Patching package.json: scripts, metadata, and replacing workspace dependencies...'
-    );
+    logger.info('Updating dependencies & scripts');
     const pkgPath = path.join(templateDest, 'package.json');
     const pkgRaw = await fs.readFile(pkgPath, 'utf8');
     const pkg = JSON.parse(pkgRaw) as {
@@ -115,7 +119,7 @@ void (async () => {
         if (typeof version === 'string' && version.startsWith('workspace:')) {
           // Skip @vite-powerflow/shared-utils as it will be inlined
           if (name === '@vite-powerflow/shared-utils') {
-            logRootInfo(`  - Skipping ${name} (will be inlined)`);
+            logger.detail(`Skipping ${name} (will be inlined)`);
             continue;
           }
 
@@ -131,15 +135,15 @@ void (async () => {
             // Remove @vite-powerflow/shared-utils completely as it will be inlined
             if (key === '@vite-powerflow/shared-utils') {
               delete deps[key];
-              logRootInfo(`  - Removed ${key} (will be inlined)`);
+              logger.detail(`Removed ${key} (will be inlined)`);
               continue;
             }
 
             if (depsToReplace[key]) {
               deps[key] = depsToReplace[key];
-              logRootInfo(`  - Replaced ${key} with version ${depsToReplace[key]}`);
+              logger.detail(`Replaced ${key} with version ${depsToReplace[key]}`);
             } else {
-              logRootInfo(`  - Warning: workspace dependency ${key} not found in replacement map.`);
+              logger.warn(`Workspace dependency ${key} not found in replacement map`);
             }
           }
         }
@@ -148,13 +152,13 @@ void (async () => {
       replaceWorkspaceDeps(pkg.dependencies as Record<string, string> | undefined);
       replaceWorkspaceDeps(pkg.devDependencies as Record<string, string> | undefined);
     } catch (versionError) {
-      logRootError('Failed to replace workspace dependencies.');
-      logRootError(versionError instanceof Error ? versionError.message : String(versionError));
+      logger.error('Failed to replace workspace dependencies');
+      logger.error(versionError instanceof Error ? versionError.message : String(versionError));
       process.exit(1);
     }
 
     // 5. Clean tsconfig.json by removing 'extends' for standalone usage
-    logRootInfo("Cleaning tsconfig.json (removing 'extends')...");
+    logger.info('Configuring TypeScript');
     const tsconfigPath = path.join(templateDest, 'tsconfig.json');
     if (await fs.pathExists(tsconfigPath)) {
       const tsconfigRaw = await fs.readFile(tsconfigPath, 'utf-8');
@@ -166,7 +170,7 @@ void (async () => {
     }
 
     // 6. Transform project.json files to use template-compatible names
-    logRootInfo('Patching project.json files for template usage...');
+    logger.info('Updating NX project names');
     const projectJsonFiles = await glob(path.join(templateDest, '**/project.json'), { dot: true });
     for (const projectJsonFile of projectJsonFiles) {
       try {
@@ -178,12 +182,10 @@ void (async () => {
         if (projectName?.startsWith('@vite-powerflow/')) {
           proj.name = projectName.replace('@vite-powerflow/', '@template-app/');
           await fs.writeFile(projectJsonFile, JSON.stringify(proj, null, 2) + '\n', 'utf-8');
-          logRootInfo(
-            `  - Updated project name in ${path.relative(templateDest, projectJsonFile)}`
-          );
+          logger.detail(`Updated project name in ${path.relative(templateDest, projectJsonFile)}`);
         }
       } catch (e) {
-        logRootError(`Failed to patch ${projectJsonFile}: ${e}`);
+        logger.error(`Failed to patch ${projectJsonFile}: ${e}`);
       }
     }
 
@@ -192,7 +194,7 @@ void (async () => {
     const isRootPackage = pkgPath === path.join(templateDest, 'package.json');
 
     if (isRootPackage) {
-      logRootInfo('Patching root package.json scripts from starter SSOT...');
+      logger.info('Syncing package scripts');
       const starterPkgPath = path.join(starterSrc, 'package.json');
       const starterPkgRaw = await fs.readFile(starterPkgPath, 'utf8');
       const starterPkg = JSON.parse(starterPkgRaw) as {
@@ -212,12 +214,14 @@ void (async () => {
         ...(starterPkg.devDependencies ?? {}),
       };
 
-      logRootInfo('  - Root scripts now mirror starter package.json (SSOT)');
+      logger.detail('Root scripts now mirror starter package.json (SSOT)');
     }
-    logRootSuccess('Template synchronized successfully!');
+    logger.endGroup();
+    logger.success('Template synchronized successfully');
   } catch (err) {
-    logRootError('Template synchronization failed!');
-    logRootError(err instanceof Error ? err.message : String(err));
+    logger.endGroup();
+    logger.error('Template synchronization failed');
+    logger.error(err instanceof Error ? err.message : String(err));
     process.exit(1);
   }
 })();
