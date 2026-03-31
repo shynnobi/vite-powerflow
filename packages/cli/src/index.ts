@@ -1,15 +1,20 @@
 #!/usr/bin/env node
 import chalk from 'chalk';
 import { Command } from 'commander';
-import fs from 'fs/promises';
+import { promises as fsPromises } from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 import { createProject } from './commands/create.js';
+import { getCliVersion } from './utils/cli-version.js';
 import { directoryExists } from './utils/fs-utils.js';
 import { promptProjectName } from './utils/prompt-ui.js';
 import { safePackageName } from './utils/safe-package-name.js';
 import { logError } from './utils/shared/logger.js';
 import type { GitOptions } from '../types/git-options.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 let currentProjectPath: string | null = null;
 let isCleaningUp = false;
@@ -25,7 +30,7 @@ async function cleanup() {
 
   if (currentProjectPath) {
     try {
-      await fs.rm(currentProjectPath, { recursive: true, force: true });
+      await fsPromises.rm(currentProjectPath, { recursive: true, force: true });
     } catch {
       // Ignore cleanup errors
     }
@@ -44,7 +49,7 @@ process.stdin.on('keypress', (_: string, key: { ctrl: boolean; name: string }) =
 
 const program = new Command()
   .name('@vite-powerflow/create')
-  .version(process.env.npm_package_version || '1.0.4')
+  .version(getCliVersion())
   .argument(
     '[project-directory]',
     'The name of the project directory (optional in interactive mode)'
@@ -57,6 +62,16 @@ const program = new Command()
     'after',
     '\nExamples:\n  $ npx @vite-powerflow/create              # Interactive mode\n  $ npx @vite-powerflow/create my-app       # Non-interactive with project name\n  $ npx @vite-powerflow/create my-app --git # With Git initialization'
   );
+
+const cliVersion = getCliVersion();
+
+function shouldShowStartupVersionBanner(args: string[]): boolean {
+  return !args.includes('--version') && !args.includes('-V') && !args.includes('--help');
+}
+
+if (shouldShowStartupVersionBanner(process.argv)) {
+  console.log(`Using @vite-powerflow/create ${cliVersion}`);
+}
 
 program.parse(process.argv);
 const cliOptions = program.opts<GitOptions>();

@@ -13,7 +13,7 @@ export type LogLevel = 'silent' | 'error' | 'warn' | 'normal' | 'verbose';
 
 class MonorepoLogger {
   private level: LogLevel = 'normal';
-  private depth: number = 0;
+  private depth = 0;
 
   constructor() {
     // Check for --verbose flag

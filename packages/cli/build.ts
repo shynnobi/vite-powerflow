@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import { logError, logInfo, logSuccess, startGroup, endGroup } from './src/utils/shared/logger.js';
+import { endGroup, logError, logInfo, logSuccess, startGroup } from './src/utils/shared/logger.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -65,7 +65,9 @@ void (async () => {
 
     // 2. Check template folder
     if (!(await fs.pathExists(templatePath))) {
-      logError('The template folder is missing in packages/cli! The build will fail if this folder is required.');
+      logError(
+        'The template folder is missing in packages/cli! The build will fail if this folder is required.'
+      );
       process.exit(1);
     }
 
